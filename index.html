@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="mCell's Page, front-end developer. A personal introduction page for mCell, a front-end developer.">
+    <title>mCell's Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+
+        .profile h2 {
+            margin: 5px 0;
+            font-size: 1.8em;
+        }
+
+        .profile p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .details {
+            margin-top: 10px;
+        }
+
+        .details h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .details li {
+            margin: 5px 0;
+            padding: 5px;
+        }
+
+        #email-link {
+            text-decoration: none;
+            color: #444;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            .profile img {
+                width: 120px;
+                height: 120px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .profile h2 {
+                font-size: 1.5em;
+            }
+
+            .profile p {
+                font-size: 1em;
+            }
+
+            .details h3 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="./public/mcell.jpg" alt="Profile Picture" id="profile-pic">
+            <h2>mCell</h2>
+            <p>Front-end Developer</p>
+        </div>
+        <hr>
+        <div class="details">
+            <h3>About Me</h3>
+            <p>
+                Hi, I'm mCell, a passionate front-end developer with experience in building responsive and user-friendly
+                web applications.
+            </p>
+            <h3>Areas of Interest</h3>
+            <ul>
+                <li>Front-end Toolchain Development</li>
+                <li>Front-end Data Visualization</li>
+                <li>Front-end Performance Optimization</li>
+                <li>Modern Front-end Frameworks (e.g., React, Vue)</li>
+                <li>User Experience Design & Interaction</li>
+            </ul>
+            <h3>Contact</h3>
+            <p>Email: <a id="email-link" href="mailto:minorcell6789@gmail.com"> minorcell6789@gmail.com</a></p>
+        </div>
+        <hr>
+        <footer>
+            &copy; 2023 mCell. All rights reserved.
+        </footer>
+    </div>
+
+    <script defer>
+        const footer = document.querySelector('footer');
+        const profilePic = document.getElementById('profile-pic');
+
+        let rotateDeg = 0;
+        let speed = 0;
+        let animationFrameId = null;
+
+        footer.innerHTML = `&copy; ${new Date().getFullYear()} mCell. All rights reserved.`;
+        function rotate() {
+            rotateDeg += speed;
+            profilePic.style.transform = `rotate(${rotateDeg}deg)`;
+
+            if (speed < 50) {
+                speed += 0.1;
+            }
+
+            animationFrameId = requestAnimationFrame(rotate);
+        }
+
+        profilePic.addEventListener('mouseenter', () => {
+            if (!animationFrameId) {
+                speed = 1;
+                rotate();
+            }
+        });
+
+        profilePic.addEventListener('mouseleave', () => {
+            const slowDown = () => {
+                if (speed > 0) {
+                    speed -= 0.2;
+                    rotateDeg += speed;
+                    profilePic.style.transform = `rotate(${rotateDeg}deg)`;
+                    requestAnimationFrame(slowDown);
+                } else {
+                    speed = 0;
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            };
+            slowDown();
+        });
+    </script>
+</body>
+
+</html>
