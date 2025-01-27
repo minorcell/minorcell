@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="mCell's Page, front-end developer. A personal introduction page for mCell, a front-end developer.">
+    <meta property="og:title" content="mCell's Page">
+    <meta property="og:description" content="A personal introduction page for mCell, a front-end developer.">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/120795714">
+    <meta name="keywords" content="mCell, front-end developer, personal website, web development, modern front-end">
     <title>mCell's Page</title>
     <style>
         body {
@@ -28,6 +32,10 @@
             color: #333;
         }
 
+        p {
+            text-indent: 2em;
+        }
+
         .profile {
             text-align: center;
             margin-bottom: 20px;
@@ -37,6 +45,7 @@
             border-radius: 50%;
             width: 150px;
             height: 150px;
+            cursor: pointer;
         }
 
         .profile h2 {
@@ -55,33 +64,35 @@
 
         .details h3 {
             font-size: 1.5em;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #333;
         }
 
         .details ul {
             list-style-type: none;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .details li {
+            width: fit-content;
             margin: 5px 0;
-            padding: 5px;
+            padding-left: 5px;
         }
 
         #email-link {
             text-decoration: none;
             color: #444;
+            transition: all 0.3s ease-in-out;
         }
 
         footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
             font-size: 0.9em;
             color: #666;
         }
 
-        /* Responsive Design */
         @media (max-width: 600px) {
             .container {
                 margin: 20px;
@@ -109,82 +120,78 @@
                 font-size: 1.3em;
             }
         }
+
+        .underline-effect {
+            position: relative;
+            display: inline-block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .underline-effect::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: green;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .underline-effect:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="profile">
-            <img src="https://avatars.githubusercontent.com/u/120795714" alt="Profile Picture" id="profile-pic">
+            <img src="https://avatars.githubusercontent.com/u/120795714" alt="Profile Picture" id="profile-pic"
+                fetchpriority="high" />
             <h2>mCell</h2>
-            <p>Front-end Developer</p>
+            <p class="underline-effect" style="text-indent: 0;">a front-end
+                developer</p>
         </div>
         <hr>
         <div class="details">
-            <h3>About Me</h3>
+            <h3 class="underline-effect">About Me</h3>
             <p>
-                Hi, I'm mCell, a passionate front-end developer with experience in building responsive and user-friendly
-                web applications.
+                Hi, I'm mCell, my Chinese name is 邓军辉（Deng Junhui）. a passionate front-end developer with experience in
+                building responsive and user-friendly web applications.
             </p>
-            <h3>Areas of Interest</h3>
-            <ul>
-                <li>Front-end Toolchain Development</li>
-                <li>Front-end Data Visualization</li>
-                <li>Front-end Performance Optimization</li>
-                <li>Modern Front-end Frameworks (e.g., React, Vue)</li>
-                <li>User Experience Design & Interaction</li>
+            <h3 class="underline-effect">Areas of Interest</h3>
+            <ul class="ul_box">
+                <li class="underline-effect">Open Source Community Building</li>
+                <li class="underline-effect">Exploring Full-Stack Front-End Technologies</li>
+                <li class="underline-effect">Creating Interactive Front-End Visualizations</li>
+                <li class="underline-effect">Focusing on Web Performance and User Experience</li>
             </ul>
-            <h3>Contact</h3>
-            <p>Email: <a id="email-link" href="mailto:minorcell6789@gmail.com"> minorcell6789@gmail.com</a></p>
+
+            <h3 class="underline-effect">Contact</h3>
+            <p style="text-indent: 0;">
+                Email:
+                <a class="underline-effect" id="email-link" href="mailto:minorcell6789@gmail.com"
+                    aria-label="Send an email to mCell">
+                    minorcell6789@gmail.com
+                </a>
+            </p>
         </div>
         <hr>
         <footer>
             &copy; 2023 mCell. All rights reserved.
         </footer>
     </div>
-
-    <script defer>
-        const footer = document.querySelector('footer');
-        const profilePic = document.getElementById('profile-pic');
-
-        let rotateDeg = 0;
-        let speed = 0;
-        let animationFrameId = null;
-
-        footer.innerHTML = `&copy; ${new Date().getFullYear()} mCell. All rights reserved.`;
-        function rotate() {
-            rotateDeg += speed;
-            profilePic.style.transform = `rotate(${rotateDeg}deg)`;
-
-            if (speed < 50) {
-                speed += 0.1;
-            }
-
-            animationFrameId = requestAnimationFrame(rotate);
-        }
-
-        profilePic.addEventListener('mouseenter', () => {
-            if (!animationFrameId) {
-                speed = 1;
-                rotate();
-            }
-        });
-
-        profilePic.addEventListener('mouseleave', () => {
-            const slowDown = () => {
-                if (speed > 0) {
-                    speed -= 0.2;
-                    rotateDeg += speed;
-                    profilePic.style.transform = `rotate(${rotateDeg}deg)`;
-                    requestAnimationFrame(slowDown);
-                } else {
-                    speed = 0;
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                }
-            };
-            slowDown();
-        });
+    <script>
+        const loadScript = (src) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.defer = true;
+            document.body.appendChild(script);
+        };
+        loadScript('scripts/avatar.js');
+        loadScript('scripts/footer.js');
     </script>
 </body>
 
