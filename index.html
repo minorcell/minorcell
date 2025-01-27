@@ -12,13 +12,32 @@
     <meta name="keywords" content="mCell, front-end developer, personal website, web development, modern front-end">
     <title>mCell's Page</title>
     <style>
+        :root {
+            --bg-color: #fff;
+            --text-color: #000;
+            --link-color: green;
+            --link-hover-color: darkgreen;
+            --hr-color: #ccc;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --link-color: #90caf9;
+                --link-hover-color: #42a5f5;
+                --hr-color: #555;
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
             line-height: 1.5;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
         .container {
@@ -29,7 +48,6 @@
 
         h1 {
             text-align: center;
-            color: #333;
         }
 
         p {
@@ -55,7 +73,6 @@
 
         .profile p {
             font-size: 1.1em;
-            color: #666;
         }
 
         .details {
@@ -65,7 +82,6 @@
         .details h3 {
             font-size: 1.5em;
             margin-bottom: 15px;
-            color: #333;
         }
 
         .details ul {
@@ -82,7 +98,6 @@
 
         #email-link {
             text-decoration: none;
-            color: #444;
             transition: all 0.3s ease-in-out;
         }
 
@@ -90,7 +105,6 @@
             text-align: center;
             margin-top: 15px;
             font-size: 0.9em;
-            color: #666;
         }
 
         @media (max-width: 600px) {
@@ -125,7 +139,7 @@
             position: relative;
             display: inline-block;
             text-decoration: none;
-            color: inherit;
+            color: var(--link-color);
         }
 
         .underline-effect::after {
@@ -135,12 +149,17 @@
             bottom: -2px;
             width: 0;
             height: 2px;
-            background-color: green;
+            background-color: var(--link-hover-color);
             transition: width 0.3s ease-in-out;
         }
 
         .underline-effect:hover::after {
             width: 100%;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--hr-color);
         }
     </style>
 </head>
