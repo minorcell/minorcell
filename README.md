@@ -1,2 +1,6 @@
-| <img align="center" src="https://github-readme-stats.vercel.app/api?username=minorcell&theme=dracula&show_icons=true&hide_border=true&count_private=true" alt="minorcell's github stats" /> | <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=minorcell&theme=dracula&show_icons=true&hide_border=true&layout=compact&hide=html" /> |
-| ------------- | ------------- |
+<a href="https://github.com/minorcell">
+  <img height=200 align="center" src="https://github-readme-stats.vercel.app/api?username=minorcell&theme=transparent" />
+</a>
+<a href="https://github.com/minorcell">
+  <img height=200 align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=minorcell&layout=compact&langs_count=8&card_width=320&theme=transparent" />
+</a>
