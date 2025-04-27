@@ -13,14 +13,12 @@ const (
 	StatusInternalError = 500
 )
 
-// Response struct
 type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
-// Success response
 func Success(data interface{}) *Response {
 	return &Response{
 		Code:    StatusSuccess,
@@ -29,7 +27,6 @@ func Success(data interface{}) *Response {
 	}
 }
 
-// Error response
 func Error(code int, message string) *Response {
 	return &Response{
 		Code:    code,
@@ -38,7 +35,6 @@ func Error(code int, message string) *Response {
 	}
 }
 
-// Success with message
 func SuccessWithMessage(message string, data interface{}) *Response {
 	return &Response{
 		Code:    StatusSuccess,
@@ -47,7 +43,6 @@ func SuccessWithMessage(message string, data interface{}) *Response {
 	}
 }
 
-// Error with message
 func ErrorWithMessage(code int, message string) *Response {
 	return &Response{
 		Code:    code,
