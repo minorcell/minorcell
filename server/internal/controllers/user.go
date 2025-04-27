@@ -33,7 +33,7 @@ func (controller *UserController) CreateUser(ctx *gin.Context) {
 }
 
 func (controller *UserController) Login(ctx *gin.Context) {
-	var user models.CreateUserRequest
+	var user models.LoginUserRequest
 	if err := ctx.BindJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, response.ErrorWithMessage(http.StatusBadRequest, err.Error()))
 		return

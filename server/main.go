@@ -5,8 +5,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"server/internal/controllers"
 	"server/internal/models"
+	"server/internal/services"
 	"server/pkg/middlewares"
+	response "server/pkg/responses"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -28,23 +31,27 @@ func InitRouter() *gin.Engine {
 
 	r.Use(middlewares.CORS())
 
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-			"time":   time.Now().Format(time.RFC3339),
-		})
-	})
+	userService := services.NewUserService(DB)
+	userController := controllers.NewUserController(userService)
 
 	api := r.Group("/api")
 	{
-		_ = api.Group("/v1")
+		api.GET("/health", func(c *gin.Context) {
+			c.JSON(http.StatusOK, response.SuccessWithMessage("ok", nil))
+		})
+
+		user := api.Group("/user")
+		{
+			user.POST("/register", userController.CreateUser)
+			user.POST("/login", userController.Login)
+		}
 	}
 
 	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"code":    http.StatusNotFound,
-			"message": "Route not found",
-		})
+		c.JSON(http.StatusNotFound, response.ErrorWithMessage(
+			http.StatusNotFound,
+			"Route not found",
+		))
 	})
 
 	return r
@@ -108,11 +115,10 @@ func main() {
 
 	port := os.Getenv("SERVER_PORT")
 	if len(port) == 0 {
-		port = "8080" // 默认端口
-		fmt.Println("SERVER_PORT not set, using default port 8080")
+		port = "6666"
+		fmt.Println("SERVER_PORT not set, using default port 6666")
 	}
 
-	// 启动服务器
 	serverAddr := fmt.Sprintf(":%s", port)
 	fmt.Printf("Server is running on http://localhost%s\n", serverAddr)
 
