@@ -7,7 +7,6 @@ import (
 	"os"
 	"server/internal/controllers"
 	"server/internal/models"
-	"server/internal/services"
 	"server/pkg/middlewares"
 	response "server/pkg/responses"
 	"time"
@@ -31,8 +30,7 @@ func InitRouter() *gin.Engine {
 
 	r.Use(middlewares.CORS())
 
-	userService := services.NewUserService(DB)
-	userController := controllers.NewUserController(userService)
+	userController := controllers.NewUserController(DB)
 
 	api := r.Group("/api")
 	{
@@ -42,16 +40,23 @@ func InitRouter() *gin.Engine {
 
 		user := api.Group("/user")
 		{
+			// 用户注册
 			user.POST("/register", userController.CreateUser)
+			// 用户登录
 			user.POST("/login", userController.Login)
+			// 修改密码
+			user.POST("/change-password", middlewares.Auth(), userController.ChangePassword)
+			// 修改用户信息
+			user.PUT("", middlewares.Auth(), userController.UpdateUser)
+			// 用户获取指定用户的公共信息
+			user.GET("/:id", middlewares.Auth(), userController.GetPublicUserInfoById)
+			// 用户自己删除用户
+			user.DELETE("", middlewares.AuthAdmin(), userController.DeleteUser)
 		}
 	}
 
 	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, response.ErrorWithMessage(
-			http.StatusNotFound,
-			"Route not found",
-		))
+		c.JSON(http.StatusNotFound, response.ErrorWithMessage("路由不存在"))
 	})
 
 	return r
