@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	ErrInvalidToken = errors.New("invalid token")
-	ErrExpiredToken = errors.New("token has expired")
+	ErrInvalidToken = errors.New("用户凭证错误，请重新登录")
+	ErrExpiredToken = errors.New("用户凭证已过期，请重新登录")
 )
 
 type JwtClaims struct {
@@ -51,7 +51,7 @@ func GenerateToken(userId int, role string) (string, error) {
 func ParseToken(tokenString string) (*JwtClaims, error) {
 	SecretKey := os.Getenv("JWT_SECRET")
 	if len(SecretKey) == 0 {
-		return nil, errors.New("JWT_SECRET not set")
+		return nil, ErrInvalidToken
 	}
 
 	token, err := jwt.ParseWithClaims(tokenString, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {

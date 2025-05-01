@@ -2,34 +2,28 @@ package middlewares
 
 import (
 	"net/http"
-	"server/pkg/responses"
+	response "server/pkg/responses"
 	"server/pkg/utils"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		if token == "" {
-			token, _ = c.Cookie("token")
-		}
+		tokenWithBearer := c.GetHeader("Authorization")
 
-		if token == "" {
-			c.JSON(http.StatusUnauthorized, response.ErrorWithMessage(
-				http.StatusUnauthorized,
-				"unauthorized",
-			))
+		if tokenWithBearer == "" {
+			c.JSON(http.StatusUnauthorized, response.ErrorWithMessage("当前用户未登录"))
 			c.Abort()
 			return
 		}
 
+		token := strings.Split(tokenWithBearer, " ")[1]
+
 		claims, err := utils.ParseToken(token)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, response.ErrorWithMessage(
-				http.StatusUnauthorized,
-				err.Error(),
-			))
+			c.JSON(http.StatusUnauthorized, response.ErrorWithMessage(err.Error()))
 			c.Abort()
 			return
 		}
@@ -50,23 +44,20 @@ func AuthAdmin() gin.HandlerFunc {
 		}
 
 		userRole, exists := c.Get("user_role")
+
 		if !exists {
-			c.JSON(http.StatusForbidden, response.ErrorWithMessage(
-				http.StatusForbidden,
-				"user role not found",
-			))
+			c.JSON(http.StatusForbidden, response.ErrorWithMessage("当前用户无权限"))
 			c.Abort()
 			return
 		}
 
 		if userRole != "admin" {
-			c.JSON(http.StatusForbidden, response.ErrorWithMessage(
-				http.StatusForbidden,
-				"admin access required",
-			))
+			c.JSON(http.StatusForbidden, response.ErrorWithMessage("当前用户无权限"))
 			c.Abort()
 			return
 		}
+
+		c.Set("user_role", userRole)
 
 		c.Next()
 	}
