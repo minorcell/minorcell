@@ -30,7 +30,10 @@ func InitRouter() *gin.Engine {
 
 	r.Use(middlewares.CORS())
 
+	r.Static("/uploads", "uploads")
+
 	userController := controllers.NewUserController(DB)
+	fileController := controllers.NewFileController(DB)
 
 	api := r.Group("/api")
 	{
@@ -52,6 +55,12 @@ func InitRouter() *gin.Engine {
 			user.GET("/:id", middlewares.Auth(), userController.GetPublicUserInfoById)
 			// 用户自己删除用户
 			user.DELETE("", middlewares.AuthAdmin(), userController.DeleteUser)
+		}
+
+		file := api.Group("/file")
+		{
+			// 上传文件
+			file.POST("", middlewares.Auth(), fileController.UploadFile)
 		}
 	}
 
@@ -85,12 +94,12 @@ func InitDB() *gorm.DB {
 		),
 	})
 	if err != nil {
-		panic("Failed to connect to database: " + err.Error())
+		panic("数据库连接失败: " + err.Error())
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		panic("Failed to get database instance: " + err.Error())
+		panic("数据库连接失败: " + err.Error())
 	}
 
 	sqlDB.SetMaxIdleConns(10)
@@ -98,12 +107,12 @@ func InitDB() *gorm.DB {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	if err := sqlDB.Ping(); err != nil {
-		panic("Failed to ping database: " + err.Error())
+		panic("数据库ping失败: " + err.Error())
 	}
 
-	fmt.Println("Database connected successfully")
+	fmt.Println("数据库连接成功！")
 
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.File{})
 
 	return db
 }
@@ -111,7 +120,7 @@ func InitDB() *gorm.DB {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		fmt.Println("加载.env文件失败: " + err.Error())
 	}
 
 	DB = InitDB()
@@ -121,7 +130,7 @@ func main() {
 	port := os.Getenv("SERVER_PORT")
 	if len(port) == 0 {
 		port = "6666"
-		fmt.Println("SERVER_PORT not set, using default port 6666")
+		fmt.Println("未设置SERVER_PORT, 使用默认端口6666")
 	}
 
 	serverAddr := fmt.Sprintf(":%s", port)
@@ -135,6 +144,6 @@ func main() {
 	}
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		panic(fmt.Sprintf("Failed to start server: %v", err))
+		panic(fmt.Sprintf("启动服务器失败: %v", err))
 	}
 }
