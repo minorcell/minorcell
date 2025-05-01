@@ -47,6 +47,8 @@ func InitRouter() *gin.Engine {
 	// 控制器
 	userController := controllers.NewUserController(DB)
 	fileController := controllers.NewFileController(DB)
+	articleController := controllers.NewArticleController(DB)
+	tagController := controllers.NewTagController(DB)
 
 	// API
 	api := r.Group("/api")
@@ -75,6 +77,27 @@ func InitRouter() *gin.Engine {
 		{
 			// 上传文件
 			file.POST("", middlewares.Auth(), fileController.UploadFile)
+		}
+
+		article := api.Group("/article")
+		{
+			// 公开接口
+			article.GET("/:id", articleController.GetArticle) // 获取单篇文章
+			article.GET("", articleController.ListArticles)   // 获取文章列表
+
+			article.POST("", middlewares.AuthAdmin(), articleController.CreateArticle)       // 创建文章
+			article.PUT("/:id", middlewares.AuthAdmin(), articleController.UpdateArticle)    // 更新文章
+			article.DELETE("/:id", middlewares.AuthAdmin(), articleController.DeleteArticle) // 删除文章
+		}
+
+		tag := api.Group("/tag")
+		{
+			// 公开接口
+			tag.GET("", tagController.ListTags)
+			// 需要管理员权限的接口
+			tag.POST("", middlewares.AuthAdmin(), tagController.CreateTag)
+			tag.PUT("/:id", middlewares.AuthAdmin(), tagController.UpdateTag)
+			tag.DELETE("/:id", middlewares.AuthAdmin(), tagController.DeleteTag)
 		}
 	}
 
@@ -132,7 +155,12 @@ func InitDB() *gorm.DB {
 	fmt.Println("数据库连接成功！")
 
 	// 自动迁移
-	db.AutoMigrate(&models.User{}, &models.File{})
+	db.AutoMigrate(
+		&models.User{},
+		&models.File{},
+		&models.Tag{},
+		&models.Article{},
+	)
 
 	return db
 }

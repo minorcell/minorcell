@@ -209,6 +209,8 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 		Username string `json:"username"`
 		Avatar   string `json:"avatar"`
 		Email    string `json:"email"`
+		Github   string `json:"github"`
+		Link     string `json:"link"`
 	}
 
 	var updateRequest UpdateUserRequest
@@ -260,6 +262,14 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 		existingUser.Email = updateRequest.Email
 	}
 
+	if updateRequest.Github != "" {
+		existingUser.Github = updateRequest.Github
+	}
+
+	if updateRequest.Link != "" {
+		existingUser.Link = updateRequest.Link
+	}
+
 	// 保存更新后的用户信息
 	if err := controller.DB.Save(&existingUser).Error; err != nil {
 		ctx.JSON(http.StatusInternalServerError, response.ErrorWithMessage(err.Error()))
@@ -272,6 +282,8 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 		Email:       existingUser.Email,
 		Username:    existingUser.Username,
 		Avatar:      existingUser.Avatar,
+		Github:      existingUser.Github,
+		Link:        existingUser.Link,
 		Role:        existingUser.Role,
 		Active:      existingUser.Active,
 		LastLoginIP: existingUser.LastLoginIP,
@@ -306,6 +318,8 @@ func (controller *UserController) GetPublicUserInfoById(ctx *gin.Context) {
 		Email:       existingUser.Email,
 		Username:    existingUser.Username,
 		Avatar:      existingUser.Avatar,
+		Github:      existingUser.Github,
+		Link:        existingUser.Link,
 		Role:        existingUser.Role,
 		Active:      existingUser.Active,
 		LastLoginIP: existingUser.LastLoginIP,
@@ -389,6 +403,8 @@ func (controller *UserController) GetUsers(ctx *gin.Context) {
 			Email:       user.Email,
 			Username:    user.Username,
 			Avatar:      user.Avatar,
+			Github:      user.Github,
+			Link:        user.Link,
 			Role:        user.Role,
 			Active:      user.Active,
 			LastLoginIP: user.LastLoginIP,
