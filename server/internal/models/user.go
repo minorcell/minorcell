@@ -8,6 +8,8 @@ type User struct {
 	Username    string    `gorm:"not null" json:"username"`
 	Password    string    `gorm:"not null" json:"password"`
 	Avatar      string    `gorm:"default:" json:"avatar"`
+	Github      string    `gorm:"default:" json:"github"`
+	Link        string    `gorm:"default:" json:"link"`
 	Role        string    `gorm:"default:user" json:"role"`
 	Active      bool      `gorm:"default:true" json:"active"`
 	LastLoginIP string    `gorm:"default:" json:"last_login_ip"`
@@ -21,6 +23,8 @@ type UserResponse struct {
 	Email       string    `json:"email"`
 	Username    string    `json:"username"`
 	Avatar      string    `json:"avatar"`
+	Github      string    `json:"github"`
+	Link        string    `json:"link"`
 	Role        string    `json:"role"`
 	Active      bool      `json:"active"`
 	LastLoginIP string    `json:"last_login_ip"`
@@ -38,14 +42,12 @@ type CreateUserRequest struct {
 
 type LoginUserRequest struct {
 	Email    string `json:"email"`
-	Password string `json:"password"`
-}
+	Password string `json:"password"`}
 
 type LoginUserResponse struct {
 	Token string       `json:"token"`
 	User  UserResponse `json:"user"`
 }
-
 
 type ChangePasswordRequest struct {
 	OldPassword       string `json:"old_password"`
