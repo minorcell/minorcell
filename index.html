@@ -364,6 +364,21 @@
         .btn-animate__skew:hover::after {
             transform: scale(2) rotate(180deg);
         }
+
+        .icp-info {
+            position: fixed;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        .particles-container {
+            position: absolute;
+        }
     </style>
 </head>
 
@@ -609,9 +624,12 @@
         </section>
     </div>
 
+    <div class="icp-info">
+        © 2025 Created by mcell 豫ICP备2025129196号-1
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
     <script id="cursor-script">
         document.addEventListener('DOMContentLoaded', function () {
             const cursor = document.querySelector('.cursor');
