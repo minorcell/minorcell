@@ -31,6 +31,19 @@
             box-sizing: border-box;
         }
 
+
+        *::-webkit-scrollbar {
+            width: 0 !important
+        }
+
+        * {
+            -ms-overflow-style: none;
+        }
+
+        * {
+            overflow: -moz-scrollbars-none;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
@@ -299,22 +312,6 @@
             height: 4px;
             background-color: var(--accent);
         }
-
-        .particles-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: rgb(255, 255, 255);
-            border-radius: 50%;
-        }
     </style>
 </head>
 
@@ -336,8 +333,6 @@
     <div class="horizontal-container">
         <!-- Hero Section -->
         <section class="section flex items-center justify-center relative" id="hero">
-            <div class="particles-container"></div>
-
             <div class="floating-element" style="width: 300px; height: 300px; top: 20%; left: 10%;"></div>
             <div class="floating-element" style="width: 200px; height: 200px; bottom: 15%; right: 15%;"></div>
             <div class="floating-element" style="width: 150px; height: 150px; top: 40%; right: 30%;"></div>
@@ -636,7 +631,7 @@
                         if (newSection !== currentSection && newSection < sections.length) {
                             updateActiveSection(newSection);
                         }
-                    }
+                    },
                 }
             });
 
@@ -715,61 +710,6 @@
 
             // Initial animation for first section
             animateSection(0);
-        });
-    </script>
-
-    <script id="particles-script">
-        document.addEventListener('DOMContentLoaded', function () {
-            const particlesContainer = document.querySelector('.particles-container');
-            const particleCount = 50;
-
-            // Create particles
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-
-                // Random size between 2px and 6px
-                const size = Math.random() * 4 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-
-                // Random position
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-
-                // Random opacity
-                particle.style.opacity = Math.random() * 0.5 + 0.1;
-
-                particlesContainer.appendChild(particle);
-
-                // Animate particle
-                animateParticle(particle);
-            }
-
-            function animateParticle(particle) {
-                const duration = Math.random() * 15 + 10;
-                const xMovement = Math.random() * 10 - 5;
-                const yMovement = Math.random() * 10 - 5;
-
-                gsap.to(particle, {
-                    x: `+=${xMovement}%`,
-                    y: `+=${yMovement}%`,
-                    duration: duration,
-                    ease: "sine.inOut",
-                    repeat: -1,
-                    yoyo: true
-                });
-
-                gsap.to(particle, {
-                    opacity: Math.random() * 0.3 + 0.1,
-                    duration: duration / 2,
-                    ease: "sine.inOut",
-                    repeat: -1,
-                    yoyo: true
-                });
-            }
         });
     </script>
 
