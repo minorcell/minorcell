@@ -97,7 +97,6 @@
         .nav-dot {
             width: 10px;
             height: 10px;
-            border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.2);
             cursor: none;
             transition: all 0.3s ease;
@@ -112,7 +111,6 @@
             position: fixed;
             width: 20px;
             height: 20px;
-            border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.5);
             transform: translate(-50%, -50%);
             pointer-events: none;
@@ -126,7 +124,6 @@
             width: 40px;
             height: 40px;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: 9998;
@@ -157,16 +154,8 @@
             opacity: 0;
         }
 
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            filter: blur(5px);
-        }
-
         .project-card {
             background-color: var(--dark-secondary);
-            border-radius: 8px;
             padding: 30px;
             width: 350px;
             transform: translateY(50px);
@@ -182,7 +171,6 @@
         .project-image {
             width: 100%;
             height: 180px;
-            border-radius: 4px;
             overflow: hidden;
             margin-bottom: 15px;
             position: relative;
@@ -225,7 +213,6 @@
             color: white;
             border: none;
             padding: 12px 30px;
-            border-radius: 30px;
             font-weight: 600;
             cursor: none;
             transition: all 0.3s ease;
@@ -245,7 +232,6 @@
         .social-link {
             width: 50px;
             height: 50px;
-            border-radius: 50%;
             background-color: var(--dark-secondary);
             display: flex;
             align-items: center;
@@ -265,7 +251,6 @@
             display: inline-block;
             padding: 5px 15px;
             background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
             margin-right: 10px;
             margin-bottom: 10px;
             font-size: 0.8rem;
@@ -280,7 +265,6 @@
         .about-image {
             width: 300px;
             height: 400px;
-            border-radius: 8px;
             overflow: hidden;
             position: relative;
         }
@@ -312,6 +296,74 @@
             height: 4px;
             background-color: var(--accent);
         }
+
+        .btn-animate {
+            position: relative;
+            width: 10rem;
+            height: 3rem;
+            line-height: 40px;
+            border: none;
+            background: #b453e7;
+            color: #fff;
+            text-align: center;
+        }
+
+        .btn-animate__around {
+            background: transparent;
+            color: white;
+            position: relative;
+        }
+
+        .btn-animate__around>svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-animate__around>svg>rect {
+            fill: none;
+            stroke: white;
+            stroke-width: 3;
+            stroke-dasharray: 422, 0;
+            transition: all 0.5s linear;
+        }
+
+        .btn-animate__around:hover {
+            font-weight: 600;
+        }
+
+        .btn-animate__around:hover>svg>rect {
+            stroke-width: 5;
+            stroke-dasharray: 15, 260;
+            stroke-dashoffset: 50%;
+            transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .btn-animate__skew {
+            background: transparent;
+            overflow: hidden;
+            z-index: 1;
+            position: relative;
+            color: black !important;
+        }
+
+        .btn-animate__skew::after {
+            position: absolute;
+            content: ' ';
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-animate__skew:hover::after {
+            transform: scale(2) rotate(180deg);
+        }
     </style>
 </head>
 
@@ -333,10 +385,6 @@
     <div class="horizontal-container">
         <!-- Hero Section -->
         <section class="section flex items-center justify-center relative" id="hero">
-            <div class="floating-element" style="width: 300px; height: 300px; top: 20%; left: 10%;"></div>
-            <div class="floating-element" style="width: 200px; height: 200px; bottom: 15%; right: 15%;"></div>
-            <div class="floating-element" style="width: 150px; height: 150px; top: 40%; right: 30%;"></div>
-
             <div class="container mx-auto px-4 z-10 relative">
                 <div class="max-w-4xl">
                     <h1 class="hero-title">欢迎来到
@@ -347,12 +395,13 @@
                     </h1>
                     <p class="hero-subtitle">遇事不决，可问春风；春风不遇，可随本心；</p>
                     <div class="mt-10 flex gap-5 opacity-0" id="hero-cta">
-                        <button
-                            class="hover-element bg-white text-black py-3 px-8 rounded-full font-semibold !rounded-button whitespace-nowrap">
+                        <button class="btn-animate btn-animate__around">
+                            <svg>
+                                <rect x="0" y="0" fill="none" width="100%" height="100%"></rect>
+                            </svg>
                             <a href="https://github.com/minorcell" target="_blank">Github</a>
                         </button>
-                        <button
-                            class="hover-element border border-white bg-transparent py-3 px-8 rounded-full font-semibold !rounded-button whitespace-nowrap">
+                        <button class="btn-animate btn-animate__skew">
                             <a href="mailto:minorcell6789@gmail.com" target="_blank">Gmail</a>
                         </button>
                     </div>
@@ -362,9 +411,6 @@
 
         <!-- About Section -->
         <section class="section flex items-center justify-center relative" id="about">
-            <div class="floating-element" style="width: 250px; height: 250px; top: 30%; left: 20%;"></div>
-            <div class="floating-element" style="width: 180px; height: 180px; bottom: 25%; right: 25%;"></div>
-
             <div class="container mx-auto px-4 z-10 relative">
                 <div class="flex flex-wrap items-center justify-between">
                     <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
@@ -414,9 +460,6 @@
 
         <!-- Projects Section -->
         <section class="section flex items-center justify-center relative" id="projects">
-            <div class="floating-element" style="width: 220px; height: 220px; top: 15%; right: 10%;"></div>
-            <div class="floating-element" style="width: 180px; height: 180px; bottom: 20%; left: 15%;"></div>
-
             <div class="container mx-auto px-4 z-10 relative">
                 <h2 class="section-title mb-16">个人作品</h2>
 
@@ -428,9 +471,9 @@
                         <h3 class="text-xl font-semibold mb-2">VueDir</h3>
                         <p class="text-sm text-gray-400 mb-4">为Vue3.x编写的自定义指令集集。目前已停止维护；</p>
                         <div class="flex gap-2 mb-4">
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Vue</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">TypeScript</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Rullup</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Vue</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Rullup</span>
                         </div>
                         <a href="https://vuedir.feashow.cn/" target="_blank"
                             class="text-sm text-accent flex items-center hover-element">
@@ -445,9 +488,9 @@
                         <h3 class="text-xl font-semibold mb-2">Hub-io</h3>
                         <p class="text-sm text-gray-400 mb-4">快速获取Github仓库贡献者图鉴，支持多种导出方式。</p>
                         <div class="flex gap-2 mb-4">
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">React</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">TypeScript</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Tailwind</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">React</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Tailwind</span>
                         </div>
                         <a href="https://hub-io-mcells-projects.vercel.app/" target="_blank"
                             class="text-sm text-accent flex items-center hover-element">
@@ -462,9 +505,9 @@
                         <h3 class="text-xl font-semibold mb-2">PFSS</h3>
                         <p class="text-sm text-gray-400 mb-4">可以快速部署的私人文件存储系统。闲暇之余开发；</p>
                         <div class="flex gap-2 mb-4">
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Golang</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Gin</span>
-                            <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">TypeScript</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Golang</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Gin</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
                         </div>
                         <a href="https://github.com/minorcell/PFSS" target="_blank"
                             class="text-sm text-accent flex items-center hover-element">
@@ -477,9 +520,6 @@
 
         <!-- Contact Section -->
         <section class="section flex items-center justify-center relative" id="contact">
-            <div class="floating-element" style="width: 280px; height: 280px; top: 25%; left: 15%;"></div>
-            <div class="floating-element" style="width: 200px; height: 200px; bottom: 20%; right: 20%;"></div>
-
             <div class="container mx-auto px-4 z-10 relative">
                 <div class="flex flex-wrap items-center">
                     <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
@@ -501,16 +541,16 @@
                                     placeholder="邮箱信息"></textarea>
                             </div>
                             <button id="email-submit-btn" type="button"
-                                class="submit-btn hover-element !rounded-button whitespace-nowrap">发送</button>
+                                class="btn-animate btn-animate__skew">发送</button>
                         </div>
                     </div>
 
                     <div class="w-full lg:w-5/12">
-                        <div class="bg-secondary p-10 rounded-lg opacity-0 contact-info">
+                        <div class="bg-secondary p-10 opacity-0 contact-info">
                             <h3 class="text-xl font-semibold mb-6">更多联系方式</h3>
 
                             <div class="flex items-center mb-6">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg rounded-full mr-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
                                     <i class="ri-wechat-line"></i>
                                 </div>
                                 <div>
@@ -520,7 +560,7 @@
                             </div>
 
                             <div class="flex items-center mb-6">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg rounded-full mr-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
                                     <i class="ri-qq-line"></i>
                                 </div>
                                 <div>
@@ -530,7 +570,7 @@
                             </div>
 
                             <div class="flex items-center mb-10">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg rounded-full mr-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
                                     <i class="ri-news-line"></i>
                                 </div>
                                 <div>
@@ -641,18 +681,6 @@
                 ease: "none"
             });
 
-            // Add parallax effects to floating elements
-            document.querySelectorAll('.floating-element').forEach((el, index) => {
-                const direction = index % 2 === 0 ? 1 : -1;
-                const speed = 0.1 + (index % 3) * 0.05;
-
-                tl.to(el, {
-                    x: `${direction * 100}px`,
-                    y: `${direction * -50}px`,
-                    ease: "none"
-                }, 0);
-            });
-
             // Function to update active section
             function updateActiveSection(index) {
                 currentSection = index;
@@ -686,24 +714,33 @@
 
             // Section-specific animations
             function animateSection(index) {
+                // Reset common properties for all sections to ensure animations re-trigger correctly
+                gsap.set(['.hero-title', '.hero-subtitle', '#hero-cta', '.about-text', '.about-skills', '.about-image', '.contact-text', '.contact-form', '.contact-info'], {
+                    opacity: 0,
+                    y: 50,
+                    rotationX: -30,
+                    transformOrigin: "top center"
+                });
+                gsap.set('.project-card', { opacity: 0, y: 50, rotationX: 0 });
+
                 switch (index) {
                     case 0: // Hero section
-                        gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1, delay: 0.2 });
-                        gsap.to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, delay: 0.4 });
-                        gsap.to('#hero-cta', { opacity: 1, y: 0, duration: 1, delay: 0.6 });
+                        gsap.to('.hero-title', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 });
+                        gsap.to('.hero-subtitle', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });
+                        gsap.to('#hero-cta', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.6 });
                         break;
                     case 1: // About section
-                        gsap.to('.about-text', { opacity: 1, y: 0, duration: 1, stagger: 0.2 });
-                        gsap.to('.about-skills', { opacity: 1, y: 0, duration: 1, delay: 0.4 });
-                        gsap.to('.about-image', { opacity: 1, y: 0, duration: 1, delay: 0.2 });
+                        gsap.to('.about-text', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
+                        gsap.to('.about-skills', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });
+                        gsap.to('.about-image', { opacity: 1, y: 0, rotationX: 0, duration: 1, ease: 'power2.out', delay: 0.2 });
                         break;
                     case 2: // Projects section
-                        gsap.to('.project-card', { opacity: 1, y: 0, duration: 1, stagger: 0.2 });
+                        gsap.to('.project-card', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
                         break;
                     case 3: // Contact section
-                        gsap.to('.contact-text', { opacity: 1, y: 0, duration: 1 });
-                        gsap.to('.contact-form', { opacity: 1, y: 0, duration: 1, delay: 0.2 });
-                        gsap.to('.contact-info', { opacity: 1, y: 0, duration: 1, delay: 0.4 });
+                        gsap.to('.contact-text', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out' });
+                        gsap.to('.contact-form', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 });
+                        gsap.to('.contact-info', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });
                         break;
                 }
             }
