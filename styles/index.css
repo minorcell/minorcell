@@ -1,0 +1,149 @@
+:root {
+    --bg-color: #fff;
+    --text-color: #000;
+    --link-color: green;
+    --link-hover-color: darkgreen;
+    --hr-color: #ccc;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --link-color: #90caf9;
+        --link-hover-color: #42a5f5;
+        --hr-color: #555;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-indent: 2em;
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+.profile h2 {
+    margin: 5px 0;
+    font-size: 1.8em;
+}
+
+.profile p {
+    font-size: 1.1em;
+}
+
+.details {
+    margin-top: 10px;
+}
+
+.details h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.details ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.details li {
+    width: fit-content;
+    margin: 5px 0;
+    padding-left: 5px;
+}
+
+#email-link {
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .profile img {
+        width: 120px;
+        height: 120px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .profile h2 {
+        font-size: 1.5em;
+    }
+
+    .profile p {
+        font-size: 1em;
+    }
+
+    .details h3 {
+        font-size: 1.3em;
+    }
+}
+
+.underline-effect {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+.underline-effect::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--link-hover-color);
+    transition: width 0.3s ease-in-out;
+}
+
+.underline-effect:hover::after {
+    width: 100%;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--hr-color);
+}
