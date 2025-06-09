@@ -494,15 +494,19 @@
 
                         <div class="contact-form opacity-0">
                             <div class="mb-6">
-                                <input type="text" class="form-input hover-element" placeholder="邮件主题">
+                                <input id="email-subject" type="text" class="form-input hover-element"
+                                    placeholder="邮件主题">
                             </div>
                             <div class="mb-6">
-                                <input type="email" class="form-input hover-element" placeholder="你的邮箱地址">
+                                <input id="email-sender" type="email" class="form-input hover-element"
+                                    placeholder="你的邮箱地址">
                             </div>
                             <div class="mb-6">
-                                <textarea class="form-input hover-element" rows="4" placeholder="邮箱信息"></textarea>
+                                <textarea id="email-message" class="form-input hover-element" rows="4"
+                                    placeholder="邮箱信息"></textarea>
                             </div>
-                            <button class="submit-btn hover-element !rounded-button whitespace-nowrap">发送</button>
+                            <button id="email-submit-btn" type="button"
+                                class="submit-btn hover-element !rounded-button whitespace-nowrap">发送</button>
                         </div>
                     </div>
 
@@ -764,6 +768,31 @@
                     ease: "sine.inOut",
                     repeat: -1,
                     yoyo: true
+                });
+            }
+        });
+    </script>
+
+    <script id="contact-form-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const submitBtn = document.getElementById('email-submit-btn');
+            const subjectInput = document.getElementById('email-subject');
+            const senderEmailInput = document.getElementById('email-sender');
+            const messageTextarea = document.getElementById('email-message');
+
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function () {
+                    const subject = subjectInput.value;
+                    const senderEmail = senderEmailInput.value;
+                    const message = messageTextarea.value;
+
+                    const myEmail = 'minorcell6789@gmail.com';
+
+                    const body = `你好 mCell,\n\n${message}\n\n--\n发件人: ${senderEmail}`;
+
+                    const mailtoLink = `mailto:${myEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                    window.location.href = mailtoLink;
                 });
             }
         });
