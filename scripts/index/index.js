@@ -41,7 +41,9 @@ function initCursor() {
         gsap.to(cursorFollower, {
             x: e.clientX,
             y: e.clientY,
-            duration: 0.15
+            duration: 0.15,
+            ease: "power2.inOut",
+            rotation: "+=180"
         });
     });
 
@@ -67,7 +69,6 @@ function initHorizontalScroll() {
     let currentSection = 0;
     const sections = document.querySelectorAll('.section');
     const navDots = document.querySelectorAll('.nav-dot');
-    const progressBarFill = document.querySelector('.progress-bar-fill');
     const container = document.querySelector('.horizontal-container');
 
     // 初始化GSAP的ScrollTrigger
@@ -82,9 +83,6 @@ function initHorizontalScroll() {
             end: "+=3000",
             scrub: 1,
             onUpdate: self => {
-                // 更新进度条
-                progressBarFill.style.width = `${self.progress * 100}%`;
-
                 // 更新当前部分
                 const newSection = Math.floor(self.progress * sections.length);
                 if (newSection !== currentSection && newSection < sections.length) {
@@ -134,19 +132,59 @@ function initHorizontalScroll() {
     // 一些视差动画
     function animateSection(index) {
         // 重置所有部分的公共属性，确保动画正确触发
-        gsap.set(['.hero-title', '.hero-subtitle', '#hero-cta', '.about-text', '.about-skills', '.about-image', '.contact-text', '.contact-form', '.contact-info'], {
+        gsap.set(['.about-text', '.about-skills', '.about-image', '.contact-text', '.contact-form', '.contact-info'], {
             opacity: 0,
             y: 50,
             rotationX: 100,
             transformOrigin: "top center"
         });
         gsap.set('.project-card', { opacity: 0, y: 100, rotationX: 0 });
+        gsap.set(['.hero-title', '.hero-subtitle', '#hero-cta'], { opacity: 0 });
 
         switch (index) {
             case 0: // 主页部分
-                gsap.to('.hero-title', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 });
-                gsap.to('.hero-subtitle', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });
-                gsap.to('#hero-cta', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.6 });
+                const heroTl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+                const heroTitleParts = document.querySelectorAll('.hero-title-text');
+                const heroSubtitle = document.querySelector('.hero-subtitle');
+
+                heroTitleParts.forEach(part => {
+                    const text = part.textContent;
+                    part.textContent = '';
+                    for (let i = 0; i < text.length; i++) {
+                        const charSpan = document.createElement('span');
+                        charSpan.textContent = text[i];
+                        charSpan.style.display = 'inline-block';
+                        charSpan.style.opacity = '0';
+                        charSpan.style.transform = 'translateY(20px)';
+                        part.appendChild(charSpan);
+                    }
+                });
+                const subtitleText = heroSubtitle.textContent;
+                heroSubtitle.textContent = '';
+                for (let i = 0; i < subtitleText.length; i++) {
+                    const charSpan = document.createElement('span');
+                    charSpan.textContent = subtitleText[i];
+                    charSpan.style.display = 'inline-block';
+                    charSpan.style.opacity = '0';
+                    charSpan.style.transform = 'translateY(20px)';
+                    heroSubtitle.appendChild(charSpan);
+                }
+
+                heroTl.to('.hero-title', { opacity: 1 })
+                    .to('.hero-title-text span', {
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.05,
+                        duration: 0.5
+                    })
+                    .to('.hero-subtitle', { opacity: 1 }, "-=0.5")
+                    .to('.hero-subtitle span', {
+                        opacity: 1,
+                        y: 0,
+                        stagger: 0.03,
+                        duration: 0.4
+                    }, "-=0.5")
+                    .to('#hero-cta', { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
                 break;
             case 1: // 关于我部分
                 gsap.to('.about-text', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
@@ -165,6 +203,7 @@ function initHorizontalScroll() {
     }
 
     // 初始化第一个部分的动画
+    gsap.set(['.hero-title', '.hero-subtitle', '#hero-cta'], { opacity: 0 });
     animateSection(0);
 }
 

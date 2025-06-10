@@ -4,17 +4,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 
 
 *::-webkit-scrollbar {
     width: 0 !important
-}
-
-* {
-    -ms-overflow-style: none;
-}
-
-* {
-    overflow: -moz-scrollbars-none;
 }
