@@ -182,11 +182,9 @@ function initIcpInfo() {
 function initHeartMagnetic() {
     const container = document.getElementById("heartSvg");
     const balls = [];
-    const spacing = 10;
-    const radius = 6;
-    const centerX = 250;
-    const centerY = 250;
-    const mouseRadius = 80;
+    const spacing = 12;
+    const radius = 5;
+    const mouseRadius = 150;
 
     const rect = container.getBoundingClientRect();
     const width = rect.width;
@@ -194,9 +192,14 @@ function initHeartMagnetic() {
     const left = rect.left;
     const top = rect.top;
 
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const scale = 280;
+    const color = '#99aebb'
+
     function isInsideHeart(x, y) {
-        const nx = (x - centerX) / 100;
-        const ny = (y - centerY) / 100;
+        const nx = (x - centerX) / scale;
+        const ny = -(y - centerY) / scale;
         return Math.pow(nx * nx + ny * ny - 1, 3) - nx * nx * ny * ny * ny < 0;
     }
 
@@ -212,13 +215,13 @@ function initHeartMagnetic() {
                 if (!isInsideHeart(x, y)) continue;
 
                 const ball = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                ball.setAttribute("fill", "white");
+                ball.setAttribute("fill", color);
                 ball.setAttribute("cx", x);
                 ball.setAttribute("cy", y);
                 ball.setAttribute("r", radius);
 
                 const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                point.setAttribute("fill", "white");
+                point.setAttribute("fill", color);
                 point.setAttribute("cx", x);
                 point.setAttribute("cy", y);
                 point.setAttribute("r", radius / 3);
@@ -228,7 +231,7 @@ function initHeartMagnetic() {
                 line.setAttribute("y1", y);
                 line.setAttribute("x2", x);
                 line.setAttribute("y2", y);
-                line.setAttribute("stroke", "white");
+                line.setAttribute("stroke", color);
                 line.setAttribute("stroke-width", "1.5");
 
                 container.appendChild(line);
@@ -289,7 +292,6 @@ function initHeartMagnetic() {
     createHeart();
     document.addEventListener("mousemove", e => moveBalls(e.clientX, e.clientY));
 }
-
 
 /**
  * 初始化
