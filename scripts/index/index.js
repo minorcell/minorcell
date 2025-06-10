@@ -179,55 +179,117 @@ function initIcpInfo() {
 /**
  * 初始化爱心
  */
-function initHeart() {
-    const svg = document.getElementById("heartSvg");
-    const spacing = 1.5;
-    const radius = 0.4;
-    const centerX = 50;
-    const centerY = 50;
+function initHeartMagnetic() {
+    const container = document.getElementById("heartSvg");
+    const balls = [];
+    const spacing = 10;
+    const radius = 6;
+    const centerX = 250;
+    const centerY = 250;
+    const mouseRadius = 80;
 
-    const cols = Math.floor(100 / spacing);
-    const rows = Math.floor(100 / spacing);
+    const rect = container.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const left = rect.left;
+    const top = rect.top;
 
     function isInsideHeart(x, y) {
-        x = (x - 50) / 25;
-        y = (y - 50) / 25;
-
-        return Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y < 0;
+        const nx = (x - centerX) / 100;
+        const ny = (y - centerY) / 100;
+        return Math.pow(nx * nx + ny * ny - 1, 3) - nx * nx * ny * ny * ny < 0;
     }
 
-    for (let i = 0; i <= cols; i++) {
-        for (let j = 0; j <= rows; j++) {
-            const x = i * spacing;
-            const y = j * spacing;
+    function createHeart() {
+        const cols = Math.floor(width / spacing);
+        const rows = Math.floor(height / spacing);
 
-            if (!isInsideHeart(x, y)) continue;
+        for (let i = 0; i <= cols; i++) {
+            for (let j = 0; j <= rows; j++) {
+                const x = i * spacing;
+                const y = j * spacing;
 
-            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle.setAttribute("cx", x);
-            circle.setAttribute("cy", y);
-            circle.setAttribute("r", radius);
-            circle.setAttribute("fill", "#ad1c42");
-            circle.style.opacity = 0.2;
+                if (!isInsideHeart(x, y)) continue;
 
-            svg.appendChild(circle);
+                const ball = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                ball.setAttribute("fill", "white");
+                ball.setAttribute("cx", x);
+                ball.setAttribute("cy", y);
+                ball.setAttribute("r", radius);
 
-            const distToCenter = Math.hypot(x - centerX, y - centerY);
-            const delay = distToCenter * 0.03;
+                const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                point.setAttribute("fill", "white");
+                point.setAttribute("cx", x);
+                point.setAttribute("cy", y);
+                point.setAttribute("r", radius / 3);
 
-            gsap.to(circle, {
-                scale: 2,
-                opacity: 0.8,
-                duration: 1,
-                delay: delay,
-                repeat: -1,
-                yoyo: true,
-                transformOrigin: "center center",
-                ease: "sine.inOut"
-            });
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", x);
+                line.setAttribute("y1", y);
+                line.setAttribute("x2", x);
+                line.setAttribute("y2", y);
+                line.setAttribute("stroke", "white");
+                line.setAttribute("stroke-width", "1.5");
+
+                container.appendChild(line);
+                container.appendChild(point);
+                container.appendChild(ball);
+
+                balls.push({
+                    element: ball,
+                    line: line,
+                    ori_x: x,
+                    ori_y: y,
+                    animater: null
+                });
+            }
         }
     }
+
+    function moveBalls(mouseX, mouseY) {
+        const localX = mouseX - left;
+        const localY = mouseY - top;
+
+        balls.forEach(ball => {
+            const dx = ball.ori_x - localX;
+            const dy = ball.ori_y - localY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= mouseRadius) {
+                const moveX = localX + (dx / distance) * mouseRadius;
+                const moveY = localY + (dy / distance) * mouseRadius;
+
+                if (ball.animater) ball.animater.kill();
+
+                ball.animater = gsap.timeline()
+                    .to(ball.element, {
+                        attr: { cx: moveX, cy: moveY },
+                        duration: 0.5,
+                        ease: "power3.out"
+                    })
+                    .to(ball.line, {
+                        attr: { x2: moveX, y2: moveY },
+                        duration: 0.5,
+                        ease: "power3.out"
+                    }, "<")
+                    .to(ball.element, {
+                        attr: { cx: ball.ori_x, cy: ball.ori_y },
+                        duration: 1,
+                        ease: "power3.out"
+                    }, "<0.1")
+                    .to(ball.line, {
+                        attr: { x2: ball.ori_x, y2: ball.ori_y },
+                        duration: 1,
+                        ease: "power3.out"
+                    }, "<");
+            }
+        });
+    }
+
+    createHeart();
+    document.addEventListener("mousemove", e => moveBalls(e.clientX, e.clientY));
 }
+
 
 /**
  * 初始化
@@ -237,5 +299,5 @@ document.addEventListener('DOMContentLoaded', function () {
     initCursor();
     initHorizontalScroll();
     initIcpInfo();
-    initHeart();
+    initHeartMagnetic();
 });
