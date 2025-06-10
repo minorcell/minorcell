@@ -4,214 +4,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="mCell's Page, front-end developer. A personal introduction page for mCell, a front-end developer.">
-    <meta property="og:title" content="mCell's Page">
-    <meta property="og:description" content="A personal introduction page for mCell, a front-end developer.">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/120795714">
-    <meta name="keywords" content="mCell, front-end developer, personal website, web development, modern front-end">
-    <title>mCell's Page</title>
-    <style>
-        :root {
-            --bg-color: #fff;
-            --text-color: #000;
-            --link-color: green;
-            --link-hover-color: darkgreen;
-            --hr-color: #ccc;
-        }
-
-        /* Dark mode styles */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #121212;
-                --text-color: #e0e0e0;
-                --link-color: #90caf9;
-                --link-hover-color: #42a5f5;
-                --hr-color: #555;
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E0E0E0',
+                        secondary: '#2A2A2A'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
             }
         }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 10px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        p {
-            text-indent: 2em;
-        }
-
-        .profile {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            cursor: pointer;
-        }
-
-        .profile h2 {
-            margin: 5px 0;
-            font-size: 1.8em;
-        }
-
-        .profile p {
-            font-size: 1.1em;
-        }
-
-        .details {
-            margin-top: 10px;
-        }
-
-        .details h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-        }
-
-        .details ul {
-            list-style-type: none;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .details li {
-            width: fit-content;
-            margin: 5px 0;
-            padding-left: 5px;
-        }
-
-        #email-link {
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin: 20px;
-                padding: 15px;
-            }
-
-            .profile img {
-                width: 120px;
-                height: 120px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .profile h2 {
-                font-size: 1.5em;
-            }
-
-            .profile p {
-                font-size: 1em;
-            }
-
-            .details h3 {
-                font-size: 1.3em;
-            }
-        }
-
-        .underline-effect {
-            position: relative;
-            display: inline-block;
-            text-decoration: none;
-            color: var(--link-color);
-        }
-
-        .underline-effect::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 0;
-            height: 2px;
-            background-color: var(--link-hover-color);
-            transition: width 0.3s ease-in-out;
-        }
-
-        .underline-effect:hover::after {
-            width: 100%;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid var(--hr-color);
-        }
-    </style>
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="./styles/index/index.css">
+    <title>mCell 的个人网页</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="profile">
-            <img src="https://avatars.githubusercontent.com/u/120795714" alt="Profile Picture" id="profile-pic"
-                fetchpriority="high" />
-            <h2>mCell</h2>
-            <p class="underline-effect" style="text-indent: 0;">a front-end
-                developer</p>
-        </div>
-        <hr>
-        <div class="details">
-            <h3 class="underline-effect">About Me</h3>
-            <p>
-                Hi, I'm mCell, my Chinese name is 邓军辉（Deng Junhui）. a passionate front-end developer with experience in
-                building responsive and user-friendly web applications.
-            </p>
-            <h3 class="underline-effect">Areas of Interest</h3>
-            <ul class="ul_box">
-                <li class="underline-effect">Open Source Community Building</li>
-                <li class="underline-effect">Exploring Full-Stack Front-End Technologies</li>
-                <li class="underline-effect">Creating Interactive Front-End Visualizations</li>
-                <li class="underline-effect">Focusing on Web Performance and User Experience</li>
-            </ul>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-            <h3 class="underline-effect">Contact</h3>
-            <p style="text-indent: 0;">
-                Email:
-                <a class="underline-effect" id="email-link" href="mailto:minorcell6789@gmail.com"
-                    aria-label="Send an email to mCell">
-                    minorcell6789@gmail.com
-                </a>
-            </p>
-        </div>
-        <hr>
-        <footer>
-            &copy; 2023 mCell. All rights reserved.
-        </footer>
+    <div class="progress-bar">
+        <div class="progress-bar-fill"></div>
     </div>
-    <script>
-        const loadScript = (src) => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.defer = true;
-            document.body.appendChild(script);
-        };
-        loadScript('scripts/avatar.js');
-        loadScript('scripts/footer.js');
-    </script>
+
+    <div class="nav-dots">
+        <div class="nav-dot active" data-index="0"></div>
+        <div class="nav-dot" data-index="1"></div>
+        <div class="nav-dot" data-index="2"></div>
+        <div class="nav-dot" data-index="3"></div>
+    </div>
+
+    <div class="horizontal-container">
+        <!-- 主页部分 -->
+        <section class="section flex items-center justify-center relative" id="hero">
+            <div class="container mx-auto px-4 z-10 relative">
+                <div class="max-w-4xl">
+                    <h1 class="hero-title">欢迎来到
+                        <div class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+                            mCell
+                        </div>
+                        个人主页
+                    </h1>
+                    <p class="hero-subtitle">遇事不决，可问春风；春风不遇，可随本心；</p>
+                    <div class="mt-10 flex gap-5 opacity-0" id="hero-cta">
+                        <a href="https://github.com/minorcell" target="_blank">
+                            <button class="btn-animate btn-animate__around">
+                                <svg>
+                                    <rect x="0" y="0" fill="none" width="100%" height="100%"></rect>
+                                </svg>
+                                Github
+                            </button>
+                        </a>
+                        <a href="mailto:minorcell6789@gmail.com" target="_blank">
+                            <button class="btn-animate btn-animate__skew">
+                                Gmail
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我部分 -->
+        <section class="section flex items-center justify-center relative" id="about">
+            <div class="container mx-auto px-4 z-10 relative">
+                <div class="flex flex-wrap items-center justify-between">
+                    <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
+                        <h2 class="section-title">关于我</h2>
+                        <p class="text-lg mb-6 opacity-0 about-text">你可以叫我mCell，或者minorCell，甚至我的中文名邓军辉；</p>
+                        <p class="text-lg mb-8 opacity-0 about-text">本职工作是一个TypeScript + Golang
+                            组合的全栈开发者，热衷于开源建设，后续会持续在DevOps领域探索；总之，专注于IT技术就对了；工作之外是看一些经典影视作品、读几本小书；当然，还有不可辜负的美食；</p>
+
+                        <div class="mt-10 opacity-0 about-skills">
+                            <h3 class="text-xl font-semibold mb-4">IT技能</h3>
+                            <div class="flex flex-wrap">
+                                <span class="skill-tag hover-element">Git</span>
+                                <span class="skill-tag hover-element">Github</span>
+                                <span class="skill-tag hover-element">HTML</span>
+                                <span class="skill-tag hover-element">CSS</span>
+                                <span class="skill-tag hover-element">JavaScript</span>
+                                <span class="skill-tag hover-element">TypeScript</span>
+                                <span class="skill-tag hover-element">Vue</span>
+                                <span class="skill-tag hover-element">Uniapp</span>
+                                <span class="skill-tag hover-element">React</span>
+                                <span class="skill-tag hover-element">Next</span>
+                                <span class="skill-tag hover-element">Tailwind</span>
+                                <span class="skill-tag hover-element">Node</span>
+                                <span class="skill-tag hover-element">MySql</span>
+                                <span class="skill-tag hover-element">Express</span>
+                                <span class="skill-tag hover-element">Nest</span>
+                                <span class="skill-tag hover-element">Golang</span>
+                                <span class="skill-tag hover-element">Gin</span>
+                                <span class="skill-tag hover-element">Redis</span>
+                                <span class="skill-tag hover-element">Linux</span>
+                                <span class="skill-tag hover-element">Shell</span>
+                                <span class="skill-tag hover-element">Docker</span>
+                                <span class="skill-tag hover-element">CI/CD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-5/12 flex justify-center">
+                        <div class="about-image hover-element opacity-0">
+                            <img src="./public/mcell.png" alt="mcell">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 个人作品部分 -->
+        <section class="section flex items-center justify-center relative" id="projects">
+            <div class="container mx-auto px-4 z-10 relative">
+                <h2 class="section-title mb-16">个人作品</h2>
+
+                <div class="flex flex-wrap justify-between gap-8">
+                    <div class="project-card hover-element">
+                        <div class="project-image">
+                            <img src="./public/vuedir.png" alt="VueDir">
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">VueDir</h3>
+                        <p class="text-sm text-gray-400 mb-4">为Vue3.x编写的自定义指令集集。目前已停止维护；</p>
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-xs bg-gray-800 px-3 py-1">Vue</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Rullup</span>
+                        </div>
+                        <a href="https://vuedir.feashow.cn/" target="_blank"
+                            class="text-sm text-accent flex items-center hover-element">
+                            查看文档 <i class="ri-arrow-right-line ml-1"></i>
+                        </a>
+                    </div>
+
+                    <div class="project-card hover-element">
+                        <div class="project-image">
+                            <img src="./public/hubio.png" alt="Hubio">
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Hub-io</h3>
+                        <p class="text-sm text-gray-400 mb-4">快速获取Github仓库贡献者图鉴，支持多种导出方式。</p>
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-xs bg-gray-800 px-3 py-1">React</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Tailwind</span>
+                        </div>
+                        <a href="https://hub-io-mcells-projects.vercel.app/" target="_blank"
+                            class="text-sm text-accent flex items-center hover-element">
+                            在线使用 <i class="ri-arrow-right-line ml-1"></i>
+                        </a>
+                    </div>
+
+                    <div class="project-card hover-element">
+                        <div class="project-image">
+                            <img src="./public/pfss.png" alt="PFSS">
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">PFSS</h3>
+                        <p class="text-sm text-gray-400 mb-4">可以快速部署的私人文件存储系统。闲暇之余开发；</p>
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-xs bg-gray-800 px-3 py-1">Golang</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">Gin</span>
+                            <span class="text-xs bg-gray-800 px-3 py-1">TypeScript</span>
+                        </div>
+                        <a href="https://github.com/minorcell/PFSS" target="_blank"
+                            class="text-sm text-accent flex items-center hover-element">
+                            查看项目 <i class="ri-arrow-right-line ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系方式部分 -->
+        <section class="section flex items-center justify-center relative" id="contact">
+            <div class="container mx-auto px-4 z-10 relative">
+                <div class="flex flex-wrap items-center">
+                    <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
+                        <h2 class="section-title">联系方式</h2>
+                        <p class="text-lg mb-8 opacity-0 contact-text">
+                            如你看到的，这里我的个人网页；如果你想了解关于我的更多信息，你可以试试以下方式；比如邮件、一些社交平台；</p>
+
+                        <div class="contact-form opacity-0">
+                            <div class="mb-6">
+                                <input id="email-subject" type="text" class="form-input hover-element"
+                                    placeholder="邮件主题">
+                            </div>
+                            <div class="mb-6">
+                                <input id="email-sender" type="email" class="form-input hover-element"
+                                    placeholder="你的邮箱地址">
+                            </div>
+                            <div class="mb-6">
+                                <textarea id="email-message" class="form-input hover-element" rows="4"
+                                    placeholder="邮箱信息"></textarea>
+                            </div>
+                            <button id="email-submit-btn" type="button"
+                                class="btn-animate btn-animate__skew">发送</button>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-5/12">
+                        <div class="bg-secondary p-10 opacity-0 contact-info">
+                            <h3 class="text-xl font-semibold mb-6">更多联系方式</h3>
+
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                                    <i class="ri-wechat-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">微信</p>
+                                    <p>D39683887</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                                    <i class="ri-qq-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">QQ</p>
+                                    <p>2112842083</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center mb-10">
+                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                                    <i class="ri-news-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-400">稀土掘金</p>
+                                    <p>
+                                        <a href="https://juejin.cn/user/2280829967146779" target="_blank">mcell</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="social-links">
+                                <a href="https://github.com/minorcell" target="_blank"
+                                    class="social-link hover-element">
+                                    <i class="ri-github-line"></i>
+                                </a>
+                                <a href="https://www.yuque.com/mcell" target="_blank" class="social-link hover-element">
+                                    <i class="ri-yuque-line"></i>
+                                </a>
+                                <a href="https://discord.com/users/mcell_0516" target="_blank"
+                                    class="social-link hover-element">
+                                    <i class="ri-discord-line"></i>
+                                </a>
+                                <a href="https://steamcommunity.com/profiles/76561199379749961/" target="_blank"
+                                    class="social-link hover-element">
+                                    <i class="ri-steam-line"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 备案信息 -->
+    <div class="icp-info"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="./scripts/index/index.js"></script>
 </body>
 
 </html>
