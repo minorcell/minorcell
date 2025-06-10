@@ -82,10 +82,10 @@ function initHorizontalScroll() {
             end: "+=3000",
             scrub: 1,
             onUpdate: self => {
-                // Update progress bar
+                // 更新进度条
                 progressBarFill.style.width = `${self.progress * 100}%`;
 
-                // Update current section
+                // 更新当前部分
                 const newSection = Math.floor(self.progress * sections.length);
                 if (newSection !== currentSection && newSection < sections.length) {
                     updateActiveSection(newSection);
@@ -137,10 +137,10 @@ function initHorizontalScroll() {
         gsap.set(['.hero-title', '.hero-subtitle', '#hero-cta', '.about-text', '.about-skills', '.about-image', '.contact-text', '.contact-form', '.contact-info'], {
             opacity: 0,
             y: 50,
-            rotationX: -30,
+            rotationX: 100,
             transformOrigin: "top center"
         });
-        gsap.set('.project-card', { opacity: 0, y: 50, rotationX: 0 });
+        gsap.set('.project-card', { opacity: 0, y: 100, rotationX: 0 });
 
         switch (index) {
             case 0: // 主页部分
@@ -177,6 +177,59 @@ function initIcpInfo() {
 }
 
 /**
+ * 初始化爱心
+ */
+function initHeart() {
+    const svg = document.getElementById("heartSvg");
+    const spacing = 1.5;
+    const radius = 0.4;
+    const centerX = 50;
+    const centerY = 50;
+
+    const cols = Math.floor(100 / spacing);
+    const rows = Math.floor(100 / spacing);
+
+    function isInsideHeart(x, y) {
+        x = (x - 50) / 25;
+        y = (y - 50) / 25;
+
+        return Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y < 0;
+    }
+
+    for (let i = 0; i <= cols; i++) {
+        for (let j = 0; j <= rows; j++) {
+            const x = i * spacing;
+            const y = j * spacing;
+
+            if (!isInsideHeart(x, y)) continue;
+
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", radius);
+            circle.setAttribute("fill", "#ad1c42");
+            circle.style.opacity = 0.2;
+
+            svg.appendChild(circle);
+
+            const distToCenter = Math.hypot(x - centerX, y - centerY);
+            const delay = distToCenter * 0.03;
+
+            gsap.to(circle, {
+                scale: 2,
+                opacity: 0.8,
+                duration: 1,
+                delay: delay,
+                repeat: -1,
+                yoyo: true,
+                transformOrigin: "center center",
+                ease: "sine.inOut"
+            });
+        }
+    }
+}
+
+/**
  * 初始化
  */
 document.addEventListener('DOMContentLoaded', function () {
@@ -184,4 +237,5 @@ document.addEventListener('DOMContentLoaded', function () {
     initCursor();
     initHorizontalScroll();
     initIcpInfo();
+    initHeart();
 });
