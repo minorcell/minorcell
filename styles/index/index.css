@@ -60,7 +60,7 @@ body {
     position: fixed;
     width: 20px;
     height: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(153, 174, 187, 1);
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 9999;
@@ -73,7 +73,7 @@ body {
     position: fixed;
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(153, 174, 187, 1);
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 9998;
@@ -147,7 +147,7 @@ body {
     width: 100%;
     background-color: var(--dark-secondary);
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(153, 174, 187, 1);
     padding: 15px;
     margin-bottom: 20px;
     color: var(--light);
@@ -171,7 +171,7 @@ body {
 
 .submit-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(121, 40, 202, 0.3);
+    box-shadow: 0 10px 20px rgba(153, 174, 187, 1);
 }
 
 .social-links {
@@ -201,7 +201,8 @@ body {
 .skill-tag {
     display: inline-block;
     padding: 5px 15px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(153, 174, 187, 1);
+    color: rgba(0, 0, 0, 1);
     margin-right: 10px;
     margin-bottom: 10px;
     font-size: 0.8rem;
@@ -236,7 +237,7 @@ body {
     font-weight: 700;
     margin-bottom: 30px;
     position: relative;
-    color: #99aebb;
+    color: rgba(153, 174, 187, 1);
 }
 
 .section-title::after {
@@ -247,6 +248,11 @@ body {
     width: 60px;
     height: 4px;
     background-color: var(--accent);
+}
+
+.work-tag {
+    background-color: rgba(153, 174, 187, 1);
+    color: rgba(0, 0, 0, 1);
 }
 
 .btn-animate {
