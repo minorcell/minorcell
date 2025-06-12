@@ -113,11 +113,6 @@ body {
     opacity: 1;
 }
 
-.hero-btn {
-    width: 80vw !important;
-    height: 5vh !important;
-}
-
 /* 关于我部分 */
 #about {
     padding: 4rem 0;
@@ -142,7 +137,10 @@ body {
 }
 
 .about-text {
-    display: none;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 1;
+    line-height: 1.7;
 }
 
 .about-skills {

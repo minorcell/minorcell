@@ -57,7 +57,7 @@
                     <p class="hero-subtitle">遇事不决，可问春风；春风不遇，可随本心；</p>
                     <div class="hero-cta" id="hero-cta">
                         <a href="https://github.com/minorcell" target="_blank">
-                            <button class="hero-btn btn-animate btn-animate__around">
+                            <button class=" btn-animate btn-animate__around">
                                 <svg>
                                     <rect x="0" y="0" fill="none" width="100%" height="100%"></rect>
                                 </svg>
@@ -65,7 +65,7 @@
                             </button>
                         </a>
                         <a href="mailto:minorcell6789@gmail.com" target="_blank">
-                            <button class="hero-btn btn-animate btn-animate__skew">
+                            <button class=" btn-animate btn-animate__skew">
                                 Gmail
                             </button>
                         </a>
@@ -279,7 +279,23 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="./scripts/index/index.js"></script>
+
+    <!-- 条件加载JavaScript -->
+    <script>
+        // 检测设备类型并加载对应JS
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                window.innerWidth <= 768;
+        }
+
+        if (isMobile()) {
+            // 移动端加载
+            document.write('<script src="./scripts/index/mobile.js"><\/script>');
+        } else {
+            // 桌面端加载
+            document.write('<script src="./scripts/index/index.js"><\/script>');
+        }
+    </script>
 </body>
 
 </html>
