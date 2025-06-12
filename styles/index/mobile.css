@@ -168,7 +168,6 @@ body {
     overflow: hidden;
     position: relative;
     opacity: 1;
-    border-radius: 12px;
 }
 
 .about-image img {
@@ -195,7 +194,6 @@ body {
     padding: 1.5rem;
     width: 100%;
     max-width: 350px;
-    border-radius: 12px;
     transform: none;
     opacity: 1;
     transition: all 0.3s ease;
@@ -211,7 +209,6 @@ body {
     height: 180px;
     overflow: hidden;
     margin-bottom: 1rem;
-    border-radius: 8px;
 }
 
 .project-image img {
@@ -300,7 +297,6 @@ body {
     margin-bottom: 1.5rem;
     color: var(--light);
     transition: all 0.3s ease;
-    border-radius: 8px 8px 0 0;
     font-size: 1rem;
 }
 
@@ -313,14 +309,12 @@ body {
 .form-textarea {
     resize: vertical;
     min-height: 120px;
-    border-radius: 8px;
 }
 
 .contact-info {
     background-color: var(--dark-secondary);
     padding: 2rem;
     opacity: 1;
-    border-radius: 12px;
 }
 
 .contact-info h3 {
@@ -345,7 +339,6 @@ body {
     justify-content: center;
     background-color: var(--dark-bg);
     margin-right: 1rem;
-    border-radius: 8px;
 }
 
 .contact-details p:first-child {
@@ -377,7 +370,6 @@ body {
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
-    border-radius: 12px;
 }
 
 .social-link:active {
@@ -414,7 +406,6 @@ body {
     margin: 0.25rem;
     font-size: 0.8rem;
     transition: all 0.3s ease;
-    border-radius: 6px;
     cursor: pointer;
 }
 
@@ -428,7 +419,6 @@ body {
     color: rgba(0, 0, 0, 1);
     font-size: 0.7rem;
     padding: 0.25rem 0.6rem;
-    border-radius: 4px;
 }
 
 .btn-animate {
@@ -443,7 +433,6 @@ body {
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    border-radius: 8px;
     font-size: 0.9rem;
     transition: all 0.3s ease;
 }
@@ -469,16 +458,12 @@ body {
 }
 
 .icp-info {
-    position: fixed;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
     z-index: 100;
     white-space: nowrap;
     text-align: center;
-    padding: 0 1rem;
+    padding: 2rem 1rem;
 }
 
 /* 触控反馈 */
