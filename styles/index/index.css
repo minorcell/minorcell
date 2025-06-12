@@ -9,12 +9,22 @@
     --accent: #99aebb;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--dark-bg);
     color: var(--light);
     overflow-x: hidden;
     cursor: none;
+}
+
+.container {
+    width: 75vw;
 }
 
 .horizontal-container {
@@ -30,6 +40,9 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-dots {
@@ -91,11 +104,24 @@ body {
     border-color: var(--accent);
 }
 
+/* 主页样式 */
 .hero-title {
     font-size: 8vw;
     font-weight: 700;
     line-height: 1;
     opacity: 0;
+    margin-bottom: 20px;
+}
+
+.hero-title-text {
+    display: inline-block;
+}
+
+.hero-gradient {
+    background: linear-gradient(to right, #99aebb, #f472b6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .hero-subtitle {
@@ -103,6 +129,99 @@ body {
     font-weight: 300;
     margin-top: 20px;
     opacity: 0;
+}
+
+.hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1.25rem;
+    opacity: 0;
+}
+
+.hero-svg-container {
+    position: absolute;
+    top: 50%;
+    right: 10vh;
+    transform: translateY(-50%);
+    width: 90vh;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#heartSvg {
+    width: 100%;
+    height: 100%;
+}
+
+/* 关于我样式 */
+.about-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.about-text-section {
+    width: 50%;
+    margin-bottom: 2.5rem;
+    padding-right: 4rem;
+}
+
+.about-image-section {
+    width: 41.666667%;
+    display: flex;
+    justify-content: center;
+}
+
+.about-text {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+}
+
+.about-skills {
+    margin-top: 2.5rem;
+    opacity: 0;
+}
+
+.about-skills h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.about-image {
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
+}
+
+/* 项目样式 */
+.projects-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
 }
 
 .project-card {
@@ -138,9 +257,63 @@ body {
     transform: scale(1.1);
 }
 
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.project-description {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin-bottom: 1rem;
+}
+
+.project-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.project-link {
+    font-size: 0.875rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.project-link i {
+    margin-left: 0.25rem;
+}
+
+/* 联系方式样式 */
+.contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.contact-text-section {
+    width: 50%;
+    margin-bottom: 2.5rem;
+    padding-right: 4rem;
+}
+
+.contact-info-section {
+    width: 41.666667%;
+}
+
+.contact-text {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+}
+
 .contact-form {
     width: 100%;
     max-width: 500px;
+    opacity: 0;
 }
 
 .form-input {
@@ -159,25 +332,53 @@ body {
     outline: none;
 }
 
-.submit-btn {
-    background-color: var(--accent);
-    color: rgba(153, 174, 187, 1);
-    border: none;
-    padding: 12px 30px;
-    font-weight: 600;
-    cursor: none;
-    transition: all 0.3s ease;
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
 }
 
-.submit-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(153, 174, 187, 1);
+.contact-info {
+    background-color: var(--dark-secondary);
+    padding: 2.5rem;
+    opacity: 0;
+}
+
+.contact-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.contact-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--dark-bg);
+    margin-right: 1rem;
+}
+
+.contact-details p:first-child {
+    font-size: 0.875rem;
+    color: #9ca3af;
+}
+
+.contact-details a {
+    color: var(--light);
+    text-decoration: none;
 }
 
 .social-links {
     display: flex;
     gap: 20px;
-    margin-top: 40px;
+    margin-top: 2.5rem;
 }
 
 .social-link {
@@ -191,6 +392,7 @@ body {
     font-size: 20px;
     transition: all 0.3s ease;
     cursor: none;
+    text-decoration: none;
 }
 
 .social-link:hover {
@@ -198,40 +400,7 @@ body {
     transform: translateY(-5px);
 }
 
-.skill-tag {
-    display: inline-block;
-    padding: 5px 15px;
-    background-color: rgba(153, 174, 187, 1);
-    color: rgba(0, 0, 0, 1);
-    margin-right: 10px;
-    margin-bottom: 10px;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
-}
-
-.skill-tag:hover {
-    background-color: var(--accent);
-    transform: translateY(-3px);
-}
-
-.about-image {
-    width: 300px;
-    height: 400px;
-    overflow: hidden;
-    position: relative;
-}
-
-.about-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.about-image:hover img {
-    transform: scale(1.05);
-}
-
+/* 通用样式 */
 .section-title {
     font-size: 3rem;
     font-weight: 700;
@@ -250,9 +419,27 @@ body {
     background-color: var(--accent);
 }
 
+.skill-tag {
+    display: inline-block;
+    padding: 5px 15px;
+    background-color: rgba(153, 174, 187, 1);
+    color: rgba(0, 0, 0, 1);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    background-color: var(--accent);
+    transform: translateY(-3px);
+}
+
 .work-tag {
     background-color: rgba(153, 174, 187, 1);
     color: rgba(0, 0, 0, 1);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
 }
 
 .btn-animate {
@@ -264,6 +451,9 @@ body {
     background: #b453e7;
     color: #fff;
     text-align: center;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-animate__around {

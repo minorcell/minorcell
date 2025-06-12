@@ -3,41 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#E0E0E0',
-                        secondary: '#2A2A2A'
-                    },
-                    borderRadius: {
-                        'none': '0px',
-                        'sm': '4px',
-                        DEFAULT: '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                        'xl': '20px',
-                        '2xl': '24px',
-                        '3xl': '32px',
-                        'full': '9999px',
-                        'button': '8px'
-                    }
-                }
-            }
-        }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="./styles/reset.css">
-    <link rel="stylesheet" href="./styles/index/index.css">
+
+    <!-- 条件加载CSS -->
+    <script>
+        // 检测设备类型并加载对应CSS
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                window.innerWidth <= 768;
+        }
+
+        if (isMobile()) {
+            // 移动端加载
+            document.write('<link rel="stylesheet" href="./styles/index/mobile.css">');
+        } else {
+            // 桌面端加载
+            document.write('<link rel="stylesheet" href="./styles/index/index.css">');
+        }
+    </script>
+
     <title>mCell 的个人网页</title>
 </head>
 
@@ -54,20 +46,18 @@
 
     <div class="horizontal-container">
         <!-- 主页部分 -->
-        <section class="section flex items-center justify-center relative" id="hero">
-            <div class="container mx-auto px-4 relative">
-                <div class="max-w-4xl">
+        <section class="section" id="hero">
+            <div class="container">
+                <div class="hero-content">
                     <h1 class="hero-title">
                         <span class="hero-title-text">欢迎来到</span>
-                        <div class="text-transparent bg-clip-text bg-gradient-to-r from-[#99aebb] to-pink-300">
-                            mCell
-                        </div>
+                        <div class="hero-gradient">mCell</div>
                         <span class="hero-title-text">个人主页</span>
                     </h1>
                     <p class="hero-subtitle">遇事不决，可问春风；春风不遇，可随本心；</p>
-                    <div class="mt-10 flex gap-5 opacity-0" id="hero-cta">
+                    <div class="hero-cta" id="hero-cta">
                         <a href="https://github.com/minorcell" target="_blank">
-                            <button class="btn-animate btn-animate__around">
+                            <button class="hero-btn btn-animate btn-animate__around">
                                 <svg>
                                     <rect x="0" y="0" fill="none" width="100%" height="100%"></rect>
                                 </svg>
@@ -75,32 +65,31 @@
                             </button>
                         </a>
                         <a href="mailto:minorcell6789@gmail.com" target="_blank">
-                            <button class="btn-animate btn-animate__skew">
+                            <button class="hero-btn btn-animate btn-animate__skew">
                                 Gmail
                             </button>
                         </a>
                     </div>
                 </div>
             </div>
-            <div
-                class="absolute top-1/2 right-[10vh] translate-y-[-50%] w-[90vh] h-[90vh] flex items-center justify-center">
-                <svg id="heartSvg" class="z-10 w-full h-full"></svg>
+            <div class="hero-svg-container">
+                <svg id="heartSvg"></svg>
             </div>
         </section>
 
         <!-- 关于我部分 -->
-        <section class="section flex items-center justify-center relative" id="about">
-            <div class="container mx-auto px-4 z-10 relative">
-                <div class="flex flex-wrap items-center justify-between">
-                    <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
+        <section class="section" id="about">
+            <div class="container">
+                <div class="about-container">
+                    <div class="about-text-section">
                         <h2 class="section-title">关于我</h2>
-                        <p class="text-lg mb-6 opacity-0 about-text">你可以叫我mCell，或者minorCell，甚至我的中文名邓军辉；</p>
-                        <p class="text-lg mb-8 opacity-0 about-text">本职工作是一个TypeScript + Golang
+                        <p class="about-text">你可以叫我mCell，或者minorCell，甚至我的中文名邓军辉；</p>
+                        <p class="about-text">本职工作是一个TypeScript + Golang
                             组合的全栈开发者，热衷于开源建设，后续会持续在DevOps领域探索；总之，专注于IT技术就对了；工作之外是看一些经典影视作品、读几本小书；当然，还有不可辜负的美食；
                         </p>
-                        <div class="mt-10 opacity-0 about-skills">
-                            <h3 class="text-xl font-semibold mb-4">IT技能</h3>
-                            <div class="flex flex-wrap">
+                        <div class="about-skills">
+                            <h3>IT技能</h3>
+                            <div class="skills-container">
                                 <span class="skill-tag hover-element">Git</span>
                                 <span class="skill-tag hover-element">Github</span>
                                 <span class="skill-tag hover-element">HTML</span>
@@ -128,8 +117,8 @@
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-5/12 flex justify-center">
-                        <div class="about-image hover-element opacity-0">
+                    <div class="about-image-section">
+                        <div class="about-image hover-element">
                             <img src="./public/mcell.webp" alt="mcell">
                         </div>
                     </div>
@@ -138,25 +127,24 @@
         </section>
 
         <!-- 个人作品部分 -->
-        <section class="section flex items-center justify-center relative" id="projects">
-            <div class="container mx-auto px-4 z-10 relative">
-                <h2 class="section-title mb-16">个人公开作品</h2>
+        <section class="section" id="projects">
+            <div class="container">
+                <h2 class="section-title">个人公开作品</h2>
 
-                <div class="flex flex-wrap justify-between gap-8">
+                <div class="projects-container">
                     <div class="project-card hover-element">
                         <div class="project-image">
                             <img src="./public/vuedir.webp" alt="VueDir">
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">VueDir</h3>
-                        <p class="text-sm text-gray-400 mb-4">为Vue3.x编写的自定义指令集集。目前已停止维护；</p>
-                        <div class="flex gap-2 mb-4">
-                            <span class="work-tag text-xs px-3 py-1">Vue</span>
-                            <span class="work-tag text-xs px-3 py-1">TypeScript</span>
-                            <span class="work-tag text-xs px-3 py-1">Rullup</span>
+                        <h3 class="project-title">VueDir</h3>
+                        <p class="project-description">为Vue3.x编写的自定义指令集集。目前已停止维护；</p>
+                        <div class="project-tags">
+                            <span class="work-tag">Vue</span>
+                            <span class="work-tag">TypeScript</span>
+                            <span class="work-tag">Rullup</span>
                         </div>
-                        <a href="https://vuedir.feashow.cn/" target="_blank"
-                            class="text-sm text-accent flex items-center hover-element">
-                            查看文档 <i class="ri-arrow-right-line ml-1"></i>
+                        <a href="https://vuedir.feashow.cn/" target="_blank" class="project-link hover-element">
+                            查看文档 <i class="ri-arrow-right-line"></i>
                         </a>
                     </div>
 
@@ -164,16 +152,16 @@
                         <div class="project-image">
                             <img src="./public/hubio.webp" alt="Hubio">
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">Hub-io</h3>
-                        <p class="text-sm text-gray-400 mb-4">快速获取Github仓库贡献者图鉴，支持多种导出方式。</p>
-                        <div class="flex gap-2 mb-4">
-                            <span class="work-tag text-xs px-3 py-1">React</span>
-                            <span class="work-tag text-xs px-3 py-1">TypeScript</span>
-                            <span class="work-tag text-xs px-3 py-1">Tailwind</span>
+                        <h3 class="project-title">Hub-io</h3>
+                        <p class="project-description">快速获取Github仓库贡献者图鉴，支持多种导出方式。</p>
+                        <div class="project-tags">
+                            <span class="work-tag">React</span>
+                            <span class="work-tag">TypeScript</span>
+                            <span class="work-tag">Tailwind</span>
                         </div>
                         <a href="https://hub-io-mcells-projects.vercel.app/" target="_blank"
-                            class="text-sm text-accent flex items-center hover-element">
-                            在线使用 <i class="ri-arrow-right-line ml-1"></i>
+                            class="project-link hover-element">
+                            在线使用 <i class="ri-arrow-right-line"></i>
                         </a>
                     </div>
 
@@ -181,18 +169,17 @@
                         <div class="project-image">
                             <img src="./public/wetalk.webp" alt="wetalk">
                         </div>
-                        <h3 class="text-xl font-semibold mb-2">WeTalk</h3>
-                        <p class="text-sm text-gray-400 mb-4">大三下学期专综课程项目，目前仅存在基础功能，后面打算全部重构。</p>
-                        <div class="flex gap-2 mb-4">
-                            <span class="work-tag text-xs px-3 py-1">Node</span>
-                            <span class="work-tag text-xs px-3 py-1">React</span>
-                            <span class="work-tag text-xs px-3 py-1">TypeScript</span>
-                            <span class="work-tag text-xs px-3 py-1">MongoDB</span>
+                        <h3 class="project-title">WeTalk</h3>
+                        <p class="project-description">大三下学期专综课程项目，目前仅存在基础功能，后面打算全部重构。</p>
+                        <div class="project-tags">
+                            <span class="work-tag">Node</span>
+                            <span class="work-tag">React</span>
+                            <span class="work-tag">TypeScript</span>
+                            <span class="work-tag">MongoDB</span>
                         </div>
                         <a href="https://github.com/liangdengwang/wetalk" target="_blank"
-                            class="text-sm text-accent flex items-center hover-element">
-                            查看项目
-                            <i class="ri-arrow-right-line ml-1"></i>
+                            class="project-link hover-element">
+                            查看项目 <i class="ri-arrow-right-line"></i>
                         </a>
                     </div>
                 </div>
@@ -200,27 +187,26 @@
         </section>
 
         <!-- 联系方式部分 -->
-        <section class="section flex items-center justify-center relative" id="contact">
-            <div class="container mx-auto px-4 z-10 relative">
-                <div class="flex flex-wrap items-center">
-                    <div class="w-full lg:w-1/2 mb-10 lg:mb-0 pr-0 lg:pr-16">
+        <section class="section" id="contact">
+            <div class="container">
+                <div class="contact-container">
+                    <div class="contact-text-section">
                         <h2 class="section-title">联系方式</h2>
-                        <p class="text-lg mb-8 opacity-0 contact-text">
+                        <p class="contact-text">
                             如你看到的，这里我的个人网页；如果你想了解关于我的更多信息，你可以试试以下方式；比如邮件、一些社交平台；
                         </p>
-                        <div class="contact-form opacity-0">
-                            <div class="mb-6">
+                        <div class="contact-form">
+                            <div>
                                 <input id="email-subject" type="text" class="form-input hover-element"
                                     placeholder="邮件主题">
                             </div>
-                            <div class="mb-6">
+                            <div>
                                 <input id="email-sender" type="email" class="form-input hover-element"
                                     placeholder="你的邮箱地址">
                             </div>
-                            <div class="mb-6">
-                                <textarea id="email-message" class="form-input hover-element" rows="4"
-                                    placeholder="邮箱信息">
-                                </textarea>
+                            <div>
+                                <textarea id="email-message" class="form-input form-textarea hover-element" rows="4"
+                                    placeholder="邮箱信息"></textarea>
                             </div>
                             <button id="email-submit-btn" type="button" class="btn-animate btn-animate__skew">
                                 发送
@@ -228,36 +214,36 @@
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-5/12">
-                        <div class="bg-secondary p-10 opacity-0 contact-info">
-                            <h3 class="text-xl font-semibold mb-6">更多联系方式</h3>
+                    <div class="contact-info-section">
+                        <div class="contact-info">
+                            <h3>更多联系方式</h3>
 
-                            <div class="flex items-center mb-6">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                            <div class="contact-item">
+                                <div class="contact-icon">
                                     <i class="ri-wechat-line"></i>
                                 </div>
-                                <div>
-                                    <p class="text-sm text-gray-400">微信</p>
+                                <div class="contact-details">
+                                    <p>微信</p>
                                     <p>D39683887</p>
                                 </div>
                             </div>
 
-                            <div class="flex items-center mb-6">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                            <div class="contact-item">
+                                <div class="contact-icon">
                                     <i class="ri-qq-line"></i>
                                 </div>
-                                <div>
-                                    <p class="text-sm text-gray-400">QQ</p>
+                                <div class="contact-details">
+                                    <p>QQ</p>
                                     <p>2112842083</p>
                                 </div>
                             </div>
 
-                            <div class="flex items-center mb-10">
-                                <div class="w-10 h-10 flex items-center justify-center bg-dark-bg mr-4">
+                            <div class="contact-item">
+                                <div class="contact-icon">
                                     <i class="ri-news-line"></i>
                                 </div>
-                                <div>
-                                    <p class="text-sm text-gray-400">稀土掘金</p>
+                                <div class="contact-details">
+                                    <p>稀土掘金</p>
                                     <p>
                                         <a href="https://juejin.cn/user/2280829967146779" target="_blank">mcell</a>
                                     </p>
