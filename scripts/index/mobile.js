@@ -59,31 +59,42 @@ function initMobileNavigation() {
 }
 
 /**
- * 移动端触控反馈
+ * 移动端触控反馈 - 修复版本
  */
 function initMobileTouchFeedback() {
-    const touchElements = document.querySelectorAll('.hover-element');
+    // 只对特定的非交互元素添加触摸反馈
+    const touchElements = document.querySelectorAll('.skill-tag, .about-image');
 
     touchElements.forEach(element => {
         // 触摸开始
         element.addEventListener('touchstart', function (e) {
-            e.preventDefault();
             this.style.transform = 'scale(0.95)';
             this.style.opacity = '0.8';
-        });
+        }, { passive: true });
 
         // 触摸结束
         element.addEventListener('touchend', function (e) {
-            e.preventDefault();
             this.style.transform = 'scale(1)';
             this.style.opacity = '1';
-        });
+        }, { passive: true });
 
         // 触摸取消
         element.addEventListener('touchcancel', function (e) {
             this.style.transform = 'scale(1)';
             this.style.opacity = '1';
-        });
+        }, { passive: true });
+    });
+
+    // 为链接和按钮添加专门的触摸反馈，但不阻止默认行为
+    const interactiveElements = document.querySelectorAll('a, button, .project-link, .social-link');
+    interactiveElements.forEach(element => {
+        element.addEventListener('touchstart', function (e) {
+            // 不阻止默认行为，确保链接能正常工作
+        }, { passive: true });
+
+        element.addEventListener('touchend', function (e) {
+            // 不阻止默认行为，确保链接能正常工作
+        }, { passive: true });
     });
 }
 
@@ -129,106 +140,6 @@ function initMobileScrollAnimations() {
 }
 
 /**
- * 移动端主页动画
- */
-function animateHero() {
-    const heroTitle = document.querySelector('.hero-title');
-    const heroSubtitle = document.querySelector('.hero-subtitle');
-    const heroButtons = document.querySelector('.hero-cta');
-
-    if (heroTitle) {
-        heroTitle.style.opacity = '1';
-        heroTitle.style.transform = 'translateY(0)';
-    }
-
-    if (heroSubtitle) {
-        setTimeout(() => {
-            heroSubtitle.style.opacity = '1';
-            heroSubtitle.style.transform = 'translateY(0)';
-        }, 200);
-    }
-
-    if (heroButtons) {
-        setTimeout(() => {
-            heroButtons.style.opacity = '1';
-            heroButtons.style.transform = 'translateY(0)';
-        }, 400);
-    }
-}
-
-/**
- * 移动端关于我动画
- */
-function animateAbout() {
-    const aboutTexts = document.querySelectorAll('.about-text');
-    const aboutSkills = document.querySelector('.about-skills');
-    const aboutImage = document.querySelector('.about-image');
-
-    aboutTexts.forEach((text, index) => {
-        setTimeout(() => {
-            text.style.opacity = '1';
-            text.style.transform = 'translateY(0)';
-        }, index * 100);
-    });
-
-    if (aboutSkills) {
-        setTimeout(() => {
-            aboutSkills.style.opacity = '1';
-            aboutSkills.style.transform = 'translateY(0)';
-        }, 300);
-    }
-
-    if (aboutImage) {
-        setTimeout(() => {
-            aboutImage.style.opacity = '1';
-            aboutImage.style.transform = 'translateY(0)';
-        }, 200);
-    }
-}
-
-/**
- * 移动端项目动画
- */
-function animateProjects() {
-    const projectCards = document.querySelectorAll('.project-card');
-
-    projectCards.forEach((card, index) => {
-        setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 150);
-    });
-}
-
-/**
- * 移动端联系方式动画
- */
-function animateContact() {
-    const contactText = document.querySelector('.contact-text');
-    const contactForm = document.querySelector('.contact-form');
-    const contactInfo = document.querySelector('.contact-info');
-
-    if (contactText) {
-        contactText.style.opacity = '1';
-        contactText.style.transform = 'translateY(0)';
-    }
-
-    if (contactForm) {
-        setTimeout(() => {
-            contactForm.style.opacity = '1';
-            contactForm.style.transform = 'translateY(0)';
-        }, 200);
-    }
-
-    if (contactInfo) {
-        setTimeout(() => {
-            contactInfo.style.opacity = '1';
-            contactInfo.style.transform = 'translateY(0)';
-        }, 400);
-    }
-}
-
-/**
  * 初始化备案信息
  */
 function initIcpInfo() {
@@ -242,31 +153,12 @@ function initIcpInfo() {
  * 移动端初始化
  */
 document.addEventListener('DOMContentLoaded', function () {
-    // 初始化基础功能
-    initEmail();
-    initMobileNavigation();
-    initMobileTouchFeedback();
-    initMobileScrollAnimations();
     initIcpInfo();
-
-    // 立即显示主页内容
-    setTimeout(() => {
-        animateHero();
-    }, 100);
 });
 
-// 防止页面缩放
+// 只防止多点触控缩放，不干扰任何单点触摸交互
 document.addEventListener('touchstart', function (e) {
     if (e.touches.length > 1) {
         e.preventDefault();
     }
-});
-
-let lastTouchEnd = 0;
-document.addEventListener('touchend', function (e) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-    }
-    lastTouchEnd = now;
-}, false); 
+}, { passive: false });

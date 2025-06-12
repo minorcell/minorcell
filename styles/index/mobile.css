@@ -6,6 +6,22 @@ body {
     overflow-x: hidden;
     cursor: default;
     line-height: 1.6;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: rgba(153, 174, 187, 0.2);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 允许表单元素和链接被选择 */
+a,
+button,
+input,
+textarea,
+select {
+    -webkit-user-select: auto;
+    user-select: auto;
+    -webkit-tap-highlight-color: rgba(153, 174, 187, 0.3);
 }
 
 /* 移动端容器样式 */
@@ -197,11 +213,15 @@ body {
     transform: none;
     opacity: 1;
     transition: all 0.3s ease;
+    /* 确保内部链接可以正常点击 */
+    pointer-events: auto;
 }
 
+/* 移除project-card的active状态，避免与内部链接冲突 */
 .project-card:active {
-    transform: scale(0.98);
-    opacity: 0.9;
+    /* 注释掉以避免冲突 */
+    /* transform: scale(0.98); */
+    /* opacity: 0.9; */
 }
 
 .project-image {
@@ -244,10 +264,19 @@ body {
     align-items: center;
     text-decoration: none;
     transition: color 0.3s ease;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: rgba(153, 174, 187, 0.3);
+    touch-action: manipulation;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    padding: 0.5rem 0;
 }
 
-.project-link:active {
+.project-link:active,
+.project-link:focus {
     color: #7a94a6;
+    transform: scale(0.98);
 }
 
 .project-link i {
@@ -298,12 +327,22 @@ body {
     color: var(--light);
     transition: all 0.3s ease;
     font-size: 1rem;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .form-input:focus {
     border-bottom-color: var(--accent);
     outline: none;
     background-color: #1a1a1a;
+    transform: none;
+}
+
+.form-input:active {
+    transform: none;
 }
 
 .form-textarea {
@@ -349,6 +388,16 @@ body {
 .contact-details a {
     color: var(--light);
     text-decoration: none;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: rgba(153, 174, 187, 0.3);
+    touch-action: manipulation;
+    padding: 0.25rem 0;
+    cursor: pointer;
+}
+
+.contact-details a:active,
+.contact-details a:focus {
+    color: var(--accent);
 }
 
 .social-links {
@@ -370,9 +419,13 @@ body {
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: rgba(153, 174, 187, 0.3);
+    touch-action: manipulation;
 }
 
-.social-link:active {
+.social-link:active,
+.social-link:focus {
     background-color: var(--accent);
     transform: scale(0.9);
 }
@@ -435,9 +488,13 @@ body {
     display: inline-block;
     font-size: 0.9rem;
     transition: all 0.3s ease;
+    /* 移动端触摸优化 */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.btn-animate:active {
+.btn-animate:active,
+.btn-animate:focus {
     transform: scale(0.95);
     opacity: 0.8;
 }
@@ -446,15 +503,29 @@ body {
     background: transparent;
     color: rgba(153, 174, 187, 1);
     border: 2px solid rgba(153, 174, 187, 1);
+    touch-action: manipulation;
 }
 
 .btn-animate__around svg {
     display: none;
 }
 
+.btn-animate__around:active,
+.btn-animate__around:focus {
+    background: rgba(153, 174, 187, 0.1);
+    transform: scale(0.95);
+}
+
 .btn-animate__skew {
     background: rgba(153, 174, 187, 1);
     color: #000;
+    touch-action: manipulation;
+}
+
+.btn-animate__skew:active,
+.btn-animate__skew:focus {
+    background: rgba(153, 174, 187, 0.8);
+    transform: scale(0.95);
 }
 
 .icp-info {
@@ -464,17 +535,6 @@ body {
     white-space: nowrap;
     text-align: center;
     padding: 2rem 1rem;
-}
-
-/* 触控反馈 */
-.hover-element {
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.hover-element:active {
-    transform: scale(0.95);
-    opacity: 0.8;
 }
 
 /* 响应式调整 */
