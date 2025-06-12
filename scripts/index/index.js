@@ -143,6 +143,7 @@ function initHorizontalScroll() {
 
         switch (index) {
             case 0: // 主页部分
+                document.title = 'mCell 个人主页 | 欢迎页';
                 const heroTl = gsap.timeline({ defaults: { ease: 'power2.out' } });
                 const heroTitleParts = document.querySelectorAll('.hero-title-text');
                 const heroSubtitle = document.querySelector('.hero-subtitle');
@@ -187,14 +188,17 @@ function initHorizontalScroll() {
                     .to('#hero-cta', { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
                 break;
             case 1: // 关于我部分
+                document.title = 'mCell 个人主页 | 关于我';
                 gsap.to('.about-text', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
                 gsap.to('.about-skills', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });
                 gsap.to('.about-image', { opacity: 1, y: 0, rotationX: 0, duration: 1, ease: 'power2.out', delay: 0.2 });
                 break;
             case 2: // 个人作品部分
+                document.title = 'mCell 个人主页 | 个人作品';
                 gsap.to('.project-card', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
                 break;
             case 3: // 联系方式部分
+                document.title = 'mCell 个人主页 | 联系方式';
                 gsap.to('.contact-text', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out' });
                 gsap.to('.contact-form', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 });
                 gsap.to('.contact-info', { opacity: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'power2.out', delay: 0.4 });

@@ -6,7 +6,6 @@ body {
     overflow-x: hidden;
     cursor: default;
     line-height: 1.6;
-    /* 移动端触摸优化 */
     -webkit-tap-highlight-color: rgba(153, 174, 187, 0.2);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
