@@ -1,13 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
+    <title>mCell个人主页 | 全栈开发者 & 开源爱好者</title>
+    <meta name="author" content="mCell, minorcell, 邓军辉">
+    <meta name="description" content="mCell的个人主页，一个热衷于开源建设的TypeScript和Golang全栈开发者。这里展示了我的个人项目、技能和联系方式。">
+    <meta name="keywords" content="mCell, minorCell, 邓军辉, 全栈开发者, TypeScript, Golang, 开源, 个人主页, 博客, DevOps, web开发">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mcell.top/">
+    <meta property="og:title" content="mCell个人主页 | 全栈开发者 & 开源爱好者">
+    <meta property="og:description" content="mCell的个人主页，一个热衷于开源建设的TypeScript和Golang全栈开发者。这里展示了我的个人项目、技能和联系方式。">
+    <meta property="og:image" content="https://mcell.top/public/mcell.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mcell.top/">
+    <meta property="twitter:title" content="mCell个人主页 | 全栈开发者 & 开源爱好者">
+    <meta property="twitter:description" content="mCell的个人主页，一个热衷于开源建设的TypeScript和Golang全栈开发者。这里展示了我的个人项目、技能和联系方式。">
+    <meta property="twitter:image" content="https://mcell.feashow.cn/public/mcell.webp">
+    <link rel="canonical" href="https://mcell.top/" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-    <!-- logo -->
     <link rel="icon" href="./public/logo.webp" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,25 +33,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="./styles/reset.css">
-
-    <!-- 条件加载CSS -->
     <script>
-        // 检测设备类型并加载对应CSS
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                 window.innerWidth <= 768;
         }
 
         if (isMobile()) {
-            // 移动端加载
             document.write('<link rel="stylesheet" href="./styles/index/mobile.css">');
         } else {
-            // 桌面端加载
             document.write('<link rel="stylesheet" href="./styles/index/index.css">');
         }
     </script>
-
-    <title>mCell 的个人网页</title>
 </head>
 
 <body>
@@ -113,8 +124,10 @@
                                 <span class="skill-tag hover-element">Redis</span>
                                 <span class="skill-tag hover-element">Linux</span>
                                 <span class="skill-tag hover-element">Shell</span>
+                                <span class="skill-tag hover-element">Three</span>
                                 <span class="skill-tag hover-element">Docker</span>
                                 <span class="skill-tag hover-element">CI/CD</span>
+                                <span class="skill-tag hover-element">GSAP</span>
                                 <span class="skill-tag hover-element">Fyne</span>
                             </div>
                         </div>
@@ -122,7 +135,7 @@
 
                     <div class="about-image-section">
                         <div class="about-image hover-element">
-                            <img src="./public/mcell.webp" alt="mcell">
+                            <img src="./public/mcell.webp" alt="mCell的头像">
                         </div>
                     </div>
                 </div>
