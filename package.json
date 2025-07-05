@@ -17,6 +17,11 @@
   "license": "MIT",
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
+    "@iconify/json": "^2.2.355",
+    "@iconify/tailwind4": "^1.0.6",
     "vitepress": "^1.6.3"
+  },
+  "dependencies": {
+    "@iconify/vue": "^5.0.0"
   }
 }
