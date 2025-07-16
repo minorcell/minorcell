@@ -312,21 +312,6 @@
             document.write('<script src="./scripts/index/index.js"><\/script>');
         }
     </script>
-    <script>
-        // 防抖
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
-        // resize事件
-        window.addEventListener('resize', debounce(() => {
-            location.reload();
-        }, 1000))
-    </script>
 </body>
 
 </html>
