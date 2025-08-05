@@ -1,2 +1,2 @@
-<img align="center" src="https://github-readme-stats.vercel.app/api?username=minorcell&theme=dracula&show_icons=true&hide_border=true&count_private=true" alt="minorcell's github stats" />
+<img align="center" src="https://github-readme-stats.vercel.app/api?username=minorcell&show_icons=true&count_private=true" alt="minorcell's github stats" />
 
