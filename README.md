@@ -1,1 +1,2 @@
-<img align="center" src="https://github-readme-stats-eosin-gamma-87.vercel.app/api/top-langs/?username=minorcell&theme=catppuccin_mocha&show_icons=true&hide_border=true&layout=compact&hide=javascript,html,css" />
+| <a href="https://github.com/minorcell"><img align="center" src="https://github-readme-stats-eosin-gamma-87.vercel.app/api?username=minorcell&theme=catppuccin_mocha&show_icons=true&hide_border=true&count_private=true" alt="minorcell's github stats" /></a> | <a href="https://github.com/minorcell"><img align="center" src="https://github-readme-stats-eosin-gamma-87.vercel.app/api/top-langs/?username=minorcell&theme=catppuccin_mocha&show_icons=true&hide_border=true&layout=compact" /></a> |
+| ------------- | ------------- |
