@@ -96,13 +96,29 @@ function RssGlyph({ className }: { className?: string }) {
   )
 }
 
+function JuejinGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        fill="currentColor"
+        d="m12 14.316l7.454-5.88l-2.022-1.625L12 11.1l-.004.003l-5.432-4.288l-2.02 1.624l7.452 5.88Zm0-7.247l2.89-2.298L12 2.453l-.004-.005l-2.884 2.318l2.884 2.3Zm0 11.266l-.005.002l-9.975-7.87L0 12.088l.194.156l11.803 9.308l7.463-5.885L24 12.085l-2.023-1.624Z"
+      />
+    </svg>
+  )
+}
+
 export function Navbar() {
   const pathname = usePathname()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [mounted, setMounted] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const iconButtonClass =
-    'inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60'
+    'inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground opacity-100 transition-colors hover:text-foreground hover:bg-muted/60 hover:opacity-100'
 
   useEffect(() => {
     setMounted(true)
@@ -278,6 +294,17 @@ export function Navbar() {
                 <GitHubGlyph className="w-4 h-4" />
               </a>
             )}
+
+            <a
+              href="https://juejin.cn/user/2280829967146779"
+              target="_blank"
+              rel="noreferrer"
+              className={iconButtonClass}
+              aria-label="掘金"
+              title="掘金"
+            >
+              <JuejinGlyph className="w-4 h-4" />
+            </a>
 
             <Link
               href="/feed.xml"
