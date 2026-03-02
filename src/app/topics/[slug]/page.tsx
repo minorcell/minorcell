@@ -6,7 +6,7 @@ import {
   getTopicWithContent,
   getAllTopics,
 } from '@/lib/topics.server'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer'
+import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 
 interface TopicPageProps {
   params: Promise<{

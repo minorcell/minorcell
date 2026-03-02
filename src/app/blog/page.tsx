@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import SpotlightCard from '@/components/SpotlightCard'
+import SpotlightCard from '@/components/effects/reactbits/SpotlightCard'
 import { getAllPosts } from '@/lib/mdx'
 
 export const metadata: Metadata = {

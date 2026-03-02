@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Orbitron } from 'next/font/google'
 import './globals.css'
-import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
-import DotGrid from '@/components/DotGrid'
-import { ExternalLinkGuard } from '@/components/ExternalLinkGuard'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
+import DotGrid from '@/components/effects/reactbits/DotGrid'
+import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { siteContent } from '@/lib/site-content'
 
 const orbitron = Orbitron({

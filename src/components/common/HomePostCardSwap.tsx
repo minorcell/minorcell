@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import CardSwap, { Card } from '@/components/CardSwap'
+import CardSwap, { Card } from '@/components/effects/reactbits/CardSwap'
 
 interface HomePostCardSwapItem {
   slug: string

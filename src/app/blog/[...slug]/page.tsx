@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { getPostBySlug, getPostSlugs } from '@/lib/mdx'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer'
-import { GiscusComments } from '@/components/GiscusComments'
+import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
+import { GiscusComments } from '@/components/common/GiscusComments'
 import type { Metadata } from 'next'
 
 const formatDate = (value: string) => {

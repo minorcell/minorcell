@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import InfiniteMenu, { type InfiniteMenuItem } from '@/components/InfiniteMenu'
+import InfiniteMenu, { type InfiniteMenuItem } from '@/components/effects/reactbits/InfiniteMenu'
 import { siteContent } from '@/lib/site-content'
 import { getAllPosts } from '@/lib/mdx'
 

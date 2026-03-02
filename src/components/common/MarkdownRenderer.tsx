@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Streamdown, type Components, type PluginConfig } from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
 import { mermaid } from '@streamdown/mermaid'
-import { ZoomImage } from '@/components/ZoomImage'
+import { ZoomImage } from '@/components/common/ZoomImage'
 
 interface MarkdownRendererProps {
   content: string

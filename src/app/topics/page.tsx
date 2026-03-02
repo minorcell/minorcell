@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import SpotlightCard from '@/components/SpotlightCard'
+import SpotlightCard from '@/components/effects/reactbits/SpotlightCard'
 import { getAllTopics } from '@/lib/topics.server'
 
 export const metadata: Metadata = {

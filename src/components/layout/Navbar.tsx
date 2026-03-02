@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import GradualBlur from '@/components/GradualBlur'
-import { PagefindSearch } from '@/components/PagefindSearch'
+import GradualBlur from '@/components/effects/reactbits/GradualBlur'
+import { PagefindSearch } from '@/components/common/PagefindSearch'
 import StaggeredMenu, {
   type StaggeredMenuItem,
   type StaggeredMenuSocialItem,
-} from '@/components/StaggeredMenu'
-import TextPressure from '@/components/TextPressure'
+} from '@/components/effects/reactbits/StaggeredMenu'
+import TextPressure from '@/components/effects/reactbits/TextPressure'
 import { siteContent } from '@/lib/site-content'
 
 const navLinks = [
