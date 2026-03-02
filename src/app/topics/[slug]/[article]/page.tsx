@@ -3,6 +3,7 @@ import { getPostBySlug } from '@/lib/mdx'
 import { getTopic, getTopicArticle, getAllTopics } from '@/lib/topics.server'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { GiscusComments } from '@/components/common/GiscusComments'
+import { CopyPageButton } from '@/components/common/CopyPageButton'
 import type { Metadata } from 'next'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { notFound } from 'next/navigation'
@@ -110,6 +111,13 @@ export default async function TopicArticlePage({ params }: Props) {
 
       {/* Header */}
       <header className="mb-10">
+        <div className="mb-4 flex justify-end">
+          <CopyPageButton
+            pageContent={post.rawContent}
+            bodyContent={post.content}
+          />
+        </div>
+
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">
           {post.metadata.title}
         </h1>

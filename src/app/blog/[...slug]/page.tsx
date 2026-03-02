@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getPostBySlug, getPostSlugs } from '@/lib/mdx'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { GiscusComments } from '@/components/common/GiscusComments'
+import { CopyPageButton } from '@/components/common/CopyPageButton'
 import type { Metadata } from 'next'
 
 const formatDate = (value: string) => {
@@ -58,6 +59,11 @@ export default async function BlogPost({ params }: Props) {
           </Link>
           <span>·</span>
           <time>{formatDate(post.metadata.date)}</time>
+          <CopyPageButton
+            pageContent={post.rawContent}
+            bodyContent={post.content}
+            className="ml-auto"
+          />
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">

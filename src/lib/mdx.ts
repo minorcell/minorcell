@@ -20,6 +20,7 @@ export interface PostMetadata {
 export interface Post {
   metadata: PostMetadata
   content: string
+  rawContent: string
   slug: string
 }
 
@@ -112,6 +113,7 @@ export function getPostBySlug(type: PostType, slug: string): Post {
       image,
     },
     content,
+    rawContent: fileContents,
   }
 }
 
