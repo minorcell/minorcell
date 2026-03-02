@@ -15,15 +15,32 @@ const orbitron = Orbitron({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteContent.url),
+  applicationName: siteContent.name,
   title: {
     default: siteContent.name,
     template: `%s | ${siteContent.name}`,
   },
   description: siteContent.description,
+  keywords: siteContent.keywords,
   alternates: {
+    canonical: '/',
     types: {
       'application/rss+xml': '/feed.xml',
     },
+  },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    title: siteContent.title,
+    description: siteContent.description,
+    siteName: siteContent.name,
+    locale: siteContent.locale.replace('-', '_'),
+  },
+  twitter: {
+    card: 'summary',
+    title: siteContent.title,
+    description: siteContent.description,
   },
   manifest: '/manifest.json',
   icons: {

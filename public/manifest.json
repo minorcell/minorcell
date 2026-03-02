@@ -1,34 +1,15 @@
 {
-  "name": "CellStack - 工程师技术笔记",
+  "name": "Cell Stack",
   "short_name": "CellStack",
-  "description": "计算机科学的工程实践和一些个人思考",
+  "description": "写代码的时候顺手记点东西，可能是踩过的坑，也可能是突然想明白的道理。不保证都对，但保证真实。",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f6f1e6",
-  "theme_color": "#1c2330",
-  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
   "lang": "zh-CN",
   "dir": "ltr",
-  "categories": [
-    "education",
-    "productivity",
-    "developer",
-    "reference",
-    "technology"
-  ],
-  "keywords": [
-    "mcell",
-    "minorcell",
-    "前端开发",
-    "后端开发",
-    "全栈工程师",
-    "DevOps",
-    "AI工程",
-    "技术笔记",
-    "编程教程",
-    "最佳实践",
-    "项目实战"
-  ],
+  "categories": ["technology", "developer", "education"],
   "icons": [
     {
       "src": "/logo.svg",
@@ -39,68 +20,33 @@
     {
       "src": "/logo-light.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/svg+xml"
     },
     {
       "src": "/logo-dark.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "16x16",
       "type": "image/svg+xml"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "32x32",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
     }
   ],
   "shortcuts": [
     {
-      "name": "收录",
-      "short_name": "工程实践",
-      "description": "探索工程实践和最佳实践",
-      "url": "/engineering-practice/",
-      "icons": [
-        {
-          "src": "/logo.svg",
-          "sizes": "96x96"
-        }
-      ]
+      "name": "文章",
+      "short_name": "Blog",
+      "description": "按时间浏览技术文章",
+      "url": "/blog"
     },
     {
-      "name": "技术博客",
-      "short_name": "博客",
-      "description": "阅读最新技术博客文章",
-      "url": "/blog/",
-      "icons": [
-        {
-          "src": "/logo.svg",
-          "sizes": "96x96"
-        }
-      ]
+      "name": "专题",
+      "short_name": "Topics",
+      "description": "按主题深入阅读",
+      "url": "/topics"
+    },
+    {
+      "name": "项目",
+      "short_name": "Projects",
+      "description": "查看我的项目与链接",
+      "url": "/projects"
     }
   ],
-  "scope": "/",
-  "prefer_related_applications": false,
-  "iarc_rating_id": "",
-  "edge_side_panel": {
-    "preferred_width": 400
-  }
+  "prefer_related_applications": false
 }

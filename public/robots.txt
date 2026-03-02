@@ -1,53 +1,19 @@
-# Robots.txt for CellStack - 工程师技术笔记
+# Robots.txt for Cell Stack
 # https://stack.mcell.top/robots.txt
 
 User-agent: *
 Allow: /
 
-# 优先抓取重要页面
-Allow: /blog/
-Allow: /me/
-Allow: /transpond/
+# 关键页面
+Allow: /blog
+Allow: /topics
+Allow: /projects
+Allow: /stack-mcp
+Allow: /feed.xml
+Allow: /mcp/
 
-# 禁止抓取的路径
+# 非公开路径（预留）
 Disallow: /admin/
 Disallow: /private/
-Disallow: /_vitepress/
-Allow: /feed.xml
-Disallow: /node_modules/
-Disallow: /.git/
-Disallow: /dist/
-Disallow: /cache/
 
-# 特定搜索引擎优化
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 2
-
-User-agent: 360Spider
-Allow: /
-Crawl-delay: 2
-
-# 禁止低质量爬虫
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-# 站点地图
 Sitemap: https://stack.mcell.top/sitemap.xml
-
-# 主机信息
-Host: stack.mcell.top
