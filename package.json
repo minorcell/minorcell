@@ -18,6 +18,7 @@
   "dependencies": {
     "@giscus/react": "^3.1.0",
     "@gsap/react": "^2.1.2",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",

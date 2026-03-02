@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import DotGrid from '@/components/DotGrid'
+import { ExternalLinkGuard } from '@/components/ExternalLinkGuard'
 import { siteContent } from '@/lib/site-content'
 
 const orbitron = Orbitron({
@@ -79,6 +80,7 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} min-h-screen bg-background text-foreground relative`}
       >
+        <ExternalLinkGuard />
         <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
           <DotGrid
             className="!p-0 h-full w-full opacity-35"

@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react'
 import { gsap } from 'gsap'
+import { requestExternalLink } from '@/lib/external-link'
 
 const useMedia = (
   queries: string[],
@@ -242,7 +243,7 @@ const Masonry: React.FC<MasonryProps> = ({
           data-key={item.id}
           className="absolute box-content"
           style={{ willChange: 'transform, width, height, opacity' }}
-          onClick={() => window.open(item.url, '_blank', 'noopener')}
+          onClick={() => requestExternalLink({ href: item.url, target: '_blank' })}
           onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
           onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
         >

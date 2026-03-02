@@ -2,6 +2,7 @@
 
 import { FC, useRef, useState, useEffect, MutableRefObject } from 'react'
 import { mat4, quat, vec2, vec3 } from 'gl-matrix'
+import { requestExternalLink } from '@/lib/external-link'
 
 const discVertShaderSource = `#version 300 es
 
@@ -1355,7 +1356,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
   const handleButtonClick = () => {
     if (!activeItem?.link) return
     if (activeItem.link.startsWith('http')) {
-      window.open(activeItem.link, '_blank')
+      requestExternalLink({ href: activeItem.link, target: '_blank' })
     } else {
       window.location.assign(activeItem.link)
     }
