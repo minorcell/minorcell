@@ -7,73 +7,39 @@
 >
   <style>
     :root {
-      --bg-0: #f6f1e6;
-      --bg-1: #e8ddc7;
-      --frame: rgba(46, 34, 23, 0.16);
-      --ring-0: #2b2116;
-      --ring-1: #4c3b28;
-      --stack-0: #2f2418;
-      --stack-1: #14100a;
-      --halo: rgba(255, 255, 255, 0.44);
-      --connector: #9b7d56;
-      --connector-opacity: 0.72;
+      --logo-color: #111111;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-0: #11141c;
-        --bg-1: #1c2330;
-        --frame: rgba(255, 255, 255, 0.14);
-        --ring-0: #eef3ff;
-        --ring-1: #9db7ff;
-        --stack-0: #f4f7ff;
-        --stack-1: #ccdbff;
-        --halo: rgba(126, 168, 255, 0.38);
-        --connector: #7ea8ff;
-        --connector-opacity: 0.8;
+        --logo-color: #f5f7ff;
       }
     }
   </style>
-  <defs>
-    <linearGradient id="bgAuto" x1="36" y1="22" x2="220" y2="236" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="var(--bg-0)" />
-      <stop offset="1" stop-color="var(--bg-1)" />
-    </linearGradient>
-    <linearGradient id="ringAuto" x1="52" y1="46" x2="206" y2="206" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="var(--ring-0)" />
-      <stop offset="1" stop-color="var(--ring-1)" />
-    </linearGradient>
-    <linearGradient id="stackAuto" x1="112" y1="88" x2="206" y2="176" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="var(--stack-0)" />
-      <stop offset="1" stop-color="var(--stack-1)" />
-    </linearGradient>
-    <radialGradient id="haloAuto" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(126 126) rotate(90) scale(112)">
-      <stop stop-color="var(--halo)" />
-      <stop offset="1" stop-color="transparent" />
-    </radialGradient>
-  </defs>
 
-  <rect x="20" y="20" width="216" height="216" rx="56" fill="url(#bgAuto)" />
-  <rect x="20" y="20" width="216" height="216" rx="56" stroke="var(--frame)" stroke-width="2" />
-  <circle cx="128" cy="128" r="92" fill="url(#haloAuto)" />
   <circle
     cx="128"
     cy="128"
     r="74"
-    stroke="url(#ringAuto)"
+    stroke="var(--logo-color)"
     stroke-width="16"
     stroke-linecap="round"
     stroke-dasharray="418 165"
     transform="rotate(24 128 128)"
   />
 
-  <g fill="url(#stackAuto)">
+  <g fill="var(--logo-color)">
     <rect x="126" y="88" width="76" height="24" rx="12" />
     <rect x="110" y="118" width="92" height="24" rx="12" />
     <rect x="126" y="148" width="76" height="24" rx="12" />
   </g>
 
-  <g stroke="var(--connector)" stroke-width="4" stroke-linecap="round" opacity="var(--connector-opacity)">
+  <g
+    stroke="var(--logo-color)"
+    stroke-width="4"
+    stroke-linecap="round"
+    opacity="0.78"
+  >
     <path d="M106 100h18" />
     <path d="M98 130h10" />
     <path d="M106 160h18" />
