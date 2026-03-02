@@ -87,12 +87,8 @@ export default function StackMcpPage() {
 
       <header className="mb-10">
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-3">
-          mcell MCP Server
+          Mcell MCP Server
         </h1>
-        <p className="text-muted-foreground mb-3">
-          CellStack 旧包 <code>@mcell/stack-mcp</code> 已停止维护，请迁移到{' '}
-          <code>{PACKAGE_NAME}</code>。
-        </p>
         <p className="text-muted-foreground mb-3">
           <code>{PACKAGE_NAME}</code> 是一个基于 <code>stdio</code> 的 MCP
           Server，独立仓库维护于{' '}
