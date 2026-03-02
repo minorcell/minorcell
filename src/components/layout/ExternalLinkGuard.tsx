@@ -236,7 +236,8 @@ export function ExternalLinkGuard() {
     const onClickCapture = (event: MouseEvent) => {
       if (event.defaultPrevented) return
       if (event.button !== 0) return
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return
 
       const targetEl = event.target
       if (!(targetEl instanceof Element)) return
@@ -436,7 +437,7 @@ export function ExternalLinkGuard() {
                         />
                       )}
                       <div className="min-w-0 space-y-1">
-                        <p className="text-sm font-medium text-foreground break-words">
+                        <p className="text-sm font-medium text-foreground wrap-break-word">
                           {preview.data.title ||
                             preview.data.siteName ||
                             destinationHost}
@@ -446,7 +447,8 @@ export function ExternalLinkGuard() {
                             {preview.data.description}
                           </p>
                         )}
-                        {(preview.data.siteName || preview.data.canonicalUrl) && (
+                        {(preview.data.siteName ||
+                          preview.data.canonicalUrl) && (
                           <p className="text-xs text-muted-foreground break-all">
                             {preview.data.siteName || preview.data.canonicalUrl}
                           </p>

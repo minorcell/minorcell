@@ -262,7 +262,7 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-[1200] bg-background/80">
+    <header className="sticky top-0 z-1200 bg-background/80">
       <GradualBlur
         position="top"
         target="parent"

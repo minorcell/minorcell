@@ -83,7 +83,7 @@ export default function RootLayout({
         <ExternalLinkGuard />
         <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
           <DotGrid
-            className="!p-0 h-full w-full opacity-35"
+            className="p-0! h-full w-full opacity-35"
             dotSize={5}
             gap={15}
             baseColor="var(--dotgrid-base)"

@@ -36,7 +36,7 @@ export default function HomePostCardSwap({ items }: HomePostCardSwapProps) {
         skewAmount={2}
         easing="linear"
         pauseOnHover
-        className="!left-1/2 !right-auto !top-1/2 !bottom-auto !-translate-x-1/2 !-translate-y-1/2 max-[768px]:!scale-90 max-[768px]:!translate-x-[-50%] max-[768px]:!translate-y-[-50%] max-[480px]:!scale-75"
+        className="left-1/2! right-auto! top-1/2! bottom-auto! -translate-x-1/2! -translate-y-1/2! max-[768px]:scale-90! max-[768px]:translate-x-[-50%]!max-[768px]:translate-y-[-50%]! max-[480px]:scale-75!"
       >
         {cards.map((item) => (
           <Card

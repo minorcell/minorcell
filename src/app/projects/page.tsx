@@ -113,7 +113,7 @@ export default function ProjectsPage() {
                     </Badge>
                   </div>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed min-h-[3rem]">
+                  <p className="text-sm text-muted-foreground leading-relaxed min-h-12">
                     {project.summary}
                   </p>
 
