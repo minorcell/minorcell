@@ -14,6 +14,7 @@ import { siteContent } from '@/lib/site-content'
 
 const navLinks = [
   { label: '文章', href: '/blog' },
+  { label: '项目', href: '/projects' },
   { label: '专题', href: '/topics' },
 ]
 

@@ -19,6 +19,12 @@ export function Footer() {
               文章
             </Link>
             <Link
+              href="/projects"
+              className="hover:text-foreground transition-colors"
+            >
+              项目
+            </Link>
+            <Link
               href="/topics"
               className="hover:text-foreground transition-colors"
             >

@@ -68,7 +68,14 @@ export default function HomePage() {
           >
             这里
           </Link>
-          阅读我的文章， 或者在
+          阅读我的文章，或者在
+          <Link
+            href="/projects"
+            className="underline underline-offset-4 decoration-border hover:opacity-100"
+          >
+            项目页
+          </Link>
+          查看我在做的项目，再到
           <Link
             href="/topics"
             className="underline underline-offset-4 decoration-border hover:opacity-100"
