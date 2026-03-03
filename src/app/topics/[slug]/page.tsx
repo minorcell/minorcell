@@ -7,6 +7,12 @@ import {
   getAllTopics,
 } from '@/lib/topics.server'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { buildPageMetadata } from '@/lib/seo'
+import {
+  createBreadcrumbJsonLd,
+  createCollectionPageJsonLd,
+} from '@/lib/structured-data'
 
 interface TopicPageProps {
   params: Promise<{
@@ -28,15 +34,20 @@ export async function generateMetadata({
   const topic = getTopic(slug)
 
   if (!topic) {
-    return {
+    return buildPageMetadata({
       title: '专题不存在',
-    }
+      description: '请求的专题不存在或已删除。',
+      path: `/topics/${slug}`,
+      noIndex: true,
+    })
   }
 
-  return {
-    title: topic.title,
+  return buildPageMetadata({
+    title: `${topic.title} 专题`,
     description: topic.description,
-  }
+    path: `/topics/${slug}`,
+    keywords: [topic.title, '技术专题', '编程教程'],
+  })
 }
 
 export default async function TopicPage({ params }: TopicPageProps) {
@@ -50,9 +61,26 @@ export default async function TopicPage({ params }: TopicPageProps) {
   const sortedArticles = [...topicWithContent.articles].sort(
     (a, b) => (a.order || 0) - (b.order || 0),
   )
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: '首页', path: '/' },
+    { name: '专题', path: '/topics' },
+    { name: topicWithContent.title, path: `/topics/${slug}` },
+  ])
+  const collectionPageJsonLd = createCollectionPageJsonLd({
+    title: `${topicWithContent.title} 专题`,
+    description: topicWithContent.description,
+    path: `/topics/${slug}`,
+    items: sortedArticles.map((article) => ({
+      name: article.title,
+      path: `/topics/${slug}/${article.slug}`,
+    })),
+  })
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <JsonLd id={`topic-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
+      <JsonLd id={`topic-collection-${slug}`} data={collectionPageJsonLd} />
+
       {/* Back Link */}
       <Link
         href="/topics"

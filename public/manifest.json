@@ -1,7 +1,7 @@
 {
   "name": "Cell Stack",
   "short_name": "CellStack",
-  "description": "写代码的时候顺手记点东西，可能是踩过的坑，也可能是突然想明白的道理。不保证都对，但保证真实。",
+  "description": "Cell Stack 是一个面向开发者的技术博客，持续分享 AI Agent、JavaScript、TypeScript、React、Next.js、Node.js 与工程化实践。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -1,13 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { buildPageMetadata } from '@/lib/seo'
 
 const PACKAGE_NAME = '@mcell/mcell-mcp-server'
 const REPO_URL = 'https://github.com/minorcell/mcell-mcp-server'
 
-export const metadata: Metadata = {
-  title: 'mcell MCP Server',
-  description: 'mcell-mcp-server 接入方式、能力说明与配置示例',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'mcell MCP Server 接入指南',
+  description:
+    'mcell-mcp-server 的完整接入文档，包含 Codex/Claude/Memo 配置方式、能力说明、环境变量与 S3 上传实践。',
+  path: '/stack-mcp',
+  keywords: [
+    'MCP Server',
+    'Model Context Protocol',
+    'Codex MCP',
+    'Claude MCP',
+    'mcell-mcp-server',
+    'AI tools integration',
+  ],
+})
 
 const guides = [
   {

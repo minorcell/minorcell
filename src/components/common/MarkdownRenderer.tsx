@@ -15,19 +15,25 @@ type StreamdownParagraphProps = React.ComponentProps<'p'> & {
   node?: unknown
 }
 
+type StreamdownHeadingOneProps = React.ComponentProps<'h1'> & {
+  node?: unknown
+}
+
 type StreamdownImageProps = React.ComponentProps<'img'> & {
   node?: unknown
 }
 
-function MarkdownImage({ node: _node, ...props }: StreamdownImageProps) {
+function MarkdownImage({ node, ...props }: StreamdownImageProps) {
+  void node
   return <ZoomImage {...props} />
 }
 
 function Paragraph({
   children,
-  node: _node,
+  node,
   ...props
 }: StreamdownParagraphProps) {
+  void node
   const nodes = React.Children.toArray(children)
   const onlyChild = nodes.length === 1 ? nodes[0] : null
 
@@ -42,7 +48,14 @@ function Paragraph({
   return <p {...props}>{children}</p>
 }
 
+function HeadingOne({ node, ...props }: StreamdownHeadingOneProps) {
+  void node
+  // Keep a single H1 per page: markdown content is rendered under page-level title.
+  return <h2 {...props} />
+}
+
 const components: Components = {
+  h1: HeadingOne,
   img: MarkdownImage,
   p: Paragraph,
 }

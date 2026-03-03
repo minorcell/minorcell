@@ -5,7 +5,10 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import DotGrid from '@/components/effects/reactbits/DotGrid'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
+import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
+import { createPersonJsonLd, createWebsiteJsonLd } from '@/lib/structured-data'
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -14,34 +17,36 @@ const orbitron = Orbitron({
   variable: '--font-orbitron',
 })
 
+const rootMetadata = buildPageMetadata({
+  title: siteContent.title,
+  description: siteContent.description,
+  path: '/',
+  keywords: defaultSeoKeywords,
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteContent.url),
   applicationName: siteContent.name,
   title: {
-    default: siteContent.name,
+    default: siteContent.title,
     template: `%s | ${siteContent.name}`,
   },
-  description: siteContent.description,
-  keywords: siteContent.keywords,
+  description: rootMetadata.description,
+  keywords: rootMetadata.keywords,
+  authors: [{ name: siteAuthor.name, url: siteAuthor.github }],
+  creator: siteAuthor.name,
+  publisher: siteAuthor.name,
+  category: 'technology',
+  referrer: 'origin-when-cross-origin',
   alternates: {
     canonical: '/',
     types: {
       'application/rss+xml': '/feed.xml',
     },
   },
-  openGraph: {
-    type: 'website',
-    url: '/',
-    title: siteContent.title,
-    description: siteContent.description,
-    siteName: siteContent.name,
-    locale: siteContent.locale.replace('-', '_'),
-  },
-  twitter: {
-    card: 'summary',
-    title: siteContent.title,
-    description: siteContent.description,
-  },
+  openGraph: rootMetadata.openGraph,
+  twitter: rootMetadata.twitter,
+  robots: rootMetadata.robots,
   manifest: '/manifest.json',
   icons: {
     icon: [
@@ -78,9 +83,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const websiteJsonLd = createWebsiteJsonLd()
+  const personJsonLd = createPersonJsonLd()
+
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
+        <JsonLd id="website-jsonld" data={websiteJsonLd} />
+        <JsonLd id="person-jsonld" data={personJsonLd} />
         <script
           dangerouslySetInnerHTML={{
             __html: `

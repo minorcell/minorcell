@@ -1,18 +1,51 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import SpotlightCard from '@/components/effects/reactbits/SpotlightCard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllTopics } from '@/lib/topics.server'
+import { buildPageMetadata } from '@/lib/seo'
+import {
+  createBreadcrumbJsonLd,
+  createCollectionPageJsonLd,
+} from '@/lib/structured-data'
 
-export const metadata: Metadata = {
-  title: '专题',
-  description: '精选技术专题合集，深入探讨各类技术主题',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: '技术专题合集',
+  description:
+    '按主题系统学习前端与 AI 工程内容，包含 React 深入解析、Hooks 指南、Agent 开发与提示词工程等专题。',
+  path: '/topics',
+  keywords: [
+    '技术专题',
+    'React 专题',
+    'Hooks 教程',
+    'Agent 开发',
+    '系统提示词',
+    '前端进阶',
+  ],
+})
 
 export default function TopicsPage() {
   const topics = getAllTopics()
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: '首页', path: '/' },
+    { name: '专题', path: '/topics' },
+  ])
+  const collectionPageJsonLd = createCollectionPageJsonLd({
+    title: '技术专题合集',
+    description:
+      '按主题系统学习前端与 AI 工程内容，包含 React 深入解析、Hooks 指南、Agent 开发与提示词工程等专题。',
+    path: '/topics',
+    items: topics.map((topic) => ({
+      name: topic.title,
+      path: `/topics/${topic.slug}`,
+    })),
+  })
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 pb-12 sm:pt-20 sm:pb-16">
+      <JsonLd id="topics-breadcrumb" data={breadcrumbJsonLd} />
+      <JsonLd id="topics-collection" data={collectionPageJsonLd} />
+
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-2">

@@ -1,12 +1,28 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import SpotlightCard from '@/components/effects/reactbits/SpotlightCard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllPosts } from '@/lib/mdx'
+import { buildPageMetadata } from '@/lib/seo'
+import {
+  createBreadcrumbJsonLd,
+  createCollectionPageJsonLd,
+} from '@/lib/structured-data'
 
-export const metadata: Metadata = {
-  title: '文章',
-  description: 'CellStack 博客文章列表',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: '技术博客文章列表',
+  description:
+    '浏览 Cell Stack 最新技术文章，覆盖 AI Agent、JavaScript、TypeScript、React、Next.js、Node.js 与工程化实践。',
+  path: '/blog',
+  keywords: [
+    '技术博客',
+    '编程文章',
+    'AI Agent 实战',
+    'JavaScript 博客',
+    'React 博客',
+    'Next.js 博客',
+  ],
+})
 
 const formatDate = (value: string) => {
   const date = new Date(value)
@@ -20,6 +36,20 @@ export default function BlogPage() {
     (a, b) =>
       new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime(),
   )
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: '首页', path: '/' },
+    { name: '文章', path: '/blog' },
+  ])
+  const collectionPageJsonLd = createCollectionPageJsonLd({
+    title: '技术博客文章列表',
+    description:
+      '浏览 Cell Stack 最新技术文章，覆盖 AI Agent、JavaScript、TypeScript、React、Next.js、Node.js 与工程化实践。',
+    path: '/blog',
+    items: posts.map((post) => ({
+      name: post.metadata.title,
+      path: `/blog/${post.slug}`,
+    })),
+  })
 
   // Group posts by year
   const postsByYear = posts.reduce(
@@ -36,6 +66,9 @@ export default function BlogPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 pb-12 sm:pt-20 sm:pb-16">
+      <JsonLd id="blog-breadcrumb" data={breadcrumbJsonLd} />
+      <JsonLd id="blog-collection" data={collectionPageJsonLd} />
+
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-2">

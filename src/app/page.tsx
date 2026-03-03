@@ -3,10 +3,28 @@ import Link from 'next/link'
 import InfiniteMenu, { type InfiniteMenuItem } from '@/components/effects/reactbits/InfiniteMenu'
 import { siteContent } from '@/lib/site-content'
 import { getAllPosts } from '@/lib/mdx'
+import { buildPageMetadata } from '@/lib/seo'
+
+const homeMetadata = buildPageMetadata({
+  title: 'Cell Stack | AI Agent 与全栈开发技术博客',
+  description:
+    'Cell Stack 聚焦 AI Agent、JavaScript、TypeScript、React、Next.js 与工程实践，持续分享教程、专题文章、项目复盘与可落地代码示例。',
+  path: '/',
+  keywords: [
+    'AI Agent 教程',
+    'JavaScript 教程',
+    'TypeScript 教程',
+    'React 教程',
+    'Next.js 教程',
+    '全栈开发博客',
+  ],
+})
 
 export const metadata: Metadata = {
-  title: { absolute: siteContent.name },
-  description: siteContent.description,
+  ...homeMetadata,
+  title: {
+    absolute: 'Cell Stack | AI Agent 与全栈开发技术博客',
+  },
 }
 
 const formatDate = (value: string) => {

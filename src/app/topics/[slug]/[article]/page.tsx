@@ -4,9 +4,15 @@ import { getTopic, getTopicArticle, getAllTopics } from '@/lib/topics.server'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { GiscusComments } from '@/components/common/GiscusComments'
 import { CopyPageButton } from '@/components/common/CopyPageButton'
+import { JsonLd } from '@/components/seo/JsonLd'
 import type { Metadata } from 'next'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { notFound } from 'next/navigation'
+import { buildArticleMetadata, buildPageMetadata } from '@/lib/seo'
+import {
+  createArticleJsonLd,
+  createBreadcrumbJsonLd,
+} from '@/lib/structured-data'
 
 interface Props {
   params: Promise<{
@@ -15,25 +21,62 @@ interface Props {
   }>
 }
 
+const toStringArray = (value: unknown) =>
+  Array.isArray(value)
+    ? value.filter(
+        (item): item is string =>
+          typeof item === 'string' && item.trim().length > 0,
+      )
+    : []
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, article } = await params
   const topic = getTopic(slug)
+  const topicArticle = getTopicArticle(slug, article)
+  const path = `/topics/${slug}/${article}`
 
   if (!topic) {
-    return { title: '专题不存在' }
+    return buildPageMetadata({
+      title: '专题不存在',
+      description: '请求的专题不存在或已删除。',
+      path,
+      noIndex: true,
+    })
   }
 
   try {
     const post = getPostBySlug('topics', `${slug}/${article}`)
-    return {
+    const description =
+      (typeof post.metadata.description === 'string'
+        ? post.metadata.description
+        : undefined) ?? post.metadata.title
+    const tags = [
+      ...toStringArray(post.metadata.keywords),
+      ...toStringArray(post.metadata.tags),
+    ]
+    const image =
+      typeof post.metadata.image === 'string' && post.metadata.image.trim()
+        ? post.metadata.image
+        : '/logo.svg'
+
+    return buildArticleMetadata({
       title: post.metadata.title,
-      description:
-        (typeof post.metadata.description === 'string'
-          ? post.metadata.description
-          : undefined) ?? post.metadata.title,
-    }
+      description,
+      path,
+      image,
+      publishedTime: topicArticle?.date ?? post.metadata.date,
+      modifiedTime: topicArticle?.date ?? post.metadata.date,
+      section: topic.title,
+      tags,
+      keywords: [topic.title, '技术专题', '开发教程'],
+    })
   } catch {
-    return { title: '文章不存在' }
+    return buildPageMetadata({
+      title: '文章不存在',
+      description: '请求的文章不存在或已删除。',
+      path,
+      noIndex: true,
+    })
   }
 }
 
@@ -85,9 +128,44 @@ export default async function TopicArticlePage({ params }: Props) {
     currentIndex < sortedArticles.length - 1
       ? sortedArticles[currentIndex + 1]
       : null
+  const description =
+    (typeof post.metadata.description === 'string'
+      ? post.metadata.description
+      : undefined) ?? post.metadata.title
+  const tags = [
+    ...toStringArray(post.metadata.keywords),
+    ...toStringArray(post.metadata.tags),
+  ]
+  const image =
+    typeof post.metadata.image === 'string' && post.metadata.image.trim()
+      ? post.metadata.image
+      : '/logo.svg'
+  const articleJsonLd = createArticleJsonLd({
+    type: 'TechArticle',
+    title: post.metadata.title,
+    description,
+    path: `/topics/${slug}/${article}`,
+    publishedTime: topicArticle.date ?? post.metadata.date,
+    modifiedTime: topicArticle.date ?? post.metadata.date,
+    image,
+    section: topic.title,
+    keywords: tags,
+  })
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: '首页', path: '/' },
+    { name: '专题', path: '/topics' },
+    { name: topic.title, path: `/topics/${slug}` },
+    { name: post.metadata.title, path: `/topics/${slug}/${article}` },
+  ])
 
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <JsonLd id={`topic-article-${slug}-${article}`} data={articleJsonLd} />
+      <JsonLd
+        id={`topic-article-breadcrumb-${slug}-${article}`}
+        data={breadcrumbJsonLd}
+      />
+
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
         <Link
