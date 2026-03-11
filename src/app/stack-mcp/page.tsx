@@ -67,6 +67,10 @@ const toolsets = [
     title: 'S3 上传',
     desc: '支持 AWS S3 与兼容 S3 的对象存储（如 MinIO / R2）。',
   },
+  {
+    title: '任务通知',
+    desc: '任务完成后推送系统通知或 Webhook（支持飞书、企业微信等渠道），可携带状态、摘要与耗时信息。',
+  },
 ]
 
 const envExamples = [

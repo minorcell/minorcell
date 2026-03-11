@@ -68,9 +68,26 @@ export const projectGroups: ProjectGroup[] = [
         ],
       },
       {
+        name: 'aquaregia',
+        summary:
+          'Provider-agnostic Rust toolkit for building AI applications — unified API across OpenAI, Anthropic, Google, and OpenAI-compatible providers, with streaming, reasoning, and tool-loop support.',
+        status: 'active',
+        tags: ['Rust'],
+        links: [
+          {
+            label: 'Docs',
+            href: 'https://docs.rs/aquaregia/latest/aquaregia/',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/aquaregia',
+          },
+        ],
+      },
+      {
         name: 'mcell-mcp-server',
         summary:
-          'mcell-mcp-server 是一个基于 stdio 的 MCP Server，定位为 mcell 常用工具合集。',
+          'mcell-mcp-server 是一个基于 stdio 的 MCP Server，包含图片压缩/转换、S3 上传、博客内容检索、任务完成通知等工具。',
         status: 'active',
         tags: ['TypeScript'],
         links: [
