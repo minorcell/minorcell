@@ -1,5 +1,5 @@
 ---
-title: '最近的一点思考'
+title: '关于 Openclaw，最近的一点思考'
 date: 2026-03-15
 description: '人与人之间都很难建立绝对信任，更别说人与 AI。'
 order: 44
