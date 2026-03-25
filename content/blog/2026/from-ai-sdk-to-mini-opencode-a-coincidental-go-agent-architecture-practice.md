@@ -1,5 +1,5 @@
 ---
-title: '从 AI SDK 到 mini-opencode：一次很巧的 Go Agent 架构实践'
+title: '【万字长文】从 AI SDK 到 mini-opencode：一次很巧的 Go Agent 架构实践'
 date: 2026-03-26
 description: '一个架构实践里，最怕的不是“还没做完”，而是“系统边界已经糊了”。只要边界清楚，下一步该补什么、该在哪层补，都是清晰的。'
 order: 46
