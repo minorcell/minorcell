@@ -10,6 +10,7 @@ import StaggeredMenu, {
   type StaggeredMenuSocialItem,
 } from '@/components/effects/reactbits/StaggeredMenu'
 import TextPressure from '@/components/effects/reactbits/TextPressure'
+import { useRouteBack } from '@/hooks/useRouteBack'
 import { siteContent } from '@/lib/site-content'
 
 const navLinks = [
@@ -164,6 +165,7 @@ function SunGlyph({ className }: { className?: string }) {
 
 export function Navbar() {
   const pathname = usePathname()
+  const { previousLabel, goBack, shouldShowBackButton } = useRouteBack()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [mounted, setMounted] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -274,26 +276,48 @@ export function Navbar() {
         className="pointer-events-none"
       />
       <div className="relative z-20 flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          aria-label={siteContent.name}
-          className="inline-flex items-center opacity-100 hover:opacity-100"
-        >
-          <div className="h-8 w-36 sm:w-40">
-            <TextPressure
-              text={siteContent.name}
-              flex={false}
-              stroke={false}
-              alpha={false}
-              width={false}
-              weight={true}
-              italic={true}
-              textColor="var(--foreground)"
-              minFontSize={24}
-              className="select-none"
+        {shouldShowBackButton ? (
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex max-w-[min(15rem,calc(100vw-7rem))] items-center gap-3 rounded-full border border-border/50 bg-background/72 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-md transition-colors"
+            aria-label={
+              previousLabel ? `返回${previousLabel}` : '返回上一页'
+            }
+          >
+            <span className="shrink-0 text-xs font-medium text-muted-foreground">
+              ← 返回
+            </span>
+            <span
+              className="h-4 w-px shrink-0 bg-border/80"
+              aria-hidden="true"
             />
-          </div>
-        </Link>
+            <span className="truncate text-sm font-medium text-foreground">
+              {previousLabel ?? '上一页'}
+            </span>
+          </button>
+        ) : (
+          <Link
+            href="/"
+            aria-label={siteContent.name}
+            className="inline-flex items-center opacity-100 hover:opacity-100"
+          >
+            <div className="h-8 w-36 sm:w-40">
+              <TextPressure
+                text={siteContent.name}
+                flex={false}
+                stroke={false}
+                alpha={false}
+                width={false}
+                weight={true}
+                italic={true}
+                textColor="var(--foreground)"
+                minFontSize={24}
+                className="select-none"
+              />
+            </div>
+          </Link>
+        )}
 
         <nav className="hidden md:flex items-center gap-4 sm:gap-5">
           {navLinks.map((item) => (

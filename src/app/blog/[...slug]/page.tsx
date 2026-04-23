@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { getPostBySlug, getPostSlugs } from '@/lib/mdx'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { GiscusComments } from '@/components/common/GiscusComments'
@@ -122,13 +121,6 @@ export default async function BlogPost({ params }: Props) {
       {/* Header */}
       <header className="mb-10">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <Link
-            href="/blog"
-            className="hover:text-foreground transition-colors"
-          >
-            ← 返回
-          </Link>
-          <span>·</span>
           <time>{formatDate(post.metadata.date)}</time>
           <CopyPageButton
             pageContent={post.rawContent}

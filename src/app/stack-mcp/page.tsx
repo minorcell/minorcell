@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { buildPageMetadata } from '@/lib/seo'
 
 const PACKAGE_NAME = '@mcell/mcell-mcp-server'
@@ -93,13 +92,6 @@ AWS_REGION=us-east-1`,
 export default function StackMcpPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      <Link
-        href="/"
-        className="text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 inline-block"
-      >
-        ← 返回首页
-      </Link>
-
       <header className="mb-10">
         <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-3">
           Mcell MCP Server

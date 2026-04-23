@@ -71,7 +71,7 @@ export default function TopicsPage() {
               <div className="flex items-start justify-between gap-3 mb-2">
                 <h2 className="font-medium text-foreground">{topic.title}</h2>
                 <span className="text-xs text-muted-foreground shrink-0">
-                  {topic.articles.length} 篇
+                  交互教程
                 </span>
               </div>
               <p className="text-sm text-muted-foreground line-clamp-2">
