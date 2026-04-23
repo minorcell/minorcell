@@ -2,8 +2,10 @@
 title: '为什么我不建议初学者一上来就用框架学 Agent'
 date: '2026-04-23'
 description: '框架隐藏了 Agent 最核心的工程问题：状态管理、决策逻辑、工具设计、循环收敛和子 Agent 隔离。建议初学者先手写最小闭环，理解底层机制后再使用框架。'
-order: 47
+order: 48
 ---
+
+![](https://stack-mcell.tos-cn-shanghai.volces.com/202638.png)
 
 前两天回校，和想做 Agent 的学弟聊了聊。我发现一个很普遍的现象：很多人一开始接触 Agent，第一反应不是先去理解 Agent 的机制，而是先找 LangChain 这类框架把东西跑起来。
 
