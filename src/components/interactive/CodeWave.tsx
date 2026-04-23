@@ -34,28 +34,31 @@ function CodePanel({ step }: { step: CodeStep }) {
     const isFirstMount = isMountRef.current
     isMountRef.current = false
 
+    const behavior = isFirstMount ? ('instant' as const) : ('smooth' as const)
+    const lineEls = container.querySelectorAll<HTMLElement>('[data-line]')
+    const containerRect = container.getBoundingClientRect()
+
     if (!hasHighlight || !step.highlightLines?.length) {
-      container.scrollTo({
-        top: 0,
-        behavior: isFirstMount ? 'instant' : 'smooth',
-      })
+      const firstEl = lineEls[0]
+      if (firstEl) {
+        const dy = firstEl.getBoundingClientRect().top - containerRect.top - 16
+        container.scrollBy({ top: dy, behavior })
+      }
       return
     }
 
     const minLine = Math.min(...step.highlightLines) - 1
     const maxLine = Math.max(...step.highlightLines) - 1
     const centerLine = Math.round((minLine + maxLine) / 2)
-
-    const lineEls = container.querySelectorAll<HTMLElement>('[data-line]')
     const el = lineEls[centerLine]
     if (!el) return
 
-    const targetScrollTop =
-      el.offsetTop + el.offsetHeight / 2 - container.clientHeight / 2
-    container.scrollTo({
-      top: Math.max(0, targetScrollTop),
-      behavior: isFirstMount ? 'instant' : 'smooth',
-    })
+    const elRect = el.getBoundingClientRect()
+    const dy =
+      elRect.top +
+      el.offsetHeight / 2 -
+      (containerRect.top + container.clientHeight / 2)
+    container.scrollBy({ top: dy, behavior })
   }, [step.highlightLines, hasHighlight])
 
   return (
