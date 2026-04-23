@@ -22,11 +22,27 @@ function createTextElement(text) {
   }
 }
 
-const element = React.createElement(
-  "div",
-  { id: "foo" },
-  React.createElement("a", null, "bar"),
-  React.createElement("b")
+function render(element, container) {
+  const dom = document.createElement(element.type)
+
+  element.props.children.forEach(child =>
+    render(child, dom)
+  )
+
+  container.appendChild(dom)
+}
+
+const Didact = {
+  createElement,
+  render,
+}
+
+/** @jsx Didact.createElement */
+const element = (
+  <div id="foo">
+    <a>bar</a>
+    <b />
+  </div>
 )
 const container = document.getElementById("root")
-ReactDOM.render(element, container)
+Didact.render(element, container)

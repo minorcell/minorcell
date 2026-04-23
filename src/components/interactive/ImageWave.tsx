@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useScrollProgress } from './useScrollProgress'
 
@@ -19,8 +20,10 @@ interface ImageWaveProps {
 }
 
 export function ImageWave({ steps }: ImageWaveProps) {
-  const { progress, setRef } = useScrollProgress(steps.length)
+  const { currentIndex, setRef } = useScrollProgress(steps.length)
   if (steps.length === 0) return null
+
+  const activeStep = steps[currentIndex]?.step ?? steps[0].step
 
   return (
     <div className="imagewave-container relative">
@@ -44,49 +47,45 @@ export function ImageWave({ steps }: ImageWaveProps) {
 
       {/* Desktop: side-by-side scrollytelling */}
       <div className="hidden lg:flex gap-0 items-start">
-        {/* Left: sticky image panel — prev/curr/next crossfade */}
+        {/* Left: sticky image panel — crossfades on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] flex items-center justify-center">
             <div
               className="relative rounded-lg border border-border bg-card overflow-hidden w-full"
               style={{ height: 'calc(100vh - 8rem)' }}
             >
-              {steps.map((s, i) => {
-                const dist = Math.abs(i - progress)
-                const opacity = Math.max(0, 1 - dist)
-                if (opacity <= 0) return null
-                return (
-                  <img
-                    key={i}
-                    src={s.step.src}
-                    alt={s.step.alt || ''}
-                    className="absolute inset-0 m-auto max-w-full object-contain"
-                    style={{ maxHeight: 'calc(100vh - 10rem)', opacity }}
-                  />
-                )
-              })}
+              <AnimatePresence initial={false} mode="sync">
+                <motion.img
+                  key={currentIndex}
+                  src={activeStep.src}
+                  alt={activeStep.alt || ''}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                  className="absolute inset-0 m-auto max-w-full object-contain"
+                  style={{ maxHeight: 'calc(100vh - 10rem)' }}
+                />
+              </AnimatePresence>
             </div>
           </div>
         </div>
 
-        {/* Right: scrollable prose */}
+        {/* Right: scrollable prose — spring opacity matching CodeWave */}
         <div className="w-[50%] pl-8">
-          <div className="h-[40vh]" />
-          {steps.map((s, i) => {
-            const dist = Math.abs(i - progress)
-            const opacity = dist < 1 ? 0.3 + 0.7 * (1 - dist) : 0.3
-            return (
-              <div
-                key={i}
-                ref={setRef(i)}
-                className="min-h-[50vh] py-8"
-                style={{ opacity, transition: 'opacity 0.15s ease' }}
-              >
-                <MarkdownRenderer content={s.prose} />
-              </div>
-            )
-          })}
-          <div className="h-[40vh]" />
+          <div className="h-[20vh]" />
+          {steps.map((s, i) => (
+            <motion.div
+              key={i}
+              ref={setRef(i) as React.Ref<HTMLDivElement>}
+              animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
+              transition={{ type: 'spring', stiffness: 24, damping: 12 }}
+              className="min-h-[50vh] py-8"
+            >
+              <MarkdownRenderer content={s.prose} />
+            </motion.div>
+          ))}
+          <div className="h-[20vh]" />
         </div>
       </div>
     </div>

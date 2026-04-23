@@ -3,7 +3,6 @@
 import React from 'react'
 import { CodeWave, type StepContent } from './CodeWave'
 import { ImageWave, type ImageStepContent } from './ImageWave'
-import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 
 export interface SerializedCodeStep {
   kind: 'code'
@@ -51,26 +50,39 @@ function groupSteps(
   return groups
 }
 
+function mergeIntroIntoSteps(
+  intro: string,
+  steps: SerializedStep[],
+): SerializedStep[] {
+  const trimmedIntro = intro.trim()
+  if (!trimmedIntro || steps.length === 0) {
+    return steps
+  }
+
+  const [firstStep, ...restSteps] = steps
+
+  return [
+    {
+      ...firstStep,
+      prose: [trimmedIntro, firstStep.prose].filter(Boolean).join('\n\n'),
+    },
+    ...restSteps,
+  ]
+}
+
 export function InteractiveTutorialView({
   title,
   description,
   intro,
   steps,
 }: InteractiveTutorialViewProps) {
-  const groups = groupSteps(steps)
+  const groups = groupSteps(mergeIntroIntoSteps(intro, steps))
 
   return (
     <div
       className="interactive-tutorial relative"
       aria-label={description || title}
     >
-      {/* Intro (rendered inline before the scrollytelling area) */}
-      {intro && (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
-          <MarkdownRenderer content={intro} />
-        </div>
-      )}
-
       {/* Step groups — full width */}
       {groups.map((group, gi) => (
         <div key={gi}>

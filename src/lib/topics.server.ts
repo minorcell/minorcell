@@ -5,15 +5,31 @@ import matter from 'gray-matter'
 const root = process.cwd()
 const topicsDir = path.join(root, 'content', 'topics')
 
+export interface TopicArticle {
+  slug: string
+  title: string
+  description?: string
+  date?: string
+  order?: number
+}
+
 export interface Topic {
   slug: string
   title: string
   description: string
+  articles: TopicArticle[]
 }
 
 interface TopicIndexMetadata {
   title: string
   description: string
+}
+
+interface TopicArticleMetadata {
+  title: string
+  description?: string
+  date?: string
+  order?: number
 }
 
 /**
@@ -35,11 +51,51 @@ function readTopicIndex(topicSlug: string): Topic | null {
       slug: topicSlug,
       title: metadata.title || topicSlug,
       description: metadata.description || '',
+      articles: readTopicArticles(topicSlug),
     }
   } catch (error) {
     console.error(`Error reading topic index for ${topicSlug}:`, error)
     return null
   }
+}
+
+const EXCLUDED_FILES = new Set(['index.md', 'content.md'])
+
+function readTopicArticles(topicSlug: string): TopicArticle[] {
+  const topicPath = path.join(topicsDir, topicSlug)
+  if (!fs.existsSync(topicPath)) return []
+
+  const files = fs.readdirSync(topicPath).filter((f) => {
+    return f.endsWith('.md') && !EXCLUDED_FILES.has(f)
+  })
+
+  const articles: TopicArticle[] = files
+    .map((file) => {
+      const slug = file.replace(/\.md$/, '')
+      try {
+        const content = fs.readFileSync(path.join(topicPath, file), 'utf8')
+        const { data } = matter(content)
+        const meta = data as TopicArticleMetadata
+        return {
+          slug,
+          title: meta.title || slug,
+          description: meta.description,
+          date: meta.date ? String(meta.date) : undefined,
+          order: meta.order,
+        }
+      } catch {
+        return { slug, title: slug }
+      }
+    })
+    .sort((a, b) => {
+      if (a.order !== undefined && b.order !== undefined)
+        return a.order - b.order
+      if (a.order !== undefined) return -1
+      if (b.order !== undefined) return 1
+      return (a.date ?? '').localeCompare(b.date ?? '')
+    })
+
+  return articles
 }
 
 /**

@@ -3,29 +3,16 @@ function createElement(type, props, ...children) {
     type,
     props: {
       ...props,
-      children: children.map(child =>
-        typeof child === "object"
-          ? child
-          : createTextElement(child)
-      ),
+      children,
     },
   }
 }
 
-function createTextElement(text) {
-  return {
-    type: "TEXT_ELEMENT",
-    props: {
-      nodeValue: text,
-      children: [],
-    },
-  }
-}
-
-const element = Didact.createElement(
+const element = React.createElement(
   "div",
   { id: "foo" },
-  Didact.createElement("a", null, "bar"),
-  Didact.createElement("b")
+  React.createElement("a", null, "bar"),
+  React.createElement("b")
 )
 const container = document.getElementById("root")
+ReactDOM.render(element, container)

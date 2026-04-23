@@ -276,6 +276,15 @@
   opacity: 0.3;
 }
 
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/WebKit */
+}
+
 /* Responsive adjustments */
 @media (max-width: 640px) {
   body {

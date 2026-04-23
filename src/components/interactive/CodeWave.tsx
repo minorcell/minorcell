@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useScrollProgress } from './useScrollProgress'
 
@@ -21,53 +22,77 @@ interface CodeWaveProps {
 }
 
 function CodePanel({ step }: { step: CodeStep }) {
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isMountRef = useRef(true)
   const lines = step.code.split('\n')
+  const hasHighlight = !!(step.highlightLines && step.highlightLines.length > 0)
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: 0, left: 0 })
-  }, [step.code, step.highlightLines])
+    const container = containerRef.current
+    if (!container) return
+
+    const isFirstMount = isMountRef.current
+    isMountRef.current = false
+
+    if (!hasHighlight || !step.highlightLines?.length) {
+      container.scrollTo({
+        top: 0,
+        behavior: isFirstMount ? 'instant' : 'smooth',
+      })
+      return
+    }
+
+    const minLine = Math.min(...step.highlightLines) - 1
+    const maxLine = Math.max(...step.highlightLines) - 1
+    const centerLine = Math.round((minLine + maxLine) / 2)
+
+    const lineEls = container.querySelectorAll<HTMLElement>('[data-line]')
+    const el = lineEls[centerLine]
+    if (!el) return
+
+    const targetScrollTop =
+      el.offsetTop + el.offsetHeight / 2 - container.clientHeight / 2
+    container.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: isFirstMount ? 'instant' : 'smooth',
+    })
+  }, [step.highlightLines, hasHighlight])
 
   return (
-    <div className="h-full">
-      <div ref={scrollRef} className="max-h-full overflow-auto">
-        <pre className="px-4 py-3 text-[13px] leading-[1.7] font-mono">
-          <code>
-            {lines.map((line, i) => {
-              const lineNum = i + 1
-              const hasHighlight =
-                step.highlightLines && step.highlightLines.length > 0
-              const isHighlighted = hasHighlight
-                ? step.highlightLines!.includes(lineNum)
-                : true
-              return (
-                <div
-                  key={i}
-                  className={`flex transition-opacity duration-300 ${
-                    isHighlighted ? 'opacity-100' : 'opacity-25'
-                  }`}
-                >
-                  <span className="select-none w-8 shrink-0 text-right mr-3 text-muted-foreground/40 text-xs leading-[1.7]">
-                    {lineNum}
-                  </span>
-                  <span className="flex-1 whitespace-pre">{line}</span>
-                </div>
-              )
-            })}
-          </code>
-        </pre>
-      </div>
+    <div ref={containerRef} className="h-full overflow-y-auto">
+      <pre
+        className="px-4 text-[12px] leading-[1.6] font-mono sm:px-5"
+        style={{ paddingTop: '20rem', paddingBottom: '20rem' }}
+      >
+        <code>
+          {lines.map((line, i) => {
+            const isHighlighted = hasHighlight
+              ? step.highlightLines!.includes(i + 1)
+              : true
+            return (
+              <div
+                key={i}
+                data-line={i}
+                className={`flex transition-opacity duration-300 ${
+                  isHighlighted ? 'opacity-100' : 'opacity-25'
+                }`}
+              >
+                <span className="flex-1 whitespace-pre">{line || ' '}</span>
+              </div>
+            )
+          })}
+        </code>
+      </pre>
     </div>
   )
 }
 
 export function CodeWave({ steps }: CodeWaveProps) {
-  const { progress, setRef } = useScrollProgress(steps.length)
-  const activeIndex = Math.round(progress)
+  const { currentIndex, setRef } = useScrollProgress(steps.length)
 
   if (steps.length === 0) return null
 
-  const activeStep = steps[activeIndex]?.step ?? steps[0].step
+  const activeStep = steps[currentIndex]?.step ?? steps[0].step
 
   return (
     <div className="codewave-container relative">
@@ -87,35 +112,38 @@ export function CodeWave({ steps }: CodeWaveProps) {
 
       {/* Desktop: side-by-side scrollytelling */}
       <div className="hidden lg:flex items-stretch">
-        {/* Left: sticky code panel */}
-        <div className="w-[55%] shrink-0 border-r border-border/30">
+        {/* Left: sticky code panel — crossfades on step change */}
+        <div className="w-[50%] shrink-0 border-r border-border/30">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
-            <div className="flex h-full items-center px-8 py-10">
-              <div className="w-full max-h-[min(36rem,calc(100vh-8rem))]">
+            <div className="flex h-full items-center px-6 py-8 xl:px-8">
+              <motion.div
+                key={activeStep.code}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}
+                className="w-full h-[min(36rem,calc(100vh-8rem))]"
+              >
                 <CodePanel step={activeStep} />
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
 
-        {/* Right: scrollable prose — top/bottom padding anchors first/last step to center */}
-        <div className="w-[45%]">
-          <div className="h-[40vh]" />
-          {steps.map((s, i) => {
-            const dist = Math.abs(i - progress)
-            const opacity = dist < 1 ? 0.3 + 0.7 * (1 - dist) : 0.3
-            return (
-              <div
-                key={i}
-                ref={setRef(i)}
-                className="min-h-[60vh] px-8 py-10"
-                style={{ opacity, transition: 'opacity 0.15s ease' }}
-              >
-                <MarkdownRenderer content={s.prose} />
-              </div>
-            )
-          })}
-          <div className="h-[40vh]" />
+        {/* Right: scrollable prose — spring opacity matching site's stiffness/damping */}
+        <div className="w-[50%]">
+          <div className="h-[20vh]" />
+          {steps.map((s, i) => (
+            <motion.div
+              key={i}
+              ref={setRef(i) as React.Ref<HTMLDivElement>}
+              animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
+              transition={{ type: 'spring', stiffness: 24, damping: 12 }}
+              className="min-h-[60vh] px-6 py-8 xl:px-8"
+            >
+              <MarkdownRenderer content={s.prose} />
+            </motion.div>
+          ))}
+          <div className="h-[20vh]" />
         </div>
       </div>
     </div>
