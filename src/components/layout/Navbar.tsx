@@ -166,17 +166,15 @@ function SunGlyph({ className }: { className?: string }) {
 export function Navbar() {
   const pathname = usePathname()
   const { previousLabel, goBack, shouldShowBackButton } = useRouteBack()
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const [mounted, setMounted] = useState(false)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() =>
+    typeof document !== 'undefined' &&
+    document.documentElement.classList.contains('dark')
+      ? 'dark'
+      : 'light',
+  )
   const [searchOpen, setSearchOpen] = useState(false)
   const iconButtonClass =
     'inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground opacity-100 transition-colors hover:text-foreground hover:bg-muted/60 hover:opacity-100'
-
-  useEffect(() => {
-    setMounted(true)
-    const isDark = document.documentElement.classList.contains('dark')
-    setTheme(isDark ? 'dark' : 'light')
-  }, [])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -199,10 +197,6 @@ export function Navbar() {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
-
-  useEffect(() => {
-    setSearchOpen(false)
-  }, [pathname])
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -264,7 +258,7 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-1200 bg-background/80">
+    <header className="sticky top-0 z-[1200] bg-background/80 backdrop-blur-sm">
       <GradualBlur
         position="top"
         target="parent"
@@ -280,10 +274,8 @@ export function Navbar() {
           <button
             type="button"
             onClick={goBack}
-            className="inline-flex max-w-[min(15rem,calc(100vw-7rem))] items-center gap-3 rounded-full border border-border/50 bg-background/72 px-3 py-2 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-md transition-colors"
-            aria-label={
-              previousLabel ? `返回${previousLabel}` : '返回上一页'
-            }
+            className="inline-flex max-w-[min(15rem,calc(100vw-7rem))] items-center gap-3 rounded-full border border-border/50 bg-background/72 px-3 py-2"
+            aria-label={previousLabel ? `返回${previousLabel}` : '返回上一页'}
           >
             <span className="shrink-0 text-xs font-medium text-muted-foreground">
               ← 返回
@@ -402,19 +394,17 @@ export function Navbar() {
               <RssGlyph className="w-4 h-4" />
             </Link>
 
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className={iconButtonClass}
-                aria-label="切换主题"
-              >
-                {theme === 'light' ? (
-                  <MoonGlyph className="w-4 h-4" />
-                ) : (
-                  <SunGlyph className="w-4 h-4" />
-                )}
-              </button>
-            )}
+            <button
+              onClick={toggleTheme}
+              className={iconButtonClass}
+              aria-label="切换主题"
+            >
+              {theme === 'light' ? (
+                <MoonGlyph className="w-4 h-4" />
+              ) : (
+                <SunGlyph className="w-4 h-4" />
+              )}
+            </button>
           </div>
         </nav>
 
@@ -428,10 +418,10 @@ export function Navbar() {
             displaySocials={mobileSocialItems.length > 0}
             displayItemNumbering={false}
             menuButtonColor="var(--muted-foreground)"
-            openMenuButtonColor="#111111"
+            openMenuButtonColor="var(--foreground)"
             changeMenuColorOnOpen={true}
-            colors={['#e9eaee', '#ffffff']}
-            accentColor="#0f172a"
+            colors={['var(--muted)', 'var(--background)']}
+            accentColor="var(--foreground)"
             logoUrl="/logo.svg"
           />
         </div>

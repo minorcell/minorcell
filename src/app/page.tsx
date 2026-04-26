@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import InfiniteMenu, { type InfiniteMenuItem } from '@/components/effects/reactbits/InfiniteMenu'
+import type { InfiniteMenuItem } from '@/components/effects/reactbits/InfiniteMenu'
+import { HomeVisualPreview } from '@/components/common/HomeVisualPreview'
 import { siteContent } from '@/lib/site-content'
 import { getAllPosts } from '@/lib/mdx'
 import { buildPageMetadata } from '@/lib/seo'
@@ -58,14 +59,14 @@ export default function HomePage() {
         <h1 className="home-brand-title text-3xl sm:text-4xl tracking-tight mb-4">
           {siteContent.name}
         </h1>
-        <p className="text-muted-foreground text-lg leading-relaxed">
+        <p className="text-foreground/78 text-lg leading-relaxed">
           {siteContent.description}
         </p>
       </section>
 
       {/* Bio Section */}
       <section className="mb-12 space-y-4">
-        <p className="text-foreground/85 leading-relaxed">
+        <p className="text-foreground/92 leading-relaxed">
           👋，我是
           <a
             href="https://github.com/minorcell"
@@ -74,11 +75,11 @@ export default function HomePage() {
           >
             mcell（minorcell）
           </a>
-          ，一名前端出身的全栈工程师，目前主要专注于 AI Agent
+          ，一名全栈工程师，目前主要专注于 AI Agent
           相关开发。日常可独立完成 Web、服务端与桌面端应用开发，技术栈以
-          TypeScript、Node.js 和 Golang 为主，也在持续深入学习 Rust。
+          TypeScript、Node.js 和 Golang 为主。
         </p>
-        <p className="text-foreground/85 leading-relaxed">
+        <p className="text-foreground/92 leading-relaxed">
           你可以在
           <Link
             href="/blog"
@@ -141,13 +142,7 @@ export default function HomePage() {
               </article>
             ))}
 
-            {menuItems.length > 0 && (
-              <div className="relative left-1/2 mt-8 w-screen -translate-x-1/2 overflow-hidden">
-                <div className="relative h-[420px] px-2 sm:h-[520px] sm:px-4 md:h-[600px]">
-                  <InfiniteMenu items={menuItems} scale={0.62} />
-                </div>
-              </div>
-            )}
+            <HomeVisualPreview items={menuItems} />
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">暂无文章</p>

@@ -28,11 +28,7 @@ function MarkdownImage({ node, ...props }: StreamdownImageProps) {
   return <ZoomImage {...props} />
 }
 
-function Paragraph({
-  children,
-  node,
-  ...props
-}: StreamdownParagraphProps) {
+function Paragraph({ children, node, ...props }: StreamdownParagraphProps) {
   void node
   const nodes = React.Children.toArray(children)
   const onlyChild = nodes.length === 1 ? nodes[0] : null
@@ -102,7 +98,7 @@ export function MarkdownRenderer({
       mode="static"
       plugins={{ code: codePlugin, mermaid: mermaidPlugin }}
       linkSafety={{ enabled: false }}
-      className={className}
+      className={['article-markdown', className].filter(Boolean).join(' ')}
       components={components}
     >
       {content}

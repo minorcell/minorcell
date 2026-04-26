@@ -292,7 +292,7 @@ export function PagefindSearch({
     if (!open || !mounted) return null
 
     return createPortal(
-      <div className="fixed inset-0 z-1400 flex items-start justify-center bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-10 sm:py-14 overflow-y-auto">
+      <div className="fixed inset-0 z-[1400] flex items-start justify-center bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-10 sm:py-14 overflow-y-auto">
         <div className="w-full max-w-2xl">{content}</div>
       </div>,
       document.body,
