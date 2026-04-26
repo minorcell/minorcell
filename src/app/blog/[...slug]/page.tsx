@@ -10,12 +10,21 @@ import {
   createBreadcrumbJsonLd,
 } from '@/lib/structured-data'
 
-const formatDate = (value: string) => {
+const formatIsoDate = (value: string) => {
   const date = new Date(value)
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
-  return `${y}.${m}.${d}`
+  return `${y} · ${m} · ${d}`
+}
+
+const readingMinutes = (text: string) => {
+  const cnChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length
+  const enWords = text
+    .replace(/[\u4e00-\u9fa5]/g, '')
+    .split(/\s+/)
+    .filter(Boolean).length
+  return Math.max(1, Math.round(cnChars / 400 + enWords / 220))
 }
 
 interface Props {
@@ -113,45 +122,90 @@ export default async function BlogPost({ params }: Props) {
     { name: post.metadata.title, path: `/blog/${slugString}` },
   ])
 
+  const minutes = readingMinutes(post.content)
+
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
       <JsonLd id={`blog-posting-${slugString}`} data={articleJsonLd} />
       <JsonLd id={`blog-breadcrumb-${slugString}`} data={breadcrumbJsonLd} />
 
-      {/* Header */}
-      <header className="mb-10">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <time>{formatDate(post.metadata.date)}</time>
-          <CopyPageButton
-            pageContent={post.rawContent}
-            bodyContent={post.content}
-            className="ml-auto"
-          />
+      <article className="mx-auto w-full max-w-[920px]">
+        {/* MASTHEAD */}
+        <header>
+          <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center gap-5">
+              <span>SECTION §01 · ARTICLE</span>
+              <span className="hidden sm:inline">{minutes} MIN READ</span>
+            </div>
+            <time>{formatIsoDate(post.metadata.date)}</time>
+          </div>
+
+          {tags.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground/85">
+              {tags.map((tag) => (
+                <span key={tag}>#{tag}</span>
+              ))}
+            </div>
+          )}
+
+          <h1
+            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em]"
+            style={{
+              fontFamily: 'Georgia, "Times New Roman", serif',
+              fontWeight: 500,
+              textWrap: 'balance',
+            }}
+          >
+            {post.metadata.title}
+          </h1>
+
+          {typeof post.metadata.description === 'string' && (
+            <p
+              className="mt-6 max-w-[58ch] text-[clamp(1.05rem,1rem+0.45vw,1.3rem)] leading-[1.55] tracking-[-0.005em] text-muted-foreground"
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontStyle: 'italic',
+              }}
+            >
+              {post.metadata.description}
+            </p>
+          )}
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <span>BYLINE · MCELL</span>
+            <CopyPageButton
+              pageContent={post.rawContent}
+              bodyContent={post.content}
+            />
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="mt-14 sm:mt-16">
+          <MarkdownRenderer content={post.content} />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-medium tracking-tight mb-4">
-          {post.metadata.title}
-        </h1>
+        <hr className="section-divider" />
 
-        {typeof post.metadata.description === 'string' && (
-          <p className="text-muted-foreground text-lg">
-            {post.metadata.description}
-          </p>
-        )}
-      </header>
-
-      {/* Content */}
-      <div>
-        <MarkdownRenderer content={post.content} />
-      </div>
-
-      <hr className="section-divider" />
-
-      {/* Comments */}
-      <section>
-        <h2 className="text-lg font-medium mb-6">留言讨论</h2>
-        <GiscusComments term={discussionTerm} />
-      </section>
-    </article>
+        {/* Comments */}
+        <section className="mt-12">
+          <div className="mb-6 flex items-baseline justify-between border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-3.5">
+            <h2
+              className="m-0 text-[clamp(1.25rem,1.05rem+0.8vw,1.6rem)] tracking-[-0.02em]"
+              style={{
+                fontFamily: 'var(--font-orbitron), Georgia, serif',
+                fontWeight: 700,
+              }}
+            >
+              Discussion
+            </h2>
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+              留言区
+            </span>
+          </div>
+          <GiscusComments term={discussionTerm} />
+        </section>
+      </article>
+    </div>
   )
 }

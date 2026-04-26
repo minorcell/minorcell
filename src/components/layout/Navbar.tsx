@@ -3,13 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import GradualBlur from '@/components/effects/reactbits/GradualBlur'
 import { PagefindSearch } from '@/components/common/PagefindSearch'
 import StaggeredMenu, {
   type StaggeredMenuItem,
   type StaggeredMenuSocialItem,
 } from '@/components/effects/reactbits/StaggeredMenu'
-import TextPressure from '@/components/effects/reactbits/TextPressure'
 import { useRouteBack } from '@/hooks/useRouteBack'
 import { siteContent } from '@/lib/site-content'
 
@@ -259,73 +257,75 @@ export function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-[1200] bg-background/80 backdrop-blur-sm">
-      <GradualBlur
-        position="top"
-        target="parent"
-        exponential
-        strength={2}
-        divCount={5}
-        opacity={1}
-        zIndex={0}
-        className="pointer-events-none"
-      />
-      <div className="relative z-20 flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="paper-surface sticky top-0 z-[1200] border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)]">
+      <div className="relative z-20 mx-auto flex h-14 w-full items-center justify-between px-6 sm:px-10 lg:px-16 xl:px-24">
         {shouldShowBackButton ? (
           <button
             type="button"
             onClick={goBack}
-            className="inline-flex max-w-[min(15rem,calc(100vw-7rem))] items-center gap-3 rounded-full border border-border/50 bg-background/72 px-3 py-2"
+            className="group inline-flex items-center gap-2 hover:opacity-100"
             aria-label={previousLabel ? `返回${previousLabel}` : '返回上一页'}
           >
-            <span className="shrink-0 text-xs font-medium text-muted-foreground">
-              ← 返回
-            </span>
-            <span
-              className="h-4 w-px shrink-0 bg-border/80"
-              aria-hidden="true"
-            />
-            <span className="truncate text-sm font-medium text-foreground">
-              {previousLabel ?? '上一页'}
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-1 group-hover:text-foreground">
+              ← BACK
             </span>
           </button>
         ) : (
           <Link
             href="/"
             aria-label={siteContent.name}
-            className="inline-flex items-center opacity-100 hover:opacity-100"
+            className="group inline-flex items-baseline gap-2.5 opacity-100 hover:opacity-100"
           >
-            <div className="h-8 w-36 sm:w-40">
-              <TextPressure
-                text={siteContent.name}
-                flex={false}
-                stroke={false}
-                alpha={false}
-                width={false}
-                weight={true}
-                italic={true}
-                textColor="var(--foreground)"
-                minFontSize={24}
-                className="select-none"
-              />
-            </div>
+            <span
+              className="select-none text-foreground transition-colors group-hover:text-[color:oklch(0.86_0.05_220)]"
+              style={{
+                fontFamily: 'var(--font-orbitron), Georgia, serif',
+                fontWeight: 800,
+                fontSize: '1.1rem',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Cell{' '}
+              <span
+                className="text-muted-foreground"
+                style={{
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                }}
+              >
+                &amp;
+              </span>{' '}
+              Stack
+            </span>
+            <span
+              aria-hidden
+              className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:inline"
+            >
+              · A FIELD JOURNAL
+            </span>
           </Link>
         )}
 
-        <nav className="hidden md:flex items-center gap-4 sm:gap-5">
+        <nav className="hidden md:flex items-center gap-5 sm:gap-6">
           {navLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`text-sm transition-opacity ${
+              className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-100 ${
                 isActive(item.href)
-                  ? 'text-foreground font-medium'
+                  ? 'text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {item.label}
             </Link>
           ))}
+
+          <span
+            aria-hidden
+            className="h-3 w-px bg-[color:color-mix(in_oklab,var(--border)_85%,transparent)]"
+          />
 
           <div className="flex items-center gap-1 sm:gap-1.5">
             <button

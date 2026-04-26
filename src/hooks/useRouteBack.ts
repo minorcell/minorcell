@@ -118,10 +118,15 @@ export function useRouteBack() {
     isTopLevelSection(pathname) ? fallbackPath : previousPathname ?? fallbackPath,
   )
 
+  // Show back button only on detail pages (2+ path segments),
+  // not on home or top-level section pages like /blog, /projects, /topics, /stack-mcp.
+  const segmentCount = pathname.split('/').filter(Boolean).length
+  const shouldShowBackButton = segmentCount >= 2
+
   return {
     previousPathname,
     previousLabel,
-    shouldShowBackButton: pathname !== '/',
+    shouldShowBackButton,
     goBack: () => {
       if (canUseBrowserBack(previousPathname)) {
         router.back()

@@ -1,35 +1,60 @@
 'use client'
 
 import Link from 'next/link'
+import { siteContent } from '@/lib/site-content'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
     <footer className="mt-auto">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© {currentYear} CellStack</p>
+      <div className="mx-auto w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] py-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span>&copy; {currentYear} · MCELL</span>
+            <span className="hidden sm:inline">STACK.MCELL.TOP</span>
+          </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link
               href="/blog"
-              className="hover:text-foreground transition-colors"
+              className="transition-colors hover:text-foreground hover:opacity-100"
             >
               文章
             </Link>
             <Link
               href="/projects"
-              className="hover:text-foreground transition-colors"
+              className="transition-colors hover:text-foreground hover:opacity-100"
             >
               项目
             </Link>
             <Link
               href="/topics"
-              className="hover:text-foreground transition-colors"
+              className="transition-colors hover:text-foreground hover:opacity-100"
             >
               专题
             </Link>
+            <span aria-hidden className="text-foreground/30">
+              ·
+            </span>
+            {siteContent.contact.github && (
+              <a
+                href={siteContent.contact.github}
+                target="_blank"
+                rel="noreferrer"
+                className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+              >
+                GITHUB ↗
+              </a>
+            )}
+            {siteContent.contact.email && (
+              <a
+                href={`mailto:${siteContent.contact.email}`}
+                className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+              >
+                EMAIL ↗
+              </a>
+            )}
           </div>
         </div>
       </div>

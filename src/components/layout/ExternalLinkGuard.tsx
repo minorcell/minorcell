@@ -11,7 +11,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import {
   EXTERNAL_LINK_REQUEST_EVENT,
@@ -195,20 +194,20 @@ const getLinkRisks = (url: URL): LinkRisk[] => {
   return risks
 }
 
-const getRiskBadgeClasses = (level: LinkRiskLevel) => {
+const getRiskTone = (level: LinkRiskLevel) => {
   if (level === 'high') {
-    return 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/35'
+    return 'text-red-600 dark:text-red-400 border-red-500/50'
   }
   if (level === 'medium') {
-    return 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/35'
+    return 'text-amber-700 dark:text-amber-400 border-amber-500/50'
   }
-  return 'bg-sky-500/15 text-sky-700 dark:text-sky-400 border-sky-500/35'
+  return 'text-sky-700 dark:text-sky-400 border-sky-500/50'
 }
 
 const getRiskLabel = (level: LinkRiskLevel) => {
-  if (level === 'high') return '高风险'
-  if (level === 'medium') return '中风险'
-  return '提示'
+  if (level === 'high') return 'HIGH RISK'
+  if (level === 'medium') return 'MEDIUM RISK'
+  return 'NOTICE'
 }
 
 export function ExternalLinkGuard() {
@@ -391,124 +390,183 @@ export function ExternalLinkGuard() {
         }
       }}
     >
-      <AlertDialogContent className="max-w-xl">
-        <AlertDialogHeader>
-          <AlertDialogTitle>即将离开本站</AlertDialogTitle>
-          <AlertDialogDescription>
-            请在继续前确认目标地址是否可信。
+      <AlertDialogContent className="max-w-2xl rounded-none border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] p-0 shadow-none">
+        {/* Masthead */}
+        <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:px-8">
+          <span className="flex items-center gap-3">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:oklch(0.86_0.05_220)]"
+            />
+            EXTERNAL LINK · 外部跳转
+          </span>
+          <span>{hasHighRisk ? 'HIGH RISK' : 'NOTICE'}</span>
+        </div>
+
+        {/* Title block */}
+        <AlertDialogHeader className="space-y-3 px-6 pt-7 pb-1 text-left sm:px-8">
+          <AlertDialogTitle
+            asChild
+            className="m-0 text-[clamp(1.6rem,1.3rem+1.2vw,2.2rem)] leading-[1.12] tracking-[-0.02em]"
+          >
+            <h2
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontWeight: 500,
+                textWrap: 'balance',
+              }}
+            >
+              即将离开本站
+            </h2>
+          </AlertDialogTitle>
+          <AlertDialogDescription
+            asChild
+            className="m-0 text-[15px] leading-relaxed text-muted-foreground"
+          >
+            <p
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontStyle: 'italic',
+              }}
+            >
+              请在继续前确认目标地址是否可信。
+            </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="space-y-3">
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                  目标链接
-                </p>
-                <p className="break-all text-sm text-foreground">
-                  {pendingLink?.href}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  站点：{destinationHost || '未知'}
-                  {pendingLink?.target === '_blank' ? ' · 新标签页打开' : ''}
-                </p>
-              </div>
+        {/* Body */}
+        <div className="px-6 pt-6 sm:px-8">
+          {/* Destination block */}
+          <section className="border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-5">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+              DESTINATION · 目标地址
+            </p>
+            <p
+              className="mt-3 break-all text-[15px] leading-relaxed text-foreground"
+              style={{
+                fontFamily: 'var(--font-mono), monospace',
+              }}
+            >
+              {pendingLink?.href}
+            </p>
+            <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              HOST · {destinationHost || 'UNKNOWN'}
+              {pendingLink?.target === '_blank' ? ' · NEW TAB' : ''}
+            </p>
+          </section>
 
-              {showSeoSection && (
-                <div className="border-t border-border/70 pt-3">
-                  {preview.status === 'loading' && (
-                    <div className="mt-2 space-y-2 animate-pulse">
-                      <div className="h-4 w-3/4 rounded bg-muted" />
-                      <div className="h-3 w-full rounded bg-muted" />
-                      <div className="h-3 w-5/6 rounded bg-muted" />
-                    </div>
-                  )}
-
-                  {preview.status === 'ready' && preview.data && (
-                    <div className="mt-2 flex gap-3">
-                      {preview.data.image && (
-                        // eslint-disable-next-line @next/next/no-img-element -- preview image source is dynamic and external.
-                        <img
-                          src={preview.data.image}
-                          alt="站点预览图"
-                          className="h-16 w-16 rounded-md object-cover border border-border"
-                          loading="lazy"
-                        />
-                      )}
-                      <div className="min-w-0 space-y-1">
-                        <p className="text-sm font-medium text-foreground wrap-break-word">
-                          {preview.data.title ||
-                            preview.data.siteName ||
-                            destinationHost}
-                        </p>
-                        {preview.data.description && (
-                          <p className="text-xs text-muted-foreground line-clamp-3">
-                            {preview.data.description}
-                          </p>
-                        )}
-                        {(preview.data.siteName ||
-                          preview.data.canonicalUrl) && (
-                          <p className="text-xs text-muted-foreground break-all">
-                            {preview.data.siteName || preview.data.canonicalUrl}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  )}
+          {/* Preview */}
+          {showSeoSection && (
+            <section className="mt-6 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5">
+              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                PREVIEW · 站点预览
+              </p>
+              {preview.status === 'loading' && (
+                <div className="animate-pulse space-y-2">
+                  <div className="h-4 w-3/4 bg-muted/70" />
+                  <div className="h-3 w-full bg-muted/60" />
+                  <div className="h-3 w-5/6 bg-muted/60" />
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          {risks.length > 0 && (
-            <Card
-              className={cn(
-                hasHighRisk
-                  ? 'border-red-500/35 bg-red-500/5'
-                  : 'border-amber-500/35 bg-amber-500/5',
+              {preview.status === 'ready' && preview.data && (
+                <div className="flex gap-4">
+                  {preview.data.image && (
+                    // eslint-disable-next-line @next/next/no-img-element -- preview image source is dynamic and external.
+                    <img
+                      src={preview.data.image}
+                      alt="站点预览图"
+                      className="h-16 w-16 shrink-0 border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="min-w-0 space-y-1">
+                    <p
+                      className="text-[15px] leading-snug tracking-[-0.005em] text-foreground"
+                      style={{
+                        fontFamily: 'Georgia, "Times New Roman", serif',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {preview.data.title ||
+                        preview.data.siteName ||
+                        destinationHost}
+                    </p>
+                    {preview.data.description && (
+                      <p className="line-clamp-3 text-[13px] leading-relaxed text-muted-foreground">
+                        {preview.data.description}
+                      </p>
+                    )}
+                    {(preview.data.siteName || preview.data.canonicalUrl) && (
+                      <p className="break-all font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/70">
+                        {preview.data.siteName || preview.data.canonicalUrl}
+                      </p>
+                    )}
+                  </div>
+                </div>
               )}
-            >
-              <CardContent className="p-4 space-y-2">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                  风险提示
-                </p>
-                <ul className="space-y-2">
-                  {risks.map((risk, index) => (
-                    <li key={`${risk.label}-${index}`} className="flex gap-2">
-                      <span
-                        className={cn(
-                          'inline-flex h-5 items-center rounded border px-1.5 text-[10px] font-medium shrink-0',
-                          getRiskBadgeClasses(risk.level),
-                        )}
+            </section>
+          )}
+
+          {/* Risks */}
+          {risks.length > 0 && (
+            <section className="mt-6 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5">
+              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                RISK NOTES · 风险提示
+                <span className="ml-3 text-muted-foreground/60">
+                  {risks.length} ITEM{risks.length > 1 ? 'S' : ''}
+                </span>
+              </p>
+              <ol className="m-0 list-none space-y-3 p-0">
+                {risks.map((risk, index) => (
+                  <li
+                    key={`${risk.label}-${index}`}
+                    className="flex items-start gap-4"
+                  >
+                    <span
+                      className={cn(
+                        'mt-0.5 inline-flex shrink-0 items-center border-l-2 pl-2.5 font-mono text-[10.5px] uppercase tracking-[0.18em]',
+                        getRiskTone(risk.level),
+                      )}
+                    >
+                      {getRiskLabel(risk.level)}
+                    </span>
+                    <div className="min-w-0">
+                      <p
+                        className="m-0 text-[15px] leading-snug text-foreground"
+                        style={{
+                          fontFamily: 'Georgia, "Times New Roman", serif',
+                          fontWeight: 500,
+                        }}
                       >
-                        {getRiskLabel(risk.level)}
-                      </span>
-                      <div className="space-y-0.5">
-                        <p className="text-sm text-foreground">{risk.label}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {risk.detail}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+                        {risk.label}
+                      </p>
+                      <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+                        {risk.detail}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
           )}
         </div>
 
-        <AlertDialogFooter>
-          <AlertDialogCancel>取消</AlertDialogCancel>
+        {/* Footer */}
+        <AlertDialogFooter className="mt-7 flex-row items-center justify-end gap-5 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-4 sm:px-8">
+          <AlertDialogCancel className="m-0 h-auto rounded-none border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground shadow-none transition-colors hover:bg-transparent hover:text-foreground">
+            取消 · CANCEL
+          </AlertDialogCancel>
           <AlertDialogAction
-            className={
-              hasHighRisk
-                ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
-                : undefined
-            }
             onClick={handleContinue}
+            className={cn(
+              'm-0 h-auto rounded-none border-b pb-1 font-mono text-[11px] uppercase tracking-[0.22em] shadow-none transition-colors hover:opacity-100',
+              'bg-transparent p-0',
+              hasHighRisk
+                ? 'border-red-500/60 text-red-600 hover:bg-transparent hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                : 'border-[color:oklch(0.86_0.05_220)] text-[color:oklch(0.55_0.10_240)] hover:bg-transparent hover:text-[color:oklch(0.55_0.10_240)] dark:text-[color:oklch(0.86_0.05_220)] dark:hover:text-[color:oklch(0.86_0.05_220)]',
+            )}
           >
-            {hasHighRisk ? '仍要继续访问' : '继续访问'}
+            {hasHighRisk ? '仍要继续 →' : '继续访问 →'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

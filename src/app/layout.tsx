@@ -3,7 +3,7 @@ import { Orbitron } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import DotGrid from '@/components/effects/reactbits/DotGrid'
+import { PaperGrain } from '@/components/effects/PaperGrain'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
@@ -108,22 +108,7 @@ export default function RootLayout({
         className={`${orbitron.variable} min-h-screen bg-background text-foreground relative`}
       >
         <ExternalLinkGuard />
-        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-          <DotGrid
-            className="p-0! h-full w-full opacity-35"
-            dotSize={5}
-            gap={15}
-            baseColor="var(--dotgrid-base)"
-            activeColor="var(--dotgrid-active)"
-            proximity={120}
-            speedTrigger={100}
-            shockRadius={250}
-            shockStrength={5}
-            maxSpeed={5000}
-            resistance={750}
-            returnDuration={1.5}
-          />
-        </div>
+        <PaperGrain />
         <div className="relative z-10 flex min-h-screen flex-col">
           <Navbar />
           <main className="flex-1 relative" data-pagefind-body>

@@ -185,104 +185,147 @@ export function PagefindSearch({
   }, [query, isActive, ensurePagefind])
 
   const resultsSection = (
-    <div className="p-4 space-y-3 overflow-y-auto flex-1 max-h-[50vh]">
+    <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8 sm:py-6 max-h-[60vh]">
       {errorMessage && (
-        <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
+        <div className="mb-4 border-l border-destructive/40 px-4 py-3 font-mono text-[12px] text-destructive">
           <span>{errorMessage}</span>
           <button
             type="button"
-            className="ml-4 underline hover:opacity-70 transition-opacity"
+            className="ml-3 border-b border-destructive/40 pb-0.5 uppercase tracking-[0.18em] hover:opacity-70 transition-opacity"
             onClick={resetBundleState}
           >
-            重试
+            RETRY
           </button>
         </div>
       )}
 
       {bundleState === 'loading' && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span>正在加载索引...</span>
+        <div className="flex items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <span>LOADING INDEX…</span>
         </div>
       )}
 
       {!query && (
-        <p className="text-sm text-muted-foreground py-4">
-          输入 2 个以上字符开始全站搜索。
+        <p className="py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          —  输入 2 个以上字符以检索全站
         </p>
       )}
 
       {query && !isSearching && hits.length === 0 && !errorMessage && (
-        <p className="text-sm text-muted-foreground py-4">
-          没有找到匹配的结果。
+        <p className="py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          NO RESULTS · 未找到匹配项
         </p>
       )}
 
       {isSearching && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span>搜索中...</span>
+        <div className="flex items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <span>SEARCHING…</span>
         </div>
       )}
 
       {hits.length > 0 && (
-        <div className="divide-y divide-border/50">
-          {hits.map((hit, index) => (
-            <Link
-              key={`${hit.url}-${index}`}
-              href={hit.url}
-              className="group block py-4 hover:bg-muted/50 -mx-4 px-4 transition-colors"
-              onClick={onClose}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-base font-medium text-foreground group-hover:opacity-70 transition-opacity">
-                    {hit.title}
-                  </p>
-                  {hit.excerpt && (
+        <>
+          <div className="mb-3 flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <span>RESULTS</span>
+            <span>{hits.length} HITS</span>
+          </div>
+          <ol className="m-0 list-none p-0">
+            {hits.map((hit, index) => (
+              <li
+                key={`${hit.url}-${index}`}
+                className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
+              >
+                <Link
+                  href={hit.url}
+                  className="group grid items-start gap-4 py-4 hover:opacity-100"
+                  style={{ gridTemplateColumns: '44px 1fr 18px' }}
+                  onClick={onClose}
+                >
+                  <span
+                    className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-0.5 group-hover:text-[color:oklch(0.86_0.05_220)]"
+                    style={{
+                      fontFamily: 'var(--font-orbitron), serif',
+                      fontWeight: 500,
+                      fontSize: '0.95rem',
+                      letterSpacing: '-0.01em',
+                      fontVariantNumeric: 'tabular-nums',
+                      paddingTop: '2px',
+                    }}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="min-w-0">
                     <p
-                      className="mt-1 text-sm text-muted-foreground line-clamp-2"
-                      dangerouslySetInnerHTML={{ __html: hit.excerpt }}
-                    />
-                  )}
-                  <p className="mt-1 text-xs text-muted-foreground font-mono">
-                    {hit.url}
-                  </p>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
-              </div>
-            </Link>
-          ))}
-        </div>
+                      className="m-0 text-[15px] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60"
+                      style={{
+                        fontFamily: 'Georgia, "Times New Roman", serif',
+                        fontWeight: 500,
+                        textWrap: 'balance',
+                      }}
+                    >
+                      {hit.title}
+                    </p>
+                    {hit.excerpt && (
+                      <p
+                        className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground/85"
+                        dangerouslySetInnerHTML={{ __html: hit.excerpt }}
+                      />
+                    )}
+                    <p className="mt-1.5 truncate font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/60">
+                      {hit.url}
+                    </p>
+                  </div>
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 self-center text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </>
       )}
     </div>
   )
 
   const content = (
-    <div className="bg-background border border-border rounded-lg overflow-hidden flex flex-col max-h-[calc(100vh-4rem)] shadow-lg">
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
-        <div className="flex items-center gap-2 px-3 py-2 flex-1 bg-muted rounded-md focus-within:ring-2 focus-within:ring-ring transition-all">
-          <Search className="h-4 w-4 text-muted-foreground shrink-0" />
-          <input
-            ref={inputRef}
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            className="bg-transparent w-full text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-            placeholder="搜索博客与页面..."
-            autoComplete="off"
+    <div className="flex max-h-[calc(100vh-4rem)] flex-col overflow-hidden border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-background">
+      {/* Masthead bar */}
+      <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-3 sm:px-8">
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <span
+            aria-hidden
+            className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:oklch(0.86_0.05_220)]"
           />
+          SEARCH · 全站检索
         </div>
         {isOverlay && (
           <button
             type="button"
             aria-label="关闭搜索"
             onClick={onClose}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-foreground"
           >
-            <X className="h-4 w-4" />
+            ESC <X className="h-3.5 w-3.5" />
           </button>
         )}
+      </div>
+
+      {/* Search input */}
+      <div className="flex items-baseline gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-6 sm:px-8 sm:py-8">
+        <Search className="h-5 w-5 shrink-0 self-center text-muted-foreground" />
+        <input
+          ref={inputRef}
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          className="w-full bg-transparent text-[clamp(1.4rem,1.1rem+1vw,2rem)] tracking-[-0.015em] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+          style={{
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontWeight: 500,
+          }}
+          placeholder="查找一篇文章、一个词、一句代码…"
+          autoComplete="off"
+        />
       </div>
       {resultsSection}
     </div>
@@ -292,8 +335,8 @@ export function PagefindSearch({
     if (!open || !mounted) return null
 
     return createPortal(
-      <div className="fixed inset-0 z-[1400] flex items-start justify-center bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-10 sm:py-14 overflow-y-auto">
-        <div className="w-full max-w-2xl">{content}</div>
+      <div className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-background/85 px-4 py-12 backdrop-blur-md sm:px-6 sm:py-16">
+        <div className="w-full max-w-3xl">{content}</div>
       </div>,
       document.body,
     )
