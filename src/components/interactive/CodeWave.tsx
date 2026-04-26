@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useScrollProgress } from './useScrollProgress'
 
@@ -21,11 +22,77 @@ interface CodeWaveProps {
   steps: StepContent[]
 }
 
+type ShikiToken = {
+  content: string
+  htmlStyle?: Record<string, string>
+}
+
+const codePlugin = createCodePlugin({
+  themes: ['github-light', 'github-dark'],
+})
+
+const readIsDark = () =>
+  typeof document !== 'undefined' &&
+  document.documentElement.classList.contains('dark')
+
 function CodePanel({ step }: { step: CodeStep }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isMountRef = useRef(true)
   const lines = step.code.split('\n')
+  const [tokenLines, setTokenLines] = useState<ShikiToken[][] | null>(null)
+  const [isDark, setIsDark] = useState(readIsDark)
   const hasHighlight = !!(step.highlightLines && step.highlightLines.length > 0)
+
+  useEffect(() => {
+    const root = document.documentElement
+    const sync = () => setIsDark(root.classList.contains('dark'))
+    sync()
+
+    const observer = new MutationObserver(sync)
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    let canceled = false
+
+    const language = codePlugin.supportsLanguage(step.language as never)
+      ? step.language
+      : 'text'
+
+    const highlighted = codePlugin.highlight(
+      {
+        code: step.code,
+        language: language as never,
+        themes: ['github-light', 'github-dark'],
+      },
+      (asyncResult) => {
+        if (!canceled) {
+          setTokenLines(
+            (asyncResult as { tokens?: ShikiToken[][] }).tokens ?? null,
+          )
+        }
+      },
+    )
+
+    if (!canceled && highlighted) {
+      queueMicrotask(() => {
+        if (!canceled) {
+          setTokenLines(
+            (highlighted as { tokens?: ShikiToken[][] }).tokens ?? null,
+          )
+        }
+      })
+    }
+
+    return () => {
+      canceled = true
+    }
+  }, [step.code, step.language])
 
   useEffect(() => {
     const container = containerRef.current
@@ -62,7 +129,10 @@ function CodePanel({ step }: { step: CodeStep }) {
   }, [step.highlightLines, hasHighlight])
 
   return (
-    <div ref={containerRef} className="h-full overflow-y-auto">
+    <div
+      ref={containerRef}
+      className="h-full overflow-y-auto overscroll-contain"
+    >
       <pre
         className="px-4 text-[12px] leading-[1.6] font-mono sm:px-5"
         style={{ paddingTop: '20rem', paddingBottom: '20rem' }}
@@ -80,7 +150,25 @@ function CodePanel({ step }: { step: CodeStep }) {
                   isHighlighted ? 'opacity-100' : 'opacity-25'
                 }`}
               >
-                <span className="flex-1 whitespace-pre">{line || ' '}</span>
+                <span className="flex-1 whitespace-pre">
+                  {tokenLines?.[i]?.length
+                    ? tokenLines[i].map((token, tokenIndex) => {
+                        const lightColor = token.htmlStyle?.color
+                        const darkColor = token.htmlStyle?.['--shiki-dark']
+                        const color = isDark
+                          ? darkColor || lightColor
+                          : lightColor
+                        return (
+                          <span
+                            key={`${i}-${tokenIndex}`}
+                            style={color ? { color } : undefined}
+                          >
+                            {token.content}
+                          </span>
+                        )
+                      })
+                    : line || ' '}
+                </span>
               </div>
             )
           })}
@@ -116,7 +204,7 @@ export function CodeWave({ steps }: CodeWaveProps) {
       {/* Desktop: side-by-side scrollytelling */}
       <div className="hidden lg:flex items-stretch">
         {/* Left: sticky code panel — crossfades on step change */}
-        <div className="w-[50%] shrink-0 border-r border-border/30">
+        <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <div className="flex h-full items-center px-6 py-8 xl:px-8">
               <motion.div
@@ -124,7 +212,7 @@ export function CodeWave({ steps }: CodeWaveProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
-                className="w-full h-[min(36rem,calc(100vh-8rem))]"
+                className="w-full h-[calc(100vh-8rem)]"
               >
                 <CodePanel step={activeStep} />
               </motion.div>

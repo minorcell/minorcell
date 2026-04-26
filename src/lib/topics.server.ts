@@ -33,17 +33,15 @@ interface TopicArticleMetadata {
 }
 
 /**
- * 读取专题的 index.md 文件获取专题配置
+ * 读取专题配置：从 content.md 读取元信息
  */
 function readTopicIndex(topicSlug: string): Topic | null {
-  const indexPath = path.join(topicsDir, topicSlug, 'index.md')
+  const contentPath = path.join(topicsDir, topicSlug, 'content.md')
 
-  if (!fs.existsSync(indexPath)) {
-    return null
-  }
+  if (!fs.existsSync(contentPath)) return null
 
   try {
-    const fileContents = fs.readFileSync(indexPath, 'utf8')
+    const fileContents = fs.readFileSync(contentPath, 'utf8')
     const parsed = matter(fileContents)
     const metadata = parsed.data as TopicIndexMetadata
 

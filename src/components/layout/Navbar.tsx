@@ -166,12 +166,13 @@ function SunGlyph({ className }: { className?: string }) {
 export function Navbar() {
   const pathname = usePathname()
   const { previousLabel, goBack, shouldShowBackButton } = useRouteBack()
-  const [theme, setTheme] = useState<'light' | 'dark'>(() =>
-    typeof document !== 'undefined' &&
-    document.documentElement.classList.contains('dark')
-      ? 'dark'
-      : 'light',
-  )
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    setTheme(
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+    )
+  }, [])
   const [searchOpen, setSearchOpen] = useState(false)
   const iconButtonClass =
     'inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground opacity-100 transition-colors hover:text-foreground hover:bg-muted/60 hover:opacity-100'

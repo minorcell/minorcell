@@ -203,9 +203,9 @@ function parseTutorialContent(
  * Check if a topic is an interactive tutorial
  */
 export function isInteractiveTopic(topicSlug: string): boolean {
-  const indexPath = path.join(topicsDir, topicSlug, 'index.md')
-  if (!fs.existsSync(indexPath)) return false
-  const fileContents = fs.readFileSync(indexPath, 'utf8')
+  const contentPath = path.join(topicsDir, topicSlug, 'content.md')
+  if (!fs.existsSync(contentPath)) return false
+  const fileContents = fs.readFileSync(contentPath, 'utf8')
   const parsed = matter(fileContents)
   return parsed.data.type === 'interactive'
 }
@@ -217,43 +217,23 @@ export function getInteractiveTutorial(
   topicSlug: string,
 ): InteractiveTutorial | null {
   const topicDir = path.join(topicsDir, topicSlug)
-  const indexPath = path.join(topicDir, 'index.md')
+  const contentPath = path.join(topicDir, 'content.md')
 
-  if (!fs.existsSync(indexPath)) return null
+  if (!fs.existsSync(contentPath)) return null
 
-  const indexContents = fs.readFileSync(indexPath, 'utf8')
-  const indexParsed = matter(indexContents)
-  const meta = indexParsed.data as Partial<InteractiveTutorialMeta>
+  const contentContents = fs.readFileSync(contentPath, 'utf8')
+  const contentParsed = matter(contentContents)
+  const meta = contentParsed.data as Partial<InteractiveTutorialMeta>
 
   if (meta.type !== 'interactive') return null
 
-  // Determine entry file
-  const entryFileName = meta.entryFile || 'content.md'
-  const entryPath = path.join(topicDir, entryFileName)
-
-  if (!fs.existsSync(entryPath)) {
-    console.warn(
-      `[interactive] Entry file not found: ${entryPath}, falling back to index.md content`,
-    )
-    // Fallback: use index.md's own content
-    const { intro, steps } = parseTutorialContent(indexParsed.content, topicDir)
-    return {
-      slug: topicSlug,
-      title: meta.title || topicSlug,
-      description: meta.description || '',
-      intro,
-      steps,
-    }
-  }
-
-  const entryContents = fs.readFileSync(entryPath, 'utf8')
-  const entryParsed = matter(entryContents)
-  const { intro, steps } = parseTutorialContent(entryParsed.content, topicDir)
+  // content.md is both the metadata source and the entry file
+  const { intro, steps } = parseTutorialContent(contentParsed.content, topicDir)
 
   return {
     slug: topicSlug,
-    title: meta.title || entryParsed.data.title || topicSlug,
-    description: meta.description || entryParsed.data.description || '',
+    title: meta.title || topicSlug,
+    description: meta.description || '',
     intro,
     steps,
   }
