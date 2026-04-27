@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react'
 import { Streamdown, type Components, type PluginConfig } from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
-import { mermaid } from '@streamdown/mermaid'
 import { ZoomImage } from '@/components/common/ZoomImage'
+
+type MermaidPlugin = NonNullable<PluginConfig['mermaid']>
 
 interface MarkdownRendererProps {
   content: string
@@ -56,7 +57,6 @@ const components: Components = {
   p: Paragraph,
 }
 
-const mermaidPlugin = mermaid as unknown as NonNullable<PluginConfig['mermaid']>
 const lightCodePlugin = createCodePlugin({
   themes: ['github-light', 'github-light'],
 })
@@ -68,11 +68,16 @@ const readIsDark = () =>
   typeof document !== 'undefined' &&
   document.documentElement.classList.contains('dark')
 
+// Cheap heuristic: does the markdown source contain a mermaid fence?
+// Only ~3/52 articles do, so most renders skip the mermaid runtime entirely.
+const hasMermaidFence = (src: string) => /^[ \t]*```mermaid/m.test(src)
+
 export function MarkdownRenderer({
   content,
   className,
 }: MarkdownRendererProps) {
   const [isDark, setIsDark] = useState(readIsDark)
+  const [mermaidPlugin, setMermaidPlugin] = useState<MermaidPlugin | null>(null)
 
   useEffect(() => {
     const root = document.documentElement
@@ -91,12 +96,28 @@ export function MarkdownRenderer({
     }
   }, [])
 
+  // Lazy-load the mermaid plugin (~700 KB inc. shiki) only when we see one.
+  useEffect(() => {
+    if (!hasMermaidFence(content)) return
+    let cancelled = false
+    import('@streamdown/mermaid').then((mod) => {
+      if (cancelled) return
+      setMermaidPlugin(() => mod.mermaid as unknown as MermaidPlugin)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [content])
+
   const codePlugin = isDark ? darkCodePlugin : lightCodePlugin
+  const plugins = mermaidPlugin
+    ? { code: codePlugin, mermaid: mermaidPlugin }
+    : { code: codePlugin }
 
   return (
     <Streamdown
       mode="static"
-      plugins={{ code: codePlugin, mermaid: mermaidPlugin }}
+      plugins={plugins}
       linkSafety={{ enabled: false }}
       className={['article-markdown', className].filter(Boolean).join(' ')}
       components={components}
