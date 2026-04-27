@@ -46,7 +46,6 @@ export default function BlogPage() {
   const latestDate = featuredPost?.metadata.date
     ? new Date(featuredPost.metadata.date)
     : new Date()
-  const volumeYear = latestDate.getFullYear()
 
   const breadcrumbJsonLd = createBreadcrumbJsonLd([
     { name: '首页', path: '/' },

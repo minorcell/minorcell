@@ -200,17 +200,6 @@ function parseTutorialContent(
 }
 
 /**
- * Check if a topic is an interactive tutorial
- */
-export function isInteractiveTopic(topicSlug: string): boolean {
-  const contentPath = path.join(topicsDir, topicSlug, 'content.md')
-  if (!fs.existsSync(contentPath)) return false
-  const fileContents = fs.readFileSync(contentPath, 'utf8')
-  const parsed = matter(fileContents)
-  return parsed.data.type === 'interactive'
-}
-
-/**
  * Load and parse an interactive tutorial
  */
 export function getInteractiveTutorial(
