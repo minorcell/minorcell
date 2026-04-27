@@ -8,7 +8,6 @@ import StaggeredMenu, {
   type StaggeredMenuItem,
   type StaggeredMenuSocialItem,
 } from '@/components/effects/reactbits/StaggeredMenu'
-import { useRouteBack } from '@/hooks/useRouteBack'
 import { siteContent } from '@/lib/site-content'
 
 const navLinks = [
@@ -135,7 +134,6 @@ function ReadingProgress({ active }: { active: boolean }) {
 
 export function Navbar() {
   const pathname = usePathname()
-  const { previousLabel, goBack, shouldShowBackButton } = useRouteBack()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -197,8 +195,7 @@ export function Navbar() {
   // Context-aware chips
   const isTopicDetail =
     pathname.startsWith('/topics/') && pathname !== '/topics'
-  const isArticleOrTopic =
-    isTopicDetail || pathname.startsWith('/blog/')
+  const isArticleOrTopic = isTopicDetail || pathname.startsWith('/blog/')
 
   const mobileMenuItems: StaggeredMenuItem[] = [
     {
@@ -282,20 +279,6 @@ export function Navbar() {
               {isTopicDetail ? '· § TOPIC' : '· A FIELD JOURNAL'}
             </span>
           </Link>
-
-          {shouldShowBackButton && (
-            <button
-              type="button"
-              onClick={goBack}
-              className="group hidden items-center gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
-              aria-label={previousLabel ? `返回${previousLabel}` : '返回上一页'}
-            >
-              <span className="transition-transform duration-200 group-hover:-translate-x-0.5">
-                ←
-              </span>
-              <span>{previousLabel ? `BACK · ${previousLabel}` : 'BACK'}</span>
-            </button>
-          )}
         </div>
 
         {/* RIGHT — nav + search trigger + theme toggle */}
