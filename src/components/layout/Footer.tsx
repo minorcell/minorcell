@@ -34,6 +34,12 @@ export function Footer() {
             >
               专题
             </Link>
+            <Link
+              href="/feed.xml"
+              className="transition-colors hover:text-foreground hover:opacity-100"
+            >
+              RSS
+            </Link>
             <span aria-hidden className="text-foreground/30">
               ·
             </span>
@@ -47,6 +53,22 @@ export function Footer() {
                 GITHUB ↗
               </a>
             )}
+            <a
+              href="https://juejin.cn/user/2280829967146779"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+            >
+              掘金 ↗
+            </a>
+            <a
+              href="https://space.bilibili.com/1410369961"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+            >
+              BILIBILI ↗
+            </a>
             {siteContent.contact.email && (
               <a
                 href={`mailto:${siteContent.contact.email}`}

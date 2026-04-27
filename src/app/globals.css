@@ -741,3 +741,91 @@
     border-top-right-radius: 20px;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * NAVBAR
+ *
+ * - Default state: 56px tall, paper surface, bottom hairline
+ * - Scrolled state ([data-scrolled]): 44px tall, backdrop-blur, soft shadow,
+ *   subtitle fades; transitions are short (150ms) to feel like a response,
+ *   not a dance
+ * - Reading progress: 1px strip at the very bottom that scaleX-grows
+ *   based on document scroll (only shown on article / topic detail pages)
+ * ─────────────────────────────────────────────────────────────────── */
+
+.navbar {
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  transition:
+    background-color 150ms ease,
+    backdrop-filter 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.navbar-inner {
+  height: 3.5rem;
+  /* 56px */
+  transition: height 150ms ease;
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  transition: font-size 150ms ease;
+}
+
+.navbar-subtitle {
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+/* Scrolled state */
+.navbar[data-scrolled] {
+  background-color: color-mix(in oklab, var(--background) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--border) 60%, transparent),
+    0 6px 14px -10px rgba(0, 0, 0, 0.15);
+}
+
+.navbar[data-scrolled] .navbar-inner {
+  height: 2.75rem;
+  /* 44px */
+}
+
+.navbar[data-scrolled] .navbar-brand {
+  font-size: 1.05rem;
+}
+
+.navbar[data-scrolled] .navbar-subtitle {
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
+}
+
+/* Reading progress strip */
+.navbar-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  /* sit on top of the hairline so it visually replaces it */
+  height: 2px;
+  background: color-mix(in oklab, var(--foreground) 65%, transparent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 80ms linear;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .navbar,
+  .navbar-inner,
+  .navbar-brand,
+  .navbar-subtitle,
+  .navbar-progress {
+    transition: none;
+  }
+}
