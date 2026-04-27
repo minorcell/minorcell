@@ -17,24 +17,6 @@ const navLinks = [
   { label: '专题', href: '/topics' },
 ]
 
-function McpGlyph({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        d="m14.557 7.875l-.055.054l-5.804 5.691a.183.183 0 0 0-.003.259l.003.003l1.192 1.17a.55.55 0 0 1 .011.776l-.01.01a.575.575 0 0 1-.803 0L7.896 14.67a1.28 1.28 0 0 1 0-1.836l5.805-5.692a1.647 1.647 0 0 0 .031-2.328l-.031-.032l-.034-.032a1.725 1.725 0 0 0-2.405-.002l-4.781 4.69h-.002l-.065.065a.575.575 0 0 1-.803 0a.55.55 0 0 1-.01-.776l.01-.01L10.46 3.96c.65-.636.663-1.678.027-2.329l-.029-.03a1.725 1.725 0 0 0-2.407 0L1.635 7.896a.575.575 0 0 1-.802 0a.55.55 0 0 1-.011-.776l.011-.01L7.25.814a2.875 2.875 0 0 1 4.01 0c.63.613.929 1.49.803 2.36c.88-.125 1.77.166 2.406.787l.034.033a2.743 2.743 0 0 1 .053 3.88m-1.691-1.553a.55.55 0 0 0 .01-.776l-.01-.01a.575.575 0 0 0-.803 0L7.317 10.19a1.725 1.725 0 0 1-2.407 0a1.647 1.647 0 0 1-.03-2.33l.031-.031l4.747-4.655a.55.55 0 0 0 .011-.776l-.011-.01a.575.575 0 0 0-.803 0L4.108 7.042a2.743 2.743 0 0 0 0 3.933a2.876 2.876 0 0 0 4.011 0z"
-        clipRule="evenodd"
-      />
-    </svg>
-  )
-}
-
 function GitHubGlyph({ className }: { className?: string }) {
   return (
     <svg
@@ -229,11 +211,6 @@ export function Navbar() {
       link: item.href,
     })),
     {
-      label: 'Stack MCP',
-      ariaLabel: '前往 Stack MCP 页面',
-      link: '/stack-mcp',
-    },
-    {
       label: 'RSS',
       ariaLabel: '前往 RSS 订阅',
       link: '/feed.xml',
@@ -339,17 +316,6 @@ export function Navbar() {
             >
               <SearchGlyph className="w-4 h-4" />
             </button>
-
-            <Link
-              href="/stack-mcp"
-              className={`${iconButtonClass} ${
-                isActive('/stack-mcp') ? 'text-foreground bg-muted/40' : ''
-              }`}
-              aria-label="Stack MCP"
-              title="Stack MCP"
-            >
-              <McpGlyph className="w-4 h-4" />
-            </Link>
 
             {siteContent.contact.github && (
               <a

@@ -23,7 +23,6 @@ export const defaultSeoKeywords = Array.from(
     'React',
     'Next.js',
     'AI Agent',
-    'MCP',
   ]),
 )
 

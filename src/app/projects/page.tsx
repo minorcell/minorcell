@@ -12,14 +12,13 @@ import { buildPageMetadata } from '@/lib/seo'
 export const metadata: Metadata = buildPageMetadata({
   title: 'Projects 开源项目与作品集',
   description:
-    '查看 mcell 持续维护的开源项目与实验作品，涵盖 AI 工具链、前端工程、MCP 生态与效率型开发工具。',
+    '查看 mcell 持续维护的开源项目与实验作品，涵盖 AI 工具链、前端工程与效率型开发工具。',
   path: '/projects',
   keywords: [
     '开源项目',
     'GitHub projects',
     'AI 工程项目',
     '前端项目',
-    'MCP 项目',
     '开发者作品集',
   ],
 })

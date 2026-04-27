@@ -28,16 +28,12 @@ export const projectQuickLinks: ProjectLink[] = [
     label: 'Latest Repos',
     href: 'https://github.com/minorcell?tab=repositories&sort=updated',
   },
-  {
-    label: 'MCP Guide',
-    href: '/stack-mcp',
-  },
 ]
 
 export const projectGroups: ProjectGroup[] = [
   {
     title: 'AI & Agent',
-    description: 'AI 编码助手、MCP 服务与相关工具链项目。',
+    description: 'AI 编码助手与相关工具链项目。',
     projects: [
       {
         name: 'memo-code',
@@ -81,19 +77,6 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/minorcell/aquaregia',
-          },
-        ],
-      },
-      {
-        name: 'mcell-mcp-server',
-        summary:
-          'mcell-mcp-server 是一个基于 stdio 的 MCP Server，包含图片压缩/转换、S3 上传、博客内容检索、任务完成通知等工具。',
-        status: 'active',
-        tags: ['TypeScript'],
-        links: [
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/mcell-mcp-server',
           },
         ],
       },

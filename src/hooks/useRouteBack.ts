@@ -19,14 +19,12 @@ const routeLabelMap: Record<string, string> = {
   blog: '文章',
   projects: '项目',
   topics: '专题',
-  'stack-mcp': '项目',
 }
 
 const fallbackPathMap: Record<string, string> = {
   blog: '/blog',
   projects: '/projects',
   topics: '/topics',
-  'stack-mcp': '/projects',
 }
 
 function subscribe(listener: () => void) {
@@ -119,7 +117,7 @@ export function useRouteBack() {
   )
 
   // Show back button only on detail pages (2+ path segments),
-  // not on home or top-level section pages like /blog, /projects, /topics, /stack-mcp.
+  // not on home or top-level section pages like /blog, /projects, /topics.
   const segmentCount = pathname.split('/').filter(Boolean).length
   const shouldShowBackButton = segmentCount >= 2
 
