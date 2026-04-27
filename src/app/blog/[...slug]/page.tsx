@@ -149,11 +149,10 @@ export default async function BlogPost({ params }: Props) {
           )}
 
           <h1
-            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em]"
+            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em] text-pretty sm:text-balance"
             style={{
               fontFamily: 'Georgia, "Times New Roman", serif',
               fontWeight: 500,
-              textWrap: 'balance',
             }}
           >
             {post.metadata.title}

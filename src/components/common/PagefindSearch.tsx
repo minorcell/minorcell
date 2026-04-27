@@ -258,11 +258,10 @@ export function PagefindSearch({
                   </span>
                   <div className="min-w-0">
                     <p
-                      className="m-0 text-[15px] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60"
+                      className="m-0 text-[15px] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                       style={{
                         fontFamily: 'Georgia, "Times New Roman", serif',
                         fontWeight: 500,
-                        textWrap: 'balance',
                       }}
                     >
                       {hit.title}

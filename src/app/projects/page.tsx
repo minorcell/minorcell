@@ -90,8 +90,8 @@ export default function ProjectsPage() {
         </div>
 
         <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em]"
-          style={{ ...orbitron, fontWeight: 800, textWrap: 'balance' }}
+          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
+          style={{ ...orbitron, fontWeight: 800 }}
         >
           The{' '}
           <span
@@ -221,11 +221,10 @@ export default function ProjectsPage() {
                       <div className="min-w-0">
                         <div className="mb-2 flex items-baseline justify-between gap-3">
                           <h3
-                            className="m-0 text-[clamp(1.15rem,1.05rem+0.4vw,1.4rem)] leading-[1.25] tracking-[-0.01em]"
+                            className="m-0 text-[clamp(1.15rem,1.05rem+0.4vw,1.4rem)] leading-[1.25] tracking-[-0.01em] text-pretty sm:text-balance"
                             style={{
                               fontFamily: 'Georgia, "Times New Roman", serif',
                               fontWeight: 500,
-                              textWrap: 'balance',
                             }}
                           >
                             {project.name}

@@ -76,11 +76,10 @@ export default function HomePage() {
         </div>
 
         <h1
-          className="m-0 mt-9 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em]"
+          className="m-0 mt-9 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em] text-pretty sm:text-balance"
           style={{
             fontFamily: 'var(--font-orbitron), Georgia, serif',
             fontWeight: 800,
-            textWrap: 'balance',
           }}
         >
           Cell{' '}
@@ -200,11 +199,10 @@ export default function HomePage() {
                     LEADING ARTICLE · 本期主推
                   </div>
                   <h3
-                    className="m-0 text-[clamp(1.6rem,1.2rem+1.6vw,2.8rem)] leading-[1.12] tracking-[-0.015em] transition-opacity duration-200 group-hover:opacity-60"
+                    className="m-0 text-[clamp(1.6rem,1.2rem+1.6vw,2.8rem)] leading-[1.12] tracking-[-0.015em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                     style={{
                       fontFamily: 'Georgia, "Times New Roman", serif',
                       fontWeight: 500,
-                      textWrap: 'balance',
                     }}
                   >
                     {posts[0].metadata.title}
@@ -257,10 +255,9 @@ export default function HomePage() {
                         </span>
                         <div className="min-w-0">
                           <span
-                            className="text-[clamp(1.05rem,1rem+0.4vw,1.35rem)] leading-[1.28] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60"
+                            className="text-[clamp(1.05rem,1rem+0.4vw,1.35rem)] leading-[1.28] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                             style={{
                               fontFamily: 'Georgia, "Times New Roman", serif',
-                              textWrap: 'balance',
                             }}
                           >
                             {post.metadata.title}
