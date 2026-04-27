@@ -58,9 +58,10 @@ export default function HomePage() {
   const issueNo = padIssue(allPosts.length)
 
   return (
-    <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
-      {/* ─────────── MASTHEAD ─────────── */}
-      <header>
+    <div className="mx-auto w-full px-6 pb-24 sm:px-10 sm:pb-32 lg:px-16 xl:px-24">
+      {/* ─────────── MASTHEAD — fills first viewport ─────────── */}
+      <header className="flex min-h-[calc(100dvh-3.5rem)] flex-col justify-between pt-10 pb-8 sm:pt-14 sm:pb-10">
+        {/* Top — issue bar */}
         <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-2.5">
@@ -75,48 +76,57 @@ export default function HomePage() {
           <span>{formatIsoDate(latestDate)}</span>
         </div>
 
-        <h1
-          className="m-0 mt-9 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em] text-pretty sm:text-balance"
-          style={{
-            fontFamily: 'var(--font-orbitron), Georgia, serif',
-            fontWeight: 800,
-          }}
-        >
-          Cell{' '}
-          <span
-            className="text-muted-foreground"
+        {/* Middle — title block, vertically centred in remaining space */}
+        <div className="flex flex-col justify-center py-8">
+          <h1
+            className="m-0 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em] text-pretty sm:text-balance"
             style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontStyle: 'italic',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
+              fontFamily: 'var(--font-orbitron), Georgia, serif',
+              fontWeight: 800,
             }}
           >
-            &amp;
-          </span>{' '}
-          Stack
-        </h1>
-
-        <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
-          <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            Cell{' '}
             <span
-              aria-hidden
-              className="mr-2.5 inline-block h-px w-6 align-middle bg-foreground"
-            />
-            A FIELD JOURNAL
+              className="text-muted-foreground"
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              &amp;
+            </span>{' '}
+            Stack
+          </h1>
+
+          <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
+            <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+              <span
+                aria-hidden
+                className="mr-2.5 inline-block h-px w-6 align-middle bg-foreground"
+              />
+              A FIELD JOURNAL
+            </div>
+            <p className="m-0 max-w-[38ch] text-[clamp(1.15rem,1.05rem+0.6vw,1.45rem)] leading-[1.5] tracking-[-0.005em]">
+              一份关于{' '}
+              <em className="not-italic text-muted-foreground italic">
+                AI Agent、全栈工程与日常实践
+              </em>{' '}
+              的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。
+            </p>
           </div>
-          <p className="m-0 max-w-[38ch] text-[clamp(1.15rem,1.05rem+0.6vw,1.45rem)] leading-[1.5] tracking-[-0.005em]">
-            一份关于{' '}
-            <em className="not-italic text-muted-foreground italic">
-              AI Agent、全栈工程与日常实践
-            </em>{' '}
-            的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。
-          </p>
+        </div>
+
+        {/* Bottom — scroll cue */}
+        <div className="flex items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          <span>EDITOR&rsquo;S NOTE · IN THIS ISSUE</span>
+          <span aria-hidden>SCROLL ↓</span>
         </div>
       </header>
 
       {/* ─────────── EDITOR'S NOTE ─────────── */}
-      <section className="mt-20 grid gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-8 sm:mt-24 sm:grid-cols-[220px_1fr] sm:gap-10">
+      <section className="mt-20 grid gap-4 sm:mt-24 sm:grid-cols-[220px_1fr] sm:gap-10">
         <h2 className="m-0 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
           Editor&rsquo;s Note
         </h2>
@@ -129,14 +139,12 @@ export default function HomePage() {
               rel="noreferrer"
               className="mx-1 underline decoration-border underline-offset-4 hover:decoration-foreground"
             >
-              mcell（minorcell）
+              mcell
             </a>
-            ，一名全栈工程师，目前主要专注于 AI Agent 相关开发。日常可独立完成
-            Web、服务端与桌面端应用开发，技术栈以 TypeScript、Node.js 与 Golang
-            为主。
+            。这里不追热点，只把工作中真实碰到的问题、读过的代码、做过的判断写下来。
           </p>
           <p className="m-0 leading-relaxed text-foreground/92">
-            这里没有大主题，也不追热点；只是把工作中真实碰到的问题、读过的代码、做过的判断，按照它们值得被记下的样子写下来。如果其中某一篇能在某个深夜帮你少绕一个弯——那它就完成了它的工作。
+            愿某一篇能在某个深夜帮你少绕一个弯。
           </p>
         </div>
       </section>
