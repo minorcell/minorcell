@@ -12,7 +12,7 @@ import { createPersonJsonLd, createWebsiteJsonLd } from '@/lib/structured-data'
 
 const orbitron = Orbitron({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['500', '700', '800'],
   display: 'swap',
   variable: '--font-orbitron',
 })

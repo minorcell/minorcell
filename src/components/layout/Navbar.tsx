@@ -1,14 +1,29 @@
 'use client'
 
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { PagefindSearch } from '@/components/common/PagefindSearch'
-import StaggeredMenu, {
-  type StaggeredMenuItem,
-  type StaggeredMenuSocialItem,
+import type {
+  StaggeredMenuItem,
+  StaggeredMenuSocialItem,
 } from '@/components/effects/reactbits/StaggeredMenu'
 import { siteContent } from '@/lib/site-content'
+
+// Lazy-load heavy / interaction-only components so they stay out of the
+// initial bundle that every page ships:
+//   • StaggeredMenu pulls in gsap and is only used by the mobile menu
+//   • PagefindSearch pulls in the pagefind runtime and is only shown when
+//     the user opens search (⌘K / clicks Search)
+const StaggeredMenu = dynamic(
+  () => import('@/components/effects/reactbits/StaggeredMenu'),
+  { ssr: false },
+)
+const PagefindSearch = dynamic(
+  () =>
+    import('@/components/common/PagefindSearch').then((m) => m.PagefindSearch),
+  { ssr: false },
+)
 
 const navLinks = [
   { label: '文章', href: '/blog' },
@@ -142,6 +157,19 @@ export function Navbar() {
     setTheme(
       document.documentElement.classList.contains('dark') ? 'dark' : 'light',
     )
+  }, [])
+
+  // Track viewport so we only mount the (gsap-heavy) mobile menu when
+  // the user is actually on a small screen — desktop visitors never need
+  // to download that chunk.
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const apply = (e: MediaQueryList | MediaQueryListEvent) =>
+      setIsMobile(e.matches)
+    apply(mq)
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
   }, [])
 
   // Scroll-state for the navbar (compresses on scroll)
@@ -329,32 +357,36 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center md:hidden">
-          <StaggeredMenu
-            isFixed
-            showLogo={false}
-            position="right"
-            items={mobileMenuItems}
-            socialItems={mobileSocialItems}
-            displaySocials={mobileSocialItems.length > 0}
-            displayItemNumbering={false}
-            menuButtonColor="var(--muted-foreground)"
-            openMenuButtonColor="var(--foreground)"
-            changeMenuColorOnOpen={true}
-            colors={['var(--muted)', 'var(--background)']}
-            accentColor="var(--foreground)"
-            logoUrl="/android-chrome-192x192.png"
-          />
+          {isMobile && (
+            <StaggeredMenu
+              isFixed
+              showLogo={false}
+              position="right"
+              items={mobileMenuItems}
+              socialItems={mobileSocialItems}
+              displaySocials={mobileSocialItems.length > 0}
+              displayItemNumbering={false}
+              menuButtonColor="var(--muted-foreground)"
+              openMenuButtonColor="var(--foreground)"
+              changeMenuColorOnOpen={true}
+              colors={['var(--muted)', 'var(--background)']}
+              accentColor="var(--foreground)"
+              logoUrl="/android-chrome-192x192.png"
+            />
+          )}
         </div>
       </div>
 
       <ReadingProgress active={isArticleOrTopic} />
 
-      <PagefindSearch
-        variant="overlay"
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        autoFocus
-      />
+      {searchOpen && (
+        <PagefindSearch
+          variant="overlay"
+          open={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          autoFocus
+        />
+      )}
     </header>
   )
 }
