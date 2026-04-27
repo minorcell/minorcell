@@ -31,6 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const latestTopicDate = getLatestDate(
     topics.flatMap((topic) => topic.articles.map((article) => article.date)),
   )
+  const latestSiteDate = getLatestDate([latestBlogDate, latestTopicDate])
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -53,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: new Date(),
+      lastModified: latestSiteDate,
       changeFrequency: 'weekly',
       priority: 0.75,
     },
@@ -85,14 +86,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })
 
-    for (const article of topic.articles) {
-      topicRoutes.push({
-        url: `${baseUrl}/topics/${topic.slug}/${article.slug}`,
-        lastModified: article.date ? new Date(article.date) : new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.68,
-      })
-    }
   }
 
   return [...staticRoutes, ...blogRoutes, ...topicRoutes]

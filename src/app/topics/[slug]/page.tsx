@@ -7,7 +7,7 @@ import type { SerializedStep } from '@/components/interactive/InteractiveTutoria
 import { TopicCover } from '@/components/topics/TopicCover'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { buildPageMetadata } from '@/lib/seo'
-import { createBreadcrumbJsonLd } from '@/lib/structured-data'
+import { createArticleJsonLd, createBreadcrumbJsonLd } from '@/lib/structured-data'
 
 interface TopicPageProps {
   params: Promise<{
@@ -63,6 +63,23 @@ export default async function TopicPage({ params }: TopicPageProps) {
     { name: '专题', path: '/topics' },
     { name: topic.title, path: `/topics/${slug}` },
   ])
+  const articleDates = topic.articles
+    .map((article) => article.date)
+    .filter((date): date is string => Boolean(date))
+    .map((date) => new Date(date))
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((a, b) => b.getTime() - a.getTime())
+  const latestArticleDate = articleDates[0]?.toISOString()
+  const topicJsonLd = createArticleJsonLd({
+    type: 'TechArticle',
+    title: topic.title,
+    description: topic.description || tutorial.description,
+    path: `/topics/${slug}`,
+    publishedTime: latestArticleDate,
+    modifiedTime: latestArticleDate,
+    section: 'Topics',
+    keywords: [topic.title, '技术专题', '交互教程'],
+  })
 
   const serializedSteps: SerializedStep[] = tutorial.steps.map((s) => {
     if (s.kind === 'code') {
@@ -104,6 +121,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
   return (
     <>
       <JsonLd id={`topic-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
+      <JsonLd id={`topic-techarticle-${slug}`} data={topicJsonLd} />
 
       {/* COVER — full viewport, sticky; hidden behind stage as user scrolls */}
       <TopicCover

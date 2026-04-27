@@ -142,11 +142,11 @@ export default function BlogPage() {
             </span>
           </div>
 
-          <div className="grid items-start gap-10 lg:grid-cols-[2fr_1fr] lg:gap-14">
+          <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-stretch lg:gap-14">
             {/* Feature 头条 */}
             <Link
               href={`/blog/${featuredPost.slug}`}
-              className="group block py-2 hover:opacity-100 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
+              className="group flex h-full flex-col py-2 hover:opacity-100 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
             >
               <div className="mb-5 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 <span>№ 01 · LEADING ARTICLE</span>
@@ -169,9 +169,10 @@ export default function BlogPage() {
                 </p>
               )}
               <span
-                className="mt-7 inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] transition-transform duration-200 group-hover:translate-x-1"
+                className="mt-auto inline-flex items-center gap-2 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5 font-mono text-[12px] uppercase tracking-[0.18em] transition-transform duration-200 group-hover:translate-x-1"
                 style={{ color: accentBlue }}
               >
+                <span aria-hidden>§</span>
                 阅读主文 →
               </span>
             </Link>

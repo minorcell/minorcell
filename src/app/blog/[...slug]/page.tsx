@@ -41,6 +41,30 @@ const toStringArray = (value: unknown) =>
       )
     : []
 
+const resolveModifiedTime = (
+  metadata: Record<string, unknown>,
+  publishedTime: string,
+) => {
+  const candidates = [
+    metadata.updatedAt,
+    metadata.updated,
+    metadata.modifiedAt,
+    metadata.modified,
+    metadata.lastModified,
+    metadata.lastmod,
+  ]
+
+  for (const candidate of candidates) {
+    if (typeof candidate !== 'string') continue
+    const parsed = new Date(candidate)
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString()
+    }
+  }
+
+  return publishedTime
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const slugString = slug.join('/')
@@ -55,6 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...toStringArray(post.metadata.keywords),
       ...toStringArray(post.metadata.tags),
     ]
+    const modifiedTime = resolveModifiedTime(post.metadata, post.metadata.date)
     const image =
       typeof post.metadata.image === 'string' && post.metadata.image.trim()
         ? post.metadata.image
@@ -66,7 +91,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: `/blog/${slugString}`,
       image,
       publishedTime: post.metadata.date,
-      modifiedTime: post.metadata.date,
+      modifiedTime,
       section: 'Blog',
       tags,
       keywords: ['技术博客', '编程教程', '工程实践'],
@@ -101,6 +126,7 @@ export default async function BlogPost({ params }: Props) {
     ...toStringArray(post.metadata.keywords),
     ...toStringArray(post.metadata.tags),
   ]
+  const modifiedTime = resolveModifiedTime(post.metadata, post.metadata.date)
   const image =
     typeof post.metadata.image === 'string' && post.metadata.image.trim()
       ? post.metadata.image
@@ -111,7 +137,7 @@ export default async function BlogPost({ params }: Props) {
     description,
     path: `/blog/${slugString}`,
     publishedTime: post.metadata.date,
-    modifiedTime: post.metadata.date,
+    modifiedTime,
     image,
     section: 'Blog',
     keywords: tags,
