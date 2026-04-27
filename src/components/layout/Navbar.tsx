@@ -359,7 +359,7 @@ export function Navbar() {
             changeMenuColorOnOpen={true}
             colors={['var(--muted)', 'var(--background)']}
             accentColor="var(--foreground)"
-            logoUrl="/logo.svg"
+            logoUrl="/android-chrome-192x192.png"
           />
         </div>
       </div>

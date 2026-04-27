@@ -78,7 +78,7 @@ export function createArticleJsonLd({
   path,
   publishedTime,
   modifiedTime,
-  image = '/logo.svg',
+  image = '/og-image.png',
   section,
   keywords = [],
 }: ArticleJsonLdOptions) {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { siteContent } from '@/lib/site-content'
 
 const baseUrl = siteContent.url.replace(/\/$/, '')
-const defaultSocialImage = '/logo.svg'
+const defaultSocialImage = '/og-image.png'
 
 export const siteAuthor = {
   name: 'mcell',

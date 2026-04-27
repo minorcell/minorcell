@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const image =
       typeof post.metadata.image === 'string' && post.metadata.image.trim()
         ? post.metadata.image
-        : '/logo.svg'
+        : '/og-image.png'
 
     return buildArticleMetadata({
       title: post.metadata.title,
@@ -104,7 +104,7 @@ export default async function BlogPost({ params }: Props) {
   const image =
     typeof post.metadata.image === 'string' && post.metadata.image.trim()
       ? post.metadata.image
-      : '/logo.svg'
+      : '/og-image.png'
   const articleJsonLd = createArticleJsonLd({
     type: 'BlogPosting',
     title: post.metadata.title,
