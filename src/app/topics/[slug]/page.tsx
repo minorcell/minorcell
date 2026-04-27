@@ -82,9 +82,69 @@ export default async function TopicPage({ params }: TopicPageProps) {
     }
   })
 
+  // Compute issue number for masthead from topic order
+  const allTopics = getAllTopics()
+  const topicIndex = allTopics.findIndex((t) => t.slug === slug)
+  const issueNumber = String(topicIndex >= 0 ? topicIndex + 1 : 1).padStart(
+    2,
+    '0',
+  )
+
+  // Detect tutorial composition (code / image / mixed)
+  const hasCode = tutorial.steps.some((s) => s.kind === 'code')
+  const hasImage = tutorial.steps.some((s) => s.kind === 'image')
+  const composition =
+    hasCode && hasImage
+      ? 'CODE & VISUAL'
+      : hasCode
+        ? 'CODE WALKTHROUGH'
+        : 'VISUAL WALKTHROUGH'
+
   return (
     <>
       <JsonLd id={`topic-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
+
+      {/* MASTHEAD — magazine style */}
+      <header className="mx-auto w-full px-6 pb-10 pt-14 sm:px-10 sm:pt-20 lg:px-16 xl:px-24">
+        <div className="mx-auto w-full max-w-[920px]">
+          <div className="flex items-center justify-between gap-4 border-b border-[color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center gap-5">
+              <span>TOPIC §{issueNumber}</span>
+              <span className="hidden sm:inline">INTERACTIVE TUTORIAL</span>
+            </div>
+            <span>
+              {tutorial.steps.length} STEPS · {composition}
+            </span>
+          </div>
+
+          <h1
+            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em] text-pretty sm:text-balance"
+            style={{
+              fontFamily: 'var(--font-display), Georgia, serif',
+              fontWeight: 500,
+            }}
+          >
+            {tutorial.title}
+          </h1>
+
+          {tutorial.description && (
+            <p
+              className="mt-6 max-w-[58ch] text-[clamp(1.05rem,1rem+0.45vw,1.3rem)] leading-[1.55] tracking-[-0.005em] text-muted-foreground"
+              style={{
+                fontFamily: 'var(--font-display), Georgia, serif',
+                fontStyle: 'italic',
+              }}
+            >
+              {tutorial.description}
+            </p>
+          )}
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[color-mix(in_oklab,var(--border)_85%,transparent)] pt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <span>BYLINE · MCELL</span>
+            <span aria-hidden>SCROLL TO BEGIN ↓</span>
+          </div>
+        </div>
+      </header>
 
       <InteractiveTutorialView
         title={tutorial.title}

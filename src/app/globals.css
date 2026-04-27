@@ -434,6 +434,26 @@
   line-height: 1.65;
 }
 
+/* Streamdown renders TWO nested cards by default:
+ *   [data-streamdown="code-block"]      — outer (rounded-xl, border, bg-sidebar, p-2) + action header
+ *   [data-streamdown="code-block-body"] — inner (rounded-md, border, bg-background, p-4) + <pre>
+ * That visual "box-in-a-box" is redundant. Flatten the inner body so only the
+ * outer card remains, and strip our own <pre> styling inside the wrapper. */
+.article-markdown :where([data-streamdown='code-block-body']) {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.article-markdown :where([data-streamdown='code-block']) :where(pre) {
+  margin: 0;
+  border: 0;
+  padding: 0.25rem 0.25rem;
+  background: transparent;
+}
+
 .article-markdown :where(code:not(pre code)) {
   background: color-mix(in oklab, var(--muted) 70%, transparent);
   border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
