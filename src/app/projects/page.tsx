@@ -130,7 +130,7 @@ export default function ProjectsPage() {
               key={`${item.label}-${item.href}`}
               href={item.href}
               label={item.label}
-              className="inline-flex items-center gap-1.5 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:oklch(0.86_0.05_220)] hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+              className="inline-flex items-center gap-1.5 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
             />
           ))}
         </div>
@@ -258,7 +258,7 @@ export default function ProjectsPage() {
                                 key={`${project.name}-${item.label}-${item.href}`}
                                 href={item.href}
                                 label={item.label}
-                                className="inline-flex items-center gap-1 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:oklch(0.86_0.05_220)] hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+                                className="inline-flex items-center gap-1 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
                               />
                             ))}
                           </div>

@@ -48,6 +48,12 @@
   --sidebar-ring: oklch(0.708 0 0);
   --dotgrid-base: #d3cedb;
   --dotgrid-active: #a49bb6;
+
+  /* ── Editorial accent (olive field) ──
+   * Used for link / brand hover states across the site.
+   * Stays in the warm hue family of the paper background; mid-lightness +
+   * low chroma reads as muted khaki rather than "colour". */
+  --link-accent: oklch(0.50 0.08 110);
 }
 
 /* Dark mode */
@@ -85,6 +91,9 @@
   --sidebar-ring: oklch(0.556 0 0);
   --dotgrid-base: #271e37;
   --dotgrid-active: #ffffff;
+
+  /* Brighter olive that holds contrast against dark ink */
+  --link-accent: oklch(0.72 0.10 110);
 }
 
 @theme inline {
@@ -501,8 +510,8 @@
 }
 
 .dark .article-markdown :where(a:hover) {
-  color: oklch(0.86 0.05 220);
-  text-decoration-color: oklch(0.86 0.05 220);
+  color: var(--link-accent);
+  text-decoration-color: var(--link-accent);
 }
 
 /* HR as section break ornament */

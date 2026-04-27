@@ -66,7 +66,7 @@ export default function HomePage() {
             <span className="inline-flex items-center gap-2.5">
               <span
                 aria-hidden
-                className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:oklch(0.86_0.05_220)]"
+                className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--link-accent)]"
               />
               ISSUE №{issueNo} · VOL. {volumeYear}
             </span>
@@ -182,7 +182,7 @@ export default function HomePage() {
             >
               <div className="grid items-start gap-5 sm:grid-cols-[120px_1fr_140px] sm:gap-10">
                 <span
-                  className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:oklch(0.86_0.05_220)]"
+                  className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:var(--link-accent)]"
                   style={{
                     fontFamily: 'var(--font-orbitron), serif',
                     fontWeight: 500,
@@ -242,7 +242,7 @@ export default function HomePage() {
                         style={{ gridTemplateColumns: '64px 1fr auto' }}
                       >
                         <span
-                          className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:oklch(0.86_0.05_220)]"
+                          className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:var(--link-accent)]"
                           style={{
                             fontFamily: 'var(--font-orbitron), serif',
                             fontWeight: 500,
@@ -285,7 +285,7 @@ export default function HomePage() {
         <div className="mt-7 flex justify-end">
           <Link
             href="/blog"
-            className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:oklch(0.86_0.05_220)] hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+            className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
           >
             查看全部归档 →
           </Link>
@@ -318,7 +318,7 @@ export default function HomePage() {
             <p className="mb-4 text-[0.96rem] text-foreground/70">
               {section.description}
             </p>
-            <span className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:oklch(0.86_0.05_220)] transition-transform duration-200 group-hover:translate-x-1">
+            <span className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--link-accent)] transition-transform duration-200 group-hover:translate-x-1">
               进入 →
             </span>
           </Link>

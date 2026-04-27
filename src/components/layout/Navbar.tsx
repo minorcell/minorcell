@@ -255,7 +255,7 @@ export function Navbar() {
             className="group inline-flex items-baseline gap-2.5 opacity-100 hover:opacity-100"
           >
             <span
-              className="navbar-brand text-foreground transition-colors group-hover:text-[color:oklch(0.86_0.05_220)]"
+              className="navbar-brand text-foreground transition-colors group-hover:text-[color:var(--link-accent)]"
               style={{
                 fontFamily: 'var(--font-display), Georgia, serif',
                 fontWeight: 500,

@@ -244,7 +244,7 @@ export function PagefindSearch({
                   onClick={onClose}
                 >
                   <span
-                    className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-0.5 group-hover:text-[color:oklch(0.86_0.05_220)]"
+                    className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-0.5 group-hover:text-[color:var(--link-accent)]"
                     style={{
                       fontFamily: 'var(--font-orbitron), serif',
                       fontWeight: 500,
@@ -293,7 +293,7 @@ export function PagefindSearch({
         <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           <span
             aria-hidden
-            className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:oklch(0.86_0.05_220)]"
+            className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--link-accent)]"
           />
           SEARCH · 全站检索
         </div>

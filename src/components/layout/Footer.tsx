@@ -48,7 +48,7 @@ export function Footer() {
                 href={siteContent.contact.github}
                 target="_blank"
                 rel="noreferrer"
-                className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+                className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
               >
                 GITHUB ↗
               </a>
@@ -57,7 +57,7 @@ export function Footer() {
               href="https://juejin.cn/user/2280829967146779"
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+              className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
             >
               掘金 ↗
             </a>
@@ -65,14 +65,14 @@ export function Footer() {
               href="https://space.bilibili.com/1410369961"
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+              className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
             >
               BILIBILI ↗
             </a>
             {siteContent.contact.email && (
               <a
                 href={`mailto:${siteContent.contact.email}`}
-                className="transition-colors hover:text-[color:oklch(0.86_0.05_220)] hover:opacity-100"
+                className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
               >
                 EMAIL ↗
               </a>

@@ -76,7 +76,7 @@ export default function BlogPage() {
   const orbitron = {
     fontFamily: 'var(--font-orbitron), Georgia, serif',
   } as const
-  const accentBlue = 'oklch(0.86 0.05 220)'
+  const accentBlue = 'var(--link-accent)'
 
   return (
     <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">

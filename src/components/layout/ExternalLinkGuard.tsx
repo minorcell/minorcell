@@ -396,7 +396,7 @@ export function ExternalLinkGuard() {
           <span className="flex items-center gap-3">
             <span
               aria-hidden
-              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:oklch(0.86_0.05_220)]"
+              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--link-accent)]"
             />
             EXTERNAL LINK · 外部跳转
           </span>
@@ -563,7 +563,7 @@ export function ExternalLinkGuard() {
               'bg-transparent p-0',
               hasHighRisk
                 ? 'border-red-500/60 text-red-600 hover:bg-transparent hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                : 'border-[color:oklch(0.86_0.05_220)] text-[color:oklch(0.55_0.10_240)] hover:bg-transparent hover:text-[color:oklch(0.55_0.10_240)] dark:text-[color:oklch(0.86_0.05_220)] dark:hover:text-[color:oklch(0.86_0.05_220)]',
+                : 'border-[color:var(--link-accent)] text-[color:var(--link-accent)] hover:bg-transparent hover:text-[color:var(--link-accent)] dark:text-[color:var(--link-accent)] dark:hover:text-[color:var(--link-accent)]',
             )}
           >
             {hasHighRisk ? '仍要继续 →' : '继续访问 →'}
