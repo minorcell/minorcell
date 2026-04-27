@@ -27,26 +27,9 @@ export function ImageWave({ steps }: ImageWaveProps) {
 
   return (
     <div className="imagewave-container relative">
-      {/* Mobile: stacked layout */}
-      <div className="lg:hidden space-y-8">
-        {steps.map((s, i) => (
-          <div key={i}>
-            <div className="rounded-lg border border-border bg-card overflow-hidden mb-4">
-              <img
-                src={s.step.src}
-                alt={s.step.alt || ''}
-                className="w-full h-auto object-contain"
-              />
-            </div>
-            <div className="prose-sm">
-              <MarkdownRenderer content={s.prose} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Desktop: side-by-side scrollytelling */}
-      <div className="hidden lg:flex gap-0 items-start">
+      {/* Desktop-only scrollytelling. Mobile is rendered flat by
+       * InteractiveTutorialView. */}
+      <div className="flex gap-0 items-start">
         {/* Left: sticky image panel — crossfades on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] flex items-center justify-center">

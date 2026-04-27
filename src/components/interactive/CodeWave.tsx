@@ -187,22 +187,9 @@ export function CodeWave({ steps }: CodeWaveProps) {
 
   return (
     <div className="codewave-container relative">
-      {/* Mobile: stacked layout */}
-      <div className="lg:hidden space-y-6">
-        {steps.map((s, i) => (
-          <div key={i}>
-            <div className="mb-3 max-h-[50vh] overflow-hidden">
-              <CodePanel step={s.step} />
-            </div>
-            <div className="px-1">
-              <MarkdownRenderer content={s.prose} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Desktop: side-by-side scrollytelling */}
-      <div className="hidden lg:flex items-stretch">
+      {/* Desktop-only scrollytelling. Mobile is rendered flat by
+       * InteractiveTutorialView, so we no longer ship a mobile fallback here. */}
+      <div className="flex items-stretch">
         {/* Left: sticky code panel — crossfades on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
@@ -222,7 +209,6 @@ export function CodeWave({ steps }: CodeWaveProps) {
 
         {/* Right: scrollable prose — spring opacity matching site's stiffness/damping */}
         <div className="w-[50%]">
-          <div className="h-[20vh]" />
           {steps.map((s, i) => (
             <motion.div
               key={i}
