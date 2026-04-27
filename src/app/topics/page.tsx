@@ -66,8 +66,8 @@ export default function TopicsPage() {
         </div>
 
         <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em]"
-          style={{ ...orbitron, fontWeight: 800, textWrap: 'balance' }}
+          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
+          style={{ ...orbitron, fontWeight: 800 }}
         >
           The{' '}
           <span
@@ -156,11 +156,10 @@ export default function TopicsPage() {
                         </span>
                       </div>
                       <h3
-                        className="m-0 text-[clamp(1.35rem,1.1rem+0.9vw,1.85rem)] leading-[1.2] tracking-[-0.015em] transition-opacity duration-200 group-hover:opacity-60"
+                        className="m-0 text-[clamp(1.35rem,1.1rem+0.9vw,1.85rem)] leading-[1.2] tracking-[-0.015em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                         style={{
                           fontFamily: 'Georgia, "Times New Roman", serif',
                           fontWeight: 500,
-                          textWrap: 'balance',
                         }}
                       >
                         {topic.title}

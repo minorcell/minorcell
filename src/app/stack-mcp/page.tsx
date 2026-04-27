@@ -116,8 +116,8 @@ export default function StackMcpPage() {
         </div>
 
         <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em]"
-          style={{ ...orbitron, fontWeight: 800, textWrap: 'balance' }}
+          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
+          style={{ ...orbitron, fontWeight: 800 }}
         >
           MCP{' '}
           <span

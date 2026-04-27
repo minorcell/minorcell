@@ -410,10 +410,10 @@ export function ExternalLinkGuard() {
             className="m-0 text-[clamp(1.6rem,1.3rem+1.2vw,2.2rem)] leading-[1.12] tracking-[-0.02em]"
           >
             <h2
+              className="text-pretty sm:text-balance"
               style={{
                 fontFamily: 'Georgia, "Times New Roman", serif',
                 fontWeight: 500,
-                textWrap: 'balance',
               }}
             >
               即将离开本站

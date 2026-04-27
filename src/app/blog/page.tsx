@@ -95,8 +95,8 @@ export default function BlogPage() {
         </div>
 
         <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em]"
-          style={{ ...orbitron, fontWeight: 800, textWrap: 'balance' }}
+          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
+          style={{ ...orbitron, fontWeight: 800 }}
         >
           Articles{' '}
           <span
@@ -156,11 +156,10 @@ export default function BlogPage() {
                 </time>
               </div>
               <h3
-                className="m-0 text-[clamp(1.7rem,1.4rem+1.6vw,3rem)] leading-[1.1] tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-60"
+                className="m-0 text-[clamp(1.7rem,1.4rem+1.6vw,3rem)] leading-[1.1] tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                 style={{
                   fontFamily: 'Georgia, "Times New Roman", serif',
                   fontWeight: 500,
-                  textWrap: 'balance',
                 }}
               >
                 {featuredPost.metadata.title}
@@ -210,10 +209,9 @@ export default function BlogPage() {
                         </time>
                       </div>
                       <span
-                        className="block text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] leading-[1.3] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60"
+                        className="block text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] leading-[1.3] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                         style={{
                           fontFamily: 'Georgia, "Times New Roman", serif',
-                          textWrap: 'balance',
                         }}
                       >
                         {post.metadata.title}
@@ -288,10 +286,9 @@ export default function BlogPage() {
                     </span>
                     <div className="min-w-0">
                       <span
-                        className="text-[clamp(1rem,0.98rem+0.25vw,1.18rem)] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60"
+                        className="text-[clamp(1rem,0.98rem+0.25vw,1.18rem)] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
                         style={{
                           fontFamily: 'Georgia, "Times New Roman", serif',
-                          textWrap: 'balance',
                         }}
                       >
                         {post.metadata.title}

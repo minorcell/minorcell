@@ -517,4 +517,11 @@
   .section-divider {
     margin: 1.8rem 0;
   }
+
+  /* On mobile, text-wrap: balance leaves significant empty space on the right
+     because it balances line lengths. Use 'pretty' instead, which avoids
+     orphan words while allowing lines to fill the full available width. */
+  .article-markdown :where(h2, h3, h4) {
+    text-wrap: pretty;
+  }
 }
