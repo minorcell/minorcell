@@ -136,6 +136,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Hide scrollbars site-wide (Firefox). Scrolling still works. */
+    scrollbar-width: none;
   }
 
   body {
@@ -146,6 +148,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: pretty;
+    /* IE / legacy Edge */
+    -ms-overflow-style: none;
+  }
+
+  /* Hide scrollbars on every scrollable element (WebKit / Chromium / Safari) */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  /* And on Firefox for nested scroll containers */
+  * {
+    scrollbar-width: none;
   }
 
   h1,
@@ -543,5 +562,182 @@
      orphan words while allowing lines to fill the full available width. */
   .article-markdown :where(h2, h3, h4) {
     text-wrap: pretty;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * TOPIC COVER + STAGE
+ *
+ * The cover sticks to the viewport (height = 100dvh, z=1) while the
+ * stage section that follows starts at margin-top:100dvh, so when the
+ * user scrolls down the stage naturally rises and covers the cover.
+ *
+ * `animation-timeline: scroll(root)` makes the cover "recede" slightly
+ * as scroll progresses (scale 0.96, gentle dim). Browsers without the
+ * feature simply leave it static — both states look fine.
+ *
+ * The navbar (z = 1200) always sits above both layers.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.topic-cover {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 100dvh;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 6rem);
+  transform-origin: 50% 30%;
+  will-change: transform, filter;
+  animation: cover-recede linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0 100vh;
+}
+
+@keyframes cover-recede {
+  to {
+    transform: scale(0.96) translateY(-1.5vh);
+    filter: brightness(0.92);
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  .topic-cover {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-cover {
+    animation: none;
+  }
+}
+
+.topic-cover-rule {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted-foreground);
+}
+
+.topic-cover-rule>span:nth-child(2) {
+  height: 1px;
+  background: color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+.topic-cover-center {
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+}
+
+.topic-cover-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 7vw, 7rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.topic-cover-divider {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: color-mix(in oklab, var(--foreground) 50%, transparent);
+}
+
+.topic-cover-standfirst {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  max-width: 56ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.topic-cover-begin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+}
+
+.topic-cover-arrow {
+  display: inline-block;
+  animation: cover-arrow-bob 2s ease-in-out infinite;
+}
+
+@keyframes cover-arrow-bob {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-cover-arrow {
+    animation: none;
+  }
+}
+
+/* Stage — sits above cover, rises into view as user scrolls */
+.topic-stage {
+  position: relative;
+  z-index: 2;
+  margin-top: 100dvh;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  box-shadow:
+    0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
+    0 -24px 48px -28px rgba(0, 0, 0, 0.18);
+  /* opaque paper surface so the cover behind is fully hidden once covered */
+  background-color: var(--background);
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--background) 68%, transparent),
+      color-mix(in oklab, var(--background) 68%, transparent)),
+    var(--paper-grain-img);
+  background-repeat: repeat, repeat;
+  background-size: auto, 240px 240px;
+  background-blend-mode: normal, multiply;
+  /* NOTE: never set `overflow: hidden` here — it would silently break
+   * `position: sticky` on descendants (e.g. CodeWave's left code panel). */
+}
+
+.dark .topic-stage {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--background) 94%, transparent),
+      color-mix(in oklab, var(--background) 94%, transparent)),
+    var(--paper-grain-img);
+  background-blend-mode: normal, screen;
+  box-shadow:
+    0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
+    0 -24px 48px -28px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 640px) {
+  .topic-cover {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .topic-stage {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
   }
 }

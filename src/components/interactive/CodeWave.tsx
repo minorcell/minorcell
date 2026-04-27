@@ -193,13 +193,13 @@ export function CodeWave({ steps }: CodeWaveProps) {
         {/* Left: sticky code panel — crossfades on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
-            <div className="flex h-full items-center px-6 py-8 xl:px-8">
+            <div className="flex h-full items-stretch px-6 xl:px-8">
               <motion.div
                 key={activeStep.code}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
-                className="w-full h-[calc(100vh-8rem)]"
+                className="w-full h-full"
               >
                 <CodePanel step={activeStep} />
               </motion.div>
