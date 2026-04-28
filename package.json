@@ -5,10 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "icons": "node scripts/generate-icons.mjs",
-    "mcp:build-data": "node scripts/build-mcp-data.mjs",
-    "mcp:build-server": "pnpm --filter @mcell/stack-mcp build",
-    "mcp:dev-server": "pnpm --filter @mcell/stack-mcp dev",
-    "prebuild": "node scripts/build-mcp-data.mjs && node scripts/build-feed.mjs",
+    "prebuild": "node scripts/build-feed.mjs",
     "build": "next build",
     "postbuild": "pagefind --site out",
     "start": "serve out",

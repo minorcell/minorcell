@@ -1,209 +1,74 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+本文件定义本仓库内 agent 的协作约束与执行规范。目标是：在不偏离用户当前任务的前提下，稳定、可验证地交付改动。
 
-## Project Overview
+## 1. 项目概览
 
-CellStack is a static technical blog with a pixel-art aesthetic, built with Next.js 16 (App Router) and deployed to GitHub Pages. The site features MDX content, static search via Pagefind, and Giscus comments integration.
+- 项目类型：`Next.js 16` 静态导出站点（`output: 'export'`）。
+- 语言与框架：`TypeScript` + `React 19` + App Router。
+- 包管理：`pnpm`（workspace）。
+- 主要内容源：`content/` 下 Markdown 文档。
+- 构建产物：`out/`（静态站点）。
 
-**Key Technologies:**
-- Next.js 16.0.7 (App Router, static export mode)
-- TypeScript 5
-- Tailwind CSS 4
-- MDX with next-mdx-remote (build-time compilation)
-- Pagefind (static search)
-- pnpm package manager
+## 2. 目录职责（按改动优先级理解）
 
-## Development Commands
+- `src/app/`：页面路由、全局布局、SEO 路由（`sitemap.ts` / `robots.ts`）。
+- `src/components/`：页面组件与 UI 组件。
+- `src/lib/`：内容读取、业务逻辑、SEO 组装等。
+- `content/`：博客、专题、站点元信息。
+- `scripts/`：构建前数据生成脚本（feed、icons）。
+- `public/`：静态资源。
 
-```bash
-# Install dependencies
-pnpm install
+## 3. 常用命令
 
-# Start development server
-pnpm dev
+- 安装依赖：`pnpm install`
+- 本地开发：`pnpm dev`
+- 代码检查：`pnpm lint`
+- 构建站点：`pnpm build`
+- 本地预览导出站点：`pnpm start`
+- 生成图标：`pnpm icons`
 
-# Build static site (outputs to ./out/)
-pnpm build                # Runs next build + postbuild script
-pnpm postbuild            # Runs pagefind indexing (automatic after build)
+说明：`pnpm build` 会先执行 `prebuild`，自动生成 feed；构建后会运行 `pagefind` 建索引。
 
-# Preview production build locally
-pnpm start                # Serves the ./out/ directory
+## 4. 实施约束
 
-# Code quality
-pnpm lint                 # Run ESLint
-pnpm format               # Format code with Prettier
-pnpm format:check         # Check formatting without writing
-```
+- 优先做与当前需求直接相关的最小改动，不主动扩大范围。
+- 保持现有技术栈与风格：TypeScript、函数组件、模块化拆分。
+- 涉及 UI 时，优先复用已有组件与样式变量，避免引入无必要新依赖。
+- 修改内容渲染或路由逻辑时，注意静态导出兼容性（避免依赖运行时服务端能力）。
+- 发现 bug/风险时，先向用户说明影响与建议；经确认后再创建 issue（如用户需要）。
 
-## Architecture
+## 5. 内容与 SEO 相关注意点
 
-### Static Site Generation Model
+- 内容主要来自 `content/blog` 与 `content/topics`，frontmatter 字段需保持兼容（如 `title`、`date`、`description`）。
+- 页面元信息由 `src/lib/seo.ts`、`src/lib/structured-data.ts` 统一生成；新增页面应接入同一套 SEO 结构。
+- `site` 级配置来自 `content/site/site.json`，涉及站点名称、链接、关键词等全局信息时优先修改这里。
 
-This is a **fully static site** (no Node.js server at runtime):
-- `output: 'export'` in [next.config.ts](next.config.ts) enables static HTML export
-- All pages are pre-rendered at build time using `generateStaticParams()`
-- Content (MDX/Markdown) is compiled to React at build time via server components
-- Output goes to `./out/` directory (deployed to GitHub Pages)
-- Pagefind creates a static search index post-build
+## 6. 交付前最小验证
 
-### Content Organization
+对代码改动，默认执行以下检查（至少覆盖与改动相关项）：
 
-**Blog Posts** (`content/blog/`)
-- Structure: Flat or nested (e.g., `content/blog/2025/01_article.md`)
-- Files are discovered recursively by [src/lib/mdx.ts](src/lib/mdx.ts)
-- Frontmatter: `title`, `date`, `description`, `tags`, `author`, `image`
-- Routing: `/blog/[...slug]` (catch-all route in [src/app/blog/[...slug]/page.tsx](src/app/blog/[...slug]/page.tsx))
+1. `pnpm lint`
+2. `pnpm build`
+3. 若改动了内容检索/搜索相关：确认 `pagefind` 索引流程未报错。
 
-**Topics** (`content/topics/`)
-- Structure: Topic folders with `index.md` + article files
-  ```
-  content/topics/
-  └── topic-name/
-      ├── index.md        # Topic intro (required)
-      ├── article-1.md
-      └── article-2.md
-  ```
-- Parsed by [src/lib/topics.server.ts](src/lib/topics.server.ts)
-- Articles sorted by: `order` (frontmatter) > `date` > filename
-- Routing: `/topics/[slug]/[article]` in [src/app/topics/[slug]/[article]/page.tsx](src/app/topics/[slug]/[article]/page.tsx)
+如果受环境限制无法完成检查，需在回复中明确说明未验证项及潜在影响。
 
-### Key Utilities
+## 7. 提交规范（供 agent 执行时参考）
 
-**Content Parsing:**
-- [src/lib/mdx.ts](src/lib/mdx.ts): Blog post parsing with gray-matter and recursive directory traversal
-  - `getPostSlugs('blog')` - finds all `.md`/`.mdx` files
-  - `getPostBySlug('blog', slug)` - reads and parses file with frontmatter
-- [src/lib/topics.server.ts](src/lib/topics.server.ts): Topic-specific parsing (server-only, uses Node.js `fs`)
-  - `getAllTopics()` - returns all topics with articles
-  - `getTopic(slug)` - returns single topic with sorted articles
-  - `getTopicArticle(topicSlug, articleSlug)` - returns article metadata + content
+- 单次任务尽量保持单一主题提交，避免混入无关改动。
+- 不回滚或覆盖用户已有的未授权改动。
+- 提交说明聚焦“改了什么 + 为什么”，避免空泛描述。
 
-**MDX Rendering:**
-- [src/components/MdxPre.tsx](src/components/MdxPre.tsx): Wraps code blocks, detects mermaid diagrams
-- [src/components/CodeBlock.tsx](src/components/CodeBlock.tsx): Syntax highlighting with copy button (highlight.js)
-- [src/components/MermaidBlock.tsx](src/components/MermaidBlock.tsx): Renders mermaid diagrams
-- [src/components/ZoomImage.tsx](src/components/ZoomImage.tsx): Medium-style image zoom
+## 8. 决策优先级
 
-**Search:**
-- [src/components/PagefindSearch.tsx](src/components/PagefindSearch.tsx): Static search UI (loads `/pagefind/` index)
-- Pagefind indexes the `./out/` directory after build completes
-- Search is fully client-side (no backend required)
+当规则冲突时，按以下顺序决策：
 
-### Styling Architecture
+1. 用户当前明确指令
+2. 安全与正确性
+3. 本文件约束
+4. 项目现有实现风格
 
-**Pixel Art Theme:**
-- Custom CSS variables in [src/app/globals.css](src/app/globals.css):
-  - Pixel colors: `--pixel-purple`, `--pixel-cyan`, `--pixel-yellow`, etc.
-  - Fonts: `--font-pixel` (Press Start 2P), `--font-body` (Ark Pixel), `--font-mono` (JetBrains Mono)
-- Custom animations: `pixel-bounce`, `pixel-pulse`, `pixel-float`, `pixel-blink`
-- Tailwind CSS 4 with `@theme` directive in globals.css
+---
 
-**Path Aliases:**
-- `@/*` maps to `./src/*` (configured in [tsconfig.json](tsconfig.json))
-- Example: `import { cn } from '@/lib/utils'`
-
-### Server vs Client Components
-
-**Server Components** (default in App Router):
-- All page routes (`page.tsx` files) - handle MDX compilation, content fetching
-- Content parsing utilities (`mdx.ts`, `topics.server.ts`) - use Node.js `fs`
-
-**Client Components** (`'use client'` directive):
-- Interactive features: search, navigation menus, animations, Three.js effects
-- [src/components/PagefindSearch.tsx](src/components/PagefindSearch.tsx)
-- [src/components/Navbar.tsx](src/components/Navbar.tsx)
-- [src/app/me/MeClientPage.tsx](src/app/me/MeClientPage.tsx)
-
-**IMPORTANT:** Do not use Node.js APIs (`fs`, `path`, etc.) in client components. Keep file system operations in `.server.ts` files.
-
-## Adding Content
-
-**New Blog Post:**
-1. Create `.md` or `.mdx` file in `content/blog/` (or nested folder like `content/blog/2025/`)
-2. Add frontmatter:
-   ```yaml
-   ---
-   title: 'Article Title'
-   date: 2026-01-30
-   description: 'Article description'
-   tags: ['tag1', 'tag2']
-   ---
-   ```
-3. Rebuild site with `pnpm build` (generates static pages + search index)
-
-**New Topic or Topic Article:**
-1. Create folder `content/topics/topic-slug/`
-2. Add `index.md` with topic intro and frontmatter
-3. Add article files (e.g., `article-name.md`)
-4. Optional: Use `order: 1` in frontmatter to control article sequence
-5. Rebuild site with `pnpm build`
-
-## Deployment
-
-**GitHub Actions Workflow** (`.github/workflows/deploy.yml`):
-- Triggers on push to `main` branch
-- Uses pnpm v9 + Node 24
-- Caches `.next` directory for faster builds
-- Runs `pnpm install --frozen-lockfile && pnpm build`
-- Deploys `./out/` to GitHub Pages
-
-**Manual Deployment:**
-```bash
-pnpm build          # Creates ./out/ directory
-# Upload ./out/ to any static host
-```
-
-## Critical Constraints
-
-1. **No Dynamic Server Routes**: This is a static site. All routes must be pre-rendered at build time via `generateStaticParams()`.
-
-2. **Content Changes Require Rebuild**: New articles don't appear until you run `pnpm build` and redeploy.
-
-3. **Pagefind Index**: Search only includes pages present in `./out/` at build time. Run postbuild script after content changes.
-
-4. **Image Optimization**: Images are unoptimized (`unoptimized: true` in next.config.ts) due to static export mode.
-
-5. **Server-Only Imports**: Mark Node.js imports with `import 'server-only'` to prevent accidental client-side usage.
-
-## Special Features
-
-**Mermaid Diagrams:**
-- Use code blocks with `mermaid` language: ` ```mermaid ... ``` `
-- Auto-detected and rendered by [MdxPre.tsx](src/components/MdxPre.tsx)
-
-**Comments System:**
-- Giscus (GitHub Discussions) in [src/components/GiscusComments.tsx](src/components/GiscusComments.tsx)
-- Each article gets a discussion thread by term: `blog/{slug}` or `topics/{topic}/{article}`
-
-**Three.js Background:**
-- [src/components/ThreeBackground.tsx](src/components/ThreeBackground.tsx) provides 3D effects on home page
-- Client-side only, uses @react-three/fiber + drei
-
-## Common Tasks
-
-**Add a new shadcn/ui component:**
-```bash
-pnpm dlx shadcn@latest add [component-name]
-# Components install to src/components/ui/
-```
-
-**Modify global styles:**
-- Edit [src/app/globals.css](src/app/globals.css) for CSS variables, animations, Tailwind theme
-
-**Change site metadata:**
-- Edit root layout [src/app/layout.tsx](src/app/layout.tsx) for `<title>`, `<meta>` tags
-
-**Debug build issues:**
-```bash
-rm -rf .next out         # Clean build artifacts
-pnpm build               # Rebuild from scratch
-```
-
-## Technical Notes
-
-- **React 19.2.0**: Uses latest React features (no legacy mode)
-- **TypeScript strict mode**: All code is strictly typed
-- **ESLint config**: Next.js recommended config (eslint-config-next)
-- **Prettier**: Formats .ts, .tsx, .md, .mdx, .css, .json files
-- **pnpm**: Uses pnpm workspace and lock file (faster than npm/yarn)
+如需长期调整协作偏好，可直接更新本文件；不要记录短期任务状态。
