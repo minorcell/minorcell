@@ -94,7 +94,7 @@ export default function TopicsPage() {
                 >
                   <Link
                     href={`/topics/${topic.slug}`}
-                    className={`group grid items-start gap-5 py-7 hover:opacity-100 sm:gap-7 sm:py-9 ${
+                    className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-9 ${
                       !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
                     }`}
                     style={{ gridTemplateColumns: '64px 1fr' }}

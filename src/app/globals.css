@@ -216,6 +216,35 @@
     opacity: 0.6;
   }
 
+  /* Buttons should always read as interactive */
+  :where(button, [role='button']) {
+    cursor: pointer;
+  }
+
+  /* Site-wide accessible focus ring (keyboard users) */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Inline prose anchors — hairline underline at rest so they don't read as
+   * plain copy. .article-markdown defines its own (more specific) override
+   * for long-form content. */
+  :where(p)>a {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--border) 80%, var(--foreground));
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: text-decoration-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  }
+
+  :where(p)>a:hover {
+    color: var(--link-accent);
+    text-decoration-color: var(--link-accent);
+    opacity: 1;
+  }
+
   ::selection {
     background: var(--foreground);
     color: var(--background);
@@ -238,6 +267,82 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: color-mix(in oklab, var(--muted-foreground) 30%, transparent);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * INTERACTIVE AFFORDANCES
+ *
+ * Magazine-style design tends to mute clickability. These utilities
+ * give "row-style" cards (whole-row clickable links) and top-nav links
+ * a *static* affordance so users see they're interactive without having
+ * to hover first.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* Row link — full-row clickable wrapper. Adds a paper-tint hover bg so
+ * the entire surface reads as one tappable target. Designed to be used
+ * together with Tailwind's `group` for child hover states. */
+.row-link {
+  transition: background-color 160ms ease;
+}
+
+.row-link:hover {
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+}
+
+/* Trailing arrow indicator inside a row link.
+ * Render as: <span aria-hidden class="row-link-arrow">→</span>
+ * Persistent at-rest (muted), animates to accent on hover. */
+.row-link-arrow {
+  font-family: var(--font-mono);
+  color: color-mix(in oklab, var(--muted-foreground) 55%, transparent);
+  transition: color 160ms ease, transform 160ms ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.row-link:hover .row-link-arrow,
+.group:hover .row-link-arrow {
+  color: var(--link-accent);
+  transform: translateX(3px);
+}
+
+/* Top-nav link — magazine kicker label with hover/active hairline.
+ * Apply to plain text nav links; use [data-active] for the current page. */
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-link[data-active]::after {
+  transform: scaleX(1);
+  background: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .row-link,
+  .row-link-arrow,
+  .nav-link::after {
+    transition: none;
   }
 }
 

@@ -239,7 +239,7 @@ export function PagefindSearch({
               >
                 <Link
                   href={hit.url}
-                  className="group grid items-start gap-4 py-4 hover:opacity-100"
+                  className="row-link group grid items-start gap-4 px-3 py-4 hover:opacity-100"
                   style={{ gridTemplateColumns: '44px 1fr 18px' }}
                   onClick={onClose}
                 >

@@ -188,7 +188,7 @@ export default function HomePage() {
             {/* HERO: №01 */}
             <Link
               href={`/blog/${posts[0].slug}`}
-              className="group block border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] py-8 hover:opacity-100 sm:py-12"
+              className="row-link group block border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] px-3 py-8 hover:opacity-100 sm:px-5 sm:py-12"
             >
               <div className="grid items-start gap-5 sm:grid-cols-[120px_1fr_140px] sm:gap-10">
                 <span
@@ -223,9 +223,12 @@ export default function HomePage() {
                     </p>
                   )}
                 </div>
-                <time className="whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground sm:text-right">
-                  {formatShortDate(posts[0].metadata.date)}
-                </time>
+                <div className="flex items-baseline gap-3 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground sm:justify-end">
+                  <time>{formatShortDate(posts[0].metadata.date)}</time>
+                  <span aria-hidden className="row-link-arrow text-[14px]">
+                    →
+                  </span>
+                </div>
               </div>
             </Link>
 
@@ -246,7 +249,7 @@ export default function HomePage() {
                     >
                       <Link
                         href={`/blog/${post.slug}`}
-                        className={`group grid items-start gap-5 py-7 hover:opacity-100 sm:gap-7 ${
+                        className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 ${
                           !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
                         }`}
                         style={{ gridTemplateColumns: '64px 1fr auto' }}
@@ -278,9 +281,15 @@ export default function HomePage() {
                             </p>
                           )}
                         </div>
-                        <time className="whitespace-nowrap text-right font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
-                          {formatShortDate(post.metadata.date)}
-                        </time>
+                        <div className="flex items-baseline justify-end gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
+                          <time>{formatShortDate(post.metadata.date)}</time>
+                          <span
+                            aria-hidden
+                            className="row-link-arrow text-[13px]"
+                          >
+                            →
+                          </span>
+                        </div>
                       </Link>
                     </li>
                   )

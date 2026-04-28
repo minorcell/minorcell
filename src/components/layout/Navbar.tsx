@@ -311,19 +311,23 @@ export function Navbar() {
 
         {/* RIGHT — nav + search trigger + theme toggle */}
         <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-100 ${
-                isActive(item.href)
-                  ? 'text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navLinks.map((item) => {
+            const active = isActive(item.href)
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                data-active={active || undefined}
+                className={`nav-link font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-100 ${
+                  active
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
 
           <span
             aria-hidden
@@ -333,7 +337,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-2 rounded-md border border-[color:color-mix(in_oklab,var(--border)_75%,transparent)] bg-transparent px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:color-mix(in_oklab,var(--foreground)_35%,transparent)] hover:bg-[color:color-mix(in_oklab,var(--muted)_60%,transparent)] hover:text-foreground"
             aria-label="搜索（快捷键 / 或 Cmd/Ctrl+K）"
             title="搜索（/ 或 Cmd/Ctrl+K）"
           >
@@ -345,7 +349,7 @@ export function Navbar() {
 
           <button
             onClick={toggleTheme}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[color:color-mix(in_oklab,var(--border)_75%,transparent)] text-muted-foreground transition-colors hover:border-[color:color-mix(in_oklab,var(--foreground)_35%,transparent)] hover:bg-[color:color-mix(in_oklab,var(--muted)_60%,transparent)] hover:text-foreground"
             aria-label="切换主题"
           >
             {theme === 'light' ? (

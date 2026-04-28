@@ -117,7 +117,7 @@ export default function BlogPage() {
             {/* Feature 头条 */}
             <Link
               href={`/blog/${featuredPost.slug}`}
-              className="group flex h-full flex-col py-2 hover:opacity-100 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
+              className="row-link group flex h-full flex-col px-3 py-2 hover:opacity-100 sm:px-4 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
             >
               {/* Featured — underline only; the "№ 01" text isn't a numeric
                   badge, so we skip the magnetic target here. */}
@@ -163,7 +163,7 @@ export default function BlogPage() {
                   >
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="group block py-5 hover:opacity-100 sm:py-6"
+                      className="row-link group block px-3 py-5 hover:opacity-100 sm:px-4 sm:py-6"
                     >
                       <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                         <span
@@ -177,9 +177,17 @@ export default function BlogPage() {
                         >
                           {pad(idx + 2)}
                         </span>
-                        <time className="text-[12px] tracking-[0.12em]">
-                          {formatShortDate(post.metadata.date)}
-                        </time>
+                        <span className="inline-flex items-baseline gap-2">
+                          <time className="text-[12px] tracking-[0.12em]">
+                            {formatShortDate(post.metadata.date)}
+                          </time>
+                          <span
+                            aria-hidden
+                            className="row-link-arrow text-[13px]"
+                          >
+                            →
+                          </span>
+                        </span>
                       </div>
                       <span
                         className="block text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] leading-[1.3] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
@@ -242,7 +250,7 @@ export default function BlogPage() {
                 >
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="group grid items-baseline gap-5 py-4 hover:opacity-100 sm:gap-7 sm:py-5"
+                    className="row-link group grid items-baseline gap-5 px-3 py-4 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-5"
                     style={{ gridTemplateColumns: '56px 1fr auto' }}
                   >
                     <span
@@ -272,9 +280,12 @@ export default function BlogPage() {
                         </p>
                       )}
                     </div>
-                    <time className="whitespace-nowrap text-right font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
-                      {formatShortDate(post.metadata.date)}
-                    </time>
+                    <div className="flex items-baseline justify-end gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
+                      <time>{formatShortDate(post.metadata.date)}</time>
+                      <span aria-hidden className="row-link-arrow text-[13px]">
+                        →
+                      </span>
+                    </div>
                   </Link>
                 </li>
               ))}
