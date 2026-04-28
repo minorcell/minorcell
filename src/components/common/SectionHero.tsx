@@ -1,10 +1,15 @@
 import type { ReactNode } from 'react'
+import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
 interface SectionHeroProps {
   sectionLabel: string
   sectionCountLabel?: string
   dateLabel: string
-  title: ReactNode
+  /**
+   * 标题字符串。`&` 会被识别为斜体灰色连字符（与首页 hero 保持一致），
+   * 其余字母会随鼠标位置在 wght 400–900 之间平滑插值（仅 fine-pointer 设备）。
+   */
+  title: string
   introLabel: string
   intro: ReactNode
 }
@@ -29,15 +34,22 @@ export function SectionHero({
         <span>{dateLabel}</span>
       </div>
 
-      <h1
+      <MagneticTitle
+        text={title}
         className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
         style={{
           fontFamily: 'var(--font-orbitron), Georgia, serif',
           fontWeight: 800,
+          fontVariationSettings: '"wght" 800',
         }}
-      >
-        {title}
-      </h1>
+        ampClassName="text-muted-foreground"
+        ampStyle={{
+          fontFamily: 'Georgia, "Times New Roman", serif',
+          fontStyle: 'italic',
+          fontWeight: 400,
+          letterSpacing: '-0.02em',
+        }}
+      />
 
       <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
         <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">

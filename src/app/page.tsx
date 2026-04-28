@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { siteContent } from '@/lib/site-content'
 import { getAllPosts } from '@/lib/mdx'
 import { buildPageMetadata } from '@/lib/seo'
+import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
 const homeMetadata = buildPageMetadata({
   title: 'Cell Stack | AI Agent 与全栈开发技术博客',
@@ -60,7 +61,10 @@ export default function HomePage() {
   return (
     <div className="mx-auto w-full px-6 pb-24 sm:px-10 sm:pb-32 lg:px-16 xl:px-24">
       {/* ─────────── MASTHEAD — fills first viewport ─────────── */}
-      <header className="flex min-h-[calc(100dvh-3.5rem)] flex-col justify-between pt-10 pb-8 sm:pt-14 sm:pb-10">
+      <header
+        data-section="HERO"
+        className="flex min-h-[calc(100dvh-3.5rem)] flex-col justify-between pt-10 pb-8 sm:pt-14 sm:pb-10"
+      >
         {/* Top — issue bar */}
         <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           <div className="flex items-center gap-5">
@@ -78,27 +82,22 @@ export default function HomePage() {
 
         {/* Middle — title block, vertically centred in remaining space */}
         <div className="flex flex-col justify-center py-8">
-          <h1
+          <MagneticTitle
+            text="Cell & Stack"
             className="m-0 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em] text-pretty sm:text-balance"
             style={{
               fontFamily: 'var(--font-orbitron), Georgia, serif',
               fontWeight: 800,
+              fontVariationSettings: '"wght" 800',
             }}
-          >
-            Cell{' '}
-            <span
-              className="text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              &amp;
-            </span>{' '}
-            Stack
-          </h1>
+            ampClassName="text-muted-foreground"
+            ampStyle={{
+              fontFamily: 'Georgia, "Times New Roman", serif',
+              fontStyle: 'italic',
+              fontWeight: 400,
+              letterSpacing: '-0.02em',
+            }}
+          />
 
           <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
             <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -126,7 +125,10 @@ export default function HomePage() {
       </header>
 
       {/* ─────────── EDITOR'S NOTE ─────────── */}
-      <section className="mt-20 grid gap-4 sm:mt-24 sm:grid-cols-[220px_1fr] sm:gap-10">
+      <section
+        data-section="EDITOR'S NOTE"
+        className="mt-20 grid gap-4 sm:mt-24 sm:grid-cols-[220px_1fr] sm:gap-10"
+      >
         <h2 className="m-0 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
           Editor&rsquo;s Note
         </h2>
@@ -150,7 +152,7 @@ export default function HomePage() {
       </section>
 
       {/* ─────────── IN THIS ISSUE ─────────── */}
-      <section className="relative mt-24 sm:mt-28">
+      <section data-section="IN THIS ISSUE" className="relative mt-24 sm:mt-28">
         <span
           aria-hidden
           className="pointer-events-none absolute -top-14 right-0 select-none text-[color:color-mix(in_oklab,var(--foreground)_8%,transparent)] sm:-top-20"
@@ -303,6 +305,7 @@ export default function HomePage() {
       {/* ─────────── DIRECTORY ─────────── */}
       <nav
         aria-label="栏目导航"
+        data-section="DIRECTORY"
         className="mt-24 grid gap-7 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-8 sm:mt-28 sm:grid-cols-3 sm:gap-0"
       >
         {siteContent.sections.map((section, idx) => (
@@ -321,7 +324,7 @@ export default function HomePage() {
                 fontWeight: 700,
               }}
             >
-              {section.label}
+              <span data-cursor-underline>{section.label}</span>
             </h3>
             <p className="mb-4 text-[0.96rem] text-foreground/70">
               {section.description}

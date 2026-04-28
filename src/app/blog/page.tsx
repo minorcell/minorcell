@@ -89,23 +89,7 @@ export default function BlogPage() {
         sectionCountLabel={`${posts.length} ENTRIES`}
         dateLabel={formatIsoDate(latestDate)}
         introLabel="THE ARCHIVE"
-        title={
-          <>
-            Articles{' '}
-            <span
-              className="text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, \"Times New Roman\", serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              &amp;
-            </span>{' '}
-            Notes
-          </>
-        }
+        title="Articles & Notes"
         intro={
           <>
             按时间倒序整理的全部文章——最新一篇推到最前，往下是历年归档。当前共{' '}
@@ -135,6 +119,8 @@ export default function BlogPage() {
               href={`/blog/${featuredPost.slug}`}
               className="group flex h-full flex-col py-2 hover:opacity-100 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
             >
+              {/* Featured — underline only; the "№ 01" text isn't a numeric
+                  badge, so we skip the magnetic target here. */}
               <div className="mb-5 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 <span>№ 01 · LEADING ARTICLE</span>
                 <time>

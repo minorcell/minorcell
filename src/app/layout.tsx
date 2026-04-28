@@ -4,15 +4,17 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { PaperGrain } from '@/components/effects/PaperGrain'
+import { CursorTracker } from '@/components/effects/CursorTracker'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
 import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
 import { createPersonJsonLd, createWebsiteJsonLd } from '@/lib/structured-data'
 
+// Variable axis (wght 400–900) — needed for MagneticTitle's smooth
+// font-variation-settings interpolation. Static cuts would jump.
 const orbitron = Orbitron({
   subsets: ['latin'],
-  weight: ['500', '700', '800'],
   display: 'swap',
   variable: '--font-orbitron',
 })
@@ -92,6 +94,7 @@ export default function RootLayout({
       >
         <ExternalLinkGuard />
         <PaperGrain />
+        <CursorTracker />
         <div className="relative z-10 flex min-h-screen flex-col">
           <Navbar />
           <main className="flex-1 relative" data-pagefind-body>

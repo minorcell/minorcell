@@ -61,23 +61,7 @@ export default function TopicsPage() {
         sectionCountLabel={`${topics.length} TOPICS`}
         dateLabel={formatIsoDate(new Date())}
         introLabel="READING SERIES"
-        title={
-          <>
-            The{' '}
-            <span
-              className="text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, \"Times New Roman\", serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              &amp;
-            </span>{' '}
-            Series
-          </>
-        }
+        title="The & Series"
         intro="按主题串成系列的深度阅读：从一篇出发到一整套心智模型——优先从专题首页进入，按步骤完成交互教程，再回到目录继续下一个主题。"
       />
 
@@ -131,9 +115,7 @@ export default function TopicsPage() {
                     <div className="min-w-0">
                       <div className="mb-2.5 flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                         <span>§ /{topic.slug}</span>
-                        <span style={{ color: accentBlue }}>
-                          阅读 →
-                        </span>
+                        <span style={{ color: accentBlue }}>阅读 →</span>
                       </div>
                       <h3
                         className="m-0 text-[clamp(1.35rem,1.1rem+0.9vw,1.85rem)] leading-[1.2] tracking-[-0.015em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"

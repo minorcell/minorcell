@@ -838,3 +838,66 @@
     transition: none;
   }
 }
+
+/* ─ FX 3 · Cursor-position expanding underline ───────────────────── */
+
+[data-cursor-underline] {
+  position: relative;
+  /* Inline display lets the ::after cover the actual run of text rather
+   * than the whole line box of a wider parent. */
+  display: inline;
+}
+
+[data-cursor-underline]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--link-accent);
+  transform: scaleX(0);
+  transform-origin: var(--ux, 50%) 50%;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+[data-cursor-underline]:hover::after,
+.group:hover [data-cursor-underline]::after,
+a:hover [data-cursor-underline]::after {
+  transform: scaleX(1);
+}
+
+/* ─ FX 2 · MagneticTitle per-letter slots ────────────────────────── */
+
+.fx-ch {
+  display: inline-block;
+  /* Smooth wght axis interpolation; will be overridden every RAF by JS
+   * when fine-pointer + reduced-motion-off. */
+  transition: font-variation-settings 0.25s ease;
+  will-change: font-variation-settings;
+}
+
+.fx-amp {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  [data-cursor-underline]::after,
+  .fx-ch,
+  .fx-amp {
+    transition: none !important;
+  }
+}
+
+/* On coarse / no-hover devices: never show cursor FX. */
+@media (hover: none),
+(pointer: coarse) {
+
+  [data-cursor-underline]::after {
+    display: none;
+  }
+}

@@ -3,10 +3,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
 import { cn } from '@/lib/utils'
-import {
-  projectGroups,
-  type ProjectStatus,
-} from '@/lib/projects'
+import { projectGroups, type ProjectStatus } from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = buildPageMetadata({
@@ -82,23 +79,7 @@ export default function ProjectsPage() {
         sectionCountLabel={`${totalProjects} ITEMS`}
         dateLabel={formatIsoDate(new Date())}
         introLabel="BUILD LOG"
-        title={
-          <>
-            The{' '}
-            <span
-              className="text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, \"Times New Roman\", serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              &amp;
-            </span>{' '}
-            Workshop
-          </>
-        }
+        title="The & Workshop"
         intro="正在维护与曾经造过的轮子——从 AI 工具链到日常效率脚手架，按主题分组，每条都附实现笔记或源码入口。"
       />
 
