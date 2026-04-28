@@ -44,13 +44,6 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build MCP raw dataset
-        run: pnpm run mcp:build-data
-      - name: Verify MCP dataset output
-        run: |
-          test -f public/mcp/index.json
-          test -f public/mcp/latest.json
-          test -d public/mcp/articles
       - name: Build with Next.js
         run: pnpm run build
       - name: Upload artifact
