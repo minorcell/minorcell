@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { useScrollProgress } from './useScrollProgress'
+import { useScrollProgress } from '../../hooks/useScrollProgress'
 
 export interface CodeStep {
   code: string

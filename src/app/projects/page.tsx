@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
+import { SectionHero } from '@/components/common/SectionHero'
 import { cn } from '@/lib/utils'
 import {
   projectGroups,
-  projectQuickLinks,
   type ProjectStatus,
 } from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
@@ -77,64 +77,30 @@ export default function ProjectsPage() {
 
   return (
     <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
-      {/* MASTHEAD */}
-      <header>
-        <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <div className="flex items-center gap-5">
-            <span>SECTION §02 · WORKSHOP</span>
-            <span className="hidden sm:inline">{totalProjects} ITEMS</span>
-          </div>
-          <span>{formatIsoDate(new Date())}</span>
-        </div>
-
-        <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
-          style={{ ...orbitron, fontWeight: 800 }}
-        >
-          The{' '}
-          <span
-            className="text-muted-foreground"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontStyle: 'italic',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            &amp;
-          </span>{' '}
-          Workshop
-        </h1>
-
-        <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
-          <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+      <SectionHero
+        sectionLabel="SECTION §02 · WORKSHOP"
+        sectionCountLabel={`${totalProjects} ITEMS`}
+        dateLabel={formatIsoDate(new Date())}
+        introLabel="BUILD LOG"
+        title={
+          <>
+            The{' '}
             <span
-              aria-hidden
-              className="mr-2.5 inline-block h-px w-6 bg-foreground align-middle"
-            />
-            BUILD LOG
-          </div>
-          <p className="m-0 max-w-[42ch] text-[clamp(1.05rem,1rem+0.5vw,1.3rem)] leading-[1.55] tracking-[-0.005em]">
-            正在维护与曾经造过的轮子——从 AI
-            工具链到日常效率脚手架，按主题分组，每条都附实现笔记或源码入口。
-          </p>
-        </div>
-
-        {/* Quick links row */}
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
-          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            QUICK LINKS
-          </span>
-          {projectQuickLinks.map((item) => (
-            <ProjectLinkInline
-              key={`${item.label}-${item.href}`}
-              href={item.href}
-              label={item.label}
-              className="inline-flex items-center gap-1.5 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
-            />
-          ))}
-        </div>
-      </header>
+              className="text-muted-foreground"
+              style={{
+                fontFamily: 'Georgia, \"Times New Roman\", serif',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              &amp;
+            </span>{' '}
+            Workshop
+          </>
+        }
+        intro="正在维护与曾经造过的轮子——从 AI 工具链到日常效率脚手架，按主题分组，每条都附实现笔记或源码入口。"
+      />
 
       {/* PROJECT GROUPS */}
       <div className="mt-20 space-y-20 sm:mt-24 sm:space-y-24">

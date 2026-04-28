@@ -3,7 +3,7 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { useScrollProgress } from './useScrollProgress'
+import { useScrollProgress } from '../../hooks/useScrollProgress'
 
 export interface ImageStep {
   src: string

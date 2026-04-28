@@ -190,7 +190,7 @@ export default function HomePage() {
             >
               <div className="grid items-start gap-5 sm:grid-cols-[120px_1fr_140px] sm:gap-10">
                 <span
-                  className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:var(--link-accent)]"
+                  className="text-muted-foreground transition-colors duration-200 ease-out group-hover:text-[color:var(--link-accent)]"
                   style={{
                     fontFamily: 'var(--font-orbitron), serif',
                     fontWeight: 500,
@@ -250,7 +250,7 @@ export default function HomePage() {
                         style={{ gridTemplateColumns: '64px 1fr auto' }}
                       >
                         <span
-                          className="text-muted-foreground transition-[color,transform] duration-200 ease-out group-hover:-translate-x-1 group-hover:text-[color:var(--link-accent)]"
+                          className="text-muted-foreground transition-colors duration-200 ease-out group-hover:text-[color:var(--link-accent)]"
                           style={{
                             fontFamily: 'var(--font-orbitron), serif',
                             fontWeight: 500,

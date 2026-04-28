@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllTopics } from '@/lib/topics.server'
 import { buildPageMetadata } from '@/lib/seo'
@@ -55,48 +56,30 @@ export default function TopicsPage() {
       <JsonLd id="topics-breadcrumb" data={breadcrumbJsonLd} />
       <JsonLd id="topics-collection" data={collectionPageJsonLd} />
 
-      {/* MASTHEAD */}
-      <header>
-        <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <div className="flex items-center gap-5">
-            <span>SECTION §03 · SERIES</span>
-            <span className="hidden sm:inline">{topics.length} TOPICS</span>
-          </div>
-          <span>{formatIsoDate(new Date())}</span>
-        </div>
-
-        <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
-          style={{ ...orbitron, fontWeight: 800 }}
-        >
-          The{' '}
-          <span
-            className="text-muted-foreground"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontStyle: 'italic',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            &amp;
-          </span>{' '}
-          Series
-        </h1>
-
-        <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
-          <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+      <SectionHero
+        sectionLabel="SECTION §03 · SERIES"
+        sectionCountLabel={`${topics.length} TOPICS`}
+        dateLabel={formatIsoDate(new Date())}
+        introLabel="READING SERIES"
+        title={
+          <>
+            The{' '}
             <span
-              aria-hidden
-              className="mr-2.5 inline-block h-px w-6 bg-foreground align-middle"
-            />
-            READING SERIES
-          </div>
-          <p className="m-0 max-w-[42ch] text-[clamp(1.05rem,1rem+0.5vw,1.3rem)] leading-[1.55] tracking-[-0.005em]">
-            按主题串成系列的深度阅读：从一篇出发到一整套心智模型——优先从专题首页进入，按步骤完成交互教程，再回到目录继续下一个主题。
-          </p>
-        </div>
-      </header>
+              className="text-muted-foreground"
+              style={{
+                fontFamily: 'Georgia, \"Times New Roman\", serif',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              &amp;
+            </span>{' '}
+            Series
+          </>
+        }
+        intro="按主题串成系列的深度阅读：从一篇出发到一整套心智模型——优先从专题首页进入，按步骤完成交互教程，再回到目录继续下一个主题。"
+      />
 
       {/* SERIES LINEUP */}
       <section className="mt-20 sm:mt-24">
@@ -133,7 +116,7 @@ export default function TopicsPage() {
                     style={{ gridTemplateColumns: '64px 1fr' }}
                   >
                     <span
-                      className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-1"
+                      className="text-muted-foreground transition-colors duration-200 group-hover:text-[color:var(--link-accent)]"
                       style={{
                         ...orbitron,
                         fontWeight: 500,
@@ -148,10 +131,7 @@ export default function TopicsPage() {
                     <div className="min-w-0">
                       <div className="mb-2.5 flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                         <span>§ /{topic.slug}</span>
-                        <span
-                          className="transition-transform duration-200 group-hover:translate-x-1"
-                          style={{ color: accentBlue }}
-                        >
+                        <span style={{ color: accentBlue }}>
                           阅读 →
                         </span>
                       </div>
@@ -188,7 +168,7 @@ export default function TopicsPage() {
           Reading Note
         </h2>
         <p className="m-0 leading-relaxed text-foreground/85">
-          每个专题都按"从一个想法出发，到一整套可以复用的心智模型"的顺序排列。如果你时间有限，建议先看{' '}
+          每个专题都按“从一个想法出发，到一整套可以复用的心智模型”的顺序排列。如果你时间有限，建议先看{' '}
           <span className="text-foreground">§01</span>
           ，再按目录顺序往下走——后面的篇章会引用前文的概念。
         </p>

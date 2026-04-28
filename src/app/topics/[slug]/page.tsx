@@ -119,7 +119,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
         : 'VISUAL WALKTHROUGH'
 
   return (
-    <>
+    <div>
       <JsonLd id={`topic-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
       <JsonLd id={`topic-techarticle-${slug}`} data={topicJsonLd} />
 
@@ -142,6 +142,6 @@ export default async function TopicPage({ params }: TopicPageProps) {
           steps={serializedSteps}
         />
       </section>
-    </>
+    </div>
   )
 }

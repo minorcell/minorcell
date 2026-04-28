@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import type {
   StaggeredMenuItem,
   StaggeredMenuSocialItem,
-} from '@/components/effects/reactbits/StaggeredMenu'
+} from '@/components/effects/StaggeredMenu'
 import { siteContent } from '@/lib/site-content'
 
 // Lazy-load heavy / interaction-only components so they stay out of the
@@ -16,7 +16,7 @@ import { siteContent } from '@/lib/site-content'
 //   • PagefindSearch pulls in the pagefind runtime and is only shown when
 //     the user opens search (⌘K / clicks Search)
 const StaggeredMenu = dynamic(
-  () => import('@/components/effects/reactbits/StaggeredMenu'),
+  () => import('@/components/effects/StaggeredMenu'),
   { ssr: false },
 )
 const PagefindSearch = dynamic(
@@ -27,8 +27,8 @@ const PagefindSearch = dynamic(
 
 const navLinks = [
   { label: '文章', href: '/blog' },
-  { label: '项目', href: '/projects' },
   { label: '专题', href: '/topics' },
+  { label: '项目', href: '/projects' },
 ]
 
 function MoonGlyph({ className }: { className?: string }) {

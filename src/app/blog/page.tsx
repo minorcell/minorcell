@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllPosts } from '@/lib/mdx'
 import { buildPageMetadata } from '@/lib/seo'
@@ -83,49 +84,35 @@ export default function BlogPage() {
       <JsonLd id="blog-breadcrumb" data={breadcrumbJsonLd} />
       <JsonLd id="blog-collection" data={collectionPageJsonLd} />
 
-      {/* MASTHEAD */}
-      <header>
-        <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <div className="flex items-center gap-5">
-            <span>SECTION §01 · ARCHIVE</span>
-            <span className="hidden sm:inline">{posts.length} ENTRIES</span>
-          </div>
-          <span>{formatIsoDate(latestDate)}</span>
-        </div>
-
-        <h1
-          className="m-0 mt-9 text-[clamp(2.8rem,9vw,7rem)] leading-[0.95] tracking-[-0.04em] text-pretty sm:text-balance"
-          style={{ ...orbitron, fontWeight: 800 }}
-        >
-          Articles{' '}
-          <span
-            className="text-muted-foreground"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontStyle: 'italic',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            &amp;
-          </span>{' '}
-          Notes
-        </h1>
-
-        <div className="mt-7 grid gap-4 sm:mt-9 sm:grid-cols-[220px_1fr] sm:gap-10">
-          <div className="pt-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+      <SectionHero
+        sectionLabel="SECTION §01 · ARCHIVE"
+        sectionCountLabel={`${posts.length} ENTRIES`}
+        dateLabel={formatIsoDate(latestDate)}
+        introLabel="THE ARCHIVE"
+        title={
+          <>
+            Articles{' '}
             <span
-              aria-hidden
-              className="mr-2.5 inline-block h-px w-6 bg-foreground align-middle"
-            />
-            THE ARCHIVE
-          </div>
-          <p className="m-0 max-w-[42ch] text-[clamp(1.05rem,1rem+0.5vw,1.3rem)] leading-[1.55] tracking-[-0.005em]">
+              className="text-muted-foreground"
+              style={{
+                fontFamily: 'Georgia, \"Times New Roman\", serif',
+                fontStyle: 'italic',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              &amp;
+            </span>{' '}
+            Notes
+          </>
+        }
+        intro={
+          <>
             按时间倒序整理的全部文章——最新一篇推到最前，往下是历年归档。当前共{' '}
             <span className="text-muted-foreground">{posts.length} 篇</span>。
-          </p>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       {/* EDITOR'S PICK */}
       {featuredPost && (
@@ -169,7 +156,7 @@ export default function BlogPage() {
                 </p>
               )}
               <span
-                className="mt-auto inline-flex items-center gap-2 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5 font-mono text-[12px] uppercase tracking-[0.18em] transition-transform duration-200 group-hover:translate-x-1"
+                className="mt-auto inline-flex items-center gap-2 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5 font-mono text-[12px] uppercase tracking-[0.18em]"
                 style={{ color: accentBlue }}
               >
                 <span aria-hidden>§</span>
@@ -273,7 +260,7 @@ export default function BlogPage() {
                     style={{ gridTemplateColumns: '56px 1fr auto' }}
                   >
                     <span
-                      className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-1"
+                      className="text-muted-foreground transition-colors duration-200 group-hover:text-[color:var(--link-accent)]"
                       style={{
                         ...orbitron,
                         fontWeight: 500,

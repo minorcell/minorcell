@@ -18,7 +18,7 @@
 
 import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
-import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
