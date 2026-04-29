@@ -1,10 +1,4 @@
-export {}
-function resolvePromise(
-  promise2: any,
-  x: any,
-  resolve: (v: any) => void,
-  reject: (e: any) => void,
-) {
+function resolvePromise(promise2, x, resolve, reject) {
   if (promise2 === x) {
     return reject(new TypeError('Chaining cycle detected for promise'))
   }
@@ -16,12 +10,12 @@ function resolvePromise(
       if (typeof then === 'function') {
         then.call(
           x,
-          (y: any) => {
+          (y) => {
             if (called) return
             called = true
             resolvePromise(promise2, y, resolve, reject)
           },
-          (e: any) => {
+          (e) => {
             if (called) return
             called = true
             reject(e)

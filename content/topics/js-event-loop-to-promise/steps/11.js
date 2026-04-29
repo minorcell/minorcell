@@ -1,23 +1,18 @@
-export {}
-type State = 'pending' | 'fulfilled' | 'rejected'
-
 class MyPromise {
-  state: State = 'pending'
-  value: any
-  reason: any
-  private fcbs: Array<() => void> = []
-  private rcbs: Array<() => void> = []
+  state = 'pending'
+  value = undefined
+  reason = undefined
+  fcbs = []
+  rcbs = []
 
-  constructor(
-    executor: (resolve: (v: any) => void, reject: (e: any) => void) => void,
-  ) {
-    const resolve = (v: any) => {
+  constructor(executor) {
+    const resolve = (v) => {
       if (this.state !== 'pending') return
       this.state = 'fulfilled'
       this.value = v
       this.fcbs.forEach((cb) => cb())
     }
-    const reject = (e: any) => {
+    const reject = (e) => {
       if (this.state !== 'pending') return
       this.state = 'rejected'
       this.reason = e
@@ -26,13 +21,13 @@ class MyPromise {
     try { executor(resolve, reject) } catch (e) { reject(e) }
   }
 
-  then(onFulfilled?: any, onRejected?: any): MyPromise {
+  then(onFulfilled, onRejected) {
     const fulfilled =
-      typeof onFulfilled === 'function' ? onFulfilled : (v: any) => v
+      typeof onFulfilled === 'function' ? onFulfilled : (v) => v
     const rejected =
       typeof onRejected === 'function'
         ? onRejected
-        : (e: any) => { throw e }
+        : (e) => { throw e }
 
     const promise2 = new MyPromise((resolve, reject) => {
       const runFulfilled = () =>
@@ -57,7 +52,7 @@ class MyPromise {
 }
 
 new MyPromise((r) => r(1))
-  .then((v: number) => v + 1)
-  .then((v: number) => v * 10)
+  .then((v) => v + 1)
+  .then((v) => v * 10)
   .then(undefined)
-  .then((v: number) => console.log(v))
+  .then((v) => console.log(v))

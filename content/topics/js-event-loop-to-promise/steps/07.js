@@ -1,4 +1,4 @@
-const p = new Promise<number>((resolve, reject) => {
+const p = new Promise((resolve, reject) => {
   resolve(1)
   resolve(2)
   reject(new Error('x'))

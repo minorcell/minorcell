@@ -1,23 +1,18 @@
-export {}
-type State = 'pending' | 'fulfilled' | 'rejected'
+class MyPromise {
+  state = 'pending'
+  value = undefined
+  reason = undefined
+  onFulfilledCbs = []
+  onRejectedCbs = []
 
-class MyPromise<T = unknown> {
-  private state: State = 'pending'
-  private value: T | undefined
-  private reason: unknown
-  private onFulfilledCbs: Array<() => void> = []
-  private onRejectedCbs: Array<() => void> = []
-
-  constructor(
-    executor: (resolve: (v: T) => void, reject: (e: unknown) => void) => void,
-  ) {
-    const resolve = (v: T) => {
+  constructor(executor) {
+    const resolve = (v) => {
       if (this.state !== 'pending') return
       this.state = 'fulfilled'
       this.value = v
       this.onFulfilledCbs.forEach((cb) => cb())
     }
-    const reject = (e: unknown) => {
+    const reject = (e) => {
       if (this.state !== 'pending') return
       this.state = 'rejected'
       this.reason = e
@@ -30,9 +25,9 @@ class MyPromise<T = unknown> {
     }
   }
 
-  then(onFulfilled?: (v: T) => unknown, onRejected?: (e: unknown) => unknown) {
+  then(onFulfilled, onRejected) {
     const runFulfilled = () =>
-      queueMicrotask(() => onFulfilled?.(this.value as T))
+      queueMicrotask(() => onFulfilled?.(this.value))
     const runRejected = () =>
       queueMicrotask(() => onRejected?.(this.reason))
 
@@ -46,5 +41,5 @@ class MyPromise<T = unknown> {
 }
 
 console.log('A')
-new MyPromise<number>((r) => r(1)).then((v) => console.log('then', v))
+new MyPromise((r) => r(1)).then((v) => console.log('then', v))
 console.log('B')
