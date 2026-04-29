@@ -1,7 +1,3 @@
-type DeepSeekMessage = { content?: string }
-type DeepSeekChoice = { message?: DeepSeekMessage }
-type DeepSeekResponse = { choices?: DeepSeekChoice[] }
-
 async function callLLMs(messages: ChatMessage[]): Promise<string> {
   const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
     method: 'POST',
@@ -21,7 +17,9 @@ async function callLLMs(messages: ChatMessage[]): Promise<string> {
     throw new Error(`API 错误: ${res.status} ${text}`)
   }
 
-  const data = (await res.json()) as DeepSeekResponse
+  const data = (await res.json()) as {
+    choices?: Array<{ message?: { content?: string } }>
+  }
   const content = data.choices?.[0]?.message?.content
   if (typeof content !== 'string') {
     throw new Error('返回内容为空')

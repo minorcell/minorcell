@@ -1,17 +1,13 @@
-// 示例省略 import：默认 generateText / CoreMessage / model / TOOLS 已可用
-
-export interface RunResult {
-  text: string
-  responseMessages: CoreMessage[]
-  usage: LanguageModelUsage
-  stepCount: number
-}
-
 export async function agentLoop(
   question: string,
   history: CoreMessage[],
   runtimeHints: string[] = [],
-): Promise<RunResult> {
+): Promise<{
+  text: string
+  responseMessages: CoreMessage[]
+  usage: LanguageModelUsage
+  stepCount: number
+}> {
   const system = await assembleSystemPrompt(runtimeHints)
 
   const messages: CoreMessage[] = [
@@ -26,10 +22,11 @@ export async function agentLoop(
     tools: TOOLS,
     maxSteps: 50,
 
-    onStepFinish: ({ text, toolCalls, finishReason }) => {
+    onStepFinish(step) {
+      const { toolCalls, finishReason } = step
       const isFinalStep = finishReason === 'stop' && toolCalls.length === 0
       if (!isFinalStep) {
-        printStep({ text, toolCalls, finishReason })
+        printStep(step)
       }
     },
   })
@@ -47,30 +44,23 @@ export async function agentLoop(
   }
 }
 
-interface StepInfo {
-  text: string
-  toolCalls: Array<{ toolName: string; args: unknown }>
-}
-
 let stepCounter = 0
 
-function printStep({ text, toolCalls }: StepInfo) {
-  stepCounter++
-  console.log(
-    `\n\x1b[36m── Step ${stepCounter} ──────────────────────────────────\x1b[0m`,
-  )
+function printStep({
+  text,
+  toolCalls,
+}: {
+  text: string
+  toolCalls: Array<{ toolName: string; args: unknown }>
+}) {
+  console.log(`\n── Step ${++stepCounter} ──`)
 
   if (text.trim()) {
-    console.log(`\x1b[37m${text.trim()}\x1b[0m`)
+    console.log(text.trim())
   }
 
   for (const call of toolCalls) {
-    const argsOneLine = JSON.stringify(call.args)
-    const argsPreview =
-      argsOneLine.length > 120 ? argsOneLine.slice(0, 120) + '…}' : argsOneLine
-    console.log(
-      `\n\x1b[32m🔧 ${call.toolName}\x1b[0m \x1b[90m${argsPreview}\x1b[0m`,
-    )
+    console.log(`${call.toolName} ${JSON.stringify(call.args)}`)
   }
 }
 

@@ -1,7 +1,5 @@
-type Role = 'system' | 'user' | 'assistant'
-
 type ChatMessage = {
-  role: Role
+  role: 'system' | 'user' | 'assistant'
   content: string
 }
 

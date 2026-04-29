@@ -1,14 +1,9 @@
-// 示例省略 import：默认 readline / agentLoop / context helpers 已可用
-// 并假设 CoreMessage 类型已在项目中定义
-
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 })
 
-// 维护跨轮对话的消息历史（不含系统提示词，generateText 单独传 system）
 let history: CoreMessage[] = []
-// 运行时 hint 列表（如压缩摘要，下一轮会注入系统提示词）
 let runtimeHints: string[] = []
 
 function prompt() {
@@ -43,42 +38,34 @@ function prompt() {
     resetStepCounter()
 
     try {
-      const { text, responseMessages, usage, stepCount } = await agentLoop(
-        question,
-        history,
-        runtimeHints,
-      )
-
-      // 将本轮消息（含所有中间工具调用步骤）追加到 history
-      history.push({ role: 'user', content: question })
-      history.push(...responseMessages)
-
-      if (stepCount > 1) {
-        console.log(
-          `\n\x1b[36m── 最终回答 ─────────────────────────────────────\x1b[0m`,
-        )
-      }
-      console.log(text)
-
-      // 上下文压缩检查（基于 SDK 返回的真实 token 用量）
-      if (shouldCompress(usage.promptTokens)) {
-        console.log('\n\x1b[33m[上下文接近上限，正在压缩...]\x1b[0m')
-        try {
-          const summary = await compressHistory(history)
-          const hint = buildCompressionHint(summary)
-          history = []
-          runtimeHints = [hint]
-          console.log('\x1b[90m[上下文已压缩，下次对话继续]\x1b[0m')
-        } catch (e) {
-          console.warn(`\x1b[33m[压缩失败: ${(e as Error).message}]\x1b[0m`)
-        }
-      }
+      await runTurn(question)
     } catch (e) {
       console.error(`\n\x1b[31m[错误] ${(e as Error).message}\x1b[0m`)
     }
 
     prompt()
   })
+}
+
+async function runTurn(question: string) {
+  const { text, responseMessages, usage, stepCount } = await agentLoop(
+    question,
+    history,
+    runtimeHints,
+  )
+
+  history.push({ role: 'user', content: question }, ...responseMessages)
+
+  if (stepCount > 1) console.log('\n── 最终回答 ──')
+  console.log(text)
+
+  if (!shouldCompress(usage.promptTokens)) return
+
+  console.log('\n[上下文接近上限，正在压缩...]')
+  const summary = await compressHistory(history)
+  history = []
+  runtimeHints = [buildCompressionHint(summary)]
+  console.log('[上下文已压缩，下次对话继续]')
 }
 
 function printHelp() {

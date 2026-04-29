@@ -1,26 +1,22 @@
 export type DangerLevel = 'safe' | 'confirm' | 'block'
 
-// 示例省略 import：这里用一个占位函数表示 path.resolve(cwd, inputPath)
 declare function resolvePath(cwd: string, inputPath: string): string
 
-// block 级：直接拒绝，没有合法的 Agent 使用场景
 const BLOCK_PATTERNS: RegExp[] = [
-  /rm\s+-\S*r\S*f\s+(\/|~|\$HOME)\b/, // rm -rf / 或 rm -rf ~
-  /dd\s+if=.*of=\/dev\//, // dd 写入磁盘设备
-  /mkfs\./, // 格式化文件系统
-  />\s*\/dev\/(sda|hda|nvme)/, // 重定向写入磁盘
-  /shutdown|reboot|halt/, // 系统关机重启
+  /rm\s+-\S*r\S*f\s+(\/|~|\$HOME)\b/,
+  /dd\s+if=.*of=\/dev\//,
+  /mkfs\./,
+  />\s*\/dev\/(sda|hda|nvme)/,
+  /shutdown|reboot|halt/,
 ]
 
-// confirm 级：暂停并等待用户明确确认
 const CONFIRM_PATTERNS: RegExp[] = [
-  /rm\s+-\S*[rf]/, // rm -r 或 rm -f 类
-  /sudo\s+/, // sudo 命令
-  /curl\s+.*\|\s*(sh|bash|zsh)/, // curl pipe to shell
-  /wget\s+.*\|\s*(sh|bash|zsh)/, // wget pipe to shell
-  /npm\s+publish/, // 发包
-  /git\s+push\s+.*--force/, // 强制推送
-  /git\s+reset\s+--hard/, // 硬重置
+  /rm\s+-\S*[rf]/,
+  /sudo\s+/,
+  /(curl|wget)\s+.*\|\s*(sh|bash|zsh)/,
+  /npm\s+publish/,
+  /git\s+push\s+.*--force/,
+  /git\s+reset\s+--hard/,
 ]
 
 export function detectDanger(command: string): DangerLevel {
@@ -29,7 +25,6 @@ export function detectDanger(command: string): DangerLevel {
   return 'safe'
 }
 
-// 路径安全检查：防止路径穿越攻击
 export function resolveSafePath(inputPath: string): string {
   const cwd = process.cwd()
   const resolved = resolvePath(cwd, inputPath)
@@ -43,12 +38,11 @@ export function resolveSafePath(inputPath: string): string {
   return resolved
 }
 
-// 敏感文件检测
 const SENSITIVE_PATTERNS: RegExp[] = [
-  /\.env(\.|$)/, // .env 文件
-  /\.aws\/credentials/, // AWS 凭证
-  /\.ssh\/(id_rsa|id_ed25519)$/, // SSH 私钥
-  /secrets?\.(json|yaml|yml)$/i, // secrets 文件
+  /\.env(\.|$)/,
+  /\.aws\/credentials/,
+  /\.ssh\/(id_rsa|id_ed25519)$/,
+  /secrets?\.(json|yaml|yml)$/i,
 ]
 
 export function isSensitivePath(path: string): boolean {

@@ -1,14 +1,10 @@
-interface Params {
-  command: string
-  timeout?: number
-}
-
-// 示例省略 import：默认 detectDanger / confirmFromUser / truncateOutput 已可用
 export async function bash({
   command,
   timeout = 30_000,
-}: Params): Promise<string> {
-  // 危险命令检测：block 直接拒绝，confirm 等用户确认
+}: {
+  command: string
+  timeout?: number
+}): Promise<string> {
   const danger = detectDanger(command)
 
   if (danger === 'block') {
@@ -22,39 +18,32 @@ export async function bash({
     }
   }
 
-  // 执行命令
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), timeout)
-
-  let stdout = ''
-  let stderr = ''
-  let exitCode = 0
-
   try {
     const proc = Bun.spawn(['sh', '-c', command], {
       stdout: 'pipe',
       stderr: 'pipe',
     })
-
-    controller.signal.addEventListener('abort', () => proc.kill())
-    ;[stdout, stderr] = await Promise.all([
+    const timer = setTimeout(() => proc.kill(), timeout)
+    const [stdout, stderr, exitCode] = await Promise.all([
       new Response(proc.stdout).text(),
       new Response(proc.stderr).text(),
+      proc.exited,
     ])
-    exitCode = await proc.exited
+
+    clearTimeout(timer)
+
+    const output =
+      [
+        stdout,
+        stderr && `[stderr]\n${stderr}`,
+        exitCode !== 0 && `[exit code: ${exitCode}]`,
+      ]
+        .filter(Boolean)
+        .join('\n')
+        .trim() || '(无输出)'
+
+    return truncateOutput('bash', output)
   } catch (e) {
     return `执行失败：${(e as Error).message}`
-  } finally {
-    clearTimeout(timer)
   }
-
-  // 整合输出
-  const parts: string[] = []
-  if (stdout) parts.push(stdout)
-  if (stderr) parts.push(`[stderr]\n${stderr}`)
-  if (exitCode !== 0) parts.push(`[exit code: ${exitCode}]`)
-
-  const output = parts.join('\n').trim() || '(无输出)'
-
-  return truncateOutput('bash', output)
 }
