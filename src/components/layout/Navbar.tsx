@@ -100,53 +100,6 @@ function DateChip() {
   )
 }
 
-/**
- * Reading-progress strip at the bottom of the nav (article + topic detail pages).
- * Uses requestAnimationFrame-throttled scroll listener; transform-only animation.
- */
-function ReadingProgress({ active }: { active: boolean }) {
-  const [progress, setProgress] = useState(0)
-
-  useEffect(() => {
-    if (!active) return
-
-    let raf = 0
-    const update = () => {
-      const doc = document.documentElement
-      const max = doc.scrollHeight - doc.clientHeight
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
-      setProgress(p)
-    }
-
-    const onScroll = () => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        update()
-      })
-    }
-
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [active])
-
-  if (!active) return null
-
-  return (
-    <span
-      aria-hidden
-      className="navbar-progress"
-      style={{ transform: `scaleX(${progress})` }}
-    />
-  )
-}
-
 export function Navbar() {
   const pathname = usePathname()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
@@ -223,7 +176,6 @@ export function Navbar() {
   // Context-aware chips
   const isTopicDetail =
     pathname.startsWith('/topics/') && pathname !== '/topics'
-  const isArticleOrTopic = isTopicDetail || pathname.startsWith('/blog/')
 
   const mobileMenuItems: StaggeredMenuItem[] = [
     {
@@ -380,8 +332,6 @@ export function Navbar() {
           )}
         </div>
       </div>
-
-      <ReadingProgress active={isArticleOrTopic} />
 
       {searchOpen && (
         <PagefindSearch
