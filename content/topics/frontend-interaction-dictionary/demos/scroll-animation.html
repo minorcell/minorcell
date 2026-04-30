@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Scroll Animation</title>
     <style>
-      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; }
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
       * { box-sizing:border-box; }
       html, body { height:100%; margin:0; }
       body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; }
-      .scroll { height:100vh; overflow:auto; padding:24px; scroll-behavior:smooth; }
+      .scroll { height:100vh; overflow:auto; overscroll-behavior:contain; padding:24px; scroll-behavior:smooth; }
       .spacer { height:120px; display:grid; place-items:center; color:var(--muted); font-size:12px; }
       .grid { display:grid; gap:12px; max-width:360px; margin:0 auto 80px; }
       .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:15px; opacity:0; transform:translateY(12px); transition:opacity 360ms ease, transform 360ms cubic-bezier(0.2,0,0,1); }
       .card[data-visible='true'] { opacity:1; transform:translateY(0); }
       .card:nth-child(2) { transition-delay:80ms; }
       .card:nth-child(3) { transition-delay:160ms; }
+      .card:nth-child(4) { transition-delay:240ms; }
+      .card:nth-child(5) { transition-delay:320ms; }
+      .card:nth-child(6) { transition-delay:400ms; }
+      .card:nth-child(7) { transition-delay:480ms; }
       h3 { margin:0 0 5px; font-size:14px; }
       p { margin:0; color:var(--muted); font-size:12.5px; line-height:1.6; }
     </style>
@@ -27,6 +31,10 @@
         <article class="card"><h3>轻量进入</h3><p>只用透明度和 12px 位移，避免影响阅读。</p></article>
         <article class="card"><h3>顺序延迟</h3><p>相邻卡片延迟 80ms，形成可感知的节奏。</p></article>
         <article class="card"><h3>展示型页面</h3><p>适合官网、作品集；后台系统要谨慎使用。</p></article>
+        <article class="card"><h3>渐进披露</h3><p>内容随着用户滚动逐步呈现，引导阅读节奏。</p></article>
+        <article class="card"><h3>性能注意</h3><p>大量卡片同时进入视口时，使用 will-change 和硬件加速。</p></article>
+        <article class="card"><h3>视口检测</h3><p>基于 getBoundingClientRect 判断卡片是否进入可视区域。</p></article>
+        <article class="card"><h3>可访问性</h3><p>确保动画不影响内容的可读性，遵循 prefers-reduced-motion。</p></article>
       </section>
     </div>
     <script>

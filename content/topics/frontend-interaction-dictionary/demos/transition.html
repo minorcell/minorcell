@@ -5,28 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Transition</title>
     <style>
-      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --ok:#2f8f5a; }
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
       * { box-sizing:border-box; }
       html, body { height:100%; margin:0; }
-      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:32px; }
-      .stage { display:grid; gap:16px; place-items:center; }
-      .card { width:260px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px; transition:background-color 200ms ease, border-color 200ms ease, transform 200ms cubic-bezier(0.2,0,0,1), box-shadow 200ms ease; }
-      .card[data-active='true'] { background:#f0f7f2; border-color:#b8d8c3; transform:translateY(-3px); box-shadow:0 12px 24px -18px rgba(47,143,90,0.45); }
-      h3 { margin:0 0 6px; font-size:15px; }
-      p { margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
-      button { appearance:none; cursor:pointer; font:inherit; font-weight:500; padding:8px 14px; border-radius:8px; border:1px solid var(--fg); background:var(--fg); color:var(--bg); }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .stage { display:grid; gap:12px; width:100%; max-width:340px; }
+      .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .demo-box { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; cursor:pointer; }
+      .demo-box .title { font-size:11px; font-weight:600; color:var(--muted); margin-bottom:10px; }
+      .demo-box .preview { height:56px; display:grid; place-items:center; }
+      /* color transition */
+      .color-swatch { width:40px; height:40px; border-radius:8px; background:#bdb6a7; transition:background 300ms cubic-bezier(0.2,0,0,1); }
+      .stage.active .color-swatch { background:var(--accent); }
+      /* scale transition */
+      .scale-box { width:36px; height:36px; border-radius:6px; background:var(--accent); transition:transform 300ms cubic-bezier(0.2,0,0,1); }
+      .stage.active .scale-box { transform:scale(1.5); }
+      /* translate transition */
+      .move-dot { width:20px; height:20px; border-radius:50%; background:var(--accent); transition:transform 300ms cubic-bezier(0.2,0,0,1); }
+      .stage.active .move-dot { transform:translateX(40px); }
+      /* border-radius transition */
+      .shape-box { width:36px; height:36px; background:var(--accent); transition:border-radius 300ms cubic-bezier(0.2,0,0,1); }
+      .stage.active .shape-box { border-radius:50%; }
+      .toggle-btn { appearance:none; border:1px solid var(--fg); background:var(--fg); color:var(--bg); border-radius:8px; padding:9px 0; cursor:pointer; font:inherit; font-weight:500; text-align:center; transition:opacity 200ms; }
+      .toggle-btn:hover { opacity:0.85; }
+      .note { font-size:11px; color:var(--muted); text-align:center; }
     </style>
   </head>
   <body>
-    <div class="stage">
-      <article class="card" id="card"><h3>状态变化</h3><p>Transition 让颜色、位置、阴影的变化不突兀。</p></article>
-      <button id="toggle" type="button">切换状态</button>
+    <div class="stage" id="stage">
+      <div class="row">
+        <div class="demo-box" data-name="color">
+          <div class="title">背景色 300ms</div>
+          <div class="preview"><div class="color-swatch"></div></div>
+        </div>
+        <div class="demo-box" data-name="scale">
+          <div class="title">缩放 300ms</div>
+          <div class="preview"><div class="scale-box"></div></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="demo-box" data-name="move">
+          <div class="title">位移 300ms</div>
+          <div class="preview"><div class="move-dot"></div></div>
+        </div>
+        <div class="demo-box" data-name="shape">
+          <div class="title">圆角 300ms</div>
+          <div class="preview"><div class="shape-box"></div></div>
+        </div>
+      </div>
+      <button class="toggle-btn" id="toggle" type="button">切换状态</button>
+      <div class="note">点击按钮，观察四种过渡效果</div>
     </div>
     <script>
       (function () {
-        var card = document.getElementById('card');
+        var stage = document.getElementById('stage');
         document.getElementById('toggle').addEventListener('click', function () {
-          card.setAttribute('data-active', card.getAttribute('data-active') !== 'true' ? 'true' : 'false');
+          stage.classList.toggle('active');
         });
       })();
     </script>

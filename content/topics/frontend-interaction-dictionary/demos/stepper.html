@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stepper</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .shell { width:100%; max-width:360px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
+      .steps { display:flex; align-items:flex-start; position:relative; margin-bottom:24px; }
+      .step { flex:1; text-align:center; position:relative; }
+      .circle { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; border:2px solid var(--border); background:var(--card); color:var(--muted); transition:all 250ms; position:relative; z-index:1; }
+      .step.done .circle { background:var(--accent); border-color:var(--accent); color:#fff; }
+      .step.active .circle { border-color:var(--accent); color:var(--accent); }
+      .label { display:block; margin-top:6px; font-size:11px; color:var(--muted); }
+      .step.active .label { color:var(--accent); font-weight:600; }
+      .step.done .label { color:var(--fg); }
+      .line { position:absolute; top:14px; left:calc(50% + 18px); right:calc(-50% + 18px); height:2px; background:var(--border); z-index:0; }
+      .line.fill { background:var(--accent); }
+      .body { padding:16px; background:#f2eee5; border-radius:10px; margin-bottom:16px; min-height:80px; display:grid; place-items:center; text-align:center; font-size:13px; color:var(--muted); }
+      .nav { display:flex; justify-content:space-between; }
+      .btn { border:1px solid var(--border); background:var(--card); border-radius:8px; padding:8px 16px; cursor:pointer; font:inherit; font-size:13px; color:var(--fg); }
+      .btn:hover { background:#f2eee5; }
+      .btn:disabled { opacity:0.35; cursor:default; }
+      .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+      .btn.primary:hover { opacity:0.9; }
+      .btn.primary:disabled { opacity:0.35; }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="steps" id="steps">
+        <div class="step active"><div class="circle">1</div><span class="label">项目信息</span><div class="line" id="line1"></div></div>
+        <div class="step"><div class="circle">2</div><span class="label">配置</span><div class="line" id="line2"></div></div>
+        <div class="step"><div class="circle">3</div><span class="label">成员</span><div class="line" id="line3"></div></div>
+        <div class="step"><div class="circle">4</div><span class="label">完成</span></div>
+      </div>
+      <div class="body" id="body">请输入项目名称和描述</div>
+      <div class="nav">
+        <button class="btn" id="back" disabled>← 上一步</button>
+        <button class="btn primary" id="next">下一步 →</button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var stepEls = [].slice.call(document.querySelectorAll('.step'));
+        var lines = [document.getElementById('line1'), document.getElementById('line2'), document.getElementById('line3')];
+        var body = document.getElementById('body');
+        var back = document.getElementById('back');
+        var next = document.getElementById('next');
+        var current = 0;
+        var contents = ['请输入项目名称和描述','选择部署方式和环境','邀请团队成员加入','所有配置已完成！'];
+
+        function render() {
+          stepEls.forEach(function (el, i) {
+            el.classList.remove('done','active');
+            if (i < current) el.classList.add('done');
+            else if (i === current) el.classList.add('active');
+          });
+          lines.forEach(function (line, i) {
+            line.classList.toggle('fill', i < current);
+          });
+          body.textContent = contents[current];
+          back.disabled = current === 0;
+          next.textContent = current === contents.length - 1 ? '完成' : '下一步 →';
+        }
+
+        next.addEventListener('click', function () {
+          if (current < contents.length - 1) { current++; render(); }
+        });
+        back.addEventListener('click', function () {
+          if (current > 0) { current--; render(); }
+        });
+      })();
+    </script>
+  </body>
+</html>

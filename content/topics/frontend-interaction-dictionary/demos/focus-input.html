@@ -13,6 +13,7 @@
         --card: #ffffff;
         --ring: #5b8def;
         --error: #c34a3b;
+        --accent: #b9483d;
       }
       * { box-sizing: border-box; }
       html, body { height: 100%; margin: 0; }
@@ -57,8 +58,8 @@
       input::placeholder { color: color-mix(in oklab, var(--muted) 70%, transparent); }
       input:hover { border-color: color-mix(in oklab, var(--border) 50%, var(--fg)); }
       input:focus {
-        border-color: var(--ring);
-        box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 22%, transparent);
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
       }
       .field.error input {
         border-color: var(--error);

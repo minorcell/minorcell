@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carousel</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:20px; }
+      .shell { width:100%; max-width:360px; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+      .viewport { position:relative; overflow:hidden; aspect-ratio:16/10; }
+      .track { display:flex; height:100%; transition:transform 400ms cubic-bezier(0.2,0,0,1); will-change:transform; }
+      .slide { flex:0 0 100%; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:24px; }
+      .slide .meta { font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:0.05em; }
+      .slide .headline { font-size:18px; font-weight:600; line-height:1.3; margin-bottom:6px; }
+      .slide .summary { font-size:12px; color:var(--muted); line-height:1.55; }
+      .slide:nth-child(1) { background:#f5efe6; }
+      .slide:nth-child(2) { background:#eef1f5; }
+      .slide:nth-child(3) { background:#f5edee; }
+      .slide:nth-child(4) { background:#edf3ef; }
+      .foot { display:flex; align-items:center; justify-content:center; gap:12px; padding:12px 14px; border-top:1px solid var(--border); }
+      .btn { border:0; background:transparent; border-radius:8px; padding:6px 12px; cursor:pointer; font:inherit; font-size:13px; color:var(--muted); }
+      .btn:hover { background:#f2eee5; color:var(--fg); }
+      .dots { display:flex; gap:6px; }
+      .dot { width:6px; height:6px; border-radius:50%; background:var(--border); cursor:pointer; border:0; padding:0; transition:background 200ms, transform 200ms; }
+      .dot.active { background:var(--accent); transform:scale(1.25); }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="viewport">
+        <div class="track" id="track">
+          <div class="slide"><div class="meta">设计趋势 · 2026</div><div class="headline">极简主义正在退潮</div><div class="summary">从「少即是多」到「对就是多」，新一代设计语言更注重个性表达和情感连接。</div></div>
+          <div class="slide"><div class="meta">前沿技术 · 深度</div><div class="headline">AI 辅助设计的边界</div><div class="summary">工具越来越强，但判断力仍是设计师不可替代的核心能力。</div></div>
+          <div class="slide"><div class="meta">产品思考 · 观点</div><div class="headline">微交互的价值洼地</div><div class="summary">被低估的细节往往决定产品的真实质感，从 loading 到反馈都值得打磨。</div></div>
+          <div class="slide"><div class="meta">开源项目 · 推荐</div><div class="headline">2026 年值得关注的工具</div><div class="summary">一批轻量级设计工具正在改变团队协作方式，它们更快、更专注。</div></div>
+        </div>
+      </div>
+      <div class="foot">
+        <button class="btn" id="prev">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn" id="next">→</button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var track = document.getElementById('track');
+        var slides = track.children;
+        var total = slides.length;
+        var index = 0;
+        var dotsContainer = document.getElementById('dots');
+        var timer = null;
+
+        for (var i = 0; i < total; i++) {
+          var dot = document.createElement('button');
+          dot.className = 'dot' + (i === 0 ? ' active' : '');
+          dot.dataset.i = i;
+          dot.addEventListener('click', function () { go(Number(this.dataset.i)); });
+          dotsContainer.appendChild(dot);
+        }
+
+        function go(i) {
+          if (i < 0) i = total - 1;
+          if (i >= total) i = 0;
+          index = i;
+          track.style.transform = 'translateX(-' + (index * 100) + '%)';
+          [].slice.call(dotsContainer.children).forEach(function (d, idx) {
+            d.className = 'dot' + (idx === index ? ' active' : '');
+          });
+          resetTimer();
+        }
+
+        function resetTimer() {
+          if (timer) clearInterval(timer);
+          timer = setInterval(function () { go(index + 1); }, 3000);
+        }
+
+        document.getElementById('prev').addEventListener('click', function () { go(index - 1); });
+        document.getElementById('next').addEventListener('click', function () { go(index + 1); });
+        resetTimer();
+      })();
+    </script>
+  </body>
+</html>

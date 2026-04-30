@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Drag List</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .list { width:100%; max-width:340px; display:flex; flex-direction:column; gap:6px; }
+      .item { display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; cursor:grab; transition:opacity 160ms, border-color 160ms, box-shadow 160ms; user-select:none; }
+      .item:active { cursor:grabbing; }
+      .item.dragging { opacity:0.45; border-color:var(--accent); }
+      .item.drag-over { border-color:var(--accent); box-shadow:0 0 0 2px rgba(185,72,61,0.3); }
+      .handle { font-size:15px; color:var(--muted); line-height:1; flex-shrink:0; }
+      .label { flex:1; font-size:13px; }
+      .badge { font-size:11px; color:var(--muted); background:#f2eee5; padding:2px 8px; border-radius:20px; }
+    </style>
+  </head>
+  <body>
+    <div class="list" id="list">
+      <div class="item" draggable="true"><span class="handle">⠿</span><span class="label">设计规范</span><span class="badge">Active</span></div>
+      <div class="item" draggable="true"><span class="handle">⠿</span><span class="label">组件库文档</span><span class="badge">Review</span></div>
+      <div class="item" draggable="true"><span class="handle">⠿</span><span class="label">Icon 系统迁移</span><span class="badge">Draft</span></div>
+      <div class="item" draggable="true"><span class="handle">⠿</span><span class="label">暗色模式</span><span class="badge">Active</span></div>
+      <div class="item" draggable="true"><span class="handle">⠿</span><span class="label">主题引擎 v2</span><span class="badge">Pending</span></div>
+    </div>
+    <script>
+      (function () {
+        var list = document.getElementById('list');
+        var dragEl = null;
+
+        list.addEventListener('dragstart', function (e) {
+          dragEl = e.target.closest('.item');
+          if (!dragEl || !list.contains(dragEl)) return;
+          dragEl.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', '');
+        });
+
+        list.addEventListener('dragend', function (e) {
+          var el = e.target.closest('.item');
+          if (el) el.classList.remove('dragging');
+          [].slice.call(list.querySelectorAll('.drag-over')).forEach(function (c) { c.classList.remove('drag-over'); });
+          dragEl = null;
+        });
+
+        list.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          var target = e.target.closest('.item');
+          if (!target || target === dragEl) return;
+          [].slice.call(list.querySelectorAll('.drag-over')).forEach(function (c) { c.classList.remove('drag-over'); });
+          target.classList.add('drag-over');
+        });
+
+        list.addEventListener('dragleave', function (e) {
+          var target = e.target.closest('.item');
+          if (target && target !== dragEl) target.classList.remove('drag-over');
+        });
+
+        list.addEventListener('drop', function (e) {
+          e.preventDefault();
+          var target = e.target.closest('.item');
+          if (!target || !dragEl || target === dragEl) return;
+          target.classList.remove('drag-over');
+          var rect = target.getBoundingClientRect();
+          var mid = rect.top + rect.height / 2;
+          if (e.clientY < mid) {
+            list.insertBefore(dragEl, target);
+          } else {
+            list.insertBefore(dragEl, target.nextElementSibling);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

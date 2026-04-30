@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resizable Panel</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .shell { width:100%; max-width:420px; display:flex; height:240px; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+      .left { width:40%; min-width:80px; max-width:70%; overflow:hidden; display:flex; flex-direction:column; }
+      .left-header { padding:12px 14px 8px; font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; border-bottom:1px solid var(--border); }
+      .left-items { flex:1; overflow:auto; padding:8px 0; }
+      .left-item { padding:7px 14px; font-size:12px; cursor:pointer; }
+      .left-item:hover, .left-item.active { background:#f2eee5; }
+      .divider { width:4px; cursor:col-resize; background:var(--border); position:relative; flex-shrink:0; transition:background 120ms; }
+      .divider:hover, .divider.active { background:var(--accent); }
+      .right { flex:1; overflow:hidden; display:flex; flex-direction:column; }
+      .right-header { padding:12px 14px 8px; font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
+      .right-body { flex:1; padding:8px 14px; font-size:12px; color:var(--muted); line-height:1.7; }
+    </style>
+  </head>
+  <body>
+    <div class="shell" id="shell">
+      <div class="left" id="left">
+        <div class="left-header">文件</div>
+        <div class="left-items">
+          <div class="left-item active">index.tsx</div>
+          <div class="left-item">style.css</div>
+          <div class="left-item">utils.ts</div>
+          <div class="left-item">types.ts</div>
+          <div class="left-item">constants.ts</div>
+        </div>
+      </div>
+      <div class="divider" id="divider"></div>
+      <div class="right" id="right">
+        <div class="right-header">index.tsx</div>
+        <div class="right-body">拖动中间的分隔线<br/>调整左右面板大小<br/>松开后保持新比例</div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var left = document.getElementById('left');
+        var divider = document.getElementById('divider');
+        var shell = document.getElementById('shell');
+        var dragging = false;
+
+        divider.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          dragging = true;
+          divider.classList.add('active');
+        });
+
+        document.addEventListener('mousemove', function (e) {
+          if (!dragging) return;
+          var rect = shell.getBoundingClientRect();
+          var pct = ((e.clientX - rect.left) / rect.width) * 100;
+          pct = Math.max(20, Math.min(65, pct));
+          left.style.width = pct + '%';
+        });
+
+        document.addEventListener('mouseup', function () {
+          if (dragging) {
+            dragging = false;
+            divider.classList.remove('active');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

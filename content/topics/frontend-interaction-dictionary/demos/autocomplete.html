@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autocomplete</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .shell { width:100%; max-width:340px; position:relative; }
+      .input { width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 14px; font:inherit; font-size:13px; background:var(--card); outline:none; transition:border-color 160ms, box-shadow 160ms; }
+      .input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(185,72,61,0.18); }
+      .menu { position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; display:none; box-shadow:0 8px 24px rgba(20,18,14,0.12); z-index:10; }
+      .menu.open { display:block; }
+      .option { padding:9px 14px; font-size:13px; cursor:pointer; }
+      .option:hover, .option.highlighted { background:#f2eee5; }
+      .option .match { color:var(--accent); font-weight:600; }
+      .empty { padding:14px; text-align:center; font-size:12px; color:var(--muted); }
+      .tag { display:inline-flex; align-items:center; gap:6px; background:#f2eee5; border-radius:20px; padding:4px 10px; font-size:12px; margin-top:10px; }
+      .tag button { border:0; background:transparent; cursor:pointer; color:var(--muted); font-size:14px; line-height:1; padding:0; }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <input class="input" id="input" placeholder="搜索项目…" autocomplete="off" />
+      <div class="menu" id="menu"></div>
+      <div id="result"></div>
+    </div>
+    <script>
+      (function () {
+        var data = ['设计规范','组件库','Icon 系统','暗色模式','主题引擎','权限管理','WebSocket 服务','API 网关','数据看板','用户反馈','搜索重构','部署流水线','单元测试','性能监控','日志中心','缓存策略'];
+
+        var input = document.getElementById('input');
+        var menu = document.getElementById('menu');
+        var result = document.getElementById('result');
+        var highlightIdx = -1;
+        var currentResults = [];
+
+        function filter(q) {
+          if (!q) return data.slice(0, 8);
+          var lower = q.toLowerCase();
+          return data.filter(function (item) { return item.toLowerCase().indexOf(lower) !== -1; });
+        }
+
+        function highlight(text, query) {
+          if (!query) return text;
+          var idx = text.toLowerCase().indexOf(query.toLowerCase());
+          if (idx === -1) return text;
+          return text.slice(0, idx) + '<span class="match">' + text.slice(idx, idx + query.length) + '</span>' + text.slice(idx + query.length);
+        }
+
+        function render() {
+          var query = input.value.trim();
+          currentResults = filter(query);
+          highlightIdx = -1;
+
+          if (currentResults.length === 0) {
+            menu.innerHTML = '<div class="empty">无匹配结果</div>';
+            menu.classList.add('open');
+            return;
+          }
+
+          var html = '';
+          currentResults.forEach(function (item) {
+            html += '<div class="option">' + highlight(item, query) + '</div>';
+          });
+          menu.innerHTML = html;
+          menu.classList.add('open');
+
+          [].slice.call(menu.children).forEach(function (el) {
+            el.addEventListener('mousedown', function (e) {
+              e.preventDefault();
+              select(el.textContent);
+            });
+          });
+        }
+
+        function select(text) {
+          input.value = text;
+          menu.classList.remove('open');
+          result.innerHTML = '<div class="tag">' + text + ' <button id="clearTag" type="button">✕</button></div>';
+          document.getElementById('clearTag').addEventListener('click', function () {
+            result.innerHTML = '';
+            input.value = '';
+            input.focus();
+          });
+        }
+
+        function moveHighlight(direction) {
+          var options = [].slice.call(menu.querySelectorAll('.option'));
+          if (options.length === 0) return;
+          [].forEach.call(options, function (o) { o.classList.remove('highlighted'); });
+          highlightIdx = Math.max(0, Math.min(highlightIdx + direction, options.length - 1));
+          options[highlightIdx].classList.add('highlighted');
+        }
+
+        input.addEventListener('input', render);
+
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowDown') { e.preventDefault(); moveHighlight(1); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); moveHighlight(-1); }
+          else if (e.key === 'Enter') {
+            var highlighted = menu.querySelector('.highlighted');
+            if (highlighted) { e.preventDefault(); select(highlighted.textContent); }
+          }
+          else if (e.key === 'Escape') { menu.classList.remove('open'); }
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest('.shell')) menu.classList.remove('open');
+        });
+      })();
+    </script>
+  </body>
+</html>

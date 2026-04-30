@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagination</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --accent:#b9483d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:24px; }
+      .shell { width:100%; max-width:360px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+      .table { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; min-height:180px; }
+      .row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f2eee5; border-radius:8px; font-size:13px; animation:fadeIn 200ms; }
+      @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+      .row .tag { font-size:11px; color:var(--muted); background:var(--card); padding:1px 8px; border-radius:20px; }
+      .pages { display:flex; align-items:center; justify-content:center; gap:4px; flex-wrap:wrap; }
+      .page { min-width:30px; height:30px; border:1px solid transparent; border-radius:6px; background:transparent; cursor:pointer; font:inherit; font-size:13px; color:var(--muted); display:inline-flex; align-items:center; justify-content:center; }
+      .page:hover { background:#f2eee5; color:var(--fg); }
+      .page.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+      .page:disabled { opacity:0.3; cursor:default; }
+      .page.ellipsis { cursor:default; border-color:transparent; background:transparent; }
+      .page.ellipsis:hover { background:transparent; }
+      .info { text-align:center; margin-top:12px; font-size:11px; color:var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="table" id="table"></div>
+      <div class="pages" id="pages"></div>
+      <div class="info" id="info"></div>
+    </div>
+    <script>
+      (function () {
+        var totalItems = 48;
+        var perPage = 4;
+        var totalPages = Math.ceil(totalItems / perPage);
+        var current = 1;
+        var table = document.getElementById('table');
+        var pages = document.getElementById('pages');
+        var info = document.getElementById('info');
+
+        function render() {
+          var start = (current - 1) * perPage + 1;
+          var end = Math.min(start + perPage - 1, totalItems);
+          var html = '';
+          for (var i = start; i <= end; i++) {
+            html += '<div class="row"><span>项目 #' + i + '</span><span class="tag">活跃</span></div>';
+          }
+          table.innerHTML = html;
+
+          var p = '';
+          if (current > 1) p += '<button class="page" data-page="' + (current-1) + '">‹</button>';
+          else p += '<button class="page" disabled>‹</button>';
+
+          var pagesToShow = [];
+          if (totalPages <= 7) {
+            for (var i = 1; i <= totalPages; i++) pagesToShow.push(i);
+          } else {
+            pagesToShow.push(1);
+            if (current > 3) pagesToShow.push('…');
+            var s = Math.max(2, current - 1);
+            var e = Math.min(totalPages - 1, current + 1);
+            for (var i = s; i <= e; i++) pagesToShow.push(i);
+            if (current < totalPages - 2) pagesToShow.push('…');
+            pagesToShow.push(totalPages);
+          }
+
+          pagesToShow.forEach(function (pNum) {
+            if (pNum === '…') {
+              p += '<span class="page ellipsis">…</span>';
+            } else {
+              p += '<button class="page' + (pNum === current ? ' active' : '') + '" data-page="' + pNum + '">' + pNum + '</button>';
+            }
+          });
+
+          if (current < totalPages) p += '<button class="page" data-page="' + (current+1) + '">›</button>';
+          else p += '<button class="page" disabled>›</button>';
+
+          pages.innerHTML = p;
+          info.textContent = '第 ' + current + ' / ' + totalPages + ' 页，共 ' + totalItems + ' 项';
+
+          [].slice.call(pages.querySelectorAll('[data-page]')).forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              current = Number(this.dataset.page);
+              render();
+            });
+          });
+        }
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
