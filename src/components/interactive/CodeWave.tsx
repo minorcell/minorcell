@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useScrollProgress } from '../../hooks/useScrollProgress'
@@ -194,15 +194,20 @@ export function CodeWave({ steps }: CodeWaveProps) {
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <div className="flex h-full items-stretch px-6 xl:px-8">
-              <motion.div
-                key={activeStep.code}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, ease: 'easeInOut' }}
-                className="w-full h-full"
-              >
-                <CodePanel step={activeStep} />
-              </motion.div>
+              <div className="relative flex-1">
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={activeStep.code}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    className="absolute inset-0"
+                  >
+                    <CodePanel step={activeStep} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>

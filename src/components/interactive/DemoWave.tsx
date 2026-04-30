@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useScrollProgress } from '../../hooks/useScrollProgress'
@@ -246,21 +246,26 @@ export function DemoWave({ steps }: DemoWaveProps) {
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <div className="flex h-full items-stretch px-6 py-6 xl:px-8">
-              <motion.div
-                key={activeKey}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, ease: 'easeInOut' }}
-                className="flex w-full"
-              >
-                <DemoPanel
-                  step={activeStep}
-                  mode={activeMode}
-                  onToggle={(m) =>
-                    setViewModes((prev) => ({ ...prev, [activeIndex]: m }))
-                  }
-                />
-              </motion.div>
+              <div className="relative flex-1">
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={activeKey}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    className="absolute inset-0"
+                  >
+                    <DemoPanel
+                      step={activeStep}
+                      mode={activeMode}
+                      onToggle={(m) =>
+                        setViewModes((prev) => ({ ...prev, [activeIndex]: m }))
+                      }
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>
