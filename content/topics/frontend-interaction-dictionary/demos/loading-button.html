@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loading State</title>
+    <style>
+      :root {
+        --bg: #faf8f3;
+        --fg: #1a1815;
+        --muted: #6b6760;
+        --border: #d8d3c5;
+        --ok: #2f8f5a;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+      }
+      .stage { display: grid; gap: 16px; place-items: center; }
+      .stage-label {
+        font: 500 10.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.22em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .btn {
+        position: relative;
+        appearance: none;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 500;
+        padding: 10px 22px;
+        min-width: 156px;
+        border-radius: 8px;
+        border: 1px solid var(--fg);
+        background: var(--fg);
+        color: #faf8f3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background-color 120ms ease, opacity 160ms ease;
+        user-select: none;
+      }
+      .btn:hover { background: #2a2722; }
+      .btn[disabled] { cursor: not-allowed; opacity: 0.85; background: var(--fg); }
+      .btn[data-state='success'] { background: var(--ok); border-color: var(--ok); }
+      .spinner {
+        width: 14px; height: 14px;
+        border-radius: 999px;
+        border: 2px solid rgba(250, 248, 243, 0.35);
+        border-top-color: #faf8f3;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .check {
+        width: 14px; height: 14px; display: inline-block;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+        max-width: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="stage-label">Click submit</div>
+      <button class="btn" id="btn" type="button">
+        <span id="label">提交</span>
+      </button>
+      <p class="hint">点击后按钮禁用，文案变为「提交中...」并显示 spinner，1.6s 后切到 success 状态。</p>
+    </div>
+    <script>
+      (function () {
+        var btn = document.getElementById('btn');
+        var label = document.getElementById('label');
+        var state = 'idle';
+        function render() {
+          if (state === 'idle') {
+            btn.removeAttribute('data-state');
+            btn.removeAttribute('disabled');
+            btn.innerHTML = '<span id="label">提交</span>';
+          } else if (state === 'loading') {
+            btn.setAttribute('data-state', 'loading');
+            btn.setAttribute('disabled', 'true');
+            btn.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>提交中…</span>';
+          } else if (state === 'success') {
+            btn.setAttribute('data-state', 'success');
+            btn.setAttribute('disabled', 'true');
+            btn.innerHTML = '<svg class="check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8.5 6.5 12 13 4.5"/></svg><span>已提交</span>';
+          }
+        }
+        btn.addEventListener('click', function () {
+          if (state !== 'idle') return;
+          state = 'loading';
+          render();
+          setTimeout(function () {
+            state = 'success';
+            render();
+            setTimeout(function () {
+              state = 'idle';
+              render();
+            }, 1400);
+          }, 1600);
+        });
+      })();
+    </script>
+  </body>
+</html>

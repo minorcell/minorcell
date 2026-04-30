@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sticky</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; }
+      .frame { height:100vh; overflow:auto; padding:18px; }
+      .bar { position:sticky; top:0; z-index:2; background:color-mix(in oklab, var(--bg) 92%, white); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 8px 18px -18px rgba(20,18,14,0.45); }
+      .title { font-weight:600; }
+      .meta { color:var(--muted); font-size:12px; }
+      .content { max-width:340px; margin:14px auto 60px; display:grid; gap:10px; }
+      .row { height:58px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px; display:flex; align-items:center; justify-content:space-between; }
+      .small { color:var(--muted); font-size:12px; }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="bar"><span class="title">项目列表</span><span class="meta">Sticky filter</span></div>
+      <div class="content">
+        <div class="row"><span>Atlas Migration</span><span class="small">Active</span></div>
+        <div class="row"><span>Search Rewrite</span><span class="small">Review</span></div>
+        <div class="row"><span>Billing Audit</span><span class="small">Draft</span></div>
+        <div class="row"><span>Docs Refresh</span><span class="small">Active</span></div>
+        <div class="row"><span>Import Tool</span><span class="small">Paused</span></div>
+        <div class="row"><span>Design QA</span><span class="small">Active</span></div>
+        <div class="row"><span>Access Rules</span><span class="small">Review</span></div>
+      </div>
+    </div>
+  </body>
+</html>

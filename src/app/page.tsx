@@ -1,29 +1,30 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { siteContent } from '@/lib/site-content'
-import { getAllPosts } from '@/lib/mdx'
+import { getAllPosts, getTopicSlug } from '@/lib/mdx'
+import type { Post } from '@/lib/mdx'
 import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
 const homeMetadata = buildPageMetadata({
-  title: 'Cell Stack | AI Agent 与全栈开发技术博客',
+  title: 'Cell Stack | AI Agent 与全栈工程个人刊物',
   description:
-    'Cell Stack 聚焦 AI Agent、JavaScript、TypeScript、React、Next.js 与工程实践，持续分享教程、专题文章、项目复盘与可落地代码示例。',
+    'Cell & Stack 是一份关于 AI Agent、全栈工程与日常实践的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。',
   path: '/',
   keywords: [
-    'AI Agent 教程',
-    'JavaScript 教程',
-    'TypeScript 教程',
-    'React 教程',
-    'Next.js 教程',
-    '全栈开发博客',
+    'AI Agent',
+    '全栈工程',
+    '个人刊物',
+    '日常实践',
+    '前端开发',
+    '全栈开发',
   ],
 })
 
 export const metadata: Metadata = {
   ...homeMetadata,
   title: {
-    absolute: 'Cell Stack | AI Agent 与全栈开发技术博客',
+    absolute: 'Cell Stack | AI Agent 与全栈工程个人刊物',
   },
 }
 
@@ -42,6 +43,20 @@ const formatIsoDate = (value: Date) => {
 }
 
 const padIssue = (n: number) => String(n).padStart(2, '0')
+
+const getPostHref = (post: Post) => {
+  const topicSlug = getTopicSlug(post.metadata)
+  return topicSlug ? `/topics/${topicSlug}` : `/blog/${post.slug}`
+}
+
+const InteractiveBadge = () => (
+  <span
+    className="inline-flex items-center gap-1 border border-[color:var(--link-accent)] px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--link-accent)]"
+    aria-label="交互式专题"
+  >
+    § INTERACTIVE
+  </span>
+)
 
 const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series']
 
@@ -187,7 +202,7 @@ export default function HomePage() {
           <>
             {/* HERO: №01 */}
             <Link
-              href={`/blog/${posts[0].slug}`}
+              href={getPostHref(posts[0])}
               className="row-link group block border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] px-3 py-8 hover:opacity-100 sm:px-5 sm:py-12"
             >
               <div className="grid items-start gap-5 sm:grid-cols-[120px_1fr_140px] sm:gap-10">
@@ -217,6 +232,11 @@ export default function HomePage() {
                   >
                     {posts[0].metadata.title}
                   </h3>
+                  {getTopicSlug(posts[0].metadata) && (
+                    <div className="mt-3">
+                      <InteractiveBadge />
+                    </div>
+                  )}
                   {posts[0].metadata.description && (
                     <p className="mt-4 line-clamp-2 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground">
                       {posts[0].metadata.description}
@@ -248,7 +268,7 @@ export default function HomePage() {
                       }`}
                     >
                       <Link
-                        href={`/blog/${post.slug}`}
+                        href={getPostHref(post)}
                         className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 ${
                           !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
                         }`}
@@ -275,6 +295,11 @@ export default function HomePage() {
                           >
                             {post.metadata.title}
                           </span>
+                          {getTopicSlug(post.metadata) && (
+                            <span className="ml-2 align-middle">
+                              <InteractiveBadge />
+                            </span>
+                          )}
                           {post.metadata.description && (
                             <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground/80">
                               {post.metadata.description}

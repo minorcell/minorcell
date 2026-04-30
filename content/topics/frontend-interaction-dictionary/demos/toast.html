@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toast</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --ok:#2f8f5a; }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--bg); color: var(--fg);
+        font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+        display: grid; place-items: center; padding: 32px; overflow: hidden;
+      }
+      .stage { display: grid; place-items: center; gap: 14px; }
+      button {
+        appearance: none; cursor: pointer; font: inherit; font-weight: 500;
+        padding: 9px 16px; border-radius: 8px; border: 1px solid var(--fg);
+        background: var(--fg); color: var(--bg);
+        transition: transform 120ms ease, background-color 160ms ease;
+      }
+      button:hover { background: #2a2722; }
+      button:active { transform: scale(0.98); }
+      .hint { margin: 0; color: var(--muted); font-size: 12px; }
+      .toast {
+        position: fixed; top: 22px; right: 22px; width: min(300px, calc(100vw - 44px));
+        background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+        padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;
+        box-shadow: 0 16px 32px -20px rgba(20, 18, 14, 0.35);
+        opacity: 0; transform: translateY(-8px);
+        pointer-events: none; transition: opacity 180ms ease, transform 180ms ease;
+      }
+      .toast[data-open='true'] { opacity: 1; transform: translateY(0); }
+      .dot { width: 18px; height: 18px; border-radius: 999px; background: #e0f0e6; color: var(--ok); display: grid; place-items: center; flex: 0 0 auto; }
+      .title { font-weight: 600; font-size: 13px; }
+      .desc { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <button id="copy" type="button">复制邀请链接</button>
+      <p class="hint">轻量操作成功后，用 toast 给短反馈。</p>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <span class="dot" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8.5 6.5 12 13 4.5"/></svg>
+      </span>
+      <div><div class="title">已复制到剪贴板</div><div class="desc">2 秒后自动消失，不打断当前流程。</div></div>
+    </div>
+    <script>
+      (function () {
+        var btn = document.getElementById('copy');
+        var toast = document.getElementById('toast');
+        var timer;
+        btn.addEventListener('click', function () {
+          clearTimeout(timer);
+          toast.setAttribute('data-open', 'true');
+          timer = setTimeout(function () { toast.setAttribute('data-open', 'false'); }, 2000);
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getAllPosts } from '@/lib/mdx'
+import { getAllPosts, getTopicSlug } from '@/lib/mdx'
 import { siteContent } from '@/lib/site-content'
 import { getAllTopics } from '@/lib/topics.server'
 
@@ -66,12 +66,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.metadata.date),
-    changeFrequency: 'monthly',
-    priority: 0.75,
-  }))
+  const blogRoutes: MetadataRoute.Sitemap = posts
+    // Skip stub posts that defer to an interactive topic — their canonical URL
+    // is the topic page, surfaced via topicRoutes below.
+    .filter((post) => !getTopicSlug(post.metadata))
+    .map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.metadata.date),
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    }))
 
   const topicRoutes: MetadataRoute.Sitemap = []
   for (const topic of topics) {

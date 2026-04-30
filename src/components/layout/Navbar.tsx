@@ -126,9 +126,13 @@ export function Navbar() {
   }, [])
 
   // Scroll-state for the navbar (compresses on scroll)
+  // Uses hysteresis (on > 20, off < 4) to prevent twitching from sub-pixel
+  // oscillation at the boundary and scroll-anchoring feedback loops.
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 4)
+      const y = window.scrollY
+      if (y > 20) setScrolled(true)
+      else if (y < 4) setScrolled(false)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })

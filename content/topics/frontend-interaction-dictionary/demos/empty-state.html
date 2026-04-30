@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Empty State</title>
+    <style>
+      :root {
+        --bg: #faf8f3;
+        --fg: #1a1815;
+        --muted: #6b6760;
+        --border: #d8d3c5;
+        --card: #ffffff;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+      }
+      .stage { width: 100%; max-width: 340px; }
+      .panel {
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        padding: 36px 24px 28px;
+        text-align: center;
+        display: grid;
+        gap: 14px;
+        place-items: center;
+      }
+      .icon {
+        width: 56px; height: 56px;
+        display: grid; place-items: center;
+        border-radius: 14px;
+        background: #f0ebde;
+        color: var(--muted);
+      }
+      .title { font-size: 15px; font-weight: 500; margin: 0; }
+      .desc {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0;
+        max-width: 240px;
+        line-height: 1.6;
+      }
+      .cta {
+        margin-top: 6px;
+        appearance: none;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--fg);
+        background: var(--fg);
+        color: #faf8f3;
+        transition: background-color 120ms ease;
+      }
+      .cta:hover { background: #2a2722; }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="panel">
+        <div class="icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="M3 10h18" />
+            <path d="M9 15h6" />
+          </svg>
+        </div>
+        <h3 class="title">还没有项目</h3>
+        <p class="desc">创建第一个项目，把任务、文档和成员组织在一起。</p>
+        <button class="cta" type="button">+ 创建项目</button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -151,7 +151,7 @@ export const projectGroups: ProjectGroup[] = [
     projects: [
       {
         name: 'cellstack',
-        summary: '计算机科学的工程实践和一些个人思考',
+        summary: '一份关于 AI Agent、全栈工程与日常实践的个人刊物',
         status: 'active',
         tags: ['TypeScript'],
         links: [

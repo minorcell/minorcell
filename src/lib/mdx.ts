@@ -14,7 +14,20 @@ export interface PostMetadata {
   image?: string
   description?: string
   order?: number
+  topicSlug?: string
   [key: string]: unknown
+}
+
+/**
+ * Read topicSlug from a blog post's metadata. When present, the post is treated
+ * as a stub that should redirect (or link directly) to the matching interactive
+ * topic at /topics/<topicSlug>.
+ */
+export function getTopicSlug(metadata: PostMetadata): string | undefined {
+  const value = metadata.topicSlug
+  if (typeof value !== 'string') return undefined
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : undefined
 }
 
 export interface Post {

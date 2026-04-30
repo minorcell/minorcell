@@ -144,9 +144,24 @@
   }
 
   html {
-    scroll-behavior: smooth;
     /* Hide scrollbars site-wide (Firefox). Scrolling still works. */
     scrollbar-width: none;
+  }
+
+  /*
+   * Scope smooth scrolling to in-page anchor activations only. Applying
+   * `scroll-behavior: smooth` directly on <html> also animates programmatic
+   * `window.scrollTo(0, 0)` calls (notably the one Next.js App Router runs on
+   * route change), which causes scroll-driven animations on /topics/<slug>
+   * (the cover's `animation-timeline: scroll(root)`) to play in reverse on
+   * entry — visually: the stage slides down from mid-viewport and the cover
+   * "zooms in". Gating on `:focus-within` keeps anchor jumps smooth without
+   * affecting route-change scroll restoration.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html:focus-within {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -867,6 +882,7 @@
 
 .navbar {
   border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  overflow-anchor: none;
   transition:
     background-color 150ms ease,
     backdrop-filter 150ms ease,

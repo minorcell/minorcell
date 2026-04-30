@@ -15,7 +15,7 @@ export const defaultSeoKeywords = Array.from(
     ...siteContent.keywords,
     'Cell Stack',
     'mcell',
-    '技术博客',
+    '个人刊物',
     '前端开发',
     '全栈开发',
     'JavaScript',

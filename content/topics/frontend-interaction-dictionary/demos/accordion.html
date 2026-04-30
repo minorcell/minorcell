@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accordion</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:32px; }
+      .accordion { width:min(380px,100%); background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+      .item + .item { border-top:1px solid var(--border); }
+      .head { width:100%; border:0; background:transparent; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font:inherit; font-weight:500; color:var(--fg); text-align:left; }
+      .head:hover { background:#f5f1e9; }
+      .plus { color:var(--muted); transition:transform 180ms ease; }
+      .item[data-open='true'] .plus { transform:rotate(45deg); }
+      .body { display:grid; grid-template-rows:0fr; transition:grid-template-rows 200ms ease; }
+      .item[data-open='true'] .body { grid-template-rows:1fr; }
+      .inner { overflow:hidden; }
+      p { margin:0; padding:0 16px 15px; color:var(--muted); font-size:13px; line-height:1.65; }
+    </style>
+  </head>
+  <body>
+    <div class="accordion">
+      <section class="item" data-open="true"><button class="head" type="button">什么时候用 accordion？<span class="plus">+</span></button><div class="body"><div class="inner"><p>适合 FAQ、设置分组、文档说明这类可以按需展开的内容。</p></div></div></section>
+      <section class="item"><button class="head" type="button">可以同时展开多个吗？<span class="plus">+</span></button><div class="body"><div class="inner"><p>可以，但要在提示词里说清楚：单项展开还是多项独立展开。</p></div></div></section>
+      <section class="item"><button class="head" type="button">什么时候不要用？<span class="plus">+</span></button><div class="body"><div class="inner"><p>如果内容本来就很关键，不要强行折叠起来增加寻找成本。</p></div></div></section>
+    </div>
+    <script>
+      (function () {
+        Array.prototype.forEach.call(document.querySelectorAll('.head'), function (head) {
+          head.addEventListener('click', function () {
+            var item = head.parentElement;
+            Array.prototype.forEach.call(document.querySelectorAll('.item'), function (node) { if (node !== item) node.setAttribute('data-open', 'false'); });
+            item.setAttribute('data-open', item.getAttribute('data-open') !== 'true' ? 'true' : 'false');
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

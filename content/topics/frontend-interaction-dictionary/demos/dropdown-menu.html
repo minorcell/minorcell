@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dropdown Menu</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; --danger:#b9473d; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:32px; }
+      .card { width:280px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; position:relative; box-shadow:0 1px 0 rgba(20,18,14,0.03); }
+      .top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+      h3 { margin:0; font-size:15px; }
+      p { margin:6px 0 0; color:var(--muted); font-size:12px; }
+      .more { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--bg); cursor:pointer; font:700 16px/1 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted); transition:background-color 160ms ease; }
+      .more:hover { background:#f0ebe1; }
+      .menu { position:absolute; top:50px; right:14px; min-width:148px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px; box-shadow:0 14px 30px -22px rgba(20,18,14,0.4); opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity 150ms ease, transform 150ms ease; }
+      .menu[data-open='true'] { opacity:1; transform:translateY(0); pointer-events:auto; }
+      .item { width:100%; border:0; background:transparent; border-radius:7px; padding:8px 9px; text-align:left; cursor:pointer; font:inherit; font-size:13px; color:var(--fg); }
+      .item:hover { background:#f4f0e8; }
+      .item.danger { color:var(--danger); }
+    </style>
+  </head>
+  <body>
+    <article class="card">
+      <div class="top">
+        <div><h3>Project Card</h3><p>更多操作放进 dropdown，避免卡片拥挤。</p></div>
+        <button class="more" id="more" type="button" aria-expanded="false">···</button>
+      </div>
+      <div class="menu" id="menu">
+        <button class="item" type="button">编辑</button>
+        <button class="item" type="button">复制</button>
+        <button class="item danger" type="button">删除</button>
+      </div>
+    </article>
+    <script>
+      (function () {
+        var more = document.getElementById('more');
+        var menu = document.getElementById('menu');
+        function setOpen(value) { menu.setAttribute('data-open', value ? 'true' : 'false'); more.setAttribute('aria-expanded', value ? 'true' : 'false'); }
+        more.addEventListener('click', function (event) { event.stopPropagation(); setOpen(menu.getAttribute('data-open') !== 'true'); });
+        document.addEventListener('click', function () { setOpen(false); });
+      })();
+    </script>
+  </body>
+</html>

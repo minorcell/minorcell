@@ -1,4 +1,4 @@
-# CellStack - 工程师技术笔记
+# Cell & Stack - 个人技术刊物
 
 <center text-align="center" width="100%">
 <img src="https://avatars.githubusercontent.com/u/120795714" width="100" height="100" alt="CellStack">
@@ -6,7 +6,7 @@
 
 网址：[stack.mcell.top](https://stack.mcell.top)
 
-计算机科学的工程实践和一些个人思考。
+一份关于 AI Agent、全栈工程与日常实践的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。
 
 ## 联系方式
 

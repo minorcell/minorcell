@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Popover</title>
+    <style>
+      :root { --bg:#faf8f3; --fg:#1a1815; --muted:#6b6760; --border:#d8d3c5; --card:#fff; }
+      * { box-sizing:border-box; }
+      html, body { height:100%; margin:0; }
+      body { background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; display:grid; place-items:center; padding:32px; }
+      .wrap { position:relative; }
+      .trigger { appearance:none; cursor:pointer; font:inherit; font-weight:500; padding:9px 15px; border-radius:8px; border:1px solid var(--fg); background:var(--fg); color:var(--bg); }
+      .panel { position:absolute; top:calc(100% + 10px); left:50%; width:260px; transform:translate(-50%, -4px); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:0 18px 36px -26px rgba(20,18,14,0.45); opacity:0; pointer-events:none; transition:opacity 160ms ease, transform 160ms ease; }
+      .panel[data-open='true'] { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+      h3 { margin:0 0 7px; font-size:14px; }
+      p { margin:0 0 12px; color:var(--muted); font-size:12.5px; line-height:1.6; }
+      .filters { display:flex; flex-wrap:wrap; gap:6px; }
+      .chip { border:1px solid var(--border); border-radius:999px; padding:5px 9px; background:var(--bg); color:var(--muted); font-size:12px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <button class="trigger" id="trigger" type="button">筛选条件</button>
+      <section class="panel" id="panel">
+        <h3>快速筛选</h3>
+        <p>Popover 可以承载比 tooltip 更复杂的轻量内容，比如说明、链接或小表单。</p>
+        <div class="filters"><span class="chip">全部</span><span class="chip">进行中</span><span class="chip">已归档</span></div>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var trigger = document.getElementById('trigger');
+        var panel = document.getElementById('panel');
+        trigger.addEventListener('click', function (event) {
+          event.stopPropagation();
+          panel.setAttribute('data-open', panel.getAttribute('data-open') !== 'true' ? 'true' : 'false');
+        });
+        document.addEventListener('click', function () { panel.setAttribute('data-open', 'false'); });
+      })();
+    </script>
+  </body>
+</html>

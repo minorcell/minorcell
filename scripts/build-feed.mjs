@@ -129,8 +129,17 @@ function build() {
 
     if (!date) continue
 
+    // Stub posts defer their content to an interactive topic at
+    // /topics/<topicSlug>. Point RSS subscribers straight at the topic so they
+    // never land on the empty stub page.
+    const topicSlug =
+      typeof metadata.topicSlug === 'string' && metadata.topicSlug.trim()
+        ? metadata.topicSlug.trim()
+        : undefined
     const encodedSlug = encodePath(slug)
-    const link = `${siteUrl}/blog/${encodedSlug}`
+    const link = topicSlug
+      ? `${siteUrl}/topics/${encodePath(topicSlug)}`
+      : `${siteUrl}/blog/${encodedSlug}`
     posts.push({
       slug,
       title,

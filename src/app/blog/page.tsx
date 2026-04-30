@@ -2,7 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { getAllPosts } from '@/lib/mdx'
+import { getAllPosts, getTopicSlug } from '@/lib/mdx'
+import type { Post } from '@/lib/mdx'
 import { buildPageMetadata } from '@/lib/seo'
 import {
   createBreadcrumbJsonLd,
@@ -10,17 +11,18 @@ import {
 } from '@/lib/structured-data'
 
 export const metadata: Metadata = buildPageMetadata({
-  title: '技术博客文章列表',
+  title: '文章归档',
   description:
-    '浏览 Cell Stack 最新技术文章，覆盖 AI Agent、JavaScript、TypeScript、React、Next.js、Node.js 与工程化实践。',
+    '浏览 Cell & Stack 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
   path: '/blog',
   keywords: [
-    '技术博客',
-    '编程文章',
-    'AI Agent 实战',
-    'JavaScript 博客',
-    'React 博客',
-    'Next.js 博客',
+    '文章归档',
+    'AI Agent',
+    '全栈工程',
+    '前端开发',
+    'JavaScript',
+    'React',
+    'Next.js',
   ],
 })
 
@@ -28,6 +30,20 @@ const formatShortDate = (value: string) => {
   const d = new Date(value)
   return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
+
+const getPostHref = (post: Post) => {
+  const topicSlug = getTopicSlug(post.metadata)
+  return topicSlug ? `/topics/${topicSlug}` : `/blog/${post.slug}`
+}
+
+const InteractiveBadge = () => (
+  <span
+    className="inline-flex items-center gap-1 border border-[color:var(--link-accent)] px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--link-accent)]"
+    aria-label="交互式专题"
+  >
+    § INTERACTIVE
+  </span>
+)
 
 const formatIsoDate = (value: Date) =>
   `${value.getFullYear()} · ${String(value.getMonth() + 1).padStart(2, '0')} · ${String(value.getDate()).padStart(2, '0')}`
@@ -53,13 +69,13 @@ export default function BlogPage() {
     { name: '文章', path: '/blog' },
   ])
   const collectionPageJsonLd = createCollectionPageJsonLd({
-    title: '技术博客文章列表',
+    title: '文章归档',
     description:
-      '浏览 Cell Stack 最新技术文章，覆盖 AI Agent、JavaScript、TypeScript、React、Next.js、Node.js 与工程化实践。',
+      '浏览 Cell & Stack 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
     path: '/blog',
     items: posts.map((post) => ({
       name: post.metadata.title,
-      path: `/blog/${post.slug}`,
+      path: getPostHref(post),
     })),
   })
 
@@ -116,7 +132,7 @@ export default function BlogPage() {
           <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-stretch lg:gap-14">
             {/* Feature 头条 */}
             <Link
-              href={`/blog/${featuredPost.slug}`}
+              href={getPostHref(featuredPost)}
               className="row-link group flex h-full flex-col px-3 py-2 hover:opacity-100 sm:px-4 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
             >
               {/* Featured — underline only; the "№ 01" text isn't a numeric
@@ -136,6 +152,11 @@ export default function BlogPage() {
               >
                 {featuredPost.metadata.title}
               </h3>
+              {getTopicSlug(featuredPost.metadata) && (
+                <div className="mt-3">
+                  <InteractiveBadge />
+                </div>
+              )}
               {featuredPost.metadata.description && (
                 <p className="mt-5 line-clamp-4 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
                   {featuredPost.metadata.description}
@@ -162,7 +183,7 @@ export default function BlogPage() {
                     className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
                   >
                     <Link
-                      href={`/blog/${post.slug}`}
+                      href={getPostHref(post)}
                       className="row-link group block px-3 py-5 hover:opacity-100 sm:px-4 sm:py-6"
                     >
                       <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -197,6 +218,11 @@ export default function BlogPage() {
                       >
                         {post.metadata.title}
                       </span>
+                      {getTopicSlug(post.metadata) && (
+                        <div className="mt-1.5">
+                          <InteractiveBadge />
+                        </div>
+                      )}
                       {post.metadata.description && (
                         <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground/80">
                           {post.metadata.description}
@@ -249,7 +275,7 @@ export default function BlogPage() {
                   className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
                 >
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={getPostHref(post)}
                     className="row-link group grid items-baseline gap-5 px-3 py-4 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-5"
                     style={{ gridTemplateColumns: '56px 1fr auto' }}
                   >
@@ -274,6 +300,11 @@ export default function BlogPage() {
                       >
                         {post.metadata.title}
                       </span>
+                      {getTopicSlug(post.metadata) && (
+                        <span className="ml-2 align-middle">
+                          <InteractiveBadge />
+                        </span>
+                      )}
                       {post.metadata.description && (
                         <p className="mt-1 line-clamp-1 text-sm text-muted-foreground/75">
                           · {post.metadata.description}

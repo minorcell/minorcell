@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skeleton Loading</title>
+    <style>
+      :root {
+        --bg: #faf8f3;
+        --fg: #1a1815;
+        --muted: #6b6760;
+        --border: #e6e1d4;
+        --card: #ffffff;
+        --shimmer-1: #ece8dd;
+        --shimmer-2: #f4f1e8;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+      }
+      .stage { width: 100%; max-width: 320px; }
+      .stage-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font: 500 10.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.22em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .reload {
+        cursor: pointer;
+        background: none;
+        border: 0;
+        font: inherit;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        padding: 4px 0;
+      }
+      .reload:hover { color: var(--fg); }
+      .list { display: grid; gap: 10px; }
+      .row {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: grid;
+        gap: 8px;
+      }
+      .skeleton .bar {
+        height: 10px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, var(--shimmer-1) 0%, var(--shimmer-2) 50%, var(--shimmer-1) 100%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s ease-in-out infinite;
+      }
+      .skeleton .bar.w-60 { width: 60%; }
+      .skeleton .bar.w-90 { width: 90%; height: 8px; }
+      .skeleton .bar.w-40 { width: 40%; height: 8px; }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .real .title { font-size: 14px; font-weight: 500; }
+      .real .desc { font-size: 12.5px; color: var(--muted); }
+      .real .meta { font: 500 10.5px/1 ui-monospace, monospace; color: var(--muted); letter-spacing: 0.04em; }
+      .row { transition: opacity 220ms ease; }
+      .row[hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="stage-label">
+        <span>Loading list</span>
+        <button class="reload" id="reload" type="button">Reload</button>
+      </div>
+      <div class="list" id="list"></div>
+    </div>
+    <script>
+      (function () {
+        var list = document.getElementById('list');
+        var reload = document.getElementById('reload');
+        var data = [
+          { title: 'Atlas Migration', desc: '迁移用户数据到新存储集群', meta: 'UPDATED · 2D AGO' },
+          { title: 'Billing Refactor', desc: '订阅与发票模块重构', meta: 'UPDATED · 5D AGO' },
+          { title: 'Mobile Onboarding', desc: '新版引导流程改造', meta: 'UPDATED · 1W AGO' },
+        ];
+        function renderSkeleton() {
+          list.innerHTML = '';
+          for (var i = 0; i < 3; i++) {
+            var row = document.createElement('div');
+            row.className = 'row skeleton';
+            row.innerHTML = '<div class="bar w-60"></div><div class="bar w-90"></div><div class="bar w-40"></div>';
+            list.appendChild(row);
+          }
+        }
+        function renderReal() {
+          list.innerHTML = '';
+          data.forEach(function (item) {
+            var row = document.createElement('div');
+            row.className = 'row real';
+            row.innerHTML =
+              '<div class="title">' + item.title + '</div>' +
+              '<div class="desc">' + item.desc + '</div>' +
+              '<div class="meta">' + item.meta + '</div>';
+            list.appendChild(row);
+          });
+        }
+        function cycle() {
+          renderSkeleton();
+          setTimeout(renderReal, 1800);
+        }
+        reload.addEventListener('click', cycle);
+        cycle();
+      })();
+    </script>
+  </body>
+</html>
