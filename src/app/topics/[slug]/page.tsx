@@ -7,7 +7,10 @@ import type { SerializedStep } from '@/components/interactive/InteractiveTutoria
 import { TopicCover } from '@/components/topics/TopicCover'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { buildPageMetadata } from '@/lib/seo'
-import { createArticleJsonLd, createBreadcrumbJsonLd } from '@/lib/structured-data'
+import {
+  createArticleJsonLd,
+  createBreadcrumbJsonLd,
+} from '@/lib/structured-data'
 
 interface TopicPageProps {
   params: Promise<{
@@ -92,10 +95,20 @@ export default async function TopicPage({ params }: TopicPageProps) {
         prose: s.prose,
       }
     }
+    if (s.kind === 'image') {
+      return {
+        kind: 'image' as const,
+        src: s.src,
+        alt: s.alt,
+        prose: s.prose,
+      }
+    }
     return {
-      kind: 'image' as const,
-      src: s.src,
-      alt: s.alt,
+      kind: 'demo' as const,
+      html: s.html,
+      title: s.title,
+      height: s.height,
+      aspect: s.aspect,
       prose: s.prose,
     }
   })
@@ -108,15 +121,19 @@ export default async function TopicPage({ params }: TopicPageProps) {
     '0',
   )
 
-  // Detect tutorial composition (code / image / mixed)
+  // Detect tutorial composition (code / image / demo / mixed)
   const hasCode = tutorial.steps.some((s) => s.kind === 'code')
   const hasImage = tutorial.steps.some((s) => s.kind === 'image')
+  const hasDemo = tutorial.steps.some((s) => s.kind === 'demo')
+  const compositionParts = [
+    hasCode ? 'CODE' : null,
+    hasImage ? 'VISUAL' : null,
+    hasDemo ? 'INTERACTIVE' : null,
+  ].filter((p): p is string => Boolean(p))
   const composition =
-    hasCode && hasImage
-      ? 'CODE & VISUAL'
-      : hasCode
-        ? 'CODE WALKTHROUGH'
-        : 'VISUAL WALKTHROUGH'
+    compositionParts.length > 1
+      ? compositionParts.join(' · ')
+      : `${compositionParts[0] ?? 'CODE'} WALKTHROUGH`
 
   return (
     <div>

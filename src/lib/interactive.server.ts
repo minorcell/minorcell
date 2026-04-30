@@ -28,7 +28,19 @@ export interface TutorialImageStep {
   prose: string
 }
 
-export type TutorialStep = TutorialCodeStep | TutorialImageStep
+export interface TutorialDemoStep {
+  kind: 'demo'
+  html: string
+  title?: string
+  height?: number
+  aspect?: string
+  prose: string
+}
+
+export type TutorialStep =
+  | TutorialCodeStep
+  | TutorialImageStep
+  | TutorialDemoStep
 
 export interface InteractiveTutorial {
   slug: string
@@ -61,9 +73,36 @@ function parseHighlightLines(notation: string): number[] {
 }
 
 /**
- * Resolve a file= reference to actual file content.
- * Path is relative to the topic directory.
+ * Parse `step-demo` attributes from the marker body.
+ *
+ * Supports:
+ *   - bare values:    src=demos/x.html
+ *   - quoted values:  title="Hover Card" or title='Hover Card'
+ *
+ * Recognized keys: src, title, height, aspect.
  */
+function parseDemoAttrs(body: string): {
+  src?: string
+  title?: string
+  height?: string
+  aspect?: string
+} {
+  const attrs: Record<string, string> = {}
+  const re = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g
+  let match: RegExpExecArray | null
+  while ((match = re.exec(body)) !== null) {
+    const key = match[1]
+    const value = match[2] ?? match[3] ?? match[4] ?? ''
+    attrs[key] = value
+  }
+  return {
+    src: attrs.src,
+    title: attrs.title,
+    height: attrs.height,
+    aspect: attrs.aspect,
+  }
+}
+
 function resolveFileRef(topicDir: string, filePath: string): string {
   const fullPath = path.join(topicDir, filePath)
   if (!fs.existsSync(fullPath)) {
@@ -180,6 +219,52 @@ function parseTutorialContent(
         kind: 'image',
         src: imgSrc,
         alt: imgAlt,
+        prose: '',
+      })
+      continue
+    }
+
+    // Detect demo step marker: <!-- step-demo src=xxx [title=...] [height=...] [aspect=...] -->
+    const demoStep = line.match(/^<!--\s*step-demo\s+(.+?)\s*-->$/)
+    if (demoStep) {
+      if (steps.length > 0) {
+        steps[steps.length - 1].prose = currentProse.join('\n').trim()
+        currentProse = []
+      } else if (!foundFirstStep) {
+        intro = currentProse.join('\n').trim()
+        currentProse = []
+      }
+
+      foundFirstStep = true
+
+      const attrs = parseDemoAttrs(demoStep[1])
+      const demoSrc = attrs.src
+      let html = ''
+      if (!demoSrc) {
+        console.warn('[interactive] step-demo missing src attribute')
+        html = '<!-- step-demo missing src -->'
+      } else {
+        const fullPath = path.join(topicDir, demoSrc)
+        if (!fs.existsSync(fullPath)) {
+          console.warn(`[interactive] Demo file not found: ${fullPath}`)
+          html = `<!-- Demo file not found: ${demoSrc} -->`
+        } else {
+          html = fs.readFileSync(fullPath, 'utf8')
+        }
+      }
+
+      const heightNum = attrs.height ? Number(attrs.height) : undefined
+      const height =
+        heightNum !== undefined && !Number.isNaN(heightNum)
+          ? heightNum
+          : undefined
+
+      steps.push({
+        kind: 'demo',
+        html,
+        title: attrs.title,
+        height,
+        aspect: attrs.aspect,
         prose: '',
       })
       continue
