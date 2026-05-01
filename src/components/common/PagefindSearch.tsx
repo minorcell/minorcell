@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, Loader2, Search, X } from 'lucide-react'
@@ -237,7 +237,7 @@ export function PagefindSearch({
                 key={`${hit.url}-${index}`}
                 className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
               >
-                <Link
+                <TransitionLink
                   href={hit.url}
                   className="row-link group grid items-start gap-4 px-3 py-4 hover:opacity-100"
                   style={{ gridTemplateColumns: '44px 1fr 18px' }}
@@ -277,7 +277,7 @@ export function PagefindSearch({
                     </p>
                   </div>
                   <ArrowUpRight className="h-3.5 w-3.5 shrink-0 self-center text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </Link>
+                </TransitionLink>
               </li>
             ))}
           </ol>

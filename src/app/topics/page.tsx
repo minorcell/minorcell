@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllTopics } from '@/lib/topics.server'
@@ -92,7 +92,7 @@ export default function TopicsPage() {
                       : ''
                   }`}
                 >
-                  <Link
+                  <TransitionLink
                     href={`/topics/${topic.slug}`}
                     className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-9 ${
                       !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
@@ -132,7 +132,7 @@ export default function TopicsPage() {
                         </p>
                       )}
                     </div>
-                  </Link>
+                  </TransitionLink>
                 </li>
               )
             })}

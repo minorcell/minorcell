@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
 import { getAllPosts, getTopicSlug } from '@/lib/mdx'
 import type { Post } from '@/lib/mdx'
@@ -201,7 +201,7 @@ export default function HomePage() {
         {posts.length > 0 ? (
           <>
             {/* HERO: №01 */}
-            <Link
+            <TransitionLink
               href={getPostHref(posts[0])}
               className="row-link group block border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] px-3 py-8 hover:opacity-100 sm:px-5 sm:py-12"
             >
@@ -250,7 +250,7 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
-            </Link>
+            </TransitionLink>
 
             {/* 02-05: 2-col grid on lg */}
             {posts.length > 1 && (
@@ -267,7 +267,7 @@ export default function HomePage() {
                           : ''
                       }`}
                     >
-                      <Link
+                      <TransitionLink
                         href={getPostHref(post)}
                         className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 ${
                           !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
@@ -315,7 +315,7 @@ export default function HomePage() {
                             →
                           </span>
                         </div>
-                      </Link>
+                      </TransitionLink>
                     </li>
                   )
                 })}
@@ -327,12 +327,12 @@ export default function HomePage() {
         )}
 
         <div className="mt-7 flex justify-end">
-          <Link
+          <TransitionLink
             href="/blog"
             className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
           >
             查看全部归档 →
-          </Link>
+          </TransitionLink>
         </div>
       </section>
 
@@ -343,7 +343,7 @@ export default function HomePage() {
         className="mt-24 grid gap-7 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-8 sm:mt-28 sm:grid-cols-3 sm:gap-0"
       >
         {siteContent.sections.map((section, idx) => (
-          <Link
+          <TransitionLink
             key={section.path}
             href={section.path}
             className="group block py-2 sm:px-8 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] sm:first:pl-0 sm:last:pr-0 hover:opacity-100"
@@ -366,7 +366,7 @@ export default function HomePage() {
             <span className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--link-accent)] transition-transform duration-200 group-hover:translate-x-1">
               进入 →
             </span>
-          </Link>
+          </TransitionLink>
         ))}
       </nav>
     </div>

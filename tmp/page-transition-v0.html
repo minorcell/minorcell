@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>杂志风格页面过渡 · v0</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #121215;
+      color: #e8e6e3;
+      font-family: "Helvetica Neue", "SF Pro Display", -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+    #root { width: 100%; max-width: 960px; }
+
+    /* ===== Demo header ===== */
+    .demo-header {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .demo-header h1 {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #f0ede8;
+    }
+    .demo-header h1 em { font-style: normal; color: #b9483d; }
+    .demo-header .tagline {
+      font-size: 13px;
+      color: #6b6b70;
+      margin-top: 4px;
+    }
+    .demo-header .info {
+      text-align: right;
+      font-size: 13px;
+      color: #6b6b70;
+    }
+    .demo-header .info strong { color: #b9483d; font-weight: 500; }
+
+    /* ===== Mock Browser ===== */
+    .mock-browser {
+      background: #fafaf8;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06) inset;
+      position: relative;
+    }
+
+    /* ===== Magazine Navbar ===== */
+    .mag-nav {
+      display: flex;
+      align-items: center;
+      height: 60px;
+      padding: 0 32px;
+      border-bottom: 1px solid #eeece8;
+      gap: 28px;
+      flex-shrink: 0;
+      background: #fff;
+    }
+    .mag-nav .logo {
+      font-weight: 800;
+      font-size: 18px;
+      color: #1c1c1e;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      margin-right: 12px;
+    }
+    .mag-nav .logo em { font-style: normal; color: #b9483d; }
+    .mag-nav a {
+      font-size: 12px;
+      color: #8e8e93;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: default;
+      position: relative;
+      padding: 4px 0;
+      transition: color 200ms cubic-bezier(0.33, 0, 0, 1);
+    }
+    .mag-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 2px;
+      background: #1c1c1e;
+      transform: scaleX(0);
+      transition: transform 200ms cubic-bezier(0.33, 0, 0, 1);
+    }
+    .mag-nav a.active { color: #1c1c1e; }
+    .mag-nav a.active::after { transform: scaleX(1); }
+    .mag-nav .spacer { flex: 1; }
+    .mag-nav .issue-badge {
+      font-size: 10px;
+      color: #aeaeb2;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 4px 10px;
+      border: 1px solid #eeece8;
+      border-radius: 20px;
+    }
+
+    /* ===== Magazine Main Content ===== */
+    .mag-main {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* ----- Home Page (magazine cover / feature) ----- */
+    .mag-home { padding: 0; }
+    .mag-hero {
+      position: relative;
+      padding: 48px 44px 40px;
+      background: #f5f3ef;
+    }
+    .mag-hero .label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #b9483d;
+      margin-bottom: 12px;
+    }
+    .mag-hero h2 {
+      font-size: clamp(28px, 3.6vw, 36px);
+      font-weight: 700;
+      color: #1c1c1e;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      max-width: 600px;
+      margin-bottom: 12px;
+    }
+    .mag-hero .meta {
+      font-size: 13px;
+      color: #8e8e93;
+      margin-bottom: 16px;
+    }
+    .mag-hero .hero-img {
+      width: 100%;
+      height: 180px;
+      background: #e5e3dd;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aeaeb2;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 20px;
+    }
+    .mag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+    }
+    .mag-grid-item {
+      padding: 28px 44px;
+      border-right: 1px solid #f0eee8;
+      border-bottom: 1px solid #f0eee8;
+    }
+    .mag-grid-item:nth-child(2n) { border-right: none; }
+    .mag-grid-item .cat {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #b9483d;
+      margin-bottom: 6px;
+    }
+    .mag-grid-item h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1c1c1e;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+    .mag-grid-item p {
+      font-size: 13px;
+      color: #8e8e93;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    /* ----- Articles Page (magazine layout) ----- */
+    .mag-articles { padding: 40px 44px; }
+    .mag-articles .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #aeaeb2;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .mag-feature-card {
+      display: flex;
+      gap: 28px;
+      padding-bottom: 28px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #f0eee8;
+    }
+    .mag-feature-card .img-placeholder {
+      width: 200px;
+      min-height: 140px;
+      flex-shrink: 0;
+      background: #e5e3dd;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aeaeb2;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .mag-feature-card .text { flex: 1; }
+    .mag-feature-card .cat {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #b9483d;
+      margin-bottom: 6px;
+    }
+    .mag-feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1c1c1e;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .mag-feature-card p {
+      font-size: 14px;
+      color: #6b6b70;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+    .mag-feature-card .readtime {
+      font-size: 12px;
+      color: #aeaeb2;
+      margin-top: 10px;
+    }
+
+    .mag-article-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mag-article-row .row-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0eee8;
+    }
+    .mag-article-row .row-item:last-child { border-bottom: none; }
+    .mag-article-row .row-item .left h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1c1c1e;
+      margin-bottom: 2px;
+    }
+    .mag-article-row .row-item .left span {
+      font-size: 12px;
+      color: #aeaeb2;
+    }
+    .mag-article-row .row-item .right {
+      font-size: 12px;
+      color: #aeaeb2;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    /* ===== Loading Screen ===== */
+    .loading-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .loading-screen .ls-logo {
+      font-weight: 800;
+      font-size: 32px;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    .loading-screen .ls-logo em { font-style: normal; color: currentColor; }
+    .loading-screen .ls-sub {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      font-weight: 500;
+    }
+    .loading-screen .ls-progress {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .loading-screen .ls-progress .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.2;
+      animation: ls-pulse 1.2s ease-in-out infinite;
+    }
+    .loading-screen .ls-progress .dot:nth-child(2) { animation-delay: 0.2s; }
+    .loading-screen .ls-progress .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes ls-pulse {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+
+    /* ===== Transition Stage ===== */
+    .transition-stage {
+      position: relative;
+      min-height: 520px;
+    }
+    .transition-stage .page-layer {
+      position: absolute;
+      inset: 0;
+    }
+    .transition-stage .page-layer.base {
+      position: relative;
+      z-index: 1;
+    }
+    .transition-stage .page-layer.overlay {
+      z-index: 50;
+    }
+
+    /* ===== Footer ===== */
+    .mag-footer {
+      padding: 16px 32px;
+      border-top: 1px solid #eeece8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #aeaeb2;
+      flex-shrink: 0;
+      background: #fff;
+    }
+
+    /* ===== Controls ===== */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      border-top: 1px solid #eeece8;
+      background: #f6f5f2;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 22px;
+      border: none;
+      border-radius: 8px;
+      background: #b9483d;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+    .btn-primary:hover { background: #a63d32; }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:disabled {
+      background: #d9d6d0;
+      color: #aeaeb2;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border: 1px solid #e5e5e0;
+      border-radius: 8px;
+      background: transparent;
+      color: #6b6b70;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+    .btn-secondary:hover { background: #efede8; }
+    .btn-secondary.active {
+      background: #b9483d;
+      border-color: #b9483d;
+      color: #fff;
+    }
+    .controls-bar .spacer { flex: 1; }
+
+    /* variant badge */
+    .variant-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      background: #efede8;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #6b6b70;
+      font-weight: 500;
+    }
+    .variant-badge .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #b9483d;
+      flex-shrink: 0;
+    }
+    .variant-badge .tag {
+      padding: 1px 6px;
+      background: #e5e5e0;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #8e8e93;
+    }
+
+    /* demo indicator */
+    .demo-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #8e8e93;
+    }
+    .demo-indicator .pulse {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #b9483d;
+      animation: pulse-dot 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* ===== Tweaks Panel ===== */
+    .tweaks-toggle {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      color: #6b6b70;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 200ms ease, transform 200ms ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .tweaks-toggle:hover { background: rgba(255,255,255,0.14); transform: scale(1.05); }
+    .tweaks-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .tweaks-panel {
+      position: fixed;
+      bottom: 84px;
+      right: 28px;
+      width: 280px;
+      background: rgba(28, 28, 30, 0.96);
+      backdrop-filter: blur(16px);
+      border-radius: 14px;
+      padding: 20px;
+      color: #f0ede8;
+      font-size: 13px;
+      z-index: 9999;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
+      transform-origin: bottom right;
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+    .tweaks-panel.closed {
+      opacity: 0;
+      transform: scale(0.92) translateY(8px);
+      pointer-events: none;
+    }
+    .tweaks-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .tweaks-panel .field { margin-bottom: 14px; }
+    .tweaks-panel .field:last-child { margin-bottom: 0; }
+    .tweaks-panel label {
+      display: block;
+      font-size: 12px;
+      color: #aeaeb2;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .tweaks-panel select {
+      width: 100%;
+      padding: 7px 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      color: #f0ede8;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .tweaks-panel select:focus { border-color: #b9483d; }
+    .tweaks-panel select option { background: #1c1c1e; color: #f0ede8; }
+    .tweaks-panel input[type="range"] {
+      width: 100%;
+      height: 4px;
+      appearance: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    .tweaks-panel input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #b9483d;
+      cursor: pointer;
+      border: 2px solid rgba(28,28,30,0.96);
+    }
+    .tweaks-panel .range-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #aeaeb2;
+      margin-bottom: 4px;
+    }
+    .tweaks-panel .variant-desc {
+      font-size: 12px;
+      color: #6b6b70;
+      margin-top: 5px;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    /* ===== Phase indicator ===== */
+    .phase-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #aeaeb2;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .phase-indicator .step {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .phase-indicator .step .s-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #d9d6d0;
+      transition: background 200ms;
+    }
+    .phase-indicator .step.active .s-dot { background: #b9483d; }
+    .phase-indicator .step.active { color: #6b6b70; }
+    .phase-indicator .step.done .s-dot { background: #b9483d; opacity: 0.4; }
+    .phase-indicator .step.done { color: #aeaeb2; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+      .mag-nav { padding: 0 16px; gap: 14px; font-size: 11px; }
+      .mag-nav .issue-badge { display: none; }
+      .mag-hero { padding: 32px 20px 28px; }
+      .mag-grid { grid-template-columns: 1fr; }
+      .mag-grid-item { padding: 20px; border-right: none; }
+      .mag-articles { padding: 24px 20px; }
+      .mag-feature-card { flex-direction: column; gap: 16px; }
+      .mag-feature-card .img-placeholder { width: 100%; min-height: 100px; }
+      .controls-bar { flex-wrap: wrap; padding: 12px 16px; }
+      .tweaks-panel { right: 16px; bottom: 76px; width: calc(100% - 32px); max-width: 300px; }
+      .tweaks-toggle { right: 16px; bottom: 20px; }
+      .demo-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .demo-header .info { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    /* ============================================================
+     *  Easing
+     * ============================================================ */
+    const EASE = 'cubic-bezier(0.33, 0, 0, 1)';
+
+    /* ============================================================
+     *  Variant Definitions (magazine-style)
+     *  Each variant defines exit → loading → enter timing + styles.
+     * ============================================================ */
+    const VARIANTS = [
+      {
+        /* --- 卷帘 (Curtain) --- */
+        id: 'curtain',
+        label: '卷帘',
+        desc: '暖色幕布从上至下滑落，遮盖后展示杂志品牌加载页，再升起呈现新内容。戏剧感最强。',
+        loadingBg: '#b9483d',
+        loadingColor: '#fff',
+        // exit: current page slides down
+        exitDur: 240,
+        exitEnd: { opacity: 0.6, transform: 'translateY(-20px)' },
+        // loading in/out
+        loadInDur: 280,
+        loadHoldDur: 280,
+        loadOutDur: 260,
+        // enter: loading curtain lifts, new page slides up
+        enterDur: 300,
+      },
+      {
+        /* --- 光圈 (Iris) --- */
+        id: 'iris',
+        label: '光圈',
+        desc: '内容向心收缩淡出，启动圆形光圈遮罩展示加载页，再环形扩散展开新内容。电影感。',
+        loadingBg: '#1c1c1e',
+        loadingColor: '#f0ede8',
+        exitDur: 260,
+        exitEnd: { opacity: 0, transform: 'scale(0.94)' },
+        loadInDur: 260,
+        loadHoldDur: 280,
+        loadOutDur: 280,
+        enterDur: 320,
+      },
+      {
+        /* --- 色彩通道 (Color Wash) --- */
+        id: 'colorWash',
+        label: '色彩通道',
+        desc: '内容褪色为黑白，然后被品牌色冲洗覆盖，停留加载页后再洗出新页面。杂志式视觉节奏。',
+        loadingBg: '#b9483d',
+        loadingColor: '#fff',
+        exitDur: 200,
+        exitEnd: { opacity: 0, transform: 'none' },
+        loadInDur: 220,
+        loadHoldDur: 240,
+        loadOutDur: 240,
+        enterDur: 280,
+      },
+    ];
+
+    /* ============================================================
+     *  Loading Screen
+     * ============================================================ */
+    function LoadingScreen({ variant }) {
+      return (
+        <div className="loading-screen" style={{ background: variant.loadingBg, color: variant.loadingColor }}>
+          <div className="ls-logo"><em>✦</em> CELLSTACK</div>
+          <div className="ls-sub">Issue 2026 · Loading</div>
+          <div className="ls-progress">
+            <div className="dot" />
+            <div className="dot" />
+            <div className="dot" />
+          </div>
+        </div>
+      );
+    }
+
+    /* ============================================================
+     *  Mock Pages (magazine style)
+     * ============================================================ */
+    function PageHome() {
+      const items = [
+        { cat: 'Design', title: '交互设计的 27 种微观形态', desc: '从按钮反馈到拖拽排序，全面拆解前端交互模式。' },
+        { cat: 'Engineering', title: '构建自己的 CLI 代理框架', desc: '理解工具调用与循环核心，动手实现可运行的原型。' },
+        { cat: 'Performance', title: 'Next.js 静态导出深度优化', desc: '从构建到部署，精调每一个环节。' },
+        { cat: 'Visual', title: 'CSS 驱动动画的边界探索', desc: 'scroll-driven animations 与 view transitions 实践。' },
+      ];
+      return (
+        <div className="mag-home">
+          <div className="mag-hero">
+            <div className="label">Featured Story</div>
+            <h2>前端交互词典：从入门到精通</h2>
+            <div className="meta">27 个交互模式 · 2026 春季特辑</div>
+            <div className="hero-img">[ Cover Image ]</div>
+          </div>
+          <div className="mag-grid">
+            {items.map((item, i) => (
+              <div className="mag-grid-item" key={i}>
+                <div className="cat">{item.cat}</div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function PageArticles() {
+      const rows = [
+        { title: '事件循环机制的可视化理解', cat: 'JavaScript', time: '8 min' },
+        { title: 'shadcn/ui 组件库深度剖析', cat: 'React', time: '12 min' },
+        { title: 'CSS Container Queries 实战', cat: 'CSS', time: '6 min' },
+        { title: '构建可扩展的设计令牌系统', cat: 'Design Systems', time: '10 min' },
+      ];
+      return (
+        <div className="mag-articles">
+          <div className="section-title">Latest Issue</div>
+          <div className="mag-feature-card">
+            <div className="img-placeholder">[ 16:9 ]</div>
+            <div className="text">
+              <div className="cat">Feature</div>
+              <h3>重新思考前端构建工具链</h3>
+              <p>从 Vite 到 Turbopack，从 esbuild 到 Rolldown——工具链的演化从未停止。本文梳理了 2025–2026 年前端构建工具的格局变化，以及我们应该如何做出技术选型。</p>
+              <div className="readtime">预计阅读 · 15 min</div>
+            </div>
+          </div>
+          <div className="section-title" style={{ marginTop: 8 }}>More Articles</div>
+          <div className="mag-article-row">
+            {rows.map((r, i) => (
+              <div className="row-item" key={i}>
+                <div className="left">
+                  <h4>{r.title}</h4>
+                  <span>{r.cat}</span>
+                </div>
+                <div className="right">{r.time}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ============================================================
+     *  Magazine Transition Hook
+     *  Three-phase: exit → loading → enter
+     * ============================================================ */
+    function useMagTransition({ variant }) {
+      const [currentPage, setCurrentPage] = useState('home');
+      const [exitPage, setExitPage] = useState(null);
+      const [enterPage, setEnterPage] = useState(null);
+      const [phase, setPhase] = useState('idle');
+      // 'idle' | 'exit-start' | 'exit-end' | 'load-start' | 'load-hold' | 'enter-start' | 'enter-end'
+      const [subPhase, setSubPhase] = useState(null);
+
+      const navigate = useCallback(() => {
+        if (phase !== 'idle') return;
+        const next = currentPage === 'home' ? 'articles' : 'home';
+        setExitPage(currentPage);
+        setEnterPage(next);
+        setPhase('exit-start');
+      }, [currentPage, phase]);
+
+      // Phase progression
+      useEffect(() => {
+        if (phase === 'exit-start') {
+          const t = setTimeout(() => setPhase('exit-end'), 30);
+          return () => clearTimeout(t);
+        }
+        if (phase === 'exit-end') {
+          const t = setTimeout(() => setPhase('load-start'), variant.exitDur);
+          return () => clearTimeout(t);
+        }
+        if (phase === 'load-start') {
+          const t = setTimeout(() => setPhase('load-hold'), variant.loadInDur + 30);
+          return () => clearTimeout(t);
+        }
+        if (phase === 'load-hold') {
+          const t = setTimeout(() => setPhase('enter-start'), variant.loadHoldDur);
+          return () => clearTimeout(t);
+        }
+        if (phase === 'enter-start') {
+          const t = setTimeout(() => setPhase('enter-end'), 30);
+          return () => clearTimeout(t);
+        }
+        if (phase === 'enter-end') {
+          const t = setTimeout(() => {
+            setCurrentPage(enterPage);
+            setExitPage(null);
+            setEnterPage(null);
+            setPhase('idle');
+          }, variant.enterDur);
+          return () => clearTimeout(t);
+        }
+      }, [phase, variant]);
+
+      return { currentPage, exitPage, enterPage, phase, navigate };
+    }
+
+    /* ============================================================
+     *  Transition Stage
+     * ============================================================ */
+    function TransitionStage({ transition, variant }) {
+      const { currentPage, exitPage, enterPage, phase } = transition;
+
+      const isExiting = phase === 'exit-start' || phase === 'exit-end';
+      const isLoading = phase === 'load-start' || phase === 'load-hold';
+      const isEntering = phase === 'enter-start' || phase === 'enter-end';
+      const transitioning = isExiting || isLoading || isEntering;
+      const basePage = enterPage || currentPage;
+
+      // Compute styles per phase
+      const exitStyle = {};
+      const enterStyle = {};
+      const loadStyle = {};
+
+      // --- exit phase ---
+      if (phase === 'exit-start') {
+        exitStyle.opacity = 1;
+        exitStyle.transform = 'none';
+        exitStyle.transition = 'none';
+      } else if (phase === 'exit-end') {
+        exitStyle.opacity = variant.exitEnd.opacity;
+        exitStyle.transform = variant.exitEnd.transform;
+        exitStyle.transition = `all ${variant.exitDur}ms ${EASE}`;
+      }
+
+      // --- loading phase ---
+      if (phase === 'load-start') {
+        loadStyle.opacity = 0;
+        loadStyle.transition = 'none';
+      } else if (phase === 'load-hold' || phase === 'enter-start') {
+        loadStyle.opacity = 1;
+        loadStyle.transition = `opacity ${variant.loadInDur}ms ${EASE}`;
+      } else if (phase === 'enter-end') {
+        loadStyle.opacity = 0;
+        loadStyle.transition = `opacity ${variant.loadOutDur}ms ${EASE}`;
+      }
+
+      // --- enter phase ---
+      if (phase === 'enter-start') {
+        enterStyle.opacity = variant.enterFrom?.opacity ?? 0;
+        enterStyle.transform = variant.enterFrom?.transform ?? 'translateY(12px)';
+        enterStyle.transition = 'none';
+      } else if (phase === 'enter-end') {
+        enterStyle.opacity = 1;
+        enterStyle.transform = 'none';
+        enterStyle.transition = `all ${variant.enterDur}ms ${EASE}`;
+      }
+
+      // Variant-specific loading-visual logic
+      // Curtain: use translateY
+      // Iris: use clip-path circle
+      // ColorWash: just opacity
+      if (variant.id === 'curtain' && (isLoading || isEntering)) {
+        if (phase === 'load-start') {
+          loadStyle.transform = 'translateY(-100%)';
+          loadStyle.transition = 'none';
+        } else if (phase === 'load-hold') {
+          loadStyle.transform = 'translateY(0)';
+          loadStyle.transition = `transform ${variant.loadInDur}ms ${EASE}`;
+        } else if (phase === 'enter-start') {
+          loadStyle.transform = 'translateY(0)';
+          loadStyle.transition = 'none';
+        } else if (phase === 'enter-end') {
+          loadStyle.transform = 'translateY(-100%)';
+          loadStyle.transition = `transform ${variant.loadOutDur}ms ${EASE}`;
+        }
+      }
+
+      if (variant.id === 'iris' && (isLoading || isEntering)) {
+        const c = 'circle(0% at 50% 50%)';
+        const cFull = 'circle(100% at 50% 50%)';
+        if (phase === 'load-start') {
+          loadStyle.clipPath = c;
+          loadStyle.transition = 'none';
+        } else if (phase === 'load-hold') {
+          loadStyle.clipPath = cFull;
+          loadStyle.transition = `clip-path ${variant.loadInDur}ms ${EASE}`;
+        } else if (phase === 'enter-start') {
+          loadStyle.clipPath = cFull;
+          loadStyle.transition = 'none';
+        } else if (phase === 'enter-end') {
+          loadStyle.clipPath = c;
+          loadStyle.transition = `clip-path ${variant.loadOutDur}ms ${EASE}`;
+        }
+      }
+
+      if (variant.id === 'colorWash') {
+        // For color wash, during exit phase we'll add a grayscale filter
+        if (phase === 'exit-end') {
+          exitStyle.filter = 'grayscale(1) brightness(1.2)';
+          exitStyle.transition = `all ${variant.exitDur}ms ${EASE}`;
+        }
+        if (phase === 'load-start') {
+          loadStyle.opacity = 0;
+          loadStyle.transform = 'none';
+          loadStyle.transition = 'none';
+        } else if (phase === 'load-hold' || phase === 'enter-start') {
+          loadStyle.opacity = 1;
+          loadStyle.transition = `opacity ${variant.loadInDur}ms ${EASE}`;
+        } else if (phase === 'enter-end') {
+          loadStyle.opacity = 0;
+          loadStyle.transition = `opacity ${variant.loadOutDur}ms ${EASE}`;
+        }
+        // enter from desaturated
+        if (phase === 'enter-start') {
+          enterStyle.filter = 'grayscale(1) brightness(1.2)';
+          enterStyle.opacity = 0;
+          enterStyle.transition = 'none';
+        } else if (phase === 'enter-end') {
+          enterStyle.filter = 'grayscale(0) brightness(1)';
+          enterStyle.opacity = 1;
+          enterStyle.transition = `all ${variant.enterDur}ms ${EASE}`;
+        }
+      }
+
+      // Override enter from for curtain variant
+      if (variant.id === 'curtain') {
+        if (phase === 'enter-start') {
+          enterStyle.opacity = 0.6;
+          enterStyle.transform = 'translateY(16px)';
+          enterStyle.transition = 'none';
+        } else if (phase === 'enter-end') {
+          enterStyle.opacity = 1;
+          enterStyle.transform = 'translateY(0)';
+          enterStyle.transition = `all ${variant.enterDur}ms ${EASE}`;
+        }
+      }
+
+      if (variant.id === 'iris') {
+        if (phase === 'enter-start') {
+          enterStyle.opacity = 0;
+          enterStyle.transform = 'scale(1.04)';
+          enterStyle.transition = 'none';
+        } else if (phase === 'enter-end') {
+          enterStyle.opacity = 1;
+          enterStyle.transform = 'scale(1)';
+          enterStyle.transition = `all ${variant.enterDur}ms ${EASE}`;
+        }
+      }
+
+      return (
+        <div className="transition-stage">
+          {/* Base layer: either current or entering page */}
+          <div className="page-layer base" style={phase === 'idle' ? {} : transitioning ? ( (phase === 'enter-start' || phase === 'enter-end') ? enterStyle : {} ) : {}}>
+            <PageContent page={basePage} />
+          </div>
+
+          {/* Exit page overlay (during exit phase) */}
+          {exitPage && isExiting && (
+            <div className="page-layer overlay" style={exitStyle}>
+              <PageContent page={exitPage} />
+            </div>
+          )}
+
+          {/* Loading overlay */}
+          {(isLoading || isEntering) && (
+            <div className="page-layer overlay" style={loadStyle}>
+              <LoadingScreen variant={variant} />
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function PageContent({ page }) {
+      return page === 'home' ? <PageHome /> : <PageArticles />;
+    }
+
+    /* ============================================================
+     *  Tweaks
+     * ============================================================ */
+    function TweaksIcon() {
+      return (
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="1.5" />
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      );
+    }
+
+    function TweaksPanel({ variantIndex, setVariantIndex, speed, setSpeed, autoDemo, setAutoDemo, open, onToggle }) {
+      const variant = VARIANTS[variantIndex];
+      const totalMs = variant.exitDur + variant.loadInDur + variant.loadHoldDur + variant.loadOutDur + variant.enterDur;
+      return (
+        <>
+          <button className="tweaks-toggle" onClick={onToggle}><TweaksIcon /></button>
+          <div className={`tweaks-panel ${open ? '' : 'closed'}`}>
+            <h3>Tweaks</h3>
+            <div className="field">
+              <label>过渡方案</label>
+              <select value={variantIndex} onChange={e => setVariantIndex(Number(e.target.value))}>
+                {VARIANTS.map((v, i) => (
+                  <option key={v.id} value={i}>{v.label}</option>
+                ))}
+              </select>
+              <div className="variant-desc">{variant.desc}</div>
+              <div className="variant-desc" style={{ marginTop: 6, color: '#8e8e93' }}>
+                总时长 ≈ {totalMs}ms · 其中加载页停留 {variant.loadHoldDur}ms
+              </div>
+            </div>
+            <div className="field">
+              <div className="range-header">
+                <label>全局速度</label>
+                <span>{speed}%</span>
+              </div>
+              <input type="range" min="50" max="200" step="10" value={speed} onChange={e => setSpeed(Number(e.target.value))} />
+            </div>
+            <div className="field">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <label style={{ margin: 0, cursor: 'pointer', userSelect: 'none' }}>自动循环</label>
+                <button className={`btn-secondary ${autoDemo ? 'active' : ''}`}
+                  style={{ padding: '4px 14px', fontSize: 12 }}
+                  onClick={() => setAutoDemo(!autoDemo)}
+                >{autoDemo ? '运行中' : '关闭'}</button>
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    /* ============================================================
+     *  Phase indicator
+     * ============================================================ */
+    function PhaseSteps({ phase }) {
+      // Map phase to step index: idle=0, exit=1, loading=2, enter=3
+      const steps = [
+        { id: 'idle', label: '浏览' },
+        { id: 'exit', label: '离场' },
+        { id: 'loading', label: '加载' },
+        { id: 'enter', label: '入场' },
+      ];
+      let active = 0;
+      if (phase === 'exit-start' || phase === 'exit-end') active = 1;
+      else if (phase === 'load-start' || phase === 'load-hold') active = 2;
+      else if (phase === 'enter-start' || phase === 'enter-end') active = 3;
+      return (
+        <div className="phase-indicator">
+          {steps.map((s, i) => (
+            <div key={s.id} className={`step ${i < active ? 'done' : ''} ${i === active ? 'active' : ''}`}>
+              <div className="s-dot" />
+              {s.label}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* ============================================================
+     *  App
+     * ============================================================ */
+    function App() {
+      const [variantIndex, setVariantIndex] = useState(0);
+      const [speed, setSpeed] = useState(100);
+      const [autoDemo, setAutoDemo] = useState(false);
+      const [tweaksOpen, setTweaksOpen] = useState(false);
+      const autoTimerRef = useRef(null);
+
+      // Build variant with scaling
+      const rawVariant = VARIANTS[variantIndex];
+      const speedScale = speed / 100;
+      const variant = {
+        ...rawVariant,
+        exitDur: Math.round(rawVariant.exitDur * speedScale),
+        loadInDur: Math.round(rawVariant.loadInDur * speedScale),
+        loadHoldDur: Math.round(rawVariant.loadHoldDur * speedScale),
+        loadOutDur: Math.round(rawVariant.loadOutDur * speedScale),
+        enterDur: Math.round(rawVariant.enterDur * speedScale),
+      };
+
+      const transition = useMagTransition({ variant });
+
+      // Auto demo
+      useEffect(() => {
+        if (!autoDemo) {
+          if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+          return;
+        }
+        if (transition.phase !== 'idle') return;
+        const t = setTimeout(() => {
+          transition.navigate();
+          const nextVariant = (variantIndex + 1) % VARIANTS.length;
+          setVariantIndex(nextVariant);
+        }, 1800);
+        autoTimerRef.current = t;
+        return () => clearTimeout(t);
+      }, [autoDemo, variantIndex, transition.phase, transition.navigate]);
+
+      const totalMs = variant.exitDur + variant.loadInDur + variant.loadHoldDur + variant.loadOutDur + variant.enterDur;
+
+      return (
+        <div>
+          <header className="demo-header">
+            <div>
+              <h1>杂志风格 · <em>页面过渡</em></h1>
+              <p className="tagline">离场 → 加载中间页 → 入场，三段式过渡体验</p>
+            </div>
+            <div className="info">
+              {VARIANTS.length} 种方案 · <strong>{VARIANTS[variantIndex].label}</strong> · ≈{totalMs}ms
+            </div>
+          </header>
+
+          <div className="mock-browser">
+            <nav className="mag-nav">
+              <div className="logo"><em>✦</em> cellstack</div>
+              <a className={transition.currentPage === 'home' ? 'active' : ''}>首页</a>
+              <a className={transition.currentPage === 'articles' ? 'active' : ''}>文章</a>
+              <a>专题</a>
+              <div className="spacer" />
+              <span className="issue-badge">Vol. 2026</span>
+            </nav>
+
+            <div className="mag-main">
+              <TransitionStage transition={transition} variant={variant} />
+            </div>
+
+            <div className="controls-bar">
+              <button
+                className="btn-primary"
+                onClick={transition.navigate}
+                disabled={transition.phase !== 'idle'}
+              >
+                {transition.phase !== 'idle' ? '过渡中…' : '切换页面'}
+              </button>
+
+              <button
+                className={`btn-secondary ${autoDemo ? 'active' : ''}`}
+                onClick={() => setAutoDemo(!autoDemo)}
+              >
+                {autoDemo ? '停止演示' : '自动演示'}
+              </button>
+
+              {autoDemo && (
+                <div className="demo-indicator"><div className="pulse" />循环中</div>
+              )}
+
+              <div className="spacer" />
+
+              <PhaseSteps phase={transition.phase} />
+
+              <div className="variant-badge" style={{ marginLeft: 12 }}>
+                <div className="dot" />
+                {variant.label}
+                <span className="tag">{speed}%</span>
+              </div>
+            </div>
+
+            <div className="mag-footer">
+              <span>© 2026 cellstack · Magazine Demo</span>
+            </div>
+          </div>
+
+          <TweaksPanel
+            variantIndex={variantIndex}
+            setVariantIndex={setVariantIndex}
+            speed={speed}
+            setSpeed={setSpeed}
+            autoDemo={autoDemo}
+            setAutoDemo={setAutoDemo}
+            open={tweaksOpen}
+            onToggle={() => setTweaksOpen(!tweaksOpen)}
+          />
+        </div>
+      );
+    }
+
+    /* ============================================================
+     *  Mount
+     * ============================================================ */
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

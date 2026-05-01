@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { getPostBySlug, getPostSlugs, getTopicSlug } from '@/lib/mdx'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { GiscusComments } from '@/components/common/GiscusComments'
@@ -311,18 +311,18 @@ function TopicStubView({ post, topicSlug }: TopicStubViewProps) {
             这篇内容以「交互式专题」的形态呈现：左侧代码、右侧文档，滚动同步。我们已自动把你转到对应专题；如果没有自动跳转，请点击下方按钮。
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link
+            <TransitionLink
               href={topicHref}
               className="inline-flex items-center gap-2 border border-[color:var(--link-accent)] px-4 py-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--link-accent)] transition-colors duration-200 hover:bg-[color:var(--link-accent)] hover:text-background"
             >
               前往专题 →
-            </Link>
-            <Link
+            </TransitionLink>
+            <TransitionLink
               href="/blog"
               className="inline-flex items-center gap-2 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)]"
             >
               返回归档
-            </Link>
+            </TransitionLink>
           </div>
         </div>
       </article>

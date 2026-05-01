@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -131,7 +131,7 @@ export default function BlogPage() {
 
           <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-stretch lg:gap-14">
             {/* Feature 头条 */}
-            <Link
+            <TransitionLink
               href={getPostHref(featuredPost)}
               className="row-link group flex h-full flex-col px-3 py-2 hover:opacity-100 sm:px-4 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
             >
@@ -169,7 +169,7 @@ export default function BlogPage() {
                 <span aria-hidden>§</span>
                 阅读主文 →
               </span>
-            </Link>
+            </TransitionLink>
 
             {/* Secondary 堆叠列 */}
             {secondaryPosts.length > 0 && (
@@ -182,7 +182,7 @@ export default function BlogPage() {
                     key={post.slug}
                     className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
                   >
-                    <Link
+                    <TransitionLink
                       href={getPostHref(post)}
                       className="row-link group block px-3 py-5 hover:opacity-100 sm:px-4 sm:py-6"
                     >
@@ -228,7 +228,7 @@ export default function BlogPage() {
                           {post.metadata.description}
                         </p>
                       )}
-                    </Link>
+                    </TransitionLink>
                   </li>
                 ))}
               </ol>
@@ -274,7 +274,7 @@ export default function BlogPage() {
                   key={post.slug}
                   className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
                 >
-                  <Link
+                  <TransitionLink
                     href={getPostHref(post)}
                     className="row-link group grid items-baseline gap-5 px-3 py-4 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-5"
                     style={{ gridTemplateColumns: '56px 1fr auto' }}
@@ -317,7 +317,7 @@ export default function BlogPage() {
                         →
                       </span>
                     </div>
-                  </Link>
+                  </TransitionLink>
                 </li>
               ))}
             </ol>

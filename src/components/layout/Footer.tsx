@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
 
 export function Footer() {
@@ -14,30 +14,30 @@ export function Footer() {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <Link
+            <TransitionLink
               href="/blog"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
               文章
-            </Link>
-            <Link
+            </TransitionLink>
+            <TransitionLink
               href="/projects"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
               项目
-            </Link>
-            <Link
+            </TransitionLink>
+            <TransitionLink
               href="/topics"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
               专题
-            </Link>
-            <Link
+            </TransitionLink>
+            <TransitionLink
               href="/feed.xml"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
               RSS
-            </Link>
+            </TransitionLink>
             <span aria-hidden className="text-foreground/30">
               ·
             </span>

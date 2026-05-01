@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>程序员健康管理指南</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green-dark: #1a3628;
+            --green-mid: #2e5c43;
+            --green-light: #e8f0eb;
+            --amber: #b8641e;
+            --amber-light: #f7efe4;
+            --red-light: #fdf0ee;
+            --red-text: #9b2a22;
+            --yellow-light: #fdf8ed;
+            --bg: #f4f1ec;
+            --surface: #ffffff;
+            --surface-2: #f9f7f3;
+            --border: #e3ddd4;
+            --text-primary: #1e1d1b;
+            --text-secondary: #5c5852;
+            --text-muted: #928e88;
+            --radius-xl: 2rem;
+            --radius-lg: 1.25rem;
+            --radius-md: 0.75rem;
+            --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            display: flex;
+            justify-content: center;
+            color: var(--text-primary);
+            line-height: 1.65;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: var(--green-dark);
+            color: #fff;
+            border-radius: var(--radius-xl);
+            padding: 2rem 2rem 1.75rem;
+        }
+
+        .header-label {
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #8bb89e;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+        }
+
+        .header h1 {
+            font-size: clamp(1.6rem, 4vw, 2.1rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+            text-wrap: pretty;
+        }
+
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .stat-chip {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 3rem;
+            padding: 0.45rem 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-chip strong {
+            color: #fff;
+        }
+
+        .stat-chip span {
+            color: #a8c5b5;
+        }
+
+        .badge-warn {
+            background: #f59b2b22;
+            border: 1px solid #f59b2b55;
+            color: #f9c05a;
+            border-radius: 3rem;
+            padding: 0.45rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .header-goal {
+            margin-top: 1.2rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.92rem;
+            color: #a8c5b5;
+            text-wrap: pretty;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+
+        .card-head {
+            background: var(--green-light);
+            padding: 1rem 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-head h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--green-dark);
+            letter-spacing: 0.02em;
+        }
+
+        .card-icon {
+            width: 2rem;
+            height: 2rem;
+            background: var(--green-dark);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon svg {
+            width: 1rem;
+            height: 1rem;
+            stroke: #8bb89e;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-body {
+            padding: 1.5rem 1.75rem;
+        }
+
+        /* ── Fish oil ── */
+        .dose-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .dose-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.1rem;
+        }
+
+        .dose-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.35rem;
+        }
+
+        .dose-value {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.65rem;
+            font-weight: 500;
+            color: var(--green-dark);
+            line-height: 1.1;
+        }
+
+        .dose-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .benefit-tag {
+            display: inline-block;
+            background: var(--amber-light);
+            color: var(--amber);
+            border-radius: 0.4rem;
+            padding: 0.15rem 0.55rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .benefit-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .benefit-list li {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.6rem;
+            align-items: baseline;
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+        }
+
+        .benefit-list li::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green-mid);
+            margin-top: 0.5rem;
+        }
+
+        .benefit-list strong {
+            color: var(--text-primary);
+        }
+
+        .tip-bar {
+            margin-top: 1.2rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.65rem 1rem;
+            font-size: 0.87rem;
+            color: var(--text-secondary);
+        }
+
+        /* ── Drink traffic light ── */
+        .traffic-section {
+            margin-bottom: 1.2rem;
+        }
+
+        .traffic-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-green {
+            background: #3a9e5c;
+        }
+
+        .dot-yellow {
+            background: #d4930a;
+        }
+
+        .dot-red {
+            background: #c0392b;
+        }
+
+        .traffic-label span {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .tea-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .tea-card {
+            background: var(--green-light);
+            border-radius: var(--radius-lg);
+            padding: 0.9rem 1rem;
+        }
+
+        .tea-name {
+            font-weight: 700;
+            font-size: 0.93rem;
+            color: var(--green-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .tea-desc {
+            font-size: 0.85rem;
+            color: #445c4a;
+            text-wrap: pretty;
+        }
+
+        .tea-note {
+            margin-top: 0.4rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--green-mid);
+        }
+
+        .caution-box {
+            background: var(--yellow-light);
+            border: 1px solid #e8d58a;
+            border-radius: var(--radius-lg);
+            padding: 0.9rem 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        .caution-box strong {
+            color: #7a5c00;
+        }
+
+        .caution-box p {
+            color: #6b5500;
+            margin-top: 0.3rem;
+            font-size: 0.87rem;
+        }
+
+        .avoid-box {
+            background: var(--red-light);
+            border: 1px solid #f0c4be;
+            border-radius: var(--radius-lg);
+            padding: 0.9rem 1.1rem;
+        }
+
+        .avoid-title {
+            font-weight: 700;
+            color: var(--red-text);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .avoid-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .avoid-tag {
+            background: rgba(155, 42, 34, 0.08);
+            color: var(--red-text);
+            border-radius: 0.4rem;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .avoid-note {
+            margin-top: 0.6rem;
+            font-size: 0.82rem;
+            color: #7a3830;
+        }
+
+        /* ── Weight alert ── */
+        .weight-alert {
+            background: var(--amber-light);
+            border: 1px solid #e8c49a;
+            border-radius: var(--radius-xl);
+            padding: 1.25rem 1.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.1rem;
+        }
+
+        .weight-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            background: var(--amber);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .weight-icon svg {
+            width: 1.3rem;
+            height: 1.3rem;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .weight-alert strong {
+            font-size: 1rem;
+            color: var(--amber);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .weight-alert p {
+            font-size: 0.9rem;
+            color: #6b4610;
+            text-wrap: pretty;
+        }
+
+        /* ── Action list ── */
+        .timeline {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 3.5rem 1fr;
+            gap: 0;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child) .tl-line {
+            position: absolute;
+            left: 1.5rem;
+            top: 2.75rem;
+            bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .tl-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 0.9rem;
+        }
+
+        .tl-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: var(--green-mid);
+            border: 2px solid var(--surface);
+            outline: 2px solid var(--green-mid);
+            flex-shrink: 0;
+        }
+
+        .tl-right {
+            padding: 0.75rem 0 1.1rem 0.25rem;
+        }
+
+        .tl-time {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--green-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.25rem;
+        }
+
+        .tl-text {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            text-wrap: pretty;
+        }
+
+        /* ── Safety ── */
+        .safety {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.4rem;
+        }
+
+        .safety-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.4rem;
+        }
+
+        .safety p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            text-wrap: pretty;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.75rem 2rem;
+            }
+
+            .card-body {
+                padding: 1.2rem 1.25rem;
+            }
+
+            .header {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .dose-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weight-alert {
+                padding: 1rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-label">个人健康管理指南 · 2026年5月</div>
+            <h1>程序员血压与<br>体重干预方案</h1>
+            <div class="stats-row">
+                <div class="stat-chip">
+                    <strong>175 cm / 80 kg</strong>
+                    <span>BMI 26.1 · 超重</span>
+                </div>
+                <div class="stat-chip">
+                    <strong>132/89</strong>
+                    <span>mmHg</span>
+                </div>
+                <div class="badge-warn">正常高值 · 临界风险</div>
+            </div>
+            <p class="header-goal">目标：通过饮食调整、鱼油补充与饮品替代，降低舒张压、减少内脏脂肪，逆转早期风险。</p>
+        </header>
+
+        <!-- 鱼油策略 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 12c0-3 4-8 10-8s4 8 0 8-10-2-10 0 4 8 10 8" />
+                        <circle cx="16" cy="10" r="1" fill="#8bb89e" />
+                    </svg>
+                </div>
+                <h2>鱼油补给策略</h2>
+            </div>
+            <div class="card-body">
+                <span class="benefit-tag">高 EPA 配方 · 靶向降压减脂</span>
+                <div class="dose-grid">
+                    <div class="dose-box">
+                        <div class="dose-label">每日摄入量</div>
+                        <div class="dose-value">1500–2000</div>
+                        <div class="dose-sub">mg EPA + DHA 总量</div>
+                    </div>
+                    <div class="dose-box">
+                        <div class="dose-label">EPA : DHA 比例</div>
+                        <div class="dose-value">≥ 3:2</div>
+                        <div class="dose-sub">优先选 EPA 单独配方</div>
+                    </div>
+                </div>
+                <ul class="benefit-list">
+                    <li><span><strong>降低舒张压</strong> — 改善血管弹性，对抗 89 mmHg 临界值</span></li>
+                    <li><span><strong>优先减少内脏脂肪</strong> — 超重人群腹部脂肪更敏感</span></li>
+                    <li><span><strong>降低甘油三酯</strong> — 改善血脂，保护心脑血管</span></li>
+                    <li><span><strong>轻微抗炎</strong> — 缓解久坐与外卖饮食带来的慢性炎症</span></li>
+                </ul>
+                <div class="tip-bar">随含油脂餐服用，吸收率更高 · 选择 IFOS 认证产品</div>
+            </div>
+        </div>
+
+        <!-- 饮品红绿灯 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17 8h1a4 4 0 0 1 0 8h-1" />
+                        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                        <line x1="6" y1="2" x2="6" y2="4" />
+                        <line x1="10" y1="2" x2="10" y2="4" />
+                        <line x1="14" y1="2" x2="14" y2="4" />
+                    </svg>
+                </div>
+                <h2>饮品红绿灯</h2>
+            </div>
+            <div class="card-body">
+                <div class="traffic-section">
+                    <div class="traffic-label">
+                        <div class="dot dot-green"></div>
+                        <span>强烈推荐 — 日常替代饮料</span>
+                    </div>
+                    <div class="tea-grid">
+                        <div class="tea-card">
+                            <div class="tea-name">无糖绿茶 / 普洱茶</div>
+                            <div class="tea-desc">儿茶素 EGCG 辅助降压、减内脏脂肪。提神不心慌，每天 2–3 杯。</div>
+                            <div class="tea-note">必须无糖 · 热泡淡饮</div>
+                        </div>
+                        <div class="tea-card">
+                            <div class="tea-name">路易波士茶</div>
+                            <div class="tea-desc">零咖啡因，不影响睡眠。晚间或睡前放松饮用，富含抗氧化物。</div>
+                        </div>
+                        <div class="tea-card">
+                            <div class="tea-name">玉米须茶</div>
+                            <div class="tea-desc">温和利尿，帮助排出多余钠离子。适合口味重、易水肿人群。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="traffic-section">
+                    <div class="traffic-label">
+                        <div class="dot dot-yellow"></div>
+                        <span>谨慎适量 — 黑咖啡</span>
+                    </div>
+                    <div class="caution-box">
+                        <strong>每日 ≤ 2 杯美式，无糖无奶</strong>
+                        <p>若饮后心跳加快需减量；高血压临界期务必观察个体反应。</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="traffic-label">
+                        <div class="dot dot-red"></div>
+                        <span>绝对避免</span>
+                    </div>
+                    <div class="avoid-box">
+                        <div class="avoid-title">以下均为隐形糖水，直接抵消降压效果</div>
+                        <div class="avoid-tags">
+                            <span class="avoid-tag">瓶装调味茶</span>
+                            <span class="avoid-tag">蜂蜜水</span>
+                            <span class="avoid-tag">奶茶 / 奶盖</span>
+                            <span class="avoid-tag">果汁饮料</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 减重提示 -->
+        <div class="weight-alert">
+            <div class="weight-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2a5 5 0 1 0 5 5" />
+                    <path d="M5 22v-1a7 7 0 0 1 14 0v1" />
+                    <line x1="12" y1="12" x2="12" y2="16" />
+                </svg>
+            </div>
+            <div>
+                <strong>优先减重 5–10 斤</strong>
+                <p>减重 3–5 kg，舒张压可能下降 2–5 mmHg。鱼油是加速器，但不能替代热量控制与日常活动。</p>
+            </div>
+        </div>
+
+        <!-- 每日行动清单 -->
+        <div class="card">
+            <div class="card-head">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 11l3 3 8-8" />
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                </div>
+                <h2>每日行动清单</h2>
+            </div>
+            <div class="card-body">
+                <ul class="timeline">
+                    <li class="timeline-item">
+                        <div class="tl-left">
+                            <div class="tl-dot"></div>
+                            <div class="tl-line"></div>
+                        </div>
+                        <div class="tl-right">
+                            <div class="tl-time">早晨</div>
+                            <div class="tl-text">空腹一杯温水，早餐随餐服用高 EPA 鱼油（按剂量）。</div>
+                        </div>
+                    </li>
+                    <li class="timeline-item">
+                        <div class="tl-left">
+                            <div class="tl-dot"></div>
+                            <div class="tl-line"></div>
+                        </div>
+                        <div class="tl-right">
+                            <div class="tl-time">工作期间</div>
+                            <div class="tl-text">手边放绿茶或玉米须茶，替代甜饮料。每小时起身活动 3 分钟。</div>
+                        </div>
+                    </li>
+                    <li class="timeline-item">
+                        <div class="tl-left">
+                            <div class="tl-dot"></div>
+                            <div class="tl-line"></div>
+                        </div>
+                        <div class="tl-right">
+                            <div class="tl-time">午餐 / 晚餐</div>
+                            <div class="tl-text">先吃蔬菜和蛋白质，主食最后吃；外卖涮水减少钠摄入。</div>
+                        </div>
+                    </li>
+                    <li class="timeline-item">
+                        <div class="tl-left">
+                            <div class="tl-dot"></div>
+                            <div class="tl-line"></div>
+                        </div>
+                        <div class="tl-right">
+                            <div class="tl-time">晚间</div>
+                            <div class="tl-text">19:00 后若需饮品只喝路易波士茶；23:00 前入睡，保证 7 小时睡眠。</div>
+                        </div>
+                    </li>
+                    <li class="timeline-item">
+                        <div class="tl-left">
+                            <div class="tl-dot"></div>
+                        </div>
+                        <div class="tl-right">
+                            <div class="tl-time">每周监测</div>
+                            <div class="tl-text">固定时间测血压、体重，记录趋势变化。</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 安全边界 -->
+        <div class="safety">
+            <div class="safety-title">安全边界</div>
+            <p>鱼油为膳食补充剂，不能替代降压药物。若血压持续 ≥ 140/90 mmHg，请及时就医。服用抗凝药物者需事先咨询医生。</p>
+        </div>
+
+        <div class="footer">
+            专为临界血压与减脂目标定制 · 坚持 4 周感受变化<br>
+            生成日期：2026年5月1日
+        </div>
+
+    </div>
+</body>
+
+</html>

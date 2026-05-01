@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { ArrowUpRight } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
 import { cn } from '@/lib/utils'
@@ -56,9 +56,9 @@ function ProjectLinkInline({
     )
   }
   return (
-    <Link href={href} className={className}>
+    <TransitionLink href={href} className={className}>
       {content}
-    </Link>
+    </TransitionLink>
   )
 }
 

@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { PaperGrain } from '@/components/effects/PaperGrain'
 import { CursorTracker } from '@/components/effects/CursorTracker'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
+import { PageTransitionProvider } from '@/components/effects/PageTransition'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
 import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
@@ -96,11 +97,13 @@ export default function RootLayout({
         <PaperGrain />
         <CursorTracker />
         <div className="relative z-10 flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1 relative" data-pagefind-body>
-            {children}
-          </main>
-          <Footer />
+          <PageTransitionProvider>
+            <Navbar />
+            <main className="flex-1 relative" data-pagefind-body>
+              {children}
+            </main>
+            <Footer />
+          </PageTransitionProvider>
         </div>
       </body>
     </html>

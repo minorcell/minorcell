@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { TransitionLink, usePageTransition } from '@/components/effects/PageTransition'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -102,6 +102,7 @@ function DateChip() {
 
 export function Navbar() {
   const pathname = usePathname()
+  const { startTransition } = usePageTransition()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -195,6 +196,10 @@ export function Navbar() {
       label: item.label,
       ariaLabel: `前往${item.label}`,
       link: item.href,
+      onClick: (event: React.MouseEvent) => {
+        event.preventDefault()
+        startTransition(item.href)
+      },
     })),
     {
       label: 'RSS',
@@ -230,7 +235,7 @@ export function Navbar() {
         <div className="flex min-w-0 items-center gap-4">
           <DateChip />
 
-          <Link
+          <TransitionLink
             href="/"
             aria-label={siteContent.name}
             className="group inline-flex items-baseline gap-2.5 opacity-100 hover:opacity-100"
@@ -262,7 +267,7 @@ export function Navbar() {
             >
               {isTopicDetail ? '· § TOPIC' : '· A FIELD JOURNAL'}
             </span>
-          </Link>
+          </TransitionLink>
         </div>
 
         {/* RIGHT — nav + search trigger + theme toggle */}
@@ -270,7 +275,7 @@ export function Navbar() {
           {navLinks.map((item) => {
             const active = isActive(item.href)
             return (
-              <Link
+              <TransitionLink
                 key={item.href}
                 href={item.href}
                 data-active={active || undefined}
@@ -281,7 +286,7 @@ export function Navbar() {
                 }`}
               >
                 {item.label}
-              </Link>
+              </TransitionLink>
             )
           })}
 
