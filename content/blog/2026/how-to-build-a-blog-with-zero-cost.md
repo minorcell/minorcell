@@ -7,7 +7,7 @@ order: 43
 
 ![](https://stack-mcell.tos-cn-shanghai.volces.com/202617.png)
 
-> 站点地址：[stack.mcell.top](stack.mcell.top)，包含完整的：写作、评论、部署、MCP支持...
+> 站点地址：[mcell.top](mcell.top)，包含完整的：写作、评论、部署、MCP支持...
 
 我经常写作，最开始是在一些平台上，比如稀土掘金。后面慢慢写多了，就想有个自己的博客平台。
 
@@ -22,7 +22,7 @@ order: 43
 直到后面参与了一个开源项目才意识到：
 这种内容站点/文档站点，压根没必要搞这么重。成熟框架太多了，比如 **VitePress** 这种（比如Vue官网就是VitePress），基本开箱即用。
 
-然后我就重构了一次：直接上 VitePress。部署？还是 GitHub Pages。那时候至少配上了自定义域名，看起来舒服多了：[stack.mcell.top](stack.mcell.top)
+然后我就重构了一次：直接上 VitePress。部署？还是 GitHub Pages。那时候至少配上了自定义域名，看起来舒服多了：[mcell.top](mcell.top)
 
 ![](https://stack-mcell.tos-cn-shanghai.volces.com/202618.png)
 
@@ -59,13 +59,13 @@ memo mcp add stack-mcepp npx -y @mcell/stack-mcell
 本质上就是：agent 请求本地 MCP server，MCP server 再去拉取我提前生成好的 JSON 内容。
 
 文档站上 MCP 的整体方案的记录我放在这里：
-[https://stack.mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site](https://stack.mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site)
+[https://mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site](https://mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site)
 
 这一套折腾下来，依然是 0 成本。分享给大家，或许是个不错的“0 成本建站思路”。
 
 ## 提示词
 
-如果你对这套方案比较感兴趣，想要多了解了解，你可以clone我的博客仓库：[mcell satck](https://github.com/minorcell/cellstack)，或者是直接把这段提示词发给AI，他会给你方案：
+如果你对这套方案比较感兴趣，想要多了解了解，你可以clone我的博客仓库：[Minor Cell](https://github.com/minorcell/minorcell)，或者是直接把这段提示词发给AI，他会给你方案：
 
 ```markdown
 我想搭建一个个人博客，大致如下：
@@ -76,7 +76,7 @@ memo mcp add stack-mcepp npx -y @mcell/stack-mcell
 - 搜索服务：pagefind
 - 文章评论服务：giscus
 - 开发方式：Vibe coding
-- mcp 集成：参考 https://stack.mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site
+- mcp 集成：参考 https://mcell.top/blog/2026/mcp-from-idea-to-delivery-for-content-site
 
 请你给我一个具体可落地的方案（分阶段）
 ```

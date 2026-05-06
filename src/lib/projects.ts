@@ -150,18 +150,18 @@ export const projectGroups: ProjectGroup[] = [
     description: '可直接访问的站点、应用与产品化 Demo。',
     projects: [
       {
-        name: 'cellstack',
+        name: 'mcell',
         summary: '一份关于 AI Agent、全栈工程与日常实践的个人刊物',
         status: 'active',
         tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
-            href: 'https://stack.mcell.top/',
+            href: 'https://mcell.top/',
           },
           {
             label: 'GitHub',
-            href: 'https://github.com/minorcell/cellstack',
+            href: 'https://github.com/minorcell/minorcell',
           },
         ],
       },

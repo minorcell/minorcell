@@ -10,7 +10,7 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] py-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span>&copy; {currentYear} · MCELL</span>
-            <span className="hidden sm:inline">STACK.MCELL.TOP</span>
+            <span className="hidden sm:inline">MCELL.TOP</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">

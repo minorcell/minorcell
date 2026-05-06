@@ -161,7 +161,7 @@ function build() {
       ? siteConfig.title.trim()
       : typeof siteConfig.name === 'string' && siteConfig.name.trim()
         ? siteConfig.name.trim()
-        : 'CellStack'
+        : 'Minor Cell'
   const channelDescription =
     typeof siteConfig.description === 'string' && siteConfig.description.trim()
       ? siteConfig.description.trim()
@@ -184,7 +184,7 @@ function build() {
     `    <language>${escapeXml(channelLanguage)}</language>`,
     `    <lastBuildDate>${lastBuildDate.toUTCString()}</lastBuildDate>`,
     `    <atom:link href="${escapeXml(feedUrl)}" rel="self" type="application/rss+xml" />`,
-    '    <generator>CellStack RSS Generator</generator>',
+    '    <generator>Minor Cell RSS Generator</generator>',
     ...posts.flatMap((post) => {
       const item = [
         '    <item>',

@@ -38,7 +38,7 @@ export function GiscusComments({ term, className }: Props) {
       <Giscus
         key={`${term}-${theme}`}
         id="giscus-comments"
-        repo="minorcell/cellstack"
+        repo="minorcell/minorcell"
         repoId="R_kgDOPdW_4w"
         category="General"
         categoryId="DIC_kwDOPdW_484CuOIM"

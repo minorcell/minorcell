@@ -1,7 +1,7 @@
 {
-  "name": "Cell Stack",
-  "short_name": "CellStack",
-  "description": "Cell & Stack 是一份关于 AI Agent、全栈工程与日常实践的个人刊物。",
+  "name": "Minor Cell",
+  "short_name": "mcell",
+  "description": "Minor Cell 是一份关于 AI Agent、全栈工程与日常实践的个人刊物。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

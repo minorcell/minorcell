@@ -248,18 +248,7 @@ export function Navbar() {
                 letterSpacing: '-0.015em',
               }}
             >
-              Cell{' '}
-              <span
-                className="text-muted-foreground"
-                style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  fontStyle: 'italic',
-                  fontWeight: 400,
-                }}
-              >
-                &amp;
-              </span>{' '}
-              Stack
+              天天学习，好好向上。
             </span>
             <span
               aria-hidden

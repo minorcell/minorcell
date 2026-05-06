@@ -7,9 +7,9 @@ import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
 const homeMetadata = buildPageMetadata({
-  title: 'Cell Stack | AI Agent 与全栈工程个人刊物',
+  title: 'Minor Cell | AI Agent 与全栈工程个人刊物',
   description:
-    'Cell & Stack 是一份关于 AI Agent、全栈工程与日常实践的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。',
+    'Minor Cell 是一份关于 AI Agent、全栈工程与日常实践的个人刊物——记录想法、复盘项目、整理那些值得被写下来的代码。',
   path: '/',
   keywords: [
     'AI Agent',
@@ -24,7 +24,7 @@ const homeMetadata = buildPageMetadata({
 export const metadata: Metadata = {
   ...homeMetadata,
   title: {
-    absolute: 'Cell Stack | AI Agent 与全栈工程个人刊物',
+    absolute: 'Minor Cell | AI Agent 与全栈工程个人刊物',
   },
 }
 
@@ -98,7 +98,7 @@ export default function HomePage() {
         {/* Middle — title block, vertically centred in remaining space */}
         <div className="flex flex-col justify-center py-8">
           <MagneticTitle
-            text="Cell & Stack"
+            text="Minor Cell"
             className="m-0 text-[clamp(3.4rem,11vw,9rem)] leading-[0.92] tracking-[-0.04em] text-pretty sm:text-balance"
             style={{
               fontFamily: 'var(--font-orbitron), Georgia, serif',
@@ -138,33 +138,6 @@ export default function HomePage() {
           <span aria-hidden>SCROLL ↓</span>
         </div>
       </header>
-
-      {/* ─────────── EDITOR'S NOTE ─────────── */}
-      <section
-        data-section="EDITOR'S NOTE"
-        className="mt-20 grid gap-4 sm:mt-24 sm:grid-cols-[220px_1fr] sm:gap-10"
-      >
-        <h2 className="m-0 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-          Editor&rsquo;s Note
-        </h2>
-        <div className="space-y-4">
-          <p className="m-0 leading-relaxed text-foreground/92">
-            我是
-            <a
-              href={siteContent.contact.github}
-              target="_blank"
-              rel="noreferrer"
-              className="mx-1 underline decoration-border underline-offset-4 hover:decoration-foreground"
-            >
-              mcell
-            </a>
-            。这里不追热点，只把工作中真实碰到的问题、读过的代码、做过的判断写下来。
-          </p>
-          <p className="m-0 leading-relaxed text-foreground/92">
-            愿某一篇能在某个深夜帮你少绕一个弯。
-          </p>
-        </div>
-      </section>
 
       {/* ─────────── IN THIS ISSUE ─────────── */}
       <section data-section="IN THIS ISSUE" className="relative mt-24 sm:mt-28">

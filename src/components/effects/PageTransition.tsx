@@ -211,18 +211,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
           color: 'var(--foreground)',
         }}
       >
-        Cell{' '}
-        <span
-          style={{
-            fontFamily: 'Georgia, "Times New Roman", serif',
-            fontStyle: 'italic',
-            fontWeight: 400,
-            color: 'var(--muted-foreground)',
-          }}
-        >
-          &amp;
-        </span>{' '}
-        Stack
+        Minor Cell
       </div>
 
       {/* Thin decorative rule */}

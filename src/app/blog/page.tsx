@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = buildPageMetadata({
   title: '文章归档',
   description:
-    '浏览 Cell & Stack 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
+    '浏览 Minor Cell 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
   path: '/blog',
   keywords: [
     '文章归档',
@@ -71,7 +71,7 @@ export default function BlogPage() {
   const collectionPageJsonLd = createCollectionPageJsonLd({
     title: '文章归档',
     description:
-      '浏览 Cell & Stack 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
+      '浏览 Minor Cell 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
     path: '/blog',
     items: posts.map((post) => ({
       name: post.metadata.title,

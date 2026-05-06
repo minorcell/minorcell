@@ -10,7 +10,7 @@ import { cursorBus } from '@/lib/cursor-bus'
  * 把 font-variation-settings 的 wght 轴在 400–900 间插值。
  *
  * 字符串中的 `&` 会被识别为斜体连字号（ampersand），可单独应用 ampClassName /
- * ampStyle，并随光标做轻微旋转 / 缩放（呼应 Cell & Stack 的活字气质）。
+ * ampStyle，并随光标做轻微旋转 / 缩放（呼应 Minor Cell 的活字气质）。
  *
  * 仅在 (hover: hover) and (pointer: fine) 且未启用 reduced-motion 的设备上生效，
  * 其他设备上仅静态渲染（字重落在 style.fontWeight 默认值）。

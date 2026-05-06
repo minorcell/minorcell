@@ -189,7 +189,7 @@ async function emitOg() {
         .rule  { stroke: #c8c0b3; stroke-width: 1; }
       </style>
       <text x="${textX}" y="270" class="brand" font-size="108">
-        Cell <tspan class="amp">&amp;</tspan> Stack
+        Minor Cell
       </text>
       <line x1="${textX}" y1="310" x2="${textX + 72}" y2="310" class="rule" />
       <text x="${textX + 88}" y="316" class="kicker">A FIELD JOURNAL</text>
@@ -198,7 +198,7 @@ async function emitOg() {
         AI Agent · 全栈工程 · 日常实践
       </text>
       <text x="${textX}" y="555" class="kicker" font-size="18">
-        STACK.MCELL.TOP
+        MCELL.TOP
       </text>
     </svg>
   `)

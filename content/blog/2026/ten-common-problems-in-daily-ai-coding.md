@@ -21,7 +21,7 @@ order: 40
 问题不是“看着也能跑”，问题是：**类型服务失效**。后续再 AI coding，模型经常忘记把这些“临时写法”改回规范写法，久而久之就变成隐患或者 bug。
 
 这个我单独写过：
-[https://stack.mcell.top/blog/2026/ai-always-like-hard-code](https://stack.mcell.top/blog/2026/ai-always-like-hard-code)
+[https://mcell.top/blog/2026/ai-always-like-hard-code](https://mcell.top/blog/2026/ai-always-like-hard-code)
 
 ## 2. 不更新文档：文档漂移，Agent 还会一本正经地错
 
@@ -126,4 +126,4 @@ codex：“好的，我将按照你领导的要求修改。”
 ……
 
 总之差不多这一年，我大量用 AI coding，也做了不少 agent 开发功课和技术调研，所以写 memo 的时候确实有“前车之鉴”。这个项目我会长期维护下去——就像我在 25 年总结里写的那样：
-[https://stack.mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion](https://stack.mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion)
+[https://mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion](https://mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion)

@@ -15,8 +15,8 @@ order: 41
 
 我这次的起点其实很朴素：
 
-> 我想让别人本地 `npx` 一下，就能把 CellStack 接进 Agent 的 MCP 生态。
-> 最理想的画面是，用户问一句“mcell 最近写了啥”，Agent 直接调工具返回结果，而不是我手动甩链接。
+> 我想让别人本地 `npx` 一下，就能把 Minor Cell 接进 Agent 的 MCP 生态。
+> 最理想的画面是，用户问一句“Minor Cell 最近写了啥”，Agent 直接调工具返回结果，而不是我手动甩链接。
 
 所以这篇想表达的重点，不只是“我实现了一个 MCP server”，而是这套做法本身：
 
@@ -32,7 +32,7 @@ order: 41
 
 这三层拆完之后，server 的职责就很纯粹：把内容暴露成一组可查询工具，而且是用户本地跑，**我不用额外养服务**。
 
-第一版很快做出来，但当时模型太“文章中心”，主要只覆盖 blog / topic article。很快我就发现不够：CellStack 不只有文章，还有专题页、站点介绍、关于我这些信息。
+第一版很快做出来，但当时模型太“文章中心”，主要只覆盖 blog / topic article。很快我就发现不够：Minor Cell 不只有文章，还有专题页、站点介绍、关于我这些信息。
 
 如果 Agent 只能读文章，它就更像“文章检索器”，而不是“能回答整个站点内容”的助手。
 
@@ -90,7 +90,7 @@ order: 41
 
 现在接入基本一句命令：
 
-`codex mcp add cellstack -- npx -y @mcell/stack-mcp@0.2.1`
+`codex mcp add mcell -- npx -y @mcell/stack-mcp@0.2.1`
 
 此外我在站点右上角加了 MCP 图标和配置弹窗，直接给 Codex / Claude / Memo / 标准配置的可复制示例，尽量把接入门槛压到最低。
 
@@ -98,7 +98,7 @@ order: 41
 
 相关记录：
 
-- 设计与实现 issue：[https://github.com/minorcell/cellstack/issues/67](https://github.com/minorcell/cellstack/issues/67)
+- 设计与实现 issue：[https://github.com/minorcell/minorcell/issues/67](https://github.com/minorcell/minorcell/issues/67)
 - npm 包：[https://www.npmjs.com/package/@mcell/stack-mcp](https://www.npmjs.com/package/@mcell/stack-mcp)
 
 ## 6. 为什么我现在更偏向 MCP（而不只是 skills）

@@ -18,7 +18,6 @@
 /.next/
 /out/
 /public/mcp/
-/packages/stack-mcp/dist/
 
 # production
 /build
