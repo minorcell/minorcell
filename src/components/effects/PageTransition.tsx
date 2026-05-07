@@ -20,14 +20,15 @@ import Link from 'next/link'
 type Phase = 'idle' | 'exiting' | 'loading' | 'entering'
 type AnimTick = 'init' | 'active'
 
-/* ──────────────────────────────────────────────
- *  Timing & Easing
- * ──────────────────────────────────────────────
- *  Total ≈ 280 + 650 + 2100 + 580 = 3610 ms  ≥ 3s minimum */
-const EXIT_DUR = 280
-const LOAD_IN = 650 // iris opens
-const LOAD_HOLD = 2100
-const LOAD_OUT = 580 // iris closes
+/**
+ * Timing & Easing
+ *
+ * Total ≈ 200 + 400 + 800 + 600 = 2000 ms (2s)
+ */
+const EXIT_DUR = 200
+const LOAD_IN = 400
+const LOAD_HOLD = 800
+const LOAD_OUT = 600 // iris closes
 const LOAD_TOTAL = LOAD_IN + LOAD_HOLD
 
 const EASE = 'cubic-bezier(0.33, 0, 0, 1)'
@@ -207,7 +208,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
           fontWeight: 600,
           fontSize: 32,
           letterSpacing: '-0.025em',
-          fontFamily: 'var(--font-display, Georgia, serif)',
+          fontFamily: 'var(--font-orbitron, Georgia, serif)',
           color: 'var(--foreground)',
         }}
       >
