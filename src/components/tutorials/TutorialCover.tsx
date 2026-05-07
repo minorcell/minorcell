@@ -15,7 +15,7 @@ interface TutorialCoverProps {
  * Behavior (CSS-only, see globals.css `.tutorial-cover` rules):
  *   - sticks to viewport top (height = 100dvh)
  *   - recedes slightly via scroll-driven animation as the stage rises over it
- *   - paired with `<section class="topic-stage">` which has margin-top: 100dvh
+ *   - paired with `<section class="tutorial-stage">` which has margin-top: 100dvh
  */
 export function TutorialCover({
   title,

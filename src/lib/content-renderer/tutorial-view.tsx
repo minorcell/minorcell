@@ -7,13 +7,7 @@ import type {
   SerializedDemoStep,
   SerializedStep,
 } from '@/components/interactive/InteractiveTutorialView'
-import type {
-  TutorialContent,
-  TutorialCodeStep,
-  TutorialImageStep,
-  TutorialDemoStep,
-  TutorialStep,
-} from '@/lib/content-parser'
+import type { TutorialContent, TutorialStep } from '@/lib/content-parser'
 
 function toSerializedStep(step: TutorialStep): SerializedStep {
   switch (step.kind) {

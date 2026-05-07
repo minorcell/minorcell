@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { useScrollProgress } from '../../hooks/useScrollProgress'
+import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
 
 export interface DemoStep {
   html: string
@@ -227,7 +227,7 @@ function DemoPanel({
 }
 
 export function DemoWave({ steps }: DemoWaveProps) {
-  const { currentIndex, setRef } = useScrollProgress(steps.length)
+  const { currentIndex, setRef } = useVisibleStepIndex(steps.length)
   // View mode is per-step so users can toggle independently per demo.
   const [viewModes, setViewModes] = useState<Record<number, ViewMode>>({})
 

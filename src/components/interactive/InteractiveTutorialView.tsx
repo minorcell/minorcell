@@ -112,7 +112,7 @@ export function InteractiveTutorialView({
           <p
             className="mt-1.5 text-[14px] leading-[1.55] text-muted-foreground"
             style={{
-              fontFamily: 'var(--font-display), Georgia, serif',
+              fontFamily: 'var(--font-orbitron), Georgia, serif',
               fontStyle: 'italic',
             }}
           >

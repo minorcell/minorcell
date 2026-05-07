@@ -31,7 +31,7 @@ export type TutorialStep =
   | TutorialImageStep
   | TutorialDemoStep
 
-export function parseHighlightLines(notation: string): number[] {
+function parseHighlightLines(notation: string): number[] {
   const lines: number[] = []
   const parts = notation.split(',').map((s) => s.trim())
   for (const part of parts) {
@@ -50,7 +50,7 @@ export function parseHighlightLines(notation: string): number[] {
   return lines
 }
 
-export function parseDemoAttrs(body: string): {
+function parseDemoAttrs(body: string): {
   src?: string
   title?: string
   height?: string
@@ -72,7 +72,7 @@ export function parseDemoAttrs(body: string): {
   }
 }
 
-export function resolveFileRef(tutorialDir: string, filePath: string): string {
+function resolveFileRef(tutorialDir: string, filePath: string): string {
   const fullPath = path.join(tutorialDir, filePath)
   if (!fs.existsSync(fullPath)) {
     console.warn(`[step-parser] File not found: ${fullPath}`)

@@ -1,5 +1,5 @@
 import { TransitionLink } from '@/components/effects/PageTransition'
-import { getArticleBySlug, getAllArticles, getStubTargetSlug, isStubArticle } from '@/lib/content-parser'
+import { getArticleBySlug, getAllArticles, getStubTargetSlug } from '@/lib/content-parser'
 import type { ArticleContent } from '@/lib/content-parser'
 import { notFound } from 'next/navigation'
 import { ArticleView } from '@/lib/content-renderer'

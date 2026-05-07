@@ -152,7 +152,7 @@
    * Scope smooth scrolling to in-page anchor activations only. Applying
    * `scroll-behavior: smooth` directly on <html> also animates programmatic
    * `window.scrollTo(0, 0)` calls (notably the one Next.js App Router runs on
-   * route change), which causes scroll-driven animations on /topics/<slug>
+   * route change), which causes scroll-driven animations on /tutorials/<slug>
    * (the cover's `animation-timeline: scroll(root)`) to play in reverse on
    * entry — visually: the stage slides down from mid-viewport and the cover
    * "zooms in". Gating on `:focus-within` keeps anchor jumps smooth without
@@ -377,7 +377,7 @@
 
 /* Reusable noise data URI — keep in sync with PaperGrain.tsx */
 :root {
-  --paper-grain-img: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'240'%20height%3D'240'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.86'%20numOctaves%3D'2'%20seed%3D'7'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20values%3D'0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200.55%200'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
+  --paper-grain-img: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'240'%20height%3D'240'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.75'%20numOctaves%3D'2'%20seed%3D'7'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20values%3D'0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200.55%200'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
 }
 
 /**
@@ -767,7 +767,7 @@
 }
 
 .tutorial-cover-title {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-orbitron), Georgia, serif;
   font-weight: 500;
   font-size: clamp(2.4rem, 7vw, 7rem);
   line-height: 1.02;
@@ -784,7 +784,7 @@
 }
 
 .tutorial-cover-standfirst {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-orbitron), Georgia, serif;
   font-style: italic;
   font-weight: 400;
   font-size: clamp(1.05rem, 1.4vw, 1.4rem);

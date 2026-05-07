@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { useScrollProgress } from '../../hooks/useScrollProgress'
+import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
 
 export interface CodeStep {
   code: string
@@ -179,7 +179,7 @@ function CodePanel({ step }: { step: CodeStep }) {
 }
 
 export function CodeWave({ steps }: CodeWaveProps) {
-  const { currentIndex, setRef } = useScrollProgress(steps.length)
+  const { currentIndex, setRef } = useVisibleStepIndex(steps.length)
 
   if (steps.length === 0) return null
 

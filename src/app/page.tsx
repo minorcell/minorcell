@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
 import { getAllArticles, getContentHref, isStubArticle } from '@/lib/content-parser'
-import type { ArticleContent } from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
@@ -141,7 +140,7 @@ export default function HomePage() {
           aria-hidden
           className="pointer-events-none absolute -top-14 right-0 select-none text-[color:color-mix(in_oklab,var(--foreground)_8%,transparent)] sm:-top-20"
           style={{
-            fontFamily: 'var(--font-orbitron), serif',
+            fontFamily: 'var(--font-orbitron), Georgia, serif',
             fontWeight: 800,
             fontSize: 'clamp(5rem, 12vw, 11rem)',
             letterSpacing: '-0.06em',
@@ -178,7 +177,7 @@ export default function HomePage() {
                 <span
                   className="text-muted-foreground transition-colors duration-200 ease-out group-hover:text-[color:var(--link-accent)]"
                   style={{
-                    fontFamily: 'var(--font-orbitron), serif',
+                    fontFamily: 'var(--font-orbitron), Georgia, serif',
                     fontWeight: 500,
                     fontSize: 'clamp(2.2rem, 1.6rem + 1.6vw, 3.2rem)',
                     letterSpacing: '-0.02em',
@@ -246,7 +245,7 @@ export default function HomePage() {
                         <span
                           className="text-muted-foreground transition-colors duration-200 ease-out group-hover:text-[color:var(--link-accent)]"
                           style={{
-                            fontFamily: 'var(--font-orbitron), serif',
+                            fontFamily: 'var(--font-orbitron), Georgia, serif',
                             fontWeight: 500,
                             fontSize: 'clamp(1.3rem, 1.1rem + 0.5vw, 1.7rem)',
                             letterSpacing: '-0.01em',

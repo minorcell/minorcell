@@ -8,7 +8,7 @@ import { useRef, useState, useEffect } from 'react'
  * Only fires when a step element actually crosses the viewport midpoint —
  * never on every scroll pixel. Observer is recreated on viewport resize.
  */
-export function useScrollProgress(count: number) {
+export function useVisibleStepIndex(count: number) {
   const stepsRef = useRef<(HTMLDivElement | null)[]>([])
   const observerRef = useRef<IntersectionObserver | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)

@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllArticles, getContentHref, isStubArticle } from '@/lib/content-parser'
-import type { ArticleContent } from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import {
   createBreadcrumbJsonLd,
@@ -52,8 +51,9 @@ export default function ArticlesPage() {
       new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
   )
   const [featuredPost, ...remainingPosts] = posts
-  const secondaryPosts = remainingPosts.slice(0, 2)
-  const archivePosts = remainingPosts.slice(2)
+  const SECONDARY_COUNT = 2
+  const secondaryPosts = remainingPosts.slice(0, SECONDARY_COUNT)
+  const archivePosts = remainingPosts.slice(SECONDARY_COUNT)
   const listPosts = archivePosts.length > 0 ? archivePosts : posts
 
   const latestDate = featuredPost?.metadata.date

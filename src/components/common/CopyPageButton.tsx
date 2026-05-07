@@ -22,17 +22,9 @@ type CopyStatus = 'idle' | 'copied' | 'error'
 type CopyTarget = 'page' | 'body'
 
 async function writeToClipboard(value: string) {
-  if (
-    typeof navigator !== 'undefined' &&
-    navigator.clipboard &&
-    typeof navigator.clipboard.writeText === 'function'
-  ) {
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
     await navigator.clipboard.writeText(value)
     return
-  }
-
-  if (typeof document === 'undefined') {
-    throw new Error('Clipboard unavailable')
   }
 
   const textarea = document.createElement('textarea')
@@ -82,7 +74,8 @@ export function CopyPageButton({
       await writeToClipboard(value)
       setStatus('copied')
       setTarget(copyTarget)
-    } catch {
+    } catch (err) {
+      console.error('Copy failed', err)
       setStatus('error')
       setTarget(copyTarget)
     } finally {

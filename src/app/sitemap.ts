@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getAllArticles, getAllTutorials, isStubArticle } from '@/lib/content-parser'
+import { getAllArticles, getAllTutorials } from '@/lib/content-parser'
 import { siteContent } from '@/lib/site-content'
 
 const baseUrl = siteContent.url.replace(/\/$/, '')

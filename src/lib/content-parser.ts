@@ -3,12 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { parseTutorialContent, type TutorialStep } from '@/lib/step-parser'
 
-export type { TutorialStep }
-export type {
-  TutorialCodeStep,
-  TutorialImageStep,
-  TutorialDemoStep,
-} from '@/lib/step-parser'
+export type { TutorialStep } from '@/lib/step-parser'
 
 const root = process.cwd()
 
@@ -79,14 +74,6 @@ function parseDate(value: unknown): string | undefined {
   if (!value) return undefined
   const d = new Date(value as string | Date)
   return Number.isNaN(d.getTime()) ? undefined : d.toISOString()
-}
-
-function inferType(filePath: string, fm: Record<string, unknown>): ContentVariant | null {
-  if (fm.type === 'interactive') return 'tutorial'
-  if (fm.type === 'article') return 'article'
-  // Fallback: content under articles/ dir → article
-  if (filePath.startsWith('content/articles/') || filePath.startsWith('articles/')) return 'article'
-  return null
 }
 
 // ─── Article parsing ────────────────────────────────────────────────────────

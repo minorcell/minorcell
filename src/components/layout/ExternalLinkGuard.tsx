@@ -45,6 +45,9 @@ type LinkPreviewState = {
 
 const PREVIEW_ENDPOINT =
   'https://api.microlink.io/?audio=false&video=false&iframe=false&screenshot=false&meta=true&url='
+const STANDARD_WEB_PORTS = new Set(['80', '443'])
+const URL_LENGTH_WARN_THRESHOLD = 180
+const PREVIEW_TIMEOUT_MS = 4500
 
 const shouldSkipHref = (href: string) =>
   href.startsWith('#') ||
@@ -156,7 +159,7 @@ const getLinkRisks = (url: URL): LinkRisk[] => {
     })
   }
 
-  if (url.port && !['80', '443'].includes(url.port)) {
+  if (url.port && !STANDARD_WEB_PORTS.has(url.port)) {
     risks.push({
       level: 'medium',
       label: '使用非常规端口',
@@ -183,7 +186,7 @@ const getLinkRisks = (url: URL): LinkRisk[] => {
     })
   }
 
-  if (url.href.length > 180) {
+  if (url.href.length > URL_LENGTH_WARN_THRESHOLD) {
     risks.push({
       level: 'low',
       label: '链接较长',
@@ -303,7 +306,7 @@ export function ExternalLinkGuard() {
 
     let active = true
     const controller = new AbortController()
-    const timeoutId = window.setTimeout(() => controller.abort(), 4500)
+    const timeoutId = window.setTimeout(() => controller.abort(), PREVIEW_TIMEOUT_MS)
 
     const loadPreview = async () => {
       setPreview({ status: 'loading', data: null })

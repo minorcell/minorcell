@@ -3,7 +3,7 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { useScrollProgress } from '../../hooks/useScrollProgress'
+import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
 
 export interface ImageStep {
   src: string
@@ -20,7 +20,7 @@ interface ImageWaveProps {
 }
 
 export function ImageWave({ steps }: ImageWaveProps) {
-  const { currentIndex, setRef } = useScrollProgress(steps.length)
+  const { currentIndex, setRef } = useVisibleStepIndex(steps.length)
   if (steps.length === 0) return null
 
   const activeStep = steps[currentIndex]?.step ?? steps[0].step

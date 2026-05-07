@@ -243,7 +243,7 @@ export function Navbar() {
             <span
               className="navbar-brand text-foreground transition-colors group-hover:text-[color:var(--link-accent)]"
               style={{
-                fontFamily: 'var(--font-display), Georgia, serif',
+                fontFamily: 'var(--font-orbitron), Georgia, serif',
                 fontWeight: 500,
                 letterSpacing: '-0.015em',
               }}
