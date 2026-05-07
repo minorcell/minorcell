@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { getAllPosts, getTopicSlug } from '@/lib/mdx'
+import { getAllArticles, getAllTutorials, isStubArticle } from '@/lib/content-parser'
 import { siteContent } from '@/lib/site-content'
-import { getAllTopics } from '@/lib/topics.server'
 
 const baseUrl = siteContent.url.replace(/\/$/, '')
 export const dynamic = 'force-static'
@@ -24,12 +23,12 @@ const getLatestDate = (values: Array<string | Date | undefined>) => {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const posts = getAllPosts('blog')
-  const topics = getAllTopics()
+  const posts = getAllArticles()
+  const tutorials = getAllTutorials()
 
   const latestBlogDate = getLatestDate(posts.map((post) => post.metadata.date))
   const latestTopicDate = getLatestDate(
-    topics.flatMap((topic) => topic.articles.map((article) => article.date)),
+    tutorials.flatMap((tutorial) => tutorial.metadata.date),
   )
   const latestSiteDate = getLatestDate([latestBlogDate, latestTopicDate])
 
@@ -41,13 +40,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/articles`,
       lastModified: latestBlogDate,
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/topics`,
+      url: `${baseUrl}/tutorials`,
       lastModified: latestTopicDate,
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -66,25 +65,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const blogRoutes: MetadataRoute.Sitemap = posts
-    // Skip stub posts that defer to an interactive topic — their canonical URL
-    // is the topic page, surfaced via topicRoutes below.
-    .filter((post) => !getTopicSlug(post.metadata))
+  const articleRoutes: MetadataRoute.Sitemap = posts
+    // Skip stub posts that defer to an interactive tutorial — their canonical URL
+    // is the tutorial page, surfaced via tutorialRoutes below.
+    .filter((post) => !post.metadata.topicSlug)
     .map((post) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.metadata.date),
+      url: `${baseUrl}/articles/${post.slug}`,
+      lastModified: new Date(post.metadata.date ?? ''),
       changeFrequency: 'monthly',
       priority: 0.75,
     }))
 
-  const topicRoutes: MetadataRoute.Sitemap = []
-  for (const topic of topics) {
+  const tutorialRoutes: MetadataRoute.Sitemap = []
+  for (const tutorial of tutorials) {
     const topicLatestDate = getLatestDate(
-      topic.articles.map((article) => article.date),
+      [tutorial.metadata.date],
     )
 
-    topicRoutes.push({
-      url: `${baseUrl}/topics/${topic.slug}`,
+    tutorialRoutes.push({
+      url: `${baseUrl}/tutorials/${tutorial.slug}`,
       lastModified: topicLatestDate,
       changeFrequency: 'weekly',
       priority: 0.7,
@@ -92,5 +91,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   }
 
-  return [...staticRoutes, ...blogRoutes, ...topicRoutes]
+  return [...staticRoutes, ...articleRoutes, ...tutorialRoutes]
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
-import { getAllPosts, getTopicSlug } from '@/lib/mdx'
-import type { Post } from '@/lib/mdx'
+import { getAllArticles, getContentHref, isStubArticle } from '@/lib/content-parser'
+import type { ArticleContent } from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
@@ -44,10 +44,6 @@ const formatIsoDate = (value: Date) => {
 
 const padIssue = (n: number) => String(n).padStart(2, '0')
 
-const getPostHref = (post: Post) => {
-  const topicSlug = getTopicSlug(post.metadata)
-  return topicSlug ? `/topics/${topicSlug}` : `/blog/${post.slug}`
-}
 
 const InteractiveBadge = () => (
   <span
@@ -61,9 +57,9 @@ const InteractiveBadge = () => (
 const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series']
 
 export default function HomePage() {
-  const allPosts = getAllPosts('blog').sort(
+  const allPosts = getAllArticles().sort(
     (a, b) =>
-      new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime(),
+      new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
   )
 
   const posts = allPosts.slice(0, 5)
@@ -175,7 +171,7 @@ export default function HomePage() {
           <>
             {/* HERO: №01 */}
             <TransitionLink
-              href={getPostHref(posts[0])}
+              href={getContentHref(posts[0])}
               className="row-link group block border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] px-3 py-8 hover:opacity-100 sm:px-5 sm:py-12"
             >
               <div className="grid items-start gap-5 sm:grid-cols-[120px_1fr_140px] sm:gap-10">
@@ -205,7 +201,7 @@ export default function HomePage() {
                   >
                     {posts[0].metadata.title}
                   </h3>
-                  {getTopicSlug(posts[0].metadata) && (
+                  {isStubArticle(posts[0]) && (
                     <div className="mt-3">
                       <InteractiveBadge />
                     </div>
@@ -217,7 +213,7 @@ export default function HomePage() {
                   )}
                 </div>
                 <div className="flex items-baseline gap-3 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground sm:justify-end">
-                  <time>{formatShortDate(posts[0].metadata.date)}</time>
+                  <time>{formatShortDate(posts[0].metadata.date ?? '')}</time>
                   <span aria-hidden className="row-link-arrow text-[14px]">
                     →
                   </span>
@@ -241,7 +237,7 @@ export default function HomePage() {
                       }`}
                     >
                       <TransitionLink
-                        href={getPostHref(post)}
+                        href={getContentHref(post)}
                         className={`row-link group grid items-start gap-5 px-3 py-7 hover:opacity-100 sm:gap-7 sm:px-4 ${
                           !isLeftCol ? 'lg:pl-10' : 'lg:pr-10'
                         }`}
@@ -268,7 +264,7 @@ export default function HomePage() {
                           >
                             {post.metadata.title}
                           </span>
-                          {getTopicSlug(post.metadata) && (
+                          {isStubArticle(post) && (
                             <span className="ml-2 align-middle">
                               <InteractiveBadge />
                             </span>
@@ -280,7 +276,7 @@ export default function HomePage() {
                           )}
                         </div>
                         <div className="flex items-baseline justify-end gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
-                          <time>{formatShortDate(post.metadata.date)}</time>
+                          <time>{formatShortDate(post.metadata.date ?? '')}</time>
                           <span
                             aria-hidden
                             className="row-link-arrow text-[13px]"
@@ -301,7 +297,7 @@ export default function HomePage() {
 
         <div className="mt-7 flex justify-end">
           <TransitionLink
-            href="/blog"
+            href="/articles"
             className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)] hover:opacity-100"
           >
             查看全部归档 →

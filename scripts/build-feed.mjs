@@ -5,7 +5,7 @@ import path from 'node:path'
 import matter from 'gray-matter'
 
 const root = process.cwd()
-const blogDir = path.join(root, 'content', 'blog')
+const articlesDir = path.join(root, 'content', 'articles')
 const siteConfigPath = path.join(root, 'content', 'site', 'site.json')
 const outputPath = path.join(root, 'public', 'feed.xml')
 
@@ -107,7 +107,7 @@ function build() {
     throw new Error('`content/site/site.json` 中缺少可用的 `url` 字段')
   }
 
-  const files = walkMarkdownFiles(blogDir)
+  const files = walkMarkdownFiles(articlesDir)
   const posts = []
 
   for (const filePath of files) {
@@ -116,7 +116,7 @@ function build() {
     const metadata = parsed.data || {}
     const stat = fs.statSync(filePath)
 
-    const slug = toPosix(path.relative(blogDir, filePath)).replace(/\.mdx?$/i, '')
+    const slug = toPosix(path.relative(articlesDir, filePath)).replace(/\.mdx?$/i, '')
     const title =
       typeof metadata.title === 'string' && metadata.title.trim()
         ? metadata.title.trim()
@@ -138,8 +138,8 @@ function build() {
         : undefined
     const encodedSlug = encodePath(slug)
     const link = topicSlug
-      ? `${siteUrl}/topics/${encodePath(topicSlug)}`
-      : `${siteUrl}/blog/${encodedSlug}`
+      ? `${siteUrl}/tutorials/${encodePath(topicSlug)}`
+      : `${siteUrl}/articles/${encodedSlug}`
     posts.push({
       slug,
       title,

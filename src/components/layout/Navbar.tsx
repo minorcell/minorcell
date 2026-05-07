@@ -26,8 +26,8 @@ const PagefindSearch = dynamic(
 )
 
 const navLinks = [
-  { label: '文章', href: '/blog' },
-  { label: '专题', href: '/topics' },
+  { label: '文章', href: '/articles' },
+  { label: '教程', href: '/tutorials' },
   { label: '项目', href: '/projects' },
 ]
 
@@ -180,7 +180,7 @@ export function Navbar() {
 
   // Context-aware chips
   const isTopicDetail =
-    pathname.startsWith('/topics/') && pathname !== '/topics'
+    pathname.startsWith('/tutorials/') && pathname !== '/tutorials'
 
   const mobileMenuItems: StaggeredMenuItem[] = [
     {

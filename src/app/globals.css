@@ -708,7 +708,7 @@
  * The navbar (z = 1200) always sits above both layers.
  * ─────────────────────────────────────────────────────────────────── */
 
-.topic-cover {
+.tutorial-cover {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -732,18 +732,18 @@
 }
 
 @supports not (animation-timeline: scroll()) {
-  .topic-cover {
+  .tutorial-cover {
     animation: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .topic-cover {
+  .tutorial-cover {
     animation: none;
   }
 }
 
-.topic-cover-rule {
+.tutorial-cover-rule {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -755,18 +755,18 @@
   color: var(--muted-foreground);
 }
 
-.topic-cover-rule>span:nth-child(2) {
+.tutorial-cover-rule>span:nth-child(2) {
   height: 1px;
   background: color-mix(in oklab, var(--border) 70%, transparent);
 }
 
-.topic-cover-center {
+.tutorial-cover-center {
   display: grid;
   align-content: center;
   gap: 1.5rem;
 }
 
-.topic-cover-title {
+.tutorial-cover-title {
   font-family: var(--font-display), Georgia, serif;
   font-weight: 500;
   font-size: clamp(2.4rem, 7vw, 7rem);
@@ -776,14 +776,14 @@
   text-wrap: balance;
 }
 
-.topic-cover-divider {
+.tutorial-cover-divider {
   display: block;
   width: 2.5rem;
   height: 1px;
   background: color-mix(in oklab, var(--foreground) 50%, transparent);
 }
 
-.topic-cover-standfirst {
+.tutorial-cover-standfirst {
   font-family: var(--font-display), Georgia, serif;
   font-style: italic;
   font-weight: 400;
@@ -795,14 +795,14 @@
   text-wrap: pretty;
 }
 
-.topic-cover-begin {
+.tutorial-cover-begin {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--foreground);
 }
 
-.topic-cover-arrow {
+.tutorial-cover-arrow {
   display: inline-block;
   animation: cover-arrow-bob 2s ease-in-out infinite;
 }
@@ -820,13 +820,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .topic-cover-arrow {
+  .tutorial-cover-arrow {
     animation: none;
   }
 }
 
 /* Stage — sits above cover, rises into view as user scrolls */
-.topic-stage {
+.tutorial-stage {
   position: relative;
   z-index: 2;
   margin-top: 100dvh;
@@ -848,7 +848,7 @@
    * `position: sticky` on descendants (e.g. CodeWave's left code panel). */
 }
 
-.dark .topic-stage {
+.dark .tutorial-stage {
   background-image:
     linear-gradient(color-mix(in oklab, var(--background) 94%, transparent),
       color-mix(in oklab, var(--background) 94%, transparent)),
@@ -860,12 +860,12 @@
 }
 
 @media (max-width: 640px) {
-  .topic-cover {
+  .tutorial-cover {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
 
-  .topic-stage {
+  .tutorial-stage {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
   }

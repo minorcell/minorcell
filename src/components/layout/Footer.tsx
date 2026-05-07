@@ -15,7 +15,7 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <TransitionLink
-              href="/blog"
+              href="/articles"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
               文章
@@ -27,10 +27,10 @@ export function Footer() {
               项目
             </TransitionLink>
             <TransitionLink
-              href="/topics"
+              href="/tutorials"
               className="transition-colors hover:text-foreground hover:opacity-100"
             >
-              专题
+              教程
             </TransitionLink>
             <TransitionLink
               href="/feed.xml"
