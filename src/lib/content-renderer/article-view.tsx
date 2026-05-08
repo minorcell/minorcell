@@ -1,5 +1,5 @@
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { GiscusComments } from '@/components/common/GiscusComments'
+import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
 import { CopyPageButton } from '@/components/common/CopyPageButton'
 import type { ArticleContent } from '@/lib/content-parser'
 
@@ -96,26 +96,7 @@ export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
         <MarkdownRenderer content={content} />
       </div>
 
-      <hr className="section-divider" />
-
-      {/* Comments */}
-      <section className="mt-12">
-        <div className="mb-6 flex items-baseline justify-between border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-3.5">
-          <h2
-            className="m-0 text-[clamp(1.25rem,1.05rem+0.8vw,1.6rem)] tracking-[-0.02em]"
-            style={{
-              fontFamily: 'var(--font-orbitron), Georgia, serif',
-              fontWeight: 700,
-            }}
-          >
-            Discussion
-          </h2>
-          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            留言区
-          </span>
-        </div>
-        <GiscusComments term={discussionTerm} />
-      </section>
+      <DiscussionDrawer discussionTerm={discussionTerm} />
     </article>
   )
 }
