@@ -6,20 +6,20 @@ import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
 
-export interface DemoStep {
+export interface WebStep {
   html: string
   title?: string
   height?: number
   aspect?: string
 }
 
-export interface DemoStepContent {
-  step: DemoStep
+export interface WebStepContent {
+  step: WebStep
   prose: string
 }
 
-interface DemoWaveProps {
-  steps: DemoStepContent[]
+interface WebWaveProps {
+  steps: WebStepContent[]
 }
 
 type ViewMode = 'preview' | 'source'
@@ -137,12 +137,12 @@ function SourcePanel({ code }: { code: string }) {
  * the active step. Both are mounted simultaneously and toggled via CSS so
  * iframe runtime state (timers, animations, user input) survives toggling.
  */
-function DemoPanel({
+function WebPanel({
   step,
   mode,
   onToggle,
 }: {
-  step: DemoStep
+  step: WebStep
   mode: ViewMode
   onToggle: (mode: ViewMode) => void
 }) {
@@ -165,11 +165,11 @@ function DemoPanel({
       {/* Header: title + view-mode toggle */}
       <div className="flex items-center justify-between gap-3 border-b border-border px-3 py-2">
         <div className="min-w-0 truncate font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-          {step.title || 'Demo'}
+          {step.title || 'Web'}
         </div>
         <div
           role="tablist"
-          aria-label="Demo view mode"
+          aria-label="Web view mode"
           className="inline-flex shrink-0 overflow-hidden rounded-md border border-border text-[11px] font-mono"
         >
           <button
@@ -208,7 +208,7 @@ function DemoPanel({
           style={{ display: mode === 'preview' ? 'block' : 'none' }}
         >
           <iframe
-            title={step.title || 'Demo preview'}
+            title={step.title || 'Web preview'}
             srcDoc={step.html}
             sandbox="allow-scripts"
             loading="lazy"
@@ -226,13 +226,13 @@ function DemoPanel({
   )
 }
 
-export function DemoWave({ steps }: DemoWaveProps) {
+export function WebWave({ steps }: WebWaveProps) {
   const { currentIndex, setRef } = useVisibleStepIndex(steps.length)
   // View mode is per-step so users can toggle independently per demo.
   const [viewModes, setViewModes] = useState<Record<number, ViewMode>>({})
 
   // Stable identity for the active step container so framer-motion crossfade triggers per step.
-  const activeKey = useMemo(() => `demo-${currentIndex}`, [currentIndex])
+  const activeKey = useMemo(() => `web-${currentIndex}`, [currentIndex])
 
   if (steps.length === 0) return null
 
@@ -241,7 +241,7 @@ export function DemoWave({ steps }: DemoWaveProps) {
   const activeMode = viewModes[activeIndex] ?? 'preview'
 
   return (
-    <div className="demowave-container relative">
+    <div className="webwave-container relative">
       <div className="flex items-stretch">
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
@@ -256,7 +256,7 @@ export function DemoWave({ steps }: DemoWaveProps) {
                     transition={{ duration: 0.2, ease: 'easeInOut' }}
                     className="absolute inset-0"
                   >
-                    <DemoPanel
+                    <WebPanel
                       step={activeStep}
                       mode={activeMode}
                       onToggle={(m) =>

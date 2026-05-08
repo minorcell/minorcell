@@ -3,7 +3,7 @@
 import React from 'react'
 import { CodeWave, type StepContent } from './CodeWave'
 import { ImageWave, type ImageStepContent } from './ImageWave'
-import { DemoWave, type DemoStepContent } from './DemoWave'
+import { WebWave, type WebStepContent } from './WebWave'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 
 export interface SerializedCodeStep {
@@ -47,7 +47,7 @@ type StepKind = SerializedStep['kind']
 
 /**
  * Group consecutive steps of the same kind into sections,
- * so we can render CodeWave/ImageWave/DemoWave blocks appropriately.
+ * so we can render CodeWave/ImageWave/WebWave blocks appropriately.
  */
 function groupSteps(
   steps: SerializedStep[],
@@ -164,9 +164,9 @@ export function InteractiveTutorialView({
               </div>
             ) : (
               <div className="px-4 sm:px-6 lg:px-8">
-                <DemoWave
+                <WebWave
                   steps={(group.steps as SerializedDemoStep[]).map(
-                    (s): DemoStepContent => ({
+                    (s): WebStepContent => ({
                       step: {
                         html: s.html,
                         title: s.title,

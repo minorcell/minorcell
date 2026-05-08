@@ -1,5 +1,6 @@
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
+import { TableOfContents } from '@/components/common/TableOfContents'
 import { CopyPageButton } from '@/components/common/CopyPageButton'
 import type { ArticleContent } from '@/lib/content-parser'
 
@@ -44,9 +45,10 @@ export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
     : ''
 
   return (
-    <article className="mx-auto w-full max-w-[920px]">
-      {/* MASTHEAD */}
-      <header>
+    <div className="flex justify-center gap-0">
+      <article className="w-full max-w-[920px]">
+        {/* MASTHEAD */}
+        <header>
         <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           <div className="flex items-center gap-5">
             <span>SECTION §01 · ARTICLE</span>
@@ -97,6 +99,9 @@ export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
       </div>
 
       <DiscussionDrawer discussionTerm={discussionTerm} />
-    </article>
+      </article>
+
+      <TableOfContents rawContent={article.content} />
+    </div>
   )
 }
