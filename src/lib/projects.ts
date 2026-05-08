@@ -92,6 +92,31 @@ export const projectGroups: ProjectGroup[] = [
           },
         ],
       },
+      {
+        name: 'youclaw',
+        summary:
+          'A local-first desktop AI agent workspace built with Tauri, React, and Rust.',
+        status: 'active',
+        tags: ['Rust', 'Tauri'],
+        links: [
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/youclaw',
+          },
+        ],
+      },
+      {
+        name: 'inner',
+        summary: 'An browser AI agent in sidepanel.',
+        status: 'active',
+        tags: ['TypeScript'],
+        links: [
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/inner',
+          },
+        ],
+      },
     ],
   },
   {
@@ -256,6 +281,18 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/minorcell/mini-portfolio',
+          },
+        ],
+      },
+      {
+        name: 'ws-chat',
+        summary: '在线聊天室 Demo，基于 WebSocket 的实时通信实验。',
+        status: 'active',
+        tags: ['Go'],
+        links: [
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/ws-chat',
           },
         ],
       },

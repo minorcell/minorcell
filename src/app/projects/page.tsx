@@ -3,7 +3,7 @@ import { TransitionLink } from '@/components/effects/PageTransition'
 import { ArrowUpRight } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
 import { cn } from '@/lib/utils'
-import { projectGroups, type ProjectStatus } from '@/lib/projects'
+import { projectGroups, type ProjectLink, type ProjectStatus } from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = buildPageMetadata({
@@ -32,6 +32,15 @@ const formatIsoDate = (value: Date) =>
   `${value.getFullYear()} · ${String(value.getMonth() + 1).padStart(2, '0')} · ${String(value.getDate()).padStart(2, '0')}`
 
 const pad = (n: number) => String(n).padStart(2, '0')
+
+function getPrimaryLink(links: ProjectLink[]): ProjectLink | null {
+  if (links.length === 0) return null
+  const open = links.find((l) => l.label === 'Open')
+  if (open) return open
+  const github = links.find((l) => l.label === 'GitHub')
+  if (github) return github
+  return links[0]
+}
 
 function ProjectLinkInline({
   href,
@@ -128,7 +137,7 @@ export default function ProjectsPage() {
                   <li
                     key={project.name}
                     className={cn(
-                      'border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0',
+                      'group relative cursor-pointer border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] transition-colors duration-200 hover:bg-[color:color-mix(in_oklab,var(--foreground)_3%,transparent)] last:border-b-0',
                       // md (2-col): right column has left border
                       colMd === 1 &&
                         'md:border-l md:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)]',
@@ -138,6 +147,23 @@ export default function ProjectsPage() {
                         'lg:border-l lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)]',
                     )}
                   >
+                    {/* Card overlay link — Open > GitHub > first link */}
+                    {(() => {
+                      const primary = getPrimaryLink(project.links)
+                      if (!primary) return null
+                      const isExternal = /^https?:\/\//.test(primary.href)
+                      const link = (
+                        <a
+                          href={primary.href}
+                          target={isExternal ? '_blank' : undefined}
+                          rel={isExternal ? 'noreferrer' : undefined}
+                          className="absolute inset-0 z-10"
+                          aria-label={project.name}
+                        />
+                      )
+                      return link
+                    })()}
+
                     <article
                       className={cn(
                         'grid h-full items-start gap-4 py-7 sm:gap-5 sm:py-8',
@@ -150,7 +176,7 @@ export default function ProjectsPage() {
                       style={{ gridTemplateColumns: '52px 1fr' }}
                     >
                       <div
-                        className="text-muted-foreground"
+                        className="text-muted-foreground transition-colors duration-200 group-hover:text-[color:var(--link-accent)]"
                         style={{
                           ...orbitron,
                           fontWeight: 500,
@@ -166,7 +192,7 @@ export default function ProjectsPage() {
                       <div className="min-w-0">
                         <div className="mb-2 flex items-baseline justify-between gap-3">
                           <h3
-                            className="m-0 text-[clamp(1.15rem,1.05rem+0.4vw,1.4rem)] leading-[1.25] tracking-[-0.01em] text-pretty sm:text-balance"
+                            className="m-0 text-[clamp(1.15rem,1.05rem+0.4vw,1.4rem)] leading-[1.25] tracking-[-0.01em] text-pretty transition-colors duration-200 group-hover:text-[color:var(--link-accent)] sm:text-balance"
                             style={{
                               fontFamily: 'Georgia, "Times New Roman", serif',
                               fontWeight: 500,
@@ -199,7 +225,7 @@ export default function ProjectsPage() {
                         )}
 
                         {project.links.length > 0 && (
-                          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
+                          <div className="relative z-20 mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
                             {project.links.map((item) => (
                               <ProjectLinkInline
                                 key={`${project.name}-${item.label}-${item.href}`}
