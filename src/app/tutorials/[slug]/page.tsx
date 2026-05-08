@@ -104,7 +104,10 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
       />
 
       <section className="tutorial-stage">
-        <TutorialView tutorial={tutorial} />
+        <TutorialView
+          tutorial={tutorial}
+          discussionTerm={`tutorials/${slug}`}
+        />
       </section>
     </div>
   )
