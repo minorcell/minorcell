@@ -143,7 +143,7 @@ export const projectGroups: ProjectGroup[] = [
         links: [
           {
             label: 'Open',
-            href: 'https://xbuilder.com',
+            href: 'https://builder.goplus.org',
           },
           {
             label: 'GitHub',
@@ -160,7 +160,7 @@ export const projectGroups: ProjectGroup[] = [
         links: [
           {
             label: 'Open',
-            href: 'https://vuedir.feashow.cn/',
+            href: 'https://codepaintstudio.github.io/vuedir/',
           },
           {
             label: 'GitHub',
@@ -384,7 +384,7 @@ export const projectGroups: ProjectGroup[] = [
         links: [
           {
             label: 'Open',
-            href: 'https://cms.mcell.top/',
+            href: 'https://minorcell.github.io/cms-program/',
           },
           {
             label: 'GitHub',
@@ -400,7 +400,7 @@ export const projectGroups: ProjectGroup[] = [
         links: [
           {
             label: 'Open',
-            href: 'http://craft.mcell.top/',
+            href: 'https://minorcell.github.io/minecraft-web/',
           },
           {
             label: 'GitHub',
