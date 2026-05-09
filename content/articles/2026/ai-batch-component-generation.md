@@ -2,7 +2,9 @@
 type: article
 title: '用 AI 批量生成组件集合'
 date: 2026-02-06
+updated: 2026-02-06
 description: '与其猜想要什么效果，不如一次性生成 20 个方案，直接挑。'
+keywords: [AI批处理, 组件生成, UI开发, 前端工程]
 order: 38
 ---
 

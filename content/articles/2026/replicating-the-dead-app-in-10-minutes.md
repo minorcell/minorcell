@@ -2,8 +2,10 @@
 type: article
 title: '10分钟复刻爆火「死了么」App：vibe coding 实战（Expo+Supabase+MCP）'
 date: 2026-01-15
+updated: 2026-01-15
 description: '这期用 vibe coding 的方式，10分钟复刻「死了么」App 的核心功能。我不讲原理、不展开细节，只讲“怎么做”。跟着视频步骤走，你也能做出一个可运行的 App 原型。'
 author: mcell
+keywords: [vibe coding, Expo, Supabase, MCP, React Native, 快速开发]
 tags: [Expo, Supabase, MCP, AI Agent, vibe coding, React Native, Edge Functions]
 order: 36
 ---

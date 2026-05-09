@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-10-17
+updated: 2025-10-17
 title: Agent = LLM + Tools
 description: 深入浅出地讲解 AI Agent 的本质，从 LLM 到 Tools，从宿主环境到执行机制，用一个简洁的公式帮你理解 Claude Code、Codex 等智能体的工作原理。
 author: mcell

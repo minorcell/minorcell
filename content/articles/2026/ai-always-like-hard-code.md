@@ -2,7 +2,9 @@
 type: article
 title: 'AI 编程的隐形陷阱：被 Hardcode 淹没的代码库'
 date: 2026-02-10
+updated: 2026-02-10
 description: '建议各位用 AI 跑代码的朋友，现在就去检查一下你的代码库。别让 AI 的便利，变成未来重构时的眼泪。'
+keywords: [AI编程, Hardcode, 代码质量, AI Agent, 重构]
 order: 39
 ---
 

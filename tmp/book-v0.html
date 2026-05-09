@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《大模型之路》— 第 1 章 · 图灵的问题</title>
+<style>
+  :root {
+    --bg: oklch(0.982 0.005 85);
+    --fg: oklch(0.16 0.005 75);
+    --muted: oklch(0.952 0.006 85);
+    --muted-fg: oklch(0.5 0.008 75);
+    --border: oklch(0.892 0.008 85);
+    --accent: oklch(0.50 0.08 110);
+    --card: oklch(0.995 0.003 85);
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --font-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    /* Timeline era colors */
+    --era-early: oklch(0.55 0.06 70);
+    --era-symbolic: oklch(0.58 0.07 90);
+    --era-winter: oklch(0.45 0.02 240);
+    --era-neural: oklch(0.50 0.08 250);
+    --era-dl: oklch(0.48 0.12 260);
+    --era-transform: oklch(0.45 0.10 290);
+    --era-gpt: oklch(0.42 0.12 300);
+  }
+
+  .dark {
+    --bg: oklch(0.145 0 0);
+    --fg: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-fg: oklch(0.708 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --card: oklch(0.205 0 0);
+    --accent: oklch(0.72 0.10 110);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 0.98rem + 0.12vw, 1.08rem);
+    line-height: 1.72;
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar { display: none; }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .progress-bar::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: var(--progress, 0%);
+    background: var(--accent);
+    transition: width 0.15s linear;
+    will-change: width;
+  }
+
+  /* ── Header ── */
+  .book-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted-fg);
+  }
+  .book-header .book-title { color: var(--fg); font-weight: 500; letter-spacing: 0.12em; }
+  .book-header .chapter-label { opacity: 0.7; }
+  .book-header .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted-fg);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .book-header .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Main layout ── */
+  .main-container {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 3.5rem;
+  }
+
+  /* ── Left: Timeline ── */
+  .timeline-panel {
+    width: 40%;
+    min-width: 320px;
+    max-width: 480px;
+    position: sticky;
+    top: 3.5rem;
+    height: calc(100vh - 3.5rem);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .timeline-header {
+    padding: 1.5rem 1.5rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--muted-fg);
+    flex-shrink: 0;
+  }
+  .timeline-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 1.5rem 3rem;
+    scrollbar-width: none;
+  }
+  .timeline-scroll::-webkit-scrollbar { display: none; }
+
+  .timeline-era-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted-fg);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 2;
+  }
+  .timeline-era-label:first-child { margin-top: 0.5rem; }
+
+  .timeline-node {
+    position: relative;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    border-left: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .timeline-node::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 1.05rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s ease;
+  }
+  .timeline-node:hover::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent);
+  }
+  .timeline-node.active {
+    border-left-color: var(--accent);
+  }
+  .timeline-node.active::before {
+    background: var(--accent);
+    transform: scale(1.4);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 15%, transparent);
+  }
+  .timeline-node .year {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted-fg);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+  }
+  .timeline-node.active .year { color: var(--accent); }
+  .timeline-node .event {
+    font-size: 0.92em;
+    line-height: 1.45;
+    color: var(--muted-fg);
+    transition: color 0.3s;
+  }
+  .timeline-node.active .event { color: var(--fg); }
+  .timeline-node .detail {
+    display: none;
+    margin-top: 0.4rem;
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: var(--muted-fg);
+    font-style: italic;
+  }
+  .timeline-node.active .detail { display: block; }
+
+  .timeline-now-indicator {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .timeline-now-indicator.visible { opacity: 1; }
+
+  /* ── Right: Content ── */
+  .content-panel {
+    flex: 1;
+    min-width: 0;
+  }
+  .content-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 5rem;
+  }
+
+  .chapter-masthead {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter-masthead .volume-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--muted-fg);
+    margin-bottom: 0.75rem;
+  }
+  .chapter-masthead h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 1.4rem + 2vw, 2.8rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin-bottom: 1rem;
+  }
+  .chapter-masthead .chapter-question {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+    color: var(--muted-fg);
+    line-height: 1.5;
+  }
+
+  /* Prose */
+  .prose-section {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 5rem;
+  }
+  .prose-section h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.65rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    color: var(--fg);
+  }
+  .prose-section p {
+    margin-bottom: 1rem;
+    color: color-mix(in oklab, var(--fg) 92%, transparent);
+    text-wrap: pretty;
+    line-height: 1.72;
+  }
+  .prose-section .pull-quote {
+    margin: 2rem 0;
+    padding: 0.75rem 0 0.75rem 1.25rem;
+    border-left: 2px solid var(--accent);
+    font-style: italic;
+    font-size: 1.1em;
+    color: color-mix(in oklab, var(--fg) 78%, transparent);
+    line-height: 1.55;
+  }
+  .prose-section .era-marker {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75em;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    vertical-align: middle;
+    margin: 0 0.15em;
+  }
+
+  /* Chapter nav */
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+  .chapter-nav a {
+    color: var(--muted-fg);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .chapter-nav a:hover { color: var(--accent); }
+  .chapter-nav .nav-disabled { opacity: 0.3; pointer-events: none; }
+  .chapter-nav .chapter-toc-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted-fg);
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    transition: all 0.2s;
+  }
+  .chapter-nav .chapter-toc-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Mobile */
+  @media (max-width: 860px) {
+    .timeline-panel { display: none; }
+    .timeline-mobile-toggle {
+      display: flex !important;
+    }
+    .content-inner { padding: 1.5rem 1.25rem 3rem; }
+  }
+  .timeline-mobile-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 60;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--fg);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: all 0.2s;
+  }
+
+  /* ── Timeline mobile drawer ── */
+  .timeline-drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 70;
+  }
+  .timeline-drawer-overlay.open { display: block; }
+  .timeline-drawer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    max-height: 70vh;
+    background: var(--bg);
+    border-radius: 16px 16px 0 0;
+    z-index: 71;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow-y: auto;
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+  }
+  .timeline-drawer.open { transform: translateY(0); }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .prose-section {
+    animation: fadeInUp 0.5s ease both;
+    animation-timeline: view();
+    animation-range: entry 8%;
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Header -->
+<header class="book-header">
+  <span class="book-title">《大模型之路》</span>
+  <span class="chapter-label">第 1 章 / 共 40 章</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="切换暗色模式">暗色</button>
+</header>
+
+<!-- Main layout -->
+<div class="main-container">
+  <!-- Left: Timeline -->
+  <aside class="timeline-panel" id="timelinePanel">
+    <div class="timeline-header">AI 编年史 · 1940–2024</div>
+    <div class="timeline-scroll" id="timelineScroll">
+      <div class="timeline-era-label">萌芽时代 · 1940s–1950s</div>
+
+      <div class="timeline-node active" data-era="1943" data-section="intro">
+        <div class="year">1943</div>
+        <div class="event">McCulloch & Pitts 提出人工神经元数学模型</div>
+        <div class="detail">首次证明：用简单的阈值逻辑单元，可以模拟任何可计算的逻辑函数。这为后来的神经网络奠定了理论基础。</div>
+      </div>
+
+      <div class="timeline-node" data-era="1950" data-section="turing">
+        <div class="year">1950</div>
+        <div class="event">图灵发表《Computing Machinery and Intelligence》</div>
+        <div class="detail">提出"模仿游戏"——也就是后来的图灵测试。他预见到机器智能的可能性，并提出用行为来替代对"思考"的哲学定义。</div>
+      </div>
+
+      <div class="timeline-era-label">AI 诞生 · 1950s–1960s</div>
+
+      <div class="timeline-node" data-era="1956" data-section="dartmouth">
+        <div class="year">1956</div>
+        <div class="event">达特茅斯会议 — "人工智能"一词诞生</div>
+        <div class="detail">McCarthy、Minsky、Shannon、Rochester 等人聚在一起，正式提出"Artificial Intelligence"这个概念，标志着 AI 作为独立学科的诞生。</div>
+      </div>
+
+      <div class="timeline-node" data-era="1957" data-section="perceptron">
+        <div class="year">1957</div>
+        <div class="event">Rosenblatt 发明感知机 (Perceptron)</div>
+        <div class="detail">第一个能"学习"的神经网络，可以通过样本调整权重来识别简单模式。《纽约时报》预言它"将能走路、说话、看、写、复制自己"。</div>
+      </div>
+
+      <div class="timeline-era-label">符号主义时代 · 1960s–1970s</div>
+
+      <div class="timeline-node" data-era="1966" data-section="eliza">
+        <div class="year">1966</div>
+        <div class="event">ELIZA — 第一个聊天机器人</div>
+        <div class="detail">Weizenbaum 创造了这个模拟心理医生的程序。虽然只有简单的模式匹配，但很多人真的把它当成了人类——Weizenbaum 本人对此感到震惊和不安。</div>
+      </div>
+
+      <div class="timeline-era-label">第一次 AI 寒冬 · 1970s–1980s</div>
+
+      <div class="timeline-node" data-era="1969" data-section="winter">
+        <div class="year">1969</div>
+        <div class="event">Minsky & Papert 出版《Perceptrons》</div>
+        <div class="detail">严格证明了单层感知机的局限——连 XOR 都学不会。虽然他们知道多层可以解决，但当时的悲观情绪导致了神经网络研究的寒冬。</div>
+      </div>
+
+      <div class="timeline-era-label">连接主义复兴 · 1980s–1990s</div>
+
+      <div class="timeline-node" data-era="1986" data-section="backprop">
+        <div class="year">1986</div>
+        <div class="event">反向传播算法复兴 — Rumelhart, Hinton, Williams</div>
+        <div class="detail">重新发现并推广了反向传播，解决了多层网络的训练问题。神经网络开始从寒冬中复苏。</div>
+      </div>
+
+      <div class="timeline-era-label">深度学习爆发 · 2010s</div>
+
+      <div class="timeline-node" data-era="2012" data-section="alexnet">
+        <div class="year">2012</div>
+        <div class="event">AlexNet 赢得 ImageNet 竞赛</div>
+        <div class="detail">Hinton 团队的深度卷积神经网络以巨大优势获胜。GPU 训练 + 大规模数据 = 深度学习的引爆点。从此，所有"计算机视觉"的基准测试都被深度学习统治。</div>
+      </div>
+
+      <div class="timeline-era-label">Transformer 时代 · 2017–2020s</div>
+
+      <div class="timeline-node" data-era="2017" data-section="transformer">
+        <div class="year">2017</div>
+        <div class="event">《Attention Is All You Need》发表</div>
+        <div class="detail">Google 团队提出了 Transformer 架构。抛弃了 RNN，完全基于注意力机制。这篇论文将改变一切——后来的 GPT、BERT、ChatGPT 全都是它的后代。</div>
+      </div>
+
+      <div class="timeline-node" data-era="2022" data-section="chatgpt">
+        <div class="year">2022</div>
+        <div class="event">ChatGPT 发布</div>
+        <div class="detail">OpenAI 基于 GPT-3.5 + RLHF 训练，发布两个月内用户突破 1 亿。大模型从此进入公众视野，成为新的知识基础设施。</div>
+      </div>
+
+      <div style="height: 2rem;"></div>
+    </div>
+  </aside>
+
+  <!-- Right: Content -->
+  <main class="content-panel" id="contentPanel">
+    <div class="content-inner">
+      <!-- Masthead -->
+      <div class="chapter-masthead">
+        <div class="volume-tag">卷一 · 机器梦见智能 · 1940s—1980s</div>
+        <h1>第 1 章：图灵的问题：机器会思考吗？</h1>
+        <p class="chapter-question">本章问题：机器能不能表现得像人在思考？</p>
+      </div>
+
+      <!-- Section 1 -->
+      <section class="prose-section" data-section="intro" id="sec-intro">
+        <h2>一个过于直接的问题</h2>
+        <p>1950 年，艾伦·图灵提出了一个看起来简单、实际上很难回答的问题：<em>机器会思考吗？</em></p>
+        <p>这个问题麻烦在于，每个词都不安分。</p>
+        <p>什么是"机器"？是一台会转动齿轮的机械装置？是一台执行程序的电子计算机？还是任何能够处理信息的系统？</p>
+        <p>什么是"思考"？是做数学题？是理解语言？是拥有意识？是能解释自己的理由？还是只要表现得足够聪明就算？</p>
+        <p>如果我们一开始就纠缠这些定义，讨论很快会变成哲学泥潭。每个人都可以提出自己的定义，然后谁也说服不了谁。</p>
+        <p>图灵聪明的地方在于：他没有硬着头皮给"思考"下定义。他换了一个问题。不要问机器内心是否真的在思考。先问一个更可操作的问题：</p>
+
+        <div class="pull-quote">
+          如果我们只能通过文字和一个对象交流，而我们分不清对方是人还是机器，那么这台机器是否已经在某种意义上表现出了智能？
+        </div>
+
+        <p>这就是后来被称为"图灵测试"的思想来源。它的高明之处不在于彻底解决了"智能是什么"，而在于把一个抽象问题改造成了一个行为问题。"思考"太难定义，"表现得像在思考"则可以被观察。</p>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="prose-section" data-section="turing" id="sec-turing">
+        <h2>模仿游戏</h2>
+        <p>图灵把他的测试称为"模仿游戏"（The Imitation Game）。这个名字本身就很聪明——"游戏"意味着它不追求终极定义，只追求一个可操作的场景。</p>
+        <p>游戏的设定大致是这样的：一个提问者通过文字终端和两个对象交流，其中一个是人类，另一个是机器。提问者可以向双方提任何问题，但只能通过文字——看不到长相，听不到声音。如果经过一段时间的对话，提问者无法可靠地分辨谁是谁，那么这台机器就通过了测试。</p>
+        <p>请注意图灵没有说的东西：</p>
+        <p>他没有说机器通过测试就意味着机器"真的"有意识。他没有说机器通过测试就意味着机器"真的"理解了语言。他没有对"智能"下任何形而上的定义。他只是把一个哲学困境变成了一个工程问题——这让后来的人工智能研究有了可操作的目标。</p>
+        <p>这个选择非常关键。因为它意味着：你不必解决"智能的本质是什么"这个千年难题，也可以开始研究让机器表现出智能行为。你可以先动手，再想哲学。对于一门新兴的工程学科来说，这个姿态是奠基性的。</p>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="prose-section" data-section="dartmouth" id="sec-dartmouth">
+        <h2>图灵之后：AI 的诞生</h2>
+        <p>图灵在 1954 年去世，没能看到人工智能作为一个独立领域正式建立。</p>
+        <p>1956 年夏天，一群年轻的研究者——John McCarthy、Marvin Minsky、Claude Shannon、Nathaniel Rochester 等人——聚集在达特茅斯学院，召开了一个为期两个月的研讨会。McCarthy 为这次会议起了一个雄心勃勃的名字："人工智能"（Artificial Intelligence）。</p>
+        <p>达特茅斯会议被认为是 AI 的"创世记"。虽然会议本身没有产生突破性的技术成果，但它做了几件至关重要的事：</p>
+        <p>第一，它给了这个领域一个名字。有了名字，就有了旗帜。</p>
+        <p>第二，它把一群最聪明的人聚集在一起。这些人后来成为了 AI 各个分支的奠基者。</p>
+        <p>第三，它设定了 AI 早期研究的基调：乐观、雄心勃勃、以符号和逻辑为核心。会议提案中写道："学习的每一个方面，或者智能的任何其他特征，原则上都可以被精确描述，以至于可以制造一台机器来模拟它。"这种乐观既是动力，也是后来失望的种子。</p>
+      </section>
+
+      <!-- Chapter nav -->
+      <nav class="chapter-nav">
+        <a href="#" class="nav-disabled">← 上一章</a>
+        <button class="chapter-toc-btn">目录</button>
+        <a href="#">下一章 →</a>
+      </nav>
+    </div>
+  </main>
+</div>
+
+<!-- Mobile timeline toggle -->
+<button class="timeline-mobile-toggle" id="mobileTimelineToggle" aria-label="查看时间线">◷</button>
+
+<!-- Mobile timeline drawer -->
+<div class="timeline-drawer-overlay" id="timelineOverlay"></div>
+<div class="timeline-drawer" id="timelineDrawer">
+  <div class="timeline-era-label">AI 编年史 · 1940–2024</div>
+  <div id="mobileTimelineContent"></div>
+</div>
+
+<script>
+(function() {
+  // ── Theme ──
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+
+  function updateThemeUI() {
+    const isDark = html.classList.contains('dark');
+    toggle.textContent = isDark ? '亮色' : '暗色';
+  }
+
+  toggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    const pref = html.classList.contains('dark') ? 'dark' : 'light';
+    localStorage.setItem('book-theme', pref);
+    updateThemeUI();
+  });
+
+  const saved = localStorage.getItem('book-theme');
+  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    html.classList.add('dark');
+  }
+  updateThemeUI();
+
+  // ── Progress bar ──
+  const progressBar = document.getElementById('progressBar');
+  const contentPanel = document.getElementById('contentPanel');
+
+  contentPanel.addEventListener('scroll', () => {
+    const scrollTop = contentPanel.scrollTop;
+    const scrollHeight = contentPanel.scrollHeight - contentPanel.clientHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressBar.style.setProperty('--progress', pct + '%');
+  }, { passive: true });
+
+  // ── Scroll spy: sync timeline with content ──
+  const timelineNodes = document.querySelectorAll('.timeline-node');
+  const proseSections = document.querySelectorAll('.prose-section');
+
+  function getActiveSection() {
+    const viewTop = contentPanel.scrollTop + 120;
+    let active = null;
+    proseSections.forEach(section => {
+      if (section.offsetTop <= viewTop) {
+        active = section.dataset.section;
+      }
+    });
+    return active;
+  }
+
+  function updateTimeline() {
+    const activeSection = getActiveSection();
+    timelineNodes.forEach(node => {
+      const isActive = node.dataset.section === activeSection;
+      node.classList.toggle('active', isActive);
+
+      // Auto-scroll timeline to keep active node visible
+      if (isActive) {
+        const timelineScroll = document.getElementById('timelineScroll');
+        const nodeTop = node.offsetTop;
+        const scrollTop = timelineScroll.scrollTop;
+        const visibleTop = scrollTop + 60;
+        const visibleBottom = scrollTop + timelineScroll.clientHeight - 100;
+
+        if (nodeTop < visibleTop || nodeTop > visibleBottom) {
+          timelineScroll.scrollTo({
+            top: nodeTop - timelineScroll.clientHeight / 3,
+            behavior: 'smooth'
+          });
+        }
+      }
+    });
+  }
+
+  contentPanel.addEventListener('scroll', updateTimeline, { passive: true });
+
+  // Click timeline node to jump to section
+  timelineNodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const sectionId = 'sec-' + node.dataset.section;
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── Timeline independent scroll ──
+  const timelineScroll = document.getElementById('timelineScroll');
+  timelineScroll.addEventListener('wheel', (e) => {
+    e.stopPropagation();
+  }, { passive: true });
+
+  // ── Mobile timeline drawer ──
+  const mobileToggle = document.getElementById('mobileTimelineToggle');
+  const overlay = document.getElementById('timelineOverlay');
+  const drawer = document.getElementById('timelineDrawer');
+  const mobileContent = document.getElementById('mobileTimelineContent');
+
+  function openDrawer() {
+    // Clone timeline nodes into mobile drawer
+    const nodes = document.querySelectorAll('.timeline-scroll .timeline-era-label, .timeline-scroll .timeline-node');
+    mobileContent.innerHTML = '';
+    nodes.forEach(n => mobileContent.appendChild(n.cloneNode(true)));
+
+    // Re-bind click events on clones
+    mobileContent.querySelectorAll('.timeline-node').forEach(clone => {
+      clone.addEventListener('click', () => {
+        const sectionId = 'sec-' + clone.dataset.section;
+        const section = document.getElementById(sectionId);
+        if (section) {
+          closeDrawer();
+          setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
+        }
+      });
+    });
+
+    overlay.classList.add('open');
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    overlay.classList.remove('open');
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  mobileToggle.addEventListener('click', openDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // ── Initial state ──
+  updateTimeline();
+
+  // ── Keyboard navigation ──
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      // prev chapter (stub)
+    } else if (e.key === 'ArrowRight') {
+      // next chapter (stub)
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

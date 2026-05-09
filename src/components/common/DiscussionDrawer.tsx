@@ -1,32 +1,27 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { MessageCircle, X } from 'lucide-react'
 import { GiscusComments } from '@/components/common/GiscusComments'
+import { FloatingActionButton } from '@/components/common/FloatingActionButton'
 import { cn } from '@/lib/utils'
+
+export interface DiscussionDrawerHandle {
+  open: () => void
+}
 
 interface Props {
   discussionTerm: string
+  hideTrigger?: boolean
 }
 
-export function DiscussionDrawer({ discussionTerm }: Props) {
+export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
+  function DiscussionDrawer({ discussionTerm, hideTrigger }, ref) {
   const [open, setOpen] = useState(false)
-  const [visible, setVisible] = useState(false)
   const openRef = useRef(open)
   openRef.current = open
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (openRef.current) return
-      const pct =
-        window.scrollY /
-        (document.documentElement.scrollHeight - window.innerHeight)
-      setVisible(pct > 0.2)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), [])
 
   const close = useCallback(() => setOpen(false), [])
 
@@ -49,19 +44,15 @@ export function DiscussionDrawer({ discussionTerm }: Props) {
 
   return (
     <>
-      {/* Floating trigger */}
-      <button
-        type="button"
-        aria-label="Open discussion"
-        onClick={() => setOpen(true)}
-        className={cn(
-          'fixed bottom-9 right-9 z-50 flex items-center gap-2 rounded-3xl border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-background px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground shadow-[0_2px_16px_rgba(0,0,0,0.07)] transition-all duration-300 hover:text-[color:var(--link-accent)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.12)] hover:border-[color:color-mix(in_oklab,var(--link-accent)_50%,transparent)] active:scale-95 sm:bottom-10 sm:right-10',
-          visible && !open ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0',
-        )}
-      >
-        <MessageCircle className="h-[15px] w-[15px] opacity-70" />
-        <span>Discussion</span>
-      </button>
+      {/* Floating trigger — only when not hidden by parent */}
+      {!hideTrigger && (
+        <FloatingActionButton
+          icon={<MessageCircle className="h-[15px] w-[15px] opacity-70" />}
+          label="讨论"
+          onClick={() => setOpen(true)}
+          hidden={open}
+        />
+      )}
 
       {/* Overlay — above navbar (z-[1200]) */}
       <div
@@ -123,4 +114,4 @@ export function DiscussionDrawer({ discussionTerm }: Props) {
       </div>
     </>
   )
-}
+})

@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-07-09
+updated: 2025-07-09
 title: 编程的演进：从指令到意图 - AI时代编程的未来
 description: 深度探讨编程的本质演进：从汇编语言到高级语言，再到AI辅助编程。利用Cursor、Claude Code半年实践，预测未来编程将从写代码转为表达意图的新模式。
 tags:

@@ -2,7 +2,9 @@
 type: article
 title: '不是最强，是最适合'
 date: 2026-03-14
+updated: 2026-03-14
 description: '从不再手写代码，到把工作交给 Claude、Codex 这类 agent，再到在轻量小工具里继续用 DeepSeek，我越来越在意的不是“谁最强”，而是“谁最适合”。'
+keywords: [DeepSeek, AI模型选择, 个人使用, AI Agent, 代码生成]
 order: 43
 ---
 

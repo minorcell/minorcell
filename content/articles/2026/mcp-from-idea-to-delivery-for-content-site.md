@@ -2,7 +2,9 @@
 type: article
 title: '从一个想法到可发布：我把博客接进 MCP 的完整实践'
 date: 2026-02-11
+updated: 2026-02-11
 description: '这篇不只是复盘一次实现，而是分享一套可复用的接入思路：静态数据产物 + 本地 npx MCP Server + CI 自动发包。'
+keywords: [MCP, 内容站点, AI集成, npx, CI/CD, 博客工具]
 order: 41
 ---
 

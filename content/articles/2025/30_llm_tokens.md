@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-11-26
+updated: 2025-11-26
 title: LLM 扫盲：什么是 Tokens？
 description: 重新梳理 LLM 的 Token 概念，解析 GPT-5.1 的多语言编码优化、计费与上下文窗口限制，并给出本地用 tiktoken 预估 Token 的实践方案。
 author: mcell

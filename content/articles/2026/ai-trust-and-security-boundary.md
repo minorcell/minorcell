@@ -2,7 +2,9 @@
 type: article
 title: '关于 Openclaw，最近的一点思考'
 date: 2026-03-15
+updated: 2026-03-15
 description: '人与人之间都很难建立绝对信任，更别说人与 AI。'
+keywords: [AI安全, OpenClaw, 信任边界, AI权限, Agent安全]
 order: 44
 ---
 

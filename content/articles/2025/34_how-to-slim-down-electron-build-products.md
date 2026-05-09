@@ -2,6 +2,7 @@
 type: article
 title: 'Electron 瘦身记：我是如何把安装后 900MB 的"巨无霸"砍到 466MB 的？'
 date: 2025-12-29
+updated: 2025-12-29
 description: '从实战角度记录 Electron 应用体积优化全过程：通过关闭 SourceMap、依赖治理、精准排除 node_modules 冗余文件等手段，将 DMG 从 240MB 降至 155MB，安装后体积从 900MB+ 降至 466MB，并显著提升启动速度。'
 order: 34
 ---

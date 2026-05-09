@@ -3,6 +3,8 @@ type: article
 title: 'Memo Code 安全设计：子进程、命令防护与权限审批的统一方案'
 description: '从 memo 的实践中提炼出安全设计的三道防线：子进程管理防止内存泄漏与资源耗尽、命令守卫拦截危险操作、审批系统平衡权限与体验。还有那把「双刃剑」——dangerous 模式。'
 date: '2026-02-14'
+updated: 2026-02-14
+keywords: [Memo Code, 安全设计, 子进程, 权限审批, Agent安全]
 order: 42
 ---
 

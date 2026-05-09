@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>浮动按钮组 v0 — 3 个方案</title>
+<style>
+  :root {
+    --bg: oklch(0.982 0.005 85);
+    --fg: oklch(0.16 0.005 75);
+    --muted: oklch(0.952 0.006 85);
+    --muted-fg: oklch(0.5 0.008 75);
+    --border: oklch(0.892 0.008 85);
+    --card: oklch(0.995 0.003 85);
+    --accent: oklch(0.50 0.08 110);
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --font-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+  }
+  .dark {
+    --bg: oklch(0.145 0 0);
+    --fg: oklch(0.985 0 0);
+    --muted: oklch(0.205 0 0);
+    --muted-fg: oklch(0.708 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --card: oklch(0.205 0 0);
+    --accent: oklch(0.72 0.10 110);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: var(--font-serif);
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar { display: none; }
+  body { min-height: 100vh; }
+
+  /* ── Simulated reading content ── */
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 8rem;
+  }
+  .page h1 {
+    font-family: var(--font-serif); font-weight: 500;
+    font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.2rem);
+    line-height: 1.15; letter-spacing: -0.015em;
+    margin-bottom: 2rem;
+  }
+  .page p {
+    margin-bottom: 1rem; line-height: 1.72;
+    color: color-mix(in oklab, var(--fg) 88%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* ── Common FAB container ── */
+  .fab-group {
+    position: fixed;
+    bottom: 1.5rem; right: 1.5rem;
+    z-index: 50;
+    display: flex;
+    transition: all 0.35s ease;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     VARIANT A: Merged Pill
+     One container, two slots separated by divider
+     ═══════════════════════════════════════════════════ */
+  .fab-a {
+    display: flex;
+    border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+    border-radius: 999px;
+    background: var(--card);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .fab-a .fab-slot {
+    display: flex; align-items: center; gap: 7px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted-fg);
+    transition: all 0.25s;
+    background: transparent; border: none;
+    white-space: nowrap;
+  }
+  .fab-a .fab-slot:hover { color: var(--accent); background: color-mix(in oklab, var(--accent) 5%, transparent); }
+  .fab-a .fab-slot.primary { color: var(--fg); }
+  .fab-a .fab-slot.primary:hover { color: var(--accent); }
+  .fab-a .fab-divider {
+    width: 1px;
+    background: color-mix(in oklab, var(--border) 70%, transparent);
+    margin: 6px 0;
+  }
+  .fab-a .fab-icon { width: 15px; height: 15px; opacity: 0.7; flex-shrink: 0; }
+  .fab-a .fab-label { line-height: 1; }
+  @media (max-width: 640px) {
+    .fab-a .fab-label.hide-mobile { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     VARIANT B: Icon-Only Compact
+     Two small circles, label on hover
+     ═══════════════════════════════════════════════════ */
+  .fab-b {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .fab-b .fab-dot {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    background: var(--card);
+    color: var(--muted-fg);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    position: relative;
+  }
+  .fab-b .fab-dot:hover {
+    color: var(--accent);
+    border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+    width: auto;
+    border-radius: 999px;
+    padding: 0 16px 0 14px;
+    gap: 8px;
+  }
+  .fab-b .fab-dot .dot-icon { width: 16px; height: 16px; flex-shrink: 0; }
+  .fab-b .fab-dot .dot-label {
+    font-family: var(--font-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    white-space: nowrap; overflow: hidden;
+    max-width: 0; opacity: 0;
+    transition: all 0.3s;
+  }
+  .fab-b .fab-dot:hover .dot-label { max-width: 100px; opacity: 1; }
+  .fab-b .fab-dot.primary { border-color: color-mix(in oklab, var(--border) 100%, transparent); }
+
+  /* ═══════════════════════════════════════════════════
+     VARIANT C: Subtle Bar
+     Almost transparent, minimal — like a toolbar hint
+     ═══════════════════════════════════════════════════ */
+  .fab-c {
+    display: flex; gap: 2px;
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .fab-c .fab-tab {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted-fg);
+    transition: all 0.2s;
+    background: transparent; border: none;
+    white-space: nowrap;
+  }
+  .fab-c .fab-tab:hover { color: var(--fg); background: var(--muted); }
+  .fab-c .fab-tab.primary { font-weight: 500; }
+  .fab-c .fab-tab .tab-icon { width: 13px; height: 13px; opacity: 0.6; flex-shrink: 0; }
+
+  /* ── Variant toggle bar ── */
+  .variant-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    padding: 0.75rem;
+    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.15em;
+  }
+  .variant-bar button {
+    padding: 6px 16px; border-radius: 999px; cursor: pointer;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted-fg); font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.12em;
+    transition: all 0.2s;
+  }
+  .variant-bar button.active {
+    background: var(--accent); border-color: var(--accent); color: white;
+  }
+  .variant-bar button:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+  .variant-bar .theme-btn { margin-left: 1rem; border-style: dashed; }
+  .variant-bar .label {
+    color: var(--muted-fg); font-size: 9px; letter-spacing: 0.2em;
+  }
+
+  /* Animate between variants */
+  .fab-wrapper { transition: opacity 0.25s; }
+  .fab-wrapper.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Variant toggle bar -->
+<div class="variant-bar">
+  <span class="label">方案</span>
+  <button class="active" data-v="a">A · 合并胶囊</button>
+  <button data-v="b">B · 圆形图标</button>
+  <button data-v="c">C · 极简工具条</button>
+  <button class="theme-btn" id="themeToggle">暗色</button>
+</div>
+
+<!-- Simulated reading content -->
+<div class="page">
+  <h1>第 1 章：图灵的问题</h1>
+  <p>1950 年，艾伦·图灵提出了一个看起来简单、实际上很难回答的问题：机器会思考吗？这个问题麻烦在于，每个词都不安分。什么是"机器"？是一台会转动齿轮的机械装置？还是一台执行程序的电子计算机？</p>
+  <p>图灵聪明的地方在于：他没有硬着头皮给"思考"下定义。他换了一个问题。不要问机器内心是否真的在思考，先问一个更可操作的问题：如果我们只能通过文字和一个对象交流，而我们分不清对方是人还是机器……</p>
+  <p>这就是后来被称为"图灵测试"的思想来源。它的高明之处不在于彻底解决了"智能是什么"，而在于把一个抽象问题改造成了一个行为问题。"思考"太难定义，"表现得像在思考"则可以被观察。</p>
+  <p>图灵把他的测试称为"模仿游戏"。游戏的设定大致是这样的：一个提问者通过文字终端和两个对象交流，其中一个是人类，另一个是机器。提问者可以向双方提任何问题，但只能通过文字——看不到长相，听不到声音。</p>
+  <p>如果经过一段时间的对话，提问者无法可靠地分辨谁是谁，那么这台机器就通过了测试。请注意图灵没有说：机器通过测试就意味着"真的"有意识。他只是把一个哲学困境变成了一个工程问题。</p>
+</div>
+
+<!-- FAB: Variant A (default) -->
+<div class="fab-wrapper" id="fabA">
+  <div class="fab-group">
+    <div class="fab-a">
+      <button class="fab-slot primary" title="章节目录">
+        <svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="fab-label">目录</span>
+      </button>
+      <span class="fab-divider"></span>
+      <button class="fab-slot" title="评论">
+        <svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="fab-label hide-mobile">讨论</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FAB: Variant B -->
+<div class="fab-wrapper hidden" id="fabB">
+  <div class="fab-group">
+    <div class="fab-b">
+      <div class="fab-dot primary" title="章节目录">
+        <svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="dot-label">目录</span>
+      </div>
+      <div class="fab-dot" title="评论">
+        <svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="dot-label">讨论</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB: Variant C -->
+<div class="fab-wrapper hidden" id="fabC">
+  <div class="fab-group">
+    <div class="fab-c">
+      <button class="fab-tab primary">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        目录
+      </button>
+      <button class="fab-tab">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        讨论
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Theme
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  function updateTheme() { themeBtn.textContent = html.classList.contains('dark') ? '亮色' : '暗色'; }
+  themeBtn.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    localStorage.setItem('fab-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    updateTheme();
+  });
+  if (localStorage.getItem('fab-theme') === 'dark' || (!localStorage.getItem('fab-theme') && matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+  updateTheme();
+
+  // Variant switching
+  const btns = document.querySelectorAll('.variant-bar button[data-v]');
+  const wrappers = { a: document.getElementById('fabA'), b: document.getElementById('fabB'), c: document.getElementById('fabC') };
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const v = btn.dataset.v;
+      Object.keys(wrappers).forEach(k => wrappers[k].classList.add('hidden'));
+      wrappers[v].classList.remove('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>

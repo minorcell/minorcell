@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getAllArticles, getAllTutorials } from '@/lib/content-parser'
+import { getAllBooks } from '@/lib/book-parser'
 import { siteContent } from '@/lib/site-content'
 
 const baseUrl = siteContent.url.replace(/\/$/, '')
@@ -72,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((post) => ({
       url: `${baseUrl}/articles/${post.slug}`,
       lastModified: new Date(post.metadata.date ?? ''),
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 0.75,
     }))
 
@@ -91,5 +92,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   }
 
-  return [...staticRoutes, ...articleRoutes, ...tutorialRoutes]
+  const books = getAllBooks()
+  const bookRoutes: MetadataRoute.Sitemap = []
+
+  for (const book of books) {
+    bookRoutes.push({
+      url: `${baseUrl}/books/${book.slug}`,
+      lastModified: latestSiteDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    })
+
+    for (const vol of book.volumes) {
+      for (const ch of vol.chapters) {
+        if (ch.chapter > 0) {
+          bookRoutes.push({
+            url: `${baseUrl}/books/${book.slug}/${ch.slug}`,
+            lastModified: latestSiteDate,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+          })
+        }
+      }
+    }
+  }
+
+  if (books.length > 0) {
+    bookRoutes.push({
+      url: `${baseUrl}/books`,
+      lastModified: latestSiteDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    })
+  }
+
+  return [...staticRoutes, ...articleRoutes, ...tutorialRoutes, ...bookRoutes]
 }

@@ -18,7 +18,7 @@ export interface ContentMeta {
   date?: string
   updated?: string
   tags?: string[]
-  keywords?: string[]
+  keywords: string[]
   image?: string
   order?: number
   topicSlug?: string
@@ -98,7 +98,7 @@ function parseArticle(slug: string, fullPath: string): ArticleContent {
       order: fm.order as number | undefined,
       topicSlug: fm.topicSlug as string | undefined,
       tags: fm.tags as string[] | undefined,
-      keywords: fm.keywords as string[] | undefined,
+      keywords: Array.isArray(fm.keywords) ? fm.keywords : [],
       updated: parseDate(fm.updated ?? fm.updatedAt ?? fm.modifiedAt ?? fm.lastmod),
     } as ContentMeta,
     content,
@@ -129,7 +129,7 @@ function parseTutorial(slug: string, fullPath: string): TutorialContent | null {
       type: 'tutorial',
       description: fm.description as string | undefined,
       tags: fm.tags as string[] | undefined,
-      keywords: fm.keywords as string[] | undefined,
+      keywords: Array.isArray(fm.keywords) ? fm.keywords : [],
     } as ContentMeta,
     intro,
     steps,

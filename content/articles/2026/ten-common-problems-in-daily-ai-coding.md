@@ -2,7 +2,9 @@
 type: article
 title: '细说我日常 AI coding 碰到的十个问题'
 date: 2026-02-10
+updated: 2026-05-10
 description: '这一年大量 vibe coding，经典翻车现场真的不少。有些是模型习惯问题，有些是 Agent 工具链缺陷，还有些属于“工程现实 vs 最佳实践”的冲突。'
+keywords: [AI Coding, 常见问题, AI开发, 编程实践, vibe coding]
 order: 40
 ---
 
@@ -110,21 +112,8 @@ codex：“好的，我将按照你领导的要求修改。”
 
 更烦的是：它有时候又能走 content api（不占上下文），有时候又会调 Read。闭源工具你也不知道它内部怎么做的，就只能祈祷别触发。
 
-## 这些坑给我的启发：我在 memo code 里做了什么兜底
+## 这些坑给我的启发
 
-这些问题基本就是我这一年 vibe coding 的“经典合集”。对我最大的启发是：**别把希望全寄托在模型自觉上，工程上要有“工具层的底线”**。
+这些问题基本就是我这一年 vibe coding 的”经典合集”。对我最大的启发是：**别把希望全寄托在模型自觉上，工程上要有”工具层的底线”**。
 
-最近我在开发 memo code（一个轻量级、类似 codex cli 的本地编码 agent）：
-[https://github.com/minorcell/memo-code](https://github.com/minorcell/memo-code)
-
-因为踩坑太多，所以我在系统设计里做了不少针对性处理，比如：
-
-- **工具返回结果长度检查**：先粗算 tokens，过长就截断/清空，返回一个系统 XML 提示，让模型调整工具参数（避免“read 工具读图→base64 爆上下文”那类事故）。
-- **重复输出去重**：每条模型消息算 hash，用 map 存储；检测到近期 hash / hash[] 重复就拦截，并返回系统兜底纠正（概率小，但一旦发生很致命）。
-- **工具安全兜底**：bash 工具加了沙箱、审批、敏感操作拦截（类似 `rm -rf` 那种直接封死）。
-- **新代码旧文档**：系统提示词明确要求同步更新相关文档，尽量减少“文档漂移”。
-
-……
-
-总之差不多这一年，我大量用 AI coding，也做了不少 agent 开发功课和技术调研，所以写 memo 的时候确实有“前车之鉴”。这个项目我会长期维护下去——就像我在 25 年总结里写的那样：
-[https://mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion](https://mcell.top/blog/2026/2025-being-pushed-forward-by-ai-a-year-in-motion)
+所以我在做 memo code（https://github.com/minorcell/memo-code）时针对性做了不少兜底：工具返回结果长度检查与截断、重复输出去重、bash 工具沙箱与审批拦截、系统提示词要求同步更新文档防止漂移。这些处理基本都来自上面踩过的坑。

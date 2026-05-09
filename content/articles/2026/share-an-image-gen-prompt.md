@@ -3,6 +3,8 @@ type: article
 title: '分享一个常用的文生图提示词'
 description: '我经常使用这个提示词来让 AI 生成一些技术文档或者博客的配图，感觉效果还不错，就分享出来。'
 date: 2026-02-28
+updated: 2026-02-28
+keywords: [文生图, 提示词, AI绘画, 图像生成, 博客配图]
 order: 45
 ---
 

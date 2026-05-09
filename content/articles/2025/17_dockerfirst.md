@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-07-29
+updated: 2025-07-29
 title: Docker 入门教程
 description: 全面的 Docker 入门指南，通过实战案例学会容器化部署。涵盖 Docker 核心概念、Dockerfile 编写、静态网站部署、Go 服务器容器化等内容，帮助前端和后端工程师快速掌握容器技术。
 tags:

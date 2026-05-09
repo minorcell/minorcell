@@ -4,7 +4,7 @@ import { getTutorialBySlug, getAllTutorials } from '@/lib/content-parser'
 import { TutorialView } from '@/lib/content-renderer'
 import { TutorialCover } from '@/components/tutorials/TutorialCover'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { buildPageMetadata } from '@/lib/seo'
+import { buildArticleMetadata, buildPageMetadata } from '@/lib/seo'
 import {
   createArticleJsonLd,
   createBreadcrumbJsonLd,
@@ -38,11 +38,17 @@ export async function generateMetadata({
     })
   }
 
-  return buildPageMetadata({
+  const tags = Array.isArray(tutorial.metadata.tags) ? tutorial.metadata.tags : []
+
+  return buildArticleMetadata({
     title: `${tutorial.metadata.title} 教程`,
     description: tutorial.metadata.description ?? '',
     path: `/tutorials/${slug}`,
     keywords: [tutorial.metadata.title, '技术教程', '交互教程'],
+    publishedTime: tutorial.metadata.date,
+    modifiedTime: tutorial.metadata.date,
+    section: 'Tutorials',
+    tags,
   })
 }
 

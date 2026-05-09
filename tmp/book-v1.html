@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《大模型之路》v1 — 收敛式目录 + 伴读面板</title>
+<style>
+  :root {
+    --bg: oklch(0.982 0.005 85);
+    --fg: oklch(0.16 0.005 75);
+    --muted: oklch(0.952 0.006 85);
+    --muted-fg: oklch(0.5 0.008 75);
+    --border: oklch(0.892 0.008 85);
+    --card: oklch(0.995 0.003 85);
+    --accent: oklch(0.50 0.08 110);
+    --code-bg: oklch(0.97 0.003 85);
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --font-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  }
+  .dark {
+    --bg: oklch(0.145 0 0);
+    --fg: oklch(0.985 0 0);
+    --muted: oklch(0.205 0 0);
+    --muted-fg: oklch(0.708 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --card: oklch(0.205 0 0);
+    --accent: oklch(0.72 0.10 110);
+    --code-bg: oklch(0.18 0 0);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 0.98rem + 0.12vw, 1.08rem);
+    line-height: 1.72;
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar { display: none; }
+  body { overflow: hidden; height: 100vh; }
+
+  /* ── Top bar ── */
+  .topbar {
+    height: 3rem; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.25rem; border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg); flex-shrink: 0;
+  }
+  .topbar .title { color: var(--fg); letter-spacing: 0.1em; }
+  .topbar .meta { opacity: 0.7; }
+  .topbar button {
+    background: none; border: 1px solid var(--border); color: var(--muted-fg);
+    padding: 3px 10px; border-radius: 3px; cursor: pointer;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; transition: all 0.2s;
+  }
+  .topbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Progress ── */
+  .reading-progress { height: 1.5px; background: var(--border); flex-shrink: 0; position: relative; }
+  .reading-progress::after {
+    content: ''; position: absolute; inset: 0; width: var(--p, 0%);
+    background: var(--accent); transition: width 0.1s linear;
+  }
+
+  /* ── Main ── */
+  .main { display: flex; height: calc(100vh - 3rem - 1.5px); }
+
+  /* ══════════════════════════════════════════════════════════════════
+     LEFT: Companion panel — breadcrumb + content
+     ══════════════════════════════════════════════════════════════════ */
+  .companion {
+    width: 420px; min-width: 420px; border-right: 1px solid var(--border);
+    background: var(--bg); display: flex; flex-direction: column; overflow: hidden; position: relative;
+  }
+
+  /* ── Breadcrumb bar (always visible) ── */
+  .breadcrumb-bar {
+    flex-shrink: 0;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.25s;
+    z-index: 5;
+  }
+  .breadcrumb-bar:hover { background: color-mix(in oklab, var(--muted) 60%, transparent); }
+  .breadcrumb-bar .crumb-label {
+    font-family: var(--font-mono); font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--muted-fg); margin-bottom: 0.6rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .breadcrumb-bar .crumb-label .hover-hint {
+    opacity: 0; transition: opacity 0.3s;
+    font-size: 9px;
+  }
+  .breadcrumb-bar:hover .crumb-label .hover-hint { opacity: 0.7; }
+  .breadcrumb-chain {
+    display: flex; flex-direction: column; gap: 0.2rem;
+  }
+  .crumb-item {
+    font-size: 0.85em; line-height: 1.35; color: var(--muted-fg);
+    padding: 0.15rem 0; padding-left: 0.6rem;
+    border-left: 1.5px solid transparent;
+    transition: all 0.25s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .crumb-item.prev { opacity: 0.55; font-size: 0.8em; }
+  .crumb-item.current {
+    color: var(--accent); font-weight: 500;
+    border-left-color: var(--accent); opacity: 1;
+  }
+  .crumb-item.next { opacity: 0.55; font-size: 0.8em; }
+
+  /* ── TOC expand arrow ── */
+  .breadcrumb-bar .toc-chevron {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 10px; color: var(--muted-fg);
+    transition: transform 0.3s;
+  }
+  .breadcrumb-bar.open .toc-chevron { transform: translateY(-50%) rotate(180deg); }
+
+  /* ── Full TOC overlay ── */
+  .toc-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg); z-index: 10;
+    overflow-y: auto; scrollbar-width: none;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.28s ease;
+    display: flex; flex-direction: column;
+  }
+  .toc-overlay::-webkit-scrollbar { display: none; }
+  .toc-overlay.visible { opacity: 1; pointer-events: auto; }
+
+  /* TOC is also visible when there's no companion content (section 1 & 5) */
+  .toc-overlay.static-visible {
+    opacity: 1; pointer-events: auto; position: relative; flex: 1;
+  }
+
+  .toc-inner { padding: 1.5rem 1.5rem 3rem; flex: 1; }
+  .toc-inner .toc-section-label {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--muted-fg); margin-bottom: 1.25rem;
+  }
+  .toc-volume { margin-bottom: 1.5rem; }
+  .toc-volume-title {
+    font-family: var(--font-serif); font-size: 0.95em; font-weight: 600;
+    color: var(--fg); margin-bottom: 0.3rem; letter-spacing: -0.005em;
+  }
+  .toc-volume-subtitle { font-size: 0.78em; color: var(--muted-fg); margin-bottom: 0.4rem; }
+  .toc-chapter {
+    display: block; padding: 0.3rem 0 0.3rem 1rem; font-size: 0.88em;
+    color: var(--muted-fg); text-decoration: none;
+    border-left: 1.5px solid transparent; transition: all 0.2s;
+    cursor: pointer; line-height: 1.4;
+  }
+  .toc-chapter:hover { color: var(--fg); border-left-color: var(--border); }
+  .toc-chapter.current {
+    color: var(--accent); border-left-color: var(--accent); font-weight: 500;
+  }
+
+  /* ── Companion content area ── */
+  .companion-content {
+    flex: 1; overflow-y: auto; scrollbar-width: none; position: relative;
+  }
+  .companion-content::-webkit-scrollbar { display: none; }
+
+  .comp-pane {
+    display: none; flex-direction: column; height: 100%;
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .comp-pane.active { display: flex; opacity: 1; }
+
+  .comp-pane-label {
+    position: absolute; top: 0.75rem; right: 0.75rem; z-index: 3;
+    font-family: var(--font-mono); font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.18em; padding: 2px 8px; border-radius: 3px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted-fg); pointer-events: none;
+  }
+
+  /* Diagram */
+  .diagram-inner {
+    padding: 2rem 1.5rem; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; min-height: 100%;
+  }
+  .diagram-inner .diagram-label {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg); margin-bottom: 1.5rem; align-self: flex-start;
+  }
+  .diagram-svg { width: 100%; max-width: 360px; }
+  .diagram-caption {
+    margin-top: 1.25rem; font-size: 0.85em; color: var(--muted-fg);
+    font-style: italic; text-align: center; line-height: 1.5;
+  }
+
+  /* Code */
+  .code-inner { padding: 1.5rem 0 2rem; display: flex; flex-direction: column; height: 100%; }
+  .code-inner .code-label {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg); padding: 0 1.5rem; margin-bottom: 0.5rem; flex-shrink: 0;
+  }
+  .code-inner .code-filename {
+    font-family: var(--font-mono); font-size: 10px; color: var(--muted-fg);
+    padding: 0.3rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0; opacity: 0.7;
+  }
+  .code-inner .code-body {
+    flex: 1; overflow-y: auto; padding: 1rem 1.5rem 2rem;
+    font-family: var(--font-mono); font-size: 12px; line-height: 1.6;
+    scrollbar-width: none; background: var(--code-bg);
+    margin: 0.75rem; border-radius: 6px; border: 1px solid var(--border);
+  }
+  .code-body::-webkit-scrollbar { display: none; }
+  .code-line { display: flex; white-space: pre; color: var(--muted-fg); }
+  .code-line .kw { color: oklch(0.45 0.12 260); }
+  .code-line .str { color: oklch(0.48 0.08 140); }
+  .code-line .cmt { color: oklch(0.55 0.02 100); font-style: italic; }
+  .code-line .fn { color: oklch(0.50 0.12 50); }
+  .dark .code-line .kw { color: oklch(0.68 0.12 260); }
+  .dark .code-line .str { color: oklch(0.68 0.10 140); }
+  .dark .code-line .cmt { color: oklch(0.55 0.03 100); }
+  .dark .code-line .fn { color: oklch(0.70 0.12 60); }
+
+  /* Demo */
+  .demo-inner { padding: 1.5rem; display: flex; flex-direction: column; height: 100%; }
+  .demo-inner .demo-label {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg); margin-bottom: 1rem; flex-shrink: 0;
+  }
+  .demo-chat {
+    flex: 1; display: flex; flex-direction: column;
+    border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--card);
+  }
+  .demo-chat-messages {
+    flex: 1; overflow-y: auto; padding: 1rem;
+    display: flex; flex-direction: column; gap: 0.6rem; scrollbar-width: none;
+  }
+  .demo-chat-messages::-webkit-scrollbar { display: none; }
+  .chat-msg { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.88em; line-height: 1.5; max-width: 88%; }
+  .chat-msg.bot { align-self: flex-start; background: var(--muted); color: var(--fg); }
+  .chat-msg.user { align-self: flex-end; background: color-mix(in oklab, var(--accent) 15%, transparent); color: var(--fg); }
+  .chat-msg.thinking { align-self: flex-start; color: var(--muted-fg); font-style: italic; font-size: 0.82em; }
+  .demo-chat-input { display: flex; border-top: 1px solid var(--border); padding: 0.5rem; gap: 0.5rem; }
+  .demo-chat-input input {
+    flex: 1; border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem;
+    font-family: var(--font-serif); font-size: 0.9em; background: var(--bg); color: var(--fg);
+    outline: none; transition: border-color 0.2s;
+  }
+  .demo-chat-input input:focus { border-color: var(--accent); }
+  .demo-chat-input button {
+    background: var(--accent); border: none; color: white; padding: 0.5rem 1rem;
+    border-radius: 4px; cursor: pointer; font-family: var(--font-mono);
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; transition: opacity 0.2s;
+  }
+  .demo-chat-input button:hover { opacity: 0.85; }
+  .demo-hint { margin-top: 0.75rem; font-size: 0.8em; color: var(--muted-fg); font-style: italic; line-height: 1.4; }
+
+  /* ── Right: Content ── */
+  .content { flex: 1; overflow-y: auto; scrollbar-width: none; }
+  .content::-webkit-scrollbar { display: none; }
+  .content-inner { max-width: 680px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+  .masthead { margin-bottom: 2.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .masthead .vol {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--muted-fg); margin-bottom: 0.6rem;
+  }
+  .masthead h1 {
+    font-family: var(--font-serif); font-size: clamp(1.7rem, 1.3rem + 1.8vw, 2.6rem);
+    font-weight: 500; line-height: 1.15; letter-spacing: -0.015em; text-wrap: balance; margin-bottom: 0.75rem;
+  }
+  .masthead .question { font-style: italic; color: var(--muted-fg); font-size: 1.05em; line-height: 1.5; }
+
+  .sec { margin-bottom: 2.5rem; scroll-margin-top: 2rem; }
+  .sec h2 {
+    font-family: var(--font-serif); font-weight: 500;
+    font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.55rem);
+    line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 1rem;
+  }
+  .sec p { margin-bottom: 1rem; color: color-mix(in oklab, var(--fg) 92%, transparent); text-wrap: pretty; }
+  .sec .ref-code {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.82em;
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px;
+    padding: 0.05em 0.4em; color: var(--accent);
+  }
+  .companion-callout {
+    display: flex; align-items: center; gap: 0.5rem; margin: 1.25rem 0;
+    padding: 0.6rem 0.9rem; border-radius: 4px;
+    background: color-mix(in oklab, var(--accent) 6%, transparent);
+    border-left: 2px solid var(--accent); font-size: 0.85em;
+    color: var(--muted-fg); font-family: var(--font-mono); letter-spacing: 0.06em;
+  }
+  .companion-callout .arrow { color: var(--accent); }
+
+  .bottom-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  }
+  .bottom-nav a { color: var(--muted-fg); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+  .bottom-nav a:hover { color: var(--accent); }
+  .bottom-nav .disabled { opacity: 0.3; pointer-events: none; }
+
+  @media (max-width: 860px) {
+    .companion { display: none; }
+    .companion-mobile-btn { display: flex !important; }
+    .content-inner { padding: 1.5rem 1.25rem 3rem; }
+  }
+  .companion-mobile-btn {
+    display: none; position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50;
+    width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--card); color: var(--fg); cursor: pointer;
+    font-family: var(--font-mono); font-size: 16px;
+    align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1); transition: all 0.2s;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .sec { animation: fadeUp 0.5s ease both; animation-timeline: view(); animation-range: entry 6%; }
+  .intro-graf::first-letter {
+    float: left; font-size: 3.5em; line-height: 0.8;
+    padding-right: 0.15em; padding-top: 0.05em; color: var(--accent); font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="title">《大模型之路》</span>
+  <span class="meta">卷 1 · 第 1 章</span>
+  <button id="themeToggle">暗色</button>
+</div>
+
+<div class="reading-progress" id="progress"></div>
+
+<div class="main">
+
+  <!-- ═══ LEFT: Companion panel ═══ -->
+  <aside class="companion" id="companion">
+
+    <!-- Breadcrumb bar — always visible, expands TOC on hover -->
+    <div class="breadcrumb-bar" id="breadcrumbBar">
+      <div class="crumb-label">
+        <span>导航</span>
+        <span class="hover-hint">hover 展开目录</span>
+      </div>
+      <div class="breadcrumb-chain">
+        <span class="crumb-item prev">导读 · 当机器第一次被要求"像人一样思考"</span>
+        <span class="crumb-item current">第 1 章 · 图灵的问题：机器会思考吗？</span>
+        <span class="crumb-item next">第 2 章 · 感知机：第一个"学习"的机器</span>
+      </div>
+      <span class="toc-chevron">▾</span>
+    </div>
+
+    <!-- TOC overlay — shown on hover OR when no companion content -->
+    <div class="toc-overlay static-visible" id="tocOverlay">
+      <div class="toc-inner">
+        <div class="toc-section-label">全书导航</div>
+        <div class="toc-volume">
+          <div class="toc-volume-title">卷一 · 机器梦见智能</div>
+          <div class="toc-volume-subtitle">1940s—1980s</div>
+          <span class="toc-chapter">导读：当机器第一次被要求"像人一样思考"</span>
+          <span class="toc-chapter current">第 1 章 · 图灵的问题：机器会思考吗？</span>
+          <span class="toc-chapter">第 2 章 · 感知机：第一个"学习"的机器</span>
+          <span class="toc-chapter">第 3 章 · 符号主义的黄金年代</span>
+          <span class="toc-chapter">第 4 章 · AI 寒冬：期望与失望的循环</span>
+        </div>
+        <div class="toc-volume">
+          <div class="toc-volume-title">卷二 · 神经网络复兴</div>
+          <div class="toc-volume-subtitle">1980s—2010s</div>
+          <span class="toc-chapter">第 5 章 · 反向传播：让网络学会"认错"</span>
+          <span class="toc-chapter">第 6 章 · 卷积与视觉</span>
+          <span class="toc-chapter">第 7 章 · 词向量：语言的数学地图</span>
+          <span class="toc-chapter">第 8 章 · RNN 与序列</span>
+          <span class="toc-chapter">第 9 章 · 深度学习的寒武纪大爆发</span>
+        </div>
+        <div class="toc-volume">
+          <div class="toc-volume-title">卷三 · Transformer 时代</div>
+          <div class="toc-volume-subtitle">2017—2020s</div>
+          <span class="toc-chapter">第 10 章 · Attention Is All You Need</span>
+          <span class="toc-chapter">第 11 章 · GPT：生成式预训练</span>
+          <span class="toc-chapter">第 12 章 · BERT 与双向理解</span>
+          <span class="toc-chapter">第 13 章 · Scaling Law：越大越好？</span>
+        </div>
+        <div class="toc-volume">
+          <div class="toc-volume-title">卷四 · 抵达真实</div>
+          <div class="toc-volume-subtitle">实战与未来</div>
+          <span class="toc-chapter">第 14 章 · 从零训练一个小型语言模型</span>
+          <span class="toc-chapter">第 15 章 · RLHF：让模型"对齐"人类</span>
+          <span class="toc-chapter">第 16 章 · Agents、工具与未来</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Companion content area -->
+    <div class="companion-content" id="companionContent">
+
+      <!-- Diagram mode -->
+      <div class="comp-pane" data-mode="diagram" id="pane-diagram">
+        <span class="comp-pane-label">图示</span>
+        <div class="diagram-inner">
+          <div class="diagram-label">图灵测试 · 模仿游戏</div>
+          <svg class="diagram-svg" viewBox="0 0 360 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="130" y="18" width="100" height="38" rx="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="180" y="41" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--fg)">提问者</text>
+            <line x1="30" y1="90" x2="330" y2="90" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="180" y="83" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">──────── 文字终端 ────────</text>
+            <line x1="145" y1="56" x2="80" y2="110" stroke="var(--muted-fg)" stroke-width="0.8"/>
+            <line x1="215" y1="56" x2="280" y2="110" stroke="var(--muted-fg)" stroke-width="0.8"/>
+            <rect x="40" y="120" width="90" height="52" rx="6" fill="none" stroke="var(--border)" stroke-width="1"/>
+            <text x="85" y="142" text-anchor="middle" font-family="var(--font-serif)" font-size="12" fill="var(--fg)">人类</text>
+            <text x="85" y="160" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">B</text>
+            <rect x="230" y="120" width="90" height="52" rx="6" fill="none" stroke="var(--border)" stroke-width="1"/>
+            <text x="275" y="142" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--fg)">机器</text>
+            <text x="275" y="160" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">A</text>
+            <text x="180" y="220" text-anchor="middle" font-size="28" fill="var(--accent)" opacity="0.4">?</text>
+            <text x="16" y="255" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">提问者通过</text>
+            <text x="16" y="270" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">纯文字对话</text>
+            <text x="16" y="285" font-family="var(--font-mono)" font-size="9" fill="var(--muted-fg)">分辨人与机器</text>
+            <line x1="175" y1="235" x2="60" y2="250" stroke="var(--muted-fg)" stroke-width="0.6" stroke-dasharray="2 2"/>
+          </svg>
+          <div class="diagram-caption">图灵测试的核心：如果提问者无法区分人与机器，那么机器就表现出了智能行为。</div>
+        </div>
+      </div>
+
+      <!-- Code mode -->
+      <div class="comp-pane" data-mode="code" id="pane-code">
+        <span class="comp-pane-label">代码</span>
+        <div class="code-inner">
+          <div class="code-label">代码清单</div>
+          <div class="code-filename">simple_chatbot.py</div>
+          <div class="code-body">
+            <div class="code-line"><span class="kw">import</span> re</div>
+            <div class="code-line"></div>
+            <div class="code-line"><span class="kw">def</span> <span class="fn">eliza_respond</span>(text):</div>
+            <div class="code-line">  <span class="cmt"># 最早的聊天机器人ELIZA的核心逻辑</span></div>
+            <div class="code-line">  <span class="cmt"># 只有约200行模式匹配规则</span></div>
+            <div class="code-line">  text = text.lower()</div>
+            <div class="code-line"></div>
+            <div class="code-line">  patterns = [</div>
+            <div class="code-line">    (<span class="str">r'我(.*)难过'</span>,</div>
+            <div class="code-line">     <span class="str">'为什么你觉得难过？'</span>),</div>
+            <div class="code-line">    (<span class="str">r'我(.*)开心'</span>,</div>
+            <div class="code-line">     <span class="str">'是什么让你感到开心？'</span>),</div>
+            <div class="code-line">    (<span class="str">r'(.*)你(.*)懂(.*)'</span>,</div>
+            <div class="code-line">     <span class="str">'你觉得我懂吗？'</span>),</div>
+            <div class="code-line">    (<span class="str">r'(.*)妈妈(.*)'</span>,</div>
+            <div class="code-line">     <span class="str">'说说你的家庭吧'</span>),</div>
+            <div class="code-line">    (<span class="str">r'我(.*)觉得(.*)'</span>,</div>
+            <div class="code-line">     <span class="str">'你为什么觉得\g&lt;2&gt;？'</span>),</div>
+            <div class="code-line">    (<span class="str">r'因为(.*)'</span>,</div>
+            <div class="code-line">     <span class="str">'这个理由充分吗？'</span>),</div>
+            <div class="code-line">  ]</div>
+            <div class="code-line"></div>
+            <div class="code-line">  <span class="kw">for</span> pattern, response <span class="kw">in</span> patterns:</div>
+            <div class="code-line">    m = re.match(pattern, text)</div>
+            <div class="code-line">    <span class="kw">if</span> m:</div>
+            <div class="code-line">      <span class="kw">return</span> response</div>
+            <div class="code-line"></div>
+            <div class="code-line">  <span class="kw">return</span> <span class="str">'请继续说下去...'</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo mode -->
+      <div class="comp-pane" data-mode="demo" id="pane-demo">
+        <span class="comp-pane-label">演示</span>
+        <div class="demo-inner">
+          <div class="demo-label">体验 · 与 ELIZA 对话</div>
+          <div class="demo-chat">
+            <div class="demo-chat-messages" id="chatMessages">
+              <div class="chat-msg bot">你好，我是 ELIZA。你想聊些什么？</div>
+            </div>
+            <div class="demo-chat-input">
+              <input type="text" id="chatInput" placeholder="输入消息..." autocomplete="off">
+              <button id="chatSend">发送</button>
+            </div>
+          </div>
+          <div class="demo-hint">试试说"我很难过"、"我觉得不开心"、"因为工作太累"……ELIZA 并没有真正"理解"，它只是在做模式匹配。</div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ═══ RIGHT: Content ═══ -->
+  <main class="content" id="content">
+    <div class="content-inner">
+      <div class="masthead">
+        <div class="vol">卷一 · 机器梦见智能 · 1940s—1980s</div>
+        <h1>第 1 章：图灵的问题：机器会思考吗？</h1>
+        <p class="question">本章问题：机器能不能表现得像人在思考？</p>
+      </div>
+
+      <!-- §1: no companion → TOC visible -->
+      <section class="sec" data-companion="toc" id="s1">
+        <p class="intro-graf">1950 年，艾伦·图灵提出了一个看起来简单、实际上很难回答的问题：<em>机器会思考吗？</em>这个问题麻烦在于，每个词都不安分。什么是"机器"？是一台会转动齿轮的机械装置？是一台执行程序的电子计算机？还是任何能够处理信息的系统？</p>
+        <p>什么是"思考"？是做数学题？是理解语言？是拥有意识？是能解释自己的理由？还是只要表现得足够聪明就算？</p>
+        <p>如果我们一开始就纠缠这些定义，讨论很快会变成哲学泥潭。每个人都可以提出自己的定义，然后谁也说服不了谁。</p>
+        <p>图灵聪明的地方在于：他没有硬着头皮给"思考"下定义。<em>他换了一个问题。</em></p>
+        <div class="companion-callout"><span class="arrow">◧</span> 左侧展示全书目录</div>
+      </section>
+
+      <!-- §2: diagram -->
+      <section class="sec" data-companion="diagram" id="s2">
+        <h2>模仿游戏</h2>
+        <p>图灵把他的测试称为"模仿游戏"（The Imitation Game）。游戏的设定大致是这样的：一个提问者通过文字终端和两个对象交流——其中一个是人类，另一个是机器。提问者可以向双方提任何问题，但只能通过文字。</p>
+        <p>如果经过一段时间的对话，提问者<span style="color: var(--accent);">无法可靠地分辨</span>谁是人类、谁是机器，那么这台机器就通过了测试。</p>
+        <p>请注意图灵没有说的东西：他没有说通过测试就意味着机器"真的"有意识。他没有对"智能"下任何形而上的定义。他只是把一个哲学困境变成了一个工程问题——这让后来的人工智能研究有了可操作的目标。</p>
+        <div class="companion-callout"><span class="arrow">◧</span> 左侧显示图灵测试示意图 · hover 上方导航可展开目录</div>
+      </section>
+
+      <!-- §3: code -->
+      <section class="sec" data-companion="code" id="s3">
+        <h2>最早的"聊天机器人"：ELIZA</h2>
+        <p>1966 年，MIT 的 Joseph Weizenbaum 写了一个程序叫 <span class="ref-code">ELIZA</span>。它模拟一个心理医生，用非常简单的模式匹配规则来回应人类输入。它只有大约 200 行代码。</p>
+        <p>然而，让 Weizenbaum 震惊的是：很多人真的把 ELIZA 当成了人类。他的秘书甚至请他离开房间，因为她觉得和 ELIZA 的对话是"私密的"。Weizenbaum 后来成为了 AI 的尖锐批评者。</p>
+        <p>ELIZA 揭示了一个深刻的事实：<em>人类非常容易将智能投射到任何表现出类似对话行为的系统上</em>。这个现象后来被称为"ELIZA 效应"——它至今仍然是大模型交互中最重要的心理学事实之一。</p>
+        <div class="companion-callout"><span class="arrow">◧</span> 左侧显示 Python 代码 · hover 上方导航可展开目录</div>
+      </section>
+
+      <!-- §4: demo -->
+      <section class="sec" data-companion="demo" id="s4">
+        <h2>动手试试</h2>
+        <p>现在，你可以亲自体验一下和 ELIZA 对话的感觉。左侧面板已经变成了一个聊天窗口——背后的逻辑就是上面那些简单的模式匹配规则。</p>
+        <p>试试说"我很难过"、"我觉得不开心"、"因为工作太累"……</p>
+        <p>当你真的和它对话之后，再回想 1966 年的情景：那些从未接触过计算机的普通人，面对这样一个程序，<em>真的相信对面坐着一个关心他们的心理医生</em>。</p>
+        <div class="companion-callout"><span class="arrow">◧</span> 左侧是交互式聊天 Demo · hover 上方导航可展开目录</div>
+      </section>
+
+      <!-- §5: back to TOC -->
+      <section class="sec" data-companion="toc" id="s5">
+        <h2>从图灵到 ChatGPT</h2>
+        <p>图灵测试是 1950 年提出的。ELIZA 是 1966 年的。ChatGPT 是 2022 年的。</p>
+        <p>七十二年。从"机器会思考吗"到"ChatGPT 真的理解吗"，人类问的是同一个问题。但在这个过程中，我们积累了几代人的努力：感知机、反向传播、卷积网络、词向量、Transformer、RLHF……</p>
+        <p>下一个章节，我们将回到 1957 年，看看 Rosenblatt 如何用一个简单的电路，让机器第一次"学会"了识别模式。</p>
+        <div class="companion-callout"><span class="arrow">◧</span> 左侧回到完整目录</div>
+      </section>
+
+      <nav class="bottom-nav">
+        <a href="#" class="disabled">← 上一章</a>
+        <a href="#">下一章：感知机 →</a>
+      </nav>
+    </div>
+  </main>
+</div>
+
+<button class="companion-mobile-btn" id="mobileBtn" title="伴读面板">◧</button>
+
+<script>
+(function() {
+  // ── Theme ──
+  const html = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  function updateToggle() { themeToggle.textContent = html.classList.contains('dark') ? '亮色' : '暗色'; }
+  themeToggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    localStorage.setItem('book-v1-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    updateToggle();
+  });
+  const saved = localStorage.getItem('book-v1-theme');
+  if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+  updateToggle();
+
+  // ── Progress ──
+  const content = document.getElementById('content');
+  const progress = document.getElementById('progress');
+  content.addEventListener('scroll', () => {
+    const pct = (content.scrollTop / (content.scrollHeight - content.clientHeight)) * 100 || 0;
+    progress.style.setProperty('--p', pct + '%');
+  }, { passive: true });
+
+  // ── Companion content switching + TOC visibility ──
+  const sections = document.querySelectorAll('.sec[data-companion]');
+  const panes = document.querySelectorAll('.comp-pane');
+  const tocOverlay = document.getElementById('tocOverlay');
+  const breadcrumbBar = document.getElementById('breadcrumbBar');
+  let currentMode = 'toc';
+
+  function setCompanionMode(mode) {
+    currentMode = mode;
+
+    // Show/hide companion content panes
+    panes.forEach(p => p.classList.remove('active'));
+    if (mode !== 'toc') {
+      const targetPane = document.querySelector(`.comp-pane[data-mode="${mode}"]`);
+      if (targetPane) targetPane.classList.add('active');
+    }
+
+    // TOC: static-visible when mode is 'toc', overlay-only otherwise
+    if (mode === 'toc') {
+      tocOverlay.classList.add('static-visible');
+      tocOverlay.classList.remove('visible');
+    } else {
+      tocOverlay.classList.remove('static-visible', 'visible');
+    }
+
+    // Breadcrumb: update current indicator based on active section
+    updateBreadcrumbHighlight(mode);
+  }
+
+  function updateBreadcrumbHighlight(mode) {
+    // If we have companion content, the breadcrumb is the "mini TOC"
+    // It's always visible so nothing special needed here beyond what CSS does
+  }
+
+  // Scroll spy
+  function updateCompanion() {
+    const viewTop = content.scrollTop + content.clientHeight * 0.3;
+    let activeMode = 'toc';
+    sections.forEach(sec => {
+      if (sec.offsetTop <= viewTop) {
+        activeMode = sec.dataset.companion;
+      }
+    });
+    if (activeMode !== currentMode) {
+      setCompanionMode(activeMode);
+    }
+  }
+  content.addEventListener('scroll', updateCompanion, { passive: true });
+  setCompanionMode('toc');
+
+  // ── TOC hover toggle ──
+  let hoverTimeout = null;
+
+  breadcrumbBar.addEventListener('mouseenter', () => {
+    if (currentMode === 'toc') return; // TOC already visible
+    clearTimeout(hoverTimeout);
+    tocOverlay.classList.add('visible');
+    breadcrumbBar.classList.add('open');
+  });
+
+  breadcrumbBar.addEventListener('mouseleave', () => {
+    hoverTimeout = setTimeout(() => {
+      if (currentMode !== 'toc') {
+        tocOverlay.classList.remove('visible');
+        breadcrumbBar.classList.remove('open');
+      }
+    }, 200);
+  });
+
+  tocOverlay.addEventListener('mouseenter', () => {
+    clearTimeout(hoverTimeout);
+  });
+
+  tocOverlay.addEventListener('mouseleave', () => {
+    if (currentMode !== 'toc') {
+      tocOverlay.classList.remove('visible');
+      breadcrumbBar.classList.remove('open');
+    }
+  });
+
+  // ── ELIZA demo ──
+  const rules = [
+    { pattern: /我(.*)难过/, responses: ['为什么你觉得难过？', '难过是一种正常的情绪，能多说说吗？'] },
+    { pattern: /我(.*)不开心/, responses: ['是什么让你不开心？', '这种感觉持续多久了？'] },
+    { pattern: /我(.*)开心/, responses: ['是什么让你感到开心？', '开心的时候你想到了什么？'] },
+    { pattern: /我(.*)觉得/, responses: ['你为什么觉得$1？', '这种感觉从什么时候开始的？'] },
+    { pattern: /我(.*)想/, responses: ['为什么你想$1？', '想$1是出于什么原因？'] },
+    { pattern: /因为(.*)/, responses: ['这个理由充分吗？', '你是从什么时候开始这么想的？'] },
+    { pattern: /(.*)妈妈(.*)/, responses: ['说说你的家庭吧', '你和家人的关系怎么样？'] },
+    { pattern: /(.*)爱(.*)/, responses: ['爱对你来说意味着什么？', '你对爱的看法是什么样的？'] },
+    { pattern: /(.*)害怕(.*)/, responses: ['你具体害怕什么？', '恐惧有时候会放大我们的感受'] },
+    { pattern: /(.*)孤单(.*)/, responses: ['你经常感到孤单吗？', '孤单的感觉确实不好受'] },
+    { pattern: /为什么(.*)/, responses: ['你为什么问这个问题？', '你觉得是为什么？'] },
+    { pattern: /你好/, responses: ['你好，今天想聊些什么？', '嗨，有什么想分享的吗？'] },
+    { pattern: /(?:再见|bye|拜拜)/, responses: ['再见，照顾好自己', '期待下次聊天'] },
+    { pattern: /(?:谢谢|多谢|感谢)/, responses: ['不客气', '很高兴能帮到你'] },
+  ];
+
+  function eliza(input) {
+    const text = input.trim().toLowerCase();
+    for (const { pattern, responses } of rules) {
+      const match = text.match(pattern);
+      if (match) {
+        const idx = Math.floor(Math.random() * responses.length);
+        let resp = responses[idx];
+        for (let i = 1; i < match.length; i++) {
+          resp = resp.replace('$' + i, match[i] || '');
+        }
+        return resp;
+      }
+    }
+    return ['请继续说下去...', '能再多说说吗？', '我明白了，然后呢？', '很有趣，继续'][Math.floor(Math.random() * 4)];
+  }
+
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+
+  function addMessage(text, type) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + type;
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function handleChat() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    chatInput.value = '';
+    setTimeout(() => {
+      const thinking = document.createElement('div');
+      thinking.className = 'chat-msg thinking';
+      thinking.textContent = '...';
+      chatMessages.appendChild(thinking);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      setTimeout(() => {
+        thinking.remove();
+        addMessage(eliza(text), 'bot');
+      }, 600 + Math.random() * 400);
+    }, 200);
+  }
+
+  chatSend.addEventListener('click', handleChat);
+  chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleChat(); });
+
+  // ── Mobile ──
+  document.getElementById('mobileBtn').addEventListener('click', () => {
+    const companion = document.getElementById('companion');
+    if (companion.style.display === 'flex') {
+      companion.style.display = 'none';
+    } else {
+      companion.style.display = 'flex';
+      companion.style.position = 'fixed'; companion.style.inset = '0';
+      companion.style.zIndex = '100'; companion.style.width = '100%';
+      companion.style.minWidth = '100%'; companion.style.background = 'var(--bg)';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-11-16
+updated: 2025-11-16
 title: 前端路由详解：Hash VS History
 description: 全面解析前端路由的 Hash 与 History 两种模式，涵盖原理、实现、优缺点、服务器配置与框架实践，帮助你做出兼顾兼容性与 SEO 的路由选型。
 author: mcell

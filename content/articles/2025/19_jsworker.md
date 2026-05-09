@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-08-18
+updated: 2025-08-18
 title: JavaScript 的多线程能力：Worker
 description: 深入探讨 JavaScript 的多线程编程能力，包括 Web Worker、Service Worker 和 Worklet 的原理、使用场景和代码实践，让你的 Web 应用不再卡顿。
 author: mcell

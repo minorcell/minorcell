@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-06-29
+updated: 2025-06-29
 title: Claude Code Sub-agent 模式的详解和实践
 description: 深入解析Claude Code的Sub-agent子代理模式，学会创建专业化AI代理来提升代码生成、数据分析等复杂任务的效率和准确性。附完整实践教程和最佳实践。
 tags:

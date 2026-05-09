@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-03-31
+updated: 2025-03-31
 title: VSCode 自动化代码规范实践指南
 description: 最实用的 VSCode 代码规范自动化配置指南。深入讲解 ESLint + Prettier 的完美组合，实现保存时自动代码检查、格式化和错误修复。提升团队开发效率，确保代码风格一致性。
 tags:

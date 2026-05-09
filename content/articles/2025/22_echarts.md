@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-09-17
+updated: 2025-09-17
 title: ECharts 万字入门指南
 description: 详细学习 Apache ECharts 图表库，掌握丰富的图表类型、强大的交互功能和灵活的配置项，实现数据可视化。
 author: mcell

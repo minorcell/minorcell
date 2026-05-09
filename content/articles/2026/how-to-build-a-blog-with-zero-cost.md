@@ -3,6 +3,8 @@ type: article
 title: '如何零成本搭建个人站点'
 description: '写作平台写久了就想有个自己的站。一路从纯 HTML、到全栈自建，再到 VitePress、Next.js 静态站，最终用 GitHub Pages 把评论、搜索、MCP 都做成无服务器方案：0 成本也能做个不单调的个人博客。'
 date: 2026-02-13
+updated: 2026-02-13
+keywords: [个人博客, 零成本, Next.js, GitHub Pages, 静态站点, MCP]
 order: 43
 ---
 

@@ -2,6 +2,7 @@
 type: article
 title: '为什么在 Agent 时代，我选择了 Bun？'
 date: 2025-12-09
+updated: 2025-12-09
 description: '这不是一篇「Hello World」式的 runtime 教程，而是我作为一个写 Node/TS/Go 的开发者，为什么在 2025 年，突然决定认真学一下 Bun，并决定做一个 ReAct Agent 的记录。'
 order: 3
 ---

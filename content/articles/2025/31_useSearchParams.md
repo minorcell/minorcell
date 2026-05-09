@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-12-05
+updated: 2025-12-05
 title: useSearchParams
 description: 通过 useSearchParams 将 React 应用状态提升到 URL 查询参数，支持分享、持久化与浏览器历史控制，并示例防抖与 replace 更新的最佳实践。
 author: mcell

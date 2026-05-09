@@ -2,7 +2,9 @@
 type: article
 title: 'Rust 所有权与借用：从堆栈开始建立心智模型'
 date: 2026-01-24
+updated: 2026-01-24
 description: '写 Rust 的第一道坎不是语法，而是所有权。本文从堆栈原理出发，用实例讲透 Rust 的所有权、移动、借用规则，帮你建立清晰的心智模型。'
+keywords: [Rust, 所有权, 借用, 内存管理, 堆栈, 系统编程]
 order: 37
 ---
 

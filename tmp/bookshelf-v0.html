@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小册子 — 书架</title>
+<style>
+  :root {
+    --bg: oklch(0.982 0.005 85);
+    --fg: oklch(0.16 0.005 75);
+    --muted: oklch(0.952 0.006 85);
+    --muted-fg: oklch(0.5 0.008 75);
+    --border: oklch(0.892 0.008 85);
+    --card: oklch(0.995 0.003 85);
+    --accent: oklch(0.50 0.08 110);
+    --accent-dim: oklch(0.55 0.06 100);
+    --shelf-wood: oklch(0.62 0.06 70);
+    --shelf-shadow: oklch(0.5 0.03 70 / 0.15);
+    --book-spine-1: oklch(0.55 0.05 70);
+    --book-spine-2: oklch(0.48 0.06 250);
+    --book-spine-3: oklch(0.42 0.05 290);
+    --book-spine-4: oklch(0.52 0.04 150);
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --font-mono: 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  }
+  .dark {
+    --bg: oklch(0.145 0 0);
+    --fg: oklch(0.985 0 0);
+    --muted: oklch(0.22 0 0);
+    --muted-fg: oklch(0.708 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --card: oklch(0.18 0 0);
+    --accent: oklch(0.72 0.10 110);
+    --accent-dim: oklch(0.65 0.08 105);
+    --shelf-wood: oklch(0.50 0.04 65);
+    --shelf-shadow: oklch(0 0 0 / 0.35);
+    --book-spine-1: oklch(0.55 0.06 70);
+    --book-spine-2: oklch(0.52 0.07 250);
+    --book-spine-3: oklch(0.48 0.06 290);
+    --book-spine-4: oklch(0.52 0.05 150);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: var(--font-serif);
+    font-size: clamp(1rem, 0.98rem + 0.12vw, 1.08rem);
+    line-height: 1.72;
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar { display: none; }
+
+  body { min-height: 100vh; }
+
+  /* ── Paper grain overlay ── */
+  .paper-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+    mix-blend-mode: multiply;
+    opacity: 0.32;
+  }
+  .dark .paper-overlay {
+    mix-blend-mode: screen;
+    opacity: 0.06;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.5rem;
+    background: color-mix(in oklab, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted-fg);
+  }
+  .topbar .title { color: var(--fg); letter-spacing: 0.12em; }
+  .topbar button {
+    background: none; border: 1px solid var(--border); color: var(--muted-fg);
+    padding: 3px 10px; border-radius: 3px; cursor: pointer;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; transition: all 0.2s;
+  }
+  .topbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Main content ── */
+  .main {
+    position: relative; z-index: 1;
+    padding: 5rem 1.5rem 5rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    margin-bottom: 3.5rem;
+    text-align: center;
+  }
+  .page-header .kicker {
+    font-family: var(--font-mono);
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--muted-fg);
+    margin-bottom: 0.75rem;
+  }
+  .page-header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 1.6rem + 2.2vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+  }
+  .page-header .subtitle {
+    font-style: italic;
+    color: var(--muted-fg);
+    font-size: clamp(1rem, 1rem + 0.3vw, 1.15rem);
+    line-height: 1.5;
+    max-width: 48ch;
+    margin: 0 auto;
+  }
+
+  /* ── Shelf ── */
+  .shelf-section {
+    margin-top: 1rem;
+  }
+  .shelf-label {
+    font-family: var(--font-mono);
+    font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg);
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
+  }
+  .shelf-surface {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    padding: 0.25rem 1rem 1.5rem;
+    flex-wrap: wrap;
+    /* Shelf ledge */
+    border-bottom: 6px solid var(--shelf-wood);
+    border-image: none;
+  }
+  .shelf-surface::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0; right: 0;
+    height: 2px;
+    background: var(--shelf-shadow);
+  }
+
+  /* ── Book card ── */
+  .book-card {
+    position: relative;
+    width: 220px;
+    min-height: 280px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px 6px 6px 3px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.04),
+      2px 3px 6px rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: inherit;
+  }
+  .book-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.04),
+      3px 8px 18px rgba(0,0,0,0.12);
+    border-color: var(--accent);
+  }
+
+  /* Book spine (left edge visual) */
+  .book-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    border-radius: 2px 0 0 2px;
+    transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .book-card.spine-warm::before { background: var(--book-spine-1); }
+  .book-card.spine-blue::before { background: var(--book-spine-2); }
+  .book-card.spine-purple::before { background: var(--book-spine-3); }
+  .book-card.spine-green::before { background: var(--book-spine-4); }
+  .book-card:hover::before { width: 8px; }
+
+  /* Book cover content */
+  .book-cover {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.35rem 1.25rem 1rem 1.5rem;
+  }
+
+  .book-cover .book-volume-tag {
+    font-family: var(--font-mono);
+    font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg);
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .book-cover .book-title {
+    font-family: var(--font-serif);
+    font-size: 1.15em;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .book-cover .book-desc {
+    font-size: 0.82em;
+    line-height: 1.45;
+    color: var(--muted-fg);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: auto;
+  }
+
+  .book-cover .book-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-fg);
+    letter-spacing: 0.08em;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .book-cover .book-meta .chapter-count {
+    opacity: 0.7;
+  }
+
+  /* Placeholder / coming soon card */
+  .book-card.placeholder {
+    opacity: 0.4;
+    cursor: default;
+    border-style: dashed;
+    background: transparent;
+    box-shadow: none;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  .book-card.placeholder::before { background: var(--border); }
+  .book-card.placeholder:hover {
+    transform: none;
+    border-color: var(--border);
+    box-shadow: none;
+  }
+  .book-card.placeholder .placeholder-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted-fg);
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  /* ── Empty shelf space hint ── */
+  .shelf-empty-hint {
+    font-family: var(--font-mono);
+    font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--muted-fg);
+    opacity: 0.35;
+    padding: 0 1rem 1.5rem;
+    font-style: italic;
+  }
+
+  /* ── Reading book (currently reading) ── */
+  .reading-section {
+    margin: 3rem 0 4rem;
+  }
+  .reading-section .reading-label {
+    font-family: var(--font-mono);
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--muted-fg);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .reading-section .reading-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  .reading-book {
+    display: flex;
+    gap: 2rem;
+    padding: 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .reading-book:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .reading-book .spine-strip {
+    width: 6px; min-height: 100%;
+    border-radius: 3px;
+    background: var(--book-spine-1);
+    flex-shrink: 0;
+  }
+  .reading-book .reading-info { flex: 1; min-width: 0; }
+  .reading-book .reading-volume {
+    font-family: var(--font-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--muted-fg); margin-bottom: 0.3rem;
+  }
+  .reading-book .reading-title {
+    font-family: var(--font-serif); font-size: 1.3em;
+    font-weight: 600; line-height: 1.25; color: var(--fg);
+    margin-bottom: 0.4rem;
+  }
+  .reading-book .reading-desc {
+    font-size: 0.9em; color: var(--muted-fg);
+    line-height: 1.5;
+  }
+  .reading-book .reading-arrow {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--muted-fg); flex-shrink: 0;
+    display: flex; align-items: center;
+    transition: all 0.3s;
+  }
+  .reading-book:hover .reading-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    .main { padding: 4rem 1rem 3rem; }
+    .shelf-surface { gap: 1rem; padding: 0.25rem 0.5rem 1rem; justify-content: center; }
+    .book-card { width: 160px; min-height: 230px; }
+    .book-cover { padding: 1rem 0.9rem 0.75rem 1.1rem; }
+    .book-cover .book-title { font-size: 1em; }
+    .book-cover .book-desc { font-size: 0.75em; }
+    .reading-book { flex-direction: column; gap: 1rem; }
+    .reading-book .spine-strip { width: 100%; height: 4px; min-height: 4px; }
+  }
+
+  /* ── Entry animation ── */
+  @keyframes bookArrive {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .book-card {
+    animation: bookArrive 0.5s ease both;
+  }
+  .book-card:nth-child(1) { animation-delay: 0.1s; }
+  .book-card:nth-child(2) { animation-delay: 0.2s; }
+  .book-card:nth-child(3) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="paper-overlay"></div>
+
+<!-- Top bar -->
+<div class="topbar">
+  <span class="title">天天学习，好好向上。</span>
+  <span>小册子</span>
+  <button id="themeToggle">暗色</button>
+</div>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="kicker">§ BOOKSHELF</div>
+    <h1>小册子</h1>
+    <p class="subtitle">书房一角。深度阅读，系统学习。</p>
+  </header>
+
+  <!-- Shelf 1: Main shelf -->
+  <div class="shelf-section">
+    <div class="shelf-label">书架一</div>
+    <div class="shelf-surface">
+      <!-- Book 1: 大模型之路 -->
+      <a href="/books/the-roads-for-llm" class="book-card spine-warm">
+        <div class="book-cover">
+          <div class="book-volume-tag">4 卷 · 39 章</div>
+          <div class="book-title">大模型之路：从图灵、感知机到 ChatGPT</div>
+          <div class="book-desc">一本写给普通聪明人的大模型入门书：从人工智能史出发，穿过神经网络、深度学习、Transformer 和 ChatGPT。</div>
+          <div class="book-meta">
+            <span>ML · AI · LLM</span>
+            <span class="chapter-count">39 章</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Placeholder cards for future books -->
+      <div class="book-card placeholder spine-blue">
+        <div class="placeholder-text">下一本书<br>会放在这里</div>
+      </div>
+
+      <div class="book-card placeholder spine-purple">
+        <div class="placeholder-text">敬请<br>期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shelf 2 -->
+  <div class="shelf-section" style="margin-top: 2.5rem;">
+    <div class="shelf-label">书架二</div>
+    <div class="shelf-surface">
+      <div class="shelf-empty-hint">空书架 · 等待新书</div>
+    </div>
+  </div>
+
+  <!-- Continue reading section -->
+  <div class="reading-section">
+    <div class="reading-label">继续阅读</div>
+    <a href="/books/the-roads-for-llm/turing-test" class="reading-book">
+      <div class="spine-strip"></div>
+      <div class="reading-info">
+        <div class="reading-volume">卷 1 · 第 1 章</div>
+        <div class="reading-title">图灵的问题：机器会思考吗？</div>
+        <div class="reading-desc">1950 年，艾伦·图灵提出了一个看起来简单、实际上很难回答的问题……</div>
+      </div>
+      <div class="reading-arrow">继续 →</div>
+    </a>
+  </div>
+
+</main>
+
+<script>
+(function() {
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  function update() { toggle.textContent = html.classList.contains('dark') ? '亮色' : '暗色'; }
+  toggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    localStorage.setItem('bookshelf-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    update();
+  });
+  const saved = localStorage.getItem('bookshelf-theme');
+  if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+  update();
+
+  // Subtle parallax on shelf surface
+  document.querySelectorAll('.shelf-surface').forEach(surface => {
+    surface.addEventListener('mousemove', (e) => {
+      const rect = surface.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const books = surface.querySelectorAll('.book-card:not(.placeholder)');
+      books.forEach((book, i) => {
+        const offset = x * 3 * (i + 1);
+        book.style.transform = book.matches(':hover') ? '' : `translateX(${offset}px)`;
+      });
+    });
+    surface.addEventListener('mouseleave', () => {
+      surface.querySelectorAll('.book-card').forEach(b => b.style.transform = '');
+    });
+  });
+})();
+</script>
+</body>
+</html>

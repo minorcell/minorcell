@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-11-06
+updated: 2025-11-06
 title: React 如何处理高频的实时数据？
 description: 深入解析 React 处理高频实时数据的技术方案，从 Maximum update depth exceeded 错误到批处理优化，完整解决 SSE 推送场景下的性能问题。
 author: mcell

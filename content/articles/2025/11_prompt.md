@@ -1,6 +1,7 @@
 ---
 type: article
 date: 2025-06-19
+updated: 2025-06-19
 title: 提示工程（Prompt Engineering）入门指南
 description: 基于Claude Code官方文档提炼的最实用提示工程技巧。从基础的清晰指令、提供范例，到进阶的思考链、角色设定，全面提升AI交互效果和工作效率。
 tags:

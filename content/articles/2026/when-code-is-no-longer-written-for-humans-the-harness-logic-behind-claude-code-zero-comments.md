@@ -2,6 +2,8 @@
 type: article
 title: 当代码不再为人类而写：Claude Code 0 注释背后的 Harness 逻辑
 date: 2026-04-08
+updated: 2026-04-08
+keywords: [Claude Code, AI编程, 代码注释, Harness, Agent工程]
 order: 47
 description: 当协作对象从「人 + 机器」变成「Agent + 机器」，代码注释的定位必须重新评估，它的职能应该从「代码内的静态说明」，转移到 Harness 的动态信息注入层里去。
 ---
