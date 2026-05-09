@@ -23,7 +23,7 @@ function TOCDrawer({
   onClose,
 }: {
   book: BookMeta
-  currentChapterSlug: string
+  currentChapterSlug?: string
   open: boolean
   onClose: () => void
 }) {
@@ -31,7 +31,7 @@ function TOCDrawer({
 
   // Auto-scroll to current chapter when drawer opens
   React.useEffect(() => {
-    if (!open) return
+    if (!open || !currentChapterSlug) return
     const nav = navRef.current
     if (!nav) return
     requestAnimationFrame(() => {
@@ -163,8 +163,39 @@ function TOCDrawer({
 // ─── Book index page ─────────────────────────────────────────────────────────
 
 function BookIndex({ book, discussionTerm }: { book: BookMeta; discussionTerm: string }) {
+  const [tocOpen, setTocOpen] = React.useState(false)
+  const discussionRef = React.useRef<DiscussionDrawerHandle>(null)
+
   return (
     <div className="mx-auto w-full max-w-[920px] px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
+      {/* TOC drawer */}
+      <TOCDrawer
+        book={book}
+        open={tocOpen}
+        onClose={() => setTocOpen(false)}
+      />
+
+      {/* Merged floating toolbar */}
+      <div className="fixed bottom-6 right-6 z-50 flex overflow-hidden rounded-full border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-card shadow-[0_2px_16px_rgba(0,0,0,0.07)] sm:bottom-10 sm:right-10">
+        <button
+          onClick={() => setTocOpen(true)}
+          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+        >
+          <BookOpen className="h-[14px] w-[14px] opacity-70" />
+          <span className="hidden sm:inline">目录</span>
+        </button>
+        <span className="my-1.5 w-px bg-[color:color-mix(in_oklab,var(--border)_70%,transparent)]" />
+        <button
+          onClick={() => discussionRef.current?.open()}
+          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+        >
+          <MessageCircle className="h-[14px] w-[14px] opacity-70" />
+          <span className="hidden sm:inline">讨论</span>
+        </button>
+      </div>
+
+      <DiscussionDrawer ref={discussionRef} discussionTerm={discussionTerm} hideTrigger />
+
       <header className="mb-12">
         <div className="border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           小书 · BOOK
@@ -198,42 +229,11 @@ function BookIndex({ book, discussionTerm }: { book: BookMeta; discussionTerm: s
         </div>
       </header>
 
-      <div className="rounded-md border border-border bg-card p-6 sm:p-8">
-        <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          目录
-        </div>
-        {book.volumes.map((vol) => (
-          <div key={vol.number} className="mb-5">
-            <div className="mb-1 font-serif text-[1.05em] font-semibold text-foreground">
-              卷 {vol.number}
-            </div>
-            <div className="flex flex-col">
-              {vol.chapters.map((ch) => {
-                const isIntro = ch.chapter === 0
-                return (
-                  <a
-                    key={ch.slug}
-                    href={`/books/${book.slug}/${ch.slug}`}
-                    className={`block border-l-[1.5px] border-l-transparent py-[0.35rem] pl-3 text-[0.9em] leading-[1.45] text-muted-foreground transition-all duration-200 hover:border-l-border hover:text-foreground ${
-                      isIntro ? 'italic text-[0.82em]' : ''
-                    }`}
-                  >
-                    {isIntro ? `导读：${ch.title}` : ch.title}
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-
       {book.indexContent.trim() && (
-        <div className="mt-12 article-markdown">
+        <div className="article-markdown">
           <MarkdownRenderer content={book.indexContent} />
         </div>
       )}
-
-      <DiscussionDrawer discussionTerm={discussionTerm} />
     </div>
   )
 }

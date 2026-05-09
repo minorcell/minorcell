@@ -10,6 +10,8 @@ description: '拆解Transformer的每一个核心组件：Self-Attention、Multi
 
 ---
 
+Attention 解决了信息瓶颈，但它还是挂在 RNN 上的附件。RNN 的串行本质——必须等上一个词算完才能算下一个——限制了训练速度。这一章把 RNN 彻底拿掉：只用 Attention。
+
 ## 24.1 2017：抛弃 RNN
 
 2017 年，Vaswani 等人在论文《Attention Is All You Need》中提出了 Transformer 架构。论文的标题本身就是一个宣示：
