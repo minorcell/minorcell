@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .container { display: flex; flex-direction: column; gap: 12px; max-width: 500px; width: 100%; }
+  .card {
+    padding: 18px 20px; border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 8px;
+  }
+  .card-header { display: flex; justify-content: space-between; align-items: center; }
+  .card-label { font-size: 12px; font-weight: 600; color: #111827; }
+  .tag {
+    font-size: 9px; padding: 2px 7px; border-radius: 12px;
+    font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .tag.good { background: #dcfce7; color: #16a34a; }
+  .tag.warn { background: #fef3c7; color: #d97706; }
+  .tag.bad { background: #fee2e2; color: #dc2626; }
+  .text-sample { font-size: 20px; line-height: 1.55; color: #111827; }
+  .card:nth-child(1) .text-sample { font-family: system-ui, -apple-system, sans-serif; }
+  .card:nth-child(2) .text-sample { font-family: 'Crimson Text', Georgia, serif; }
+  .card:nth-child(3) .text-sample { font-family: 'Crimson Text', Georgia, serif; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-label">系统字体</span>
+      <span class="tag good">零开销</span>
+    </div>
+    <div class="text-sample">The quick brown fox jumps over the lazy dog.<br>敏捷的棕色狐狸跳过了那只懒狗。</div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-label">Crimson Text · 正常加载</span>
+      <span class="tag warn">FOIT</span>
+    </div>
+    <div class="text-sample">The quick brown fox jumps over the lazy dog.<br>敏捷的棕色狐狸跳过了那只懒狗。</div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-label">Crimson Text · font-display: swap</span>
+      <span class="tag good">即时可见</span>
+    </div>
+    <div class="text-sample">The quick brown fox jumps over the lazy dog.<br>敏捷的棕色狐狸跳过了那只懒狗。</div>
+  </div>
+</div>
+</body>
+</html>

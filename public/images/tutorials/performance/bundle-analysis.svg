@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="system-ui,sans-serif">
+  <rect width="800" height="500" fill="#0f1117"/>
+  <text x="16" y="28" fill="#e1e4e8" font-size="16" font-weight="600">Bundle Analysis — rollup-plugin-visualizer</text>
+  <text x="16" y="48" fill="#8b949e" font-size="11">各 chunk 体积占比（树状图）</text>
+  <!-- Treemap layout -->
+  <rect x="16" y="64" width="380" height="200" rx="4" fill="#1f6feb" opacity="0.85"/>
+  <text x="24" y="84" fill="#fff" font-size="12" font-weight="600">react-vendor</text><text x="24" y="100" fill="#bdd6ff" font-size="10">react + react-dom + react-router-dom</text><text x="376" y="252" fill="#bdd6ff" font-size="10" text-anchor="end">142 KB (gzip)</text>
+  <rect x="406" y="64" width="180" height="96" rx="4" fill="#da3633" opacity="0.8"/>
+  <text x="414" y="84" fill="#fff" font-size="12" font-weight="600">ui-lib</text><text x="414" y="100" fill="#ffbdbd" font-size="10">@radix-ui/*</text><text x="576" y="152" fill="#ffbdbd" font-size="10" text-anchor="end">86 KB</text>
+  <rect x="596" y="64" width="188" height="96" rx="4" fill="#238636" opacity="0.8"/>
+  <text x="604" y="84" fill="#fff" font-size="12" font-weight="600">utils-vendor</text><text x="604" y="100" fill="#b8e4c0" font-size="10">lodash-es + date-fns</text><text x="774" y="152" fill="#b8e4c0" font-size="10" text-anchor="end">62 KB</text>
+  <rect x="406" y="168" width="378" height="96" rx="4" fill="#bc8cff" opacity="0.75"/>
+  <text x="414" y="188" fill="#fff" font-size="12" font-weight="600">chart-vendor (lazy)</text><text x="414" y="204" fill="#e4d4ff" font-size="10">recharts + d3-scale — 仅在 dashboard 页面按需加载</text><text x="774" y="256" fill="#e4d4ff" font-size="10" text-anchor="end">198 KB</text>
+  <rect x="16" y="274" width="380" height="100" rx="4" fill="#d29922" opacity="0.8"/>
+  <text x="24" y="294" fill="#0f1117" font-size="12" font-weight="600">src (业务代码)</text><text x="24" y="310" fill="#4a3c1c" font-size="10">pages + components + hooks + utils</text><text x="376" y="366" fill="#4a3c1c" font-size="10" text-anchor="end">44 KB (gzip)</text>
+  <rect x="406" y="274" width="378" height="100" rx="4" fill="#30363d" opacity="0.6"/>
+  <text x="414" y="294" fill="#8b949e" font-size="12" font-weight="600">other chunks</text><text x="414" y="310" fill="#8b949e" font-size="10">styles + i18n + misc</text><text x="774" y="366" fill="#8b949e" font-size="10" text-anchor="end">32 KB</text>
+  <!-- Stats -->
+  <text x="16" y="404" fill="#8b949e" font-size="11">总计: 564 KB (gzip) — 首屏加载 (react-vendor + utils-vendor + src + other) = 280 KB</text>
+  <text x="16" y="422" fill="#3fb950" font-size="11">懒加载节省 (chart-vendor + ui-lib) = 284 KB — 首屏不加载，交互时按需下载</text>
+  <!-- Legend -->
+  <rect x="16" y="450" width="12" height="12" rx="2" fill="#1f6feb" opacity="0.85"/><text x="32" y="460" fill="#8b949e" font-size="10">框架核心</text>
+  <rect x="100" y="450" width="12" height="12" rx="2" fill="#da3633" opacity="0.8"/><text x="116" y="460" fill="#8b949e" font-size="10">UI 库</text>
+  <rect x="164" y="450" width="12" height="12" rx="2" fill="#238636" opacity="0.8"/><text x="180" y="460" fill="#8b949e" font-size="10">工具库</text>
+  <rect x="232" y="450" width="12" height="12" rx="2" fill="#bc8cff" opacity="0.75"/><text x="248" y="460" fill="#8b949e" font-size="10">图表 (lazy)</text>
+  <rect x="316" y="450" width="12" height="12" rx="2" fill="#d29922" opacity="0.8"/><text x="332" y="460" fill="#8b949e" font-size="10">业务代码</text>
+  <rect x="400" y="450" width="12" height="12" rx="2" fill="#30363d" opacity="0.6"/><text x="416" y="460" fill="#8b949e" font-size="10">其他</text>
+</svg>

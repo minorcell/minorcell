@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .container { display: flex; flex-direction: column; gap: 16px; max-width: 440px; width: 100%; }
+  .panel {
+    padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;
+  }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; }
+  .panel-label { font-size: 13px; font-weight: 600; color: #111827; }
+  .panel-badge {
+    font-size: 10px; padding: 3px 8px; border-radius: 20px;
+    font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .panel-badge.bad { background: #fee2e2; color: #dc2626; }
+  .panel-badge.good { background: #dcfce7; color: #16a34a; }
+  .btn {
+    width: 100%; padding: 14px 20px; border-radius: 10px; border: none;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.15s ease;
+  }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn:active { transform: scale(0.98); }
+  .stats-row { display: flex; align-items: baseline; gap: 8px; }
+  .req-count { font-size: 32px; font-weight: 700; color: #2563eb; line-height: 1; font-variant-numeric: tabular-nums; }
+  .req-count.high { color: #dc2626; }
+  .req-label { font-size: 12px; color: #6b7280; }
+  .hint { font-size: 11px; color: #9ca3af; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-label">普通按钮 — 每次点击都发送请求</span>
+      <span class="panel-badge bad">浪费</span>
+    </div>
+    <button class="btn btn-danger" id="normal-btn">连续快速点击</button>
+    <div class="stats-row">
+      <span class="req-count high" id="normal-count">0</span>
+      <span class="req-label">次请求</span>
+    </div>
+    <div class="hint">快速连点 10 次 = 发送 10 次请求</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-label">防抖按钮 — 300ms 内重复点击只算一次</span>
+      <span class="panel-badge good">高效</span>
+    </div>
+    <button class="btn btn-primary" id="debounce-btn">连续快速点击</button>
+    <div class="stats-row">
+      <span class="req-count" id="debounce-count">0</span>
+      <span class="req-label">次请求</span>
+    </div>
+    <div class="hint">快速连点 10 次 = 发送 1 次请求</div>
+  </div>
+</div>
+<script>
+  let nCount = 0, dCount = 0, timer;
+
+  document.getElementById('normal-btn').addEventListener('click', () => {
+    nCount++;
+    document.getElementById('normal-count').textContent = nCount;
+  });
+
+  document.getElementById('debounce-btn').addEventListener('click', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      dCount++;
+      document.getElementById('debounce-count').textContent = dCount;
+    }, 300);
+  });
+</script>
+</body>
+</html>

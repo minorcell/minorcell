@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .container { display: flex; flex-direction: column; gap: 16px; max-width: 460px; width: 100%; }
+  .panel {
+    padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;
+  }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; }
+  .panel-label { font-size: 13px; font-weight: 600; color: #111827; }
+  .panel-badge {
+    font-size: 10px; padding: 3px 8px; border-radius: 20px;
+    font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .panel-badge.bad { background: #fee2e2; color: #dc2626; }
+  .panel-badge.good { background: #dcfce7; color: #16a34a; }
+  .input {
+    width: 100%; padding: 11px 14px; border-radius: 8px;
+    background: #fff; border: 1px solid #e5e7eb; color: #111827;
+    font-size: 14px; font-family: inherit; outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+  .save-stats { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+  .save-count { font-size: 28px; font-weight: 700; color: #2563eb; line-height: 1; font-variant-numeric: tabular-nums; }
+  .save-count.high { color: #dc2626; }
+  .save-detail { color: #6b7280; }
+  .saved-text { color: #16a34a; font-family: ui-monospace, monospace; font-size: 12px; }
+  .save-time { color: #9ca3af; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-label">普通保存 — 每次按键都触发</span>
+      <span class="panel-badge bad">浪费</span>
+    </div>
+    <input class="input" placeholder="快速打字试试…" id="normal-input">
+    <div class="save-stats">
+      <span>已保存 <span class="save-count high" id="normal-count">0</span> 次</span>
+      <span class="save-detail">内容: <span class="saved-text" id="normal-saved"></span></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-label">节流保存 — 每秒最多保存一次</span>
+      <span class="panel-badge good">高效</span>
+    </div>
+    <input class="input" placeholder="快速打字试试…" id="throttle-input">
+    <div class="save-stats">
+      <span>已保存 <span class="save-count" id="throttle-count">0</span> 次</span>
+      <span class="save-detail">内容: <span class="saved-text" id="throttle-saved"></span></span>
+      <span class="save-time" id="throttle-time"></span>
+    </div>
+  </div>
+</div>
+<script>
+  let nCount = 0, tCount = 0, lastTime = 0;
+
+  document.getElementById('normal-input').addEventListener('input', (e) => {
+    nCount++;
+    document.getElementById('normal-count').textContent = nCount;
+    document.getElementById('normal-saved').textContent = e.target.value || '(空)';
+  });
+
+  document.getElementById('throttle-input').addEventListener('input', (e) => {
+    const now = Date.now();
+    if (now - lastTime >= 1000) {
+      tCount++;
+      document.getElementById('throttle-count').textContent = tCount;
+      document.getElementById('throttle-saved').textContent = e.target.value || '(空)';
+      document.getElementById('throttle-time').textContent = '最后保存: ' + new Date().toLocaleTimeString();
+      lastTime = now;
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff; color: #111827;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 20px;
+  }
+  .container { display: flex; flex-direction: column; gap: 12px; max-width: 560px; width: 100%; }
+  .tabs { display: flex; gap: 6px; }
+  .tab {
+    padding: 8px 18px; border-radius: 8px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; color: #6b7280; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: inherit; transition: all 0.15s ease;
+  }
+  .tab:hover { background: #f0f1f3; }
+  .tab.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .row { display: flex; gap: 10px; }
+  .col {
+    flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 8px;
+  }
+  .col-hd { display: flex; justify-content: space-between; align-items: center; }
+  .col-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; font-weight: 600; }
+  .col-size { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .col-size.before { background: #f3f4f6; color: #6b7280; }
+  .col-size.after { background: #dcfce7; color: #16a34a; }
+  .code {
+    font-family: ui-monospace, 'SF Mono', monospace; font-size: 11px;
+    line-height: 1.55; white-space: pre-wrap; overflow-x: auto;
+    background: #fff; border-radius: 6px; border: 1px solid #e5e7eb;
+    padding: 10px; min-height: 180px; color: #374151;
+  }
+  .reveal-zone {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    min-height: 180px; border: 2px dashed #e5e7eb; border-radius: 6px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  }
+  .reveal-zone:hover { border-color: #2563eb; background: #f8faff; }
+  .reveal-btn {
+    padding: 10px 24px; border-radius: 8px; border: none;
+    background: #2563eb; color: #fff; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: inherit; transition: background 0.15s;
+  }
+  .reveal-btn:hover { background: #1d4ed8; }
+  .result-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; border-radius: 10px;
+    background: linear-gradient(135deg, #f0fdf4, #eff6ff);
+    border: 1px solid #bbf7d0;
+  }
+  .result-pct { font-size: 26px; font-weight: 700; color: #16a34a; }
+  .result-saved { font-size: 12px; color: #2563eb; font-weight: 500; }
+  .principles {
+    font-size: 11px; color: #6b7280; line-height: 1.7;
+    padding: 12px 16px; border-radius: 8px; background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" data-idx="0">JavaScript</button>
+    <button class="tab" data-idx="1">CSS</button>
+    <button class="tab" data-idx="2">HTML</button>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="col-hd">
+        <span class="col-label">压缩前</span>
+        <span class="col-size before" id="before-size">287 B</span>
+      </div>
+      <pre class="code" id="code-before"></pre>
+    </div>
+    <div class="col">
+      <div class="col-hd">
+        <span class="col-label">压缩后</span>
+        <span class="col-size after" id="after-size"></span>
+      </div>
+      <div class="reveal-zone" id="reveal-zone">
+        <button class="reveal-btn" id="reveal-btn">查看压缩结果</button>
+      </div>
+      <pre class="code" id="code-after" style="display:none"></pre>
+    </div>
+  </div>
+  <div class="result-bar" id="result-bar" style="display:none">
+    <span style="font-size:12px;color:#6b7280">压缩效果</span>
+    <span class="result-pct" id="result-pct"></span>
+    <span class="result-saved" id="result-saved"></span>
+  </div>
+  <div class="principles">
+    删除空白字符（空格 / 换行 / 制表符）· 删除注释 · 缩短变量名（JS）· 简化颜色值（CSS: #ffffff → #fff）
+  </div>
+</div>
+<script>
+  const examples = [{
+    before: '// 计算数组总和\nfunction calculateSum(numbers) {\n  let total = 0;\n  for (let i = 0; i < numbers.length; i++) {\n    total = total + numbers[i];\n  }\n  return total;\n}\nconst result = calculateSum([1, 2, 3, 4, 5]);\nconsole.log("总和:", result);',
+    after: 'function calculateSum(n){let t=0;for(let l=0;l<n.length;l++)t+=n[l];return t}const result=calculateSum([1,2,3,4,5]);console.log("总和:",result);',
+    beforeSize: 287, afterSize: 147
+  }, {
+    before: '.container {\n  display: flex;\n  justify-content: center;\n  padding: 20px;\n  margin: 10px auto;\n  background-color: #ffffff;\n  border-radius: 8px;\n  box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n}\n.title {\n  font-size: 24px;\n  font-weight: bold;\n  color: #333333;\n  margin-bottom: 16px;\n}',
+    after: '.container{display:flex;justify-content:center;padding:20px;margin:10px auto;background-color:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.1)}.title{font-size:24px;font-weight:700;color:#333;margin-bottom:16px}',
+    beforeSize: 353, afterSize: 244
+  }, {
+    before: '<!DOCTYPE html>\n<html lang="zh-CN">\n  <head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>示例页面</title>\n  </head>\n  <body>\n    <div class="container">\n      <h1>欢迎访问</h1>\n      <p>这是一个示例页面。</p>\n    </div>\n  </body>\n</html>',
+    after: '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>示例页面</title></head><body><div class="container"><h1>欢迎访问</h1><p>这是一个示例页面。</p></div></body></html>',
+    beforeSize: 409, afterSize: 264
+  }];
+  let current = 0, revealed = false;
+
+  function load(idx) {
+    const ex = examples[idx];
+    document.getElementById('code-before').textContent = ex.before;
+    document.getElementById('code-after').textContent = ex.after;
+    document.getElementById('before-size').textContent = ex.beforeSize + ' B';
+    document.getElementById('after-size').textContent = ex.afterSize + ' B';
+    revealed = false;
+    document.getElementById('code-after').style.display = 'none';
+    document.getElementById('reveal-zone').style.display = '';
+    document.getElementById('result-bar').style.display = 'none';
+  }
+
+  document.getElementById('reveal-btn').addEventListener('click', () => {
+    const ex = examples[current];
+    revealed = true;
+    document.getElementById('code-after').style.display = '';
+    document.getElementById('reveal-zone').style.display = 'none';
+    document.getElementById('result-bar').style.display = '';
+    const pct = ((ex.beforeSize - ex.afterSize) / ex.beforeSize * 100).toFixed(1);
+    document.getElementById('result-pct').textContent = '减少 ' + pct + '%';
+    document.getElementById('result-saved').textContent = '节省 ' + (ex.beforeSize - ex.afterSize) + ' 字节';
+  });
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      current = parseInt(t.dataset.idx);
+      load(current);
+    });
+  });
+  load(0);
+</script>
+</body>
+</html>

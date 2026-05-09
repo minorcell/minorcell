@@ -63,7 +63,7 @@ export function ImageWave({ steps }: ImageWaveProps) {
               ref={setRef(i) as React.Ref<HTMLDivElement>}
               animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
               transition={{ type: 'spring', stiffness: 24, damping: 12 }}
-              className="min-h-[50vh] py-8"
+              className="min-h-[70vh] py-8"
             >
               <MarkdownRenderer content={s.prose} />
             </motion.div>

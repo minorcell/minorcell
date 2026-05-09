@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px;
+  }
+  .container { display: flex; flex-direction: column; gap: 20px; max-width: 440px; width: 100%; }
+  .section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: #6b7280; font-weight: 600; margin-bottom: 10px;
+  }
+  .fib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .fib-btn {
+    position: relative;
+    padding: 14px 16px; border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; color: #111827; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+  }
+  .fib-btn:hover { background: #f0f1f3; border-color: #d1d5db; transform: translateY(-1px); }
+  .fib-btn:active { transform: translateY(0); }
+  .fib-btn.running { pointer-events: none; opacity: 0.4; background: #f3f4f6; }
+  .fib-btn .badge {
+    position: absolute; top: 6px; right: 8px; font-size: 9px;
+    padding: 2px 5px; border-radius: 4px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .fib-btn:nth-child(1) .badge,
+  .fib-btn:nth-child(2) .badge { background: #dcfce7; color: #16a34a; }
+  .fib-btn:nth-child(3) .badge { background: #fef3c7; color: #d97706; }
+  .fib-btn:nth-child(4) .badge { background: #fee2e2; color: #dc2626; }
+  .result-line {
+    text-align: center; font-size: 13px; color: #6b7280; min-height: 20px;
+  }
+  .result-line .val { font-weight: 600; color: #111827; }
+  .divider { height: 1px; background: #e5e7eb; }
+
+  .clock-section {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px; border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; transition: border-color 0.3s, background 0.3s;
+  }
+  .clock-section.stalled { border-color: #fecaca; background: #fef2f2; }
+  .clock-label { font-size: 13px; color: #6b7280; }
+  .clock {
+    font-size: 36px; font-weight: 700; color: #111827;
+    font-variant-numeric: tabular-nums; line-height: 1;
+    font-family: ui-monospace, 'SF Mono', monospace;
+    letter-spacing: -0.02em; transition: color 0.3s;
+  }
+  .clock.stalled { color: #dc2626; }
+  .clock-status {
+    margin-left: auto; font-size: 11px; padding: 4px 10px;
+    border-radius: 12px; font-weight: 600;
+    transition: all 0.3s;
+  }
+  .hint { text-align: center; font-size: 12px; color: #9ca3af; line-height: 1.6; transition: color 0.3s; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div>
+    <div class="section-title">递归计算 · 斐波那契数列</div>
+    <div class="fib-grid">
+      <button class="fib-btn" data-n="10">Fibonacci(10)<span class="badge">快</span></button>
+      <button class="fib-btn" data-n="20">Fibonacci(20)<span class="badge">快</span></button>
+      <button class="fib-btn" data-n="30">Fibonacci(30)<span class="badge">慢</span></button>
+      <button class="fib-btn" data-n="45">Fibonacci(45)<span class="badge">很慢</span></button>
+    </div>
+    <div class="result-line" id="fib-result">&nbsp;</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <div class="section-title">requestAnimationFrame 驱动的实时时钟</div>
+    <div class="clock-section" id="clock-section">
+      <span class="clock-label">当前时间</span>
+      <span class="clock" id="clock">00:00:00.000</span>
+      <span class="clock-status" id="clock-status">运行中</span>
+    </div>
+  </div>
+
+  <div class="hint" id="hint">点 Fibonacci(45)，观察时钟是否还在走动</div>
+</div>
+<script>
+  const clockEl = document.getElementById('clock');
+  const statusEl = document.getElementById('clock-status');
+  const sectionEl = document.getElementById('clock-section');
+  const fibResult = document.getElementById('fib-result');
+  const hintEl = document.getElementById('hint');
+  const fibBtns = document.querySelectorAll('.fib-btn[data-n]');
+
+  let lastTimestamp = 0;
+
+  function updateClock(timestamp) {
+    const d = new Date();
+    clockEl.textContent =
+      String(d.getHours()).padStart(2, '0') + ':' +
+      String(d.getMinutes()).padStart(2, '0') + ':' +
+      String(d.getSeconds()).padStart(2, '0') + '.' +
+      String(d.getMilliseconds()).padStart(3, '0');
+
+    if (lastTimestamp && timestamp - lastTimestamp > 100) {
+      clockEl.classList.add('stalled');
+      sectionEl.classList.add('stalled');
+      statusEl.textContent = '卡顿中';
+      statusEl.style.background = '#fee2e2'; statusEl.style.color = '#dc2626';
+      hintEl.textContent = '主线程被占满，rAF 长时间得不到执行';
+      hintEl.style.color = '#dc2626';
+    } else {
+      clockEl.classList.remove('stalled');
+      sectionEl.classList.remove('stalled');
+      statusEl.textContent = '运行中';
+      statusEl.style.background = '#dcfce7'; statusEl.style.color = '#16a34a';
+      hintEl.textContent = '点 Fibonacci(45)，观察时钟是否还在走动';
+      hintEl.style.color = '#9ca3af';
+    }
+
+    lastTimestamp = timestamp;
+    requestAnimationFrame(updateClock);
+  }
+
+  requestAnimationFrame(updateClock);
+
+  function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+
+  fibBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const n = parseInt(btn.dataset.n);
+      fibResult.textContent = '计算中…';
+      fibBtns.forEach(b => b.classList.add('running'));
+
+      setTimeout(() => {
+        const start = performance.now();
+        const result = fibonacci(n);
+        const elapsed = performance.now() - start;
+        fibResult.innerHTML = '结果 <span class="val">' + result + '</span>，耗时 <span class="val">' + elapsed.toFixed(0) + ' ms</span>';
+        fibBtns.forEach(b => b.classList.remove('running'));
+      }, 50);
+    });
+  });
+</script>
+</body>
+</html>

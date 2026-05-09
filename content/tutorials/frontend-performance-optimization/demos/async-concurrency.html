@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff; color: #111827;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px;
+  }
+  .container { display: flex; flex-direction: column; gap: 14px; max-width: 460px; width: 100%; }
+  .controls {
+    display: flex; gap: 8px; align-items: center;
+    padding: 16px; border-radius: 12px; border: 1px solid #e5e7eb; background: #f8f9fa;
+  }
+  .controls-label { font-size: 13px; color: #6b7280; white-space: nowrap; }
+  .input {
+    flex: 1; padding: 9px 12px; border-radius: 8px;
+    background: #fff; border: 1px solid #e5e7eb; color: #111827;
+    font-size: 14px; font-family: inherit; outline: none; width: 56px;
+    transition: border-color 0.15s ease;
+  }
+  .input:focus { border-color: #2563eb; }
+  .btn-go {
+    padding: 10px 20px; border-radius: 8px; border: none;
+    background: #2563eb; color: #fff; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  .btn-go:hover { background: #1d4ed8; }
+  .btn-go:disabled { opacity: 0.35; cursor: not-allowed; }
+  .progress-wrap { height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #2563eb; border-radius: 2px; transition: width 0.3s ease; width: 0%; }
+  .stats { display: flex; gap: 16px; font-size: 12px; color: #6b7280; }
+  .stats .done { color: #16a34a; font-weight: 600; }
+  .stats .running { color: #2563eb; font-weight: 600; }
+  .log {
+    padding: 14px; border-radius: 12px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; max-height: 140px; overflow-y: auto;
+    font-family: ui-monospace, monospace; font-size: 11px; color: #6b7280;
+    line-height: 1.6;
+  }
+  .log .done { color: #16a34a; }
+  .log .start { color: #2563eb; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="controls">
+    <span class="controls-label">请求数量</span>
+    <input class="input" type="number" id="task-count" value="20" min="1" max="100">
+    <span style="font-size:11px;color:#9ca3af;white-space:nowrap">并发 ≤ 5</span>
+    <button class="btn-go" id="btn-start">发起请求</button>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="progress"></div></div>
+  <div class="stats">
+    <span>已完成 <span class="done" id="done-count">0</span></span>
+    <span>运行中 <span class="running" id="running-count">0</span></span>
+  </div>
+  <div class="log" id="log"></div>
+</div>
+<script>
+  const logEl = document.getElementById('log');
+  function log(msg, cls) {
+    const div = document.createElement('div');
+    div.textContent = msg;
+    if (cls) div.className = cls;
+    logEl.appendChild(div);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  async function limitConcurrency(tasks, limit) {
+    const results = [], executing = new Set();
+    let done = 0; const total = tasks.length;
+    for (const task of tasks) {
+      const p = Promise.resolve().then(() => task());
+      results.push(p); executing.add(p);
+      p.then(() => {
+        executing.delete(p); done++;
+        document.getElementById('done-count').textContent = done;
+        document.getElementById('running-count').textContent = executing.size;
+        document.getElementById('progress').style.width = (done / total * 100) + '%';
+        log('完成 #' + done, 'done');
+      });
+      if (executing.size >= limit) await Promise.race(executing);
+    }
+    return Promise.all(results);
+  }
+  document.getElementById('btn-start').addEventListener('click', async function() {
+    const count = parseInt(document.getElementById('task-count').value) || 20;
+    const limit = 5;
+    this.disabled = true;
+    logEl.innerHTML = '';
+    document.getElementById('progress').style.width = '0%';
+    document.getElementById('done-count').textContent = '0';
+    document.getElementById('running-count').textContent = '0';
+    log('发起 ' + count + ' 个请求，并发上限 ' + limit, 'start');
+    const tasks = Array.from({ length: count }, (_, i) => () =>
+      new Promise(resolve => setTimeout(() => resolve({ index: i }), 400 + Math.random() * 1200)));
+    const t0 = performance.now();
+    await limitConcurrency(tasks, limit);
+    log('全部完成，总耗时 ' + (performance.now() - t0).toFixed(0) + ' ms');
+    this.disabled = false;
+  });
+</script>
+</body>
+</html>

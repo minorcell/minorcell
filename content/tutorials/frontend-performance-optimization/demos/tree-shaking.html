@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff; color: #111827;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 20px;
+  }
+  .container { display: flex; flex-direction: column; gap: 10px; max-width: 540px; width: 100%; }
+  .row { display: flex; gap: 10px; }
+  .col {
+    flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 8px;
+  }
+  .col-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; font-weight: 600; }
+  .fn-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px; margin-bottom: 4px; border-radius: 8px;
+    border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.15s ease;
+    font-size: 12px; background: #fff;
+  }
+  .fn-item:hover { border-color: #d1d5db; }
+  .fn-item.selected { border-color: #2563eb; background: #eff6ff; }
+  .fn-name { font-family: ui-monospace, monospace; color: #2563eb; font-weight: 600; }
+  .fn-size { font-size: 11px; color: #6b7280; }
+  .import-line {
+    padding: 8px 12px; border-radius: 6px; border: 1px solid #e5e7eb;
+    background: #fff; font-family: ui-monospace, monospace;
+    font-size: 11px; color: #2563eb;
+  }
+  .import-line.empty { color: #9ca3af; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn {
+    padding: 9px 18px; border-radius: 8px; border: none; font-size: 13px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-build { background: #16a34a; color: #fff; flex: 1; }
+  .btn-build:hover { background: #15803d; }
+  .btn-build:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+  .btn-reset { background: #f3f4f6; color: #6b7280; }
+  .btn-reset:hover { background: #e5e7eb; }
+  .result-box {
+    padding: 10px 12px; border-radius: 6px; border: 1px solid #e5e7eb;
+    background: #fff; font-size: 12px; display: flex; flex-direction: column; gap: 5px;
+  }
+  .result-row { display: flex; justify-content: space-between; align-items: center; }
+  .result-label { color: #6b7280; }
+  .result-val { color: #2563eb; font-weight: 600; }
+  .result-val.good { color: #16a34a; }
+  .result-val.bad { color: #dc2626; }
+  .highlight { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 10px 12px; }
+  .empty { color: #9ca3af; font-size: 12px; text-align: center; padding: 24px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <span class="col-label">utils.js · 工具函数库</span>
+      <div id="fn-list"></div>
+      <div class="import-line empty" id="import-line">// 请勾选你需要导入的函数</div>
+      <div class="btn-row">
+        <button class="btn btn-build" id="btn-build" disabled>打包构建</button>
+        <button class="btn btn-reset" id="btn-reset">重置</button>
+      </div>
+    </div>
+    <div class="col">
+      <span class="col-label">打包结果分析</span>
+      <div id="result-area"><div class="empty">勾选函数后点击「打包构建」</div></div>
+    </div>
+  </div>
+</div>
+<script>
+  const utils = [
+    { name: 'formatDate', size: 68 },
+    { name: 'formatCurrency', size: 79 },
+    { name: 'validateEmail', size: 96 },
+    { name: 'debounce', size: 144 },
+    { name: 'deepClone', size: 75 },
+  ];
+  const baseSize = 50;
+  const totalSize = baseSize + utils.reduce((s, fn) => s + fn.size, 0);
+  let selected = new Set();
+
+  function render() {
+    document.getElementById('fn-list').innerHTML = utils.map(fn => {
+      const sel = selected.has(fn.name);
+      return '<div class="fn-item' + (sel ? ' selected' : '') + '" data-name="' + fn.name + '">' +
+        '<span class="fn-name">' + fn.name + '</span>' +
+        '<span class="fn-size">' + fn.size + ' B</span></div>';
+    }).join('');
+    const line = document.getElementById('import-line');
+    if (selected.size > 0) {
+      line.textContent = "import { " + [...selected].join(', ') + " } from './utils';";
+      line.classList.remove('empty');
+    } else {
+      line.textContent = '// 请勾选你需要导入的函数';
+      line.classList.add('empty');
+    }
+    document.getElementById('btn-build').disabled = selected.size === 0;
+  }
+
+  document.getElementById('fn-list').addEventListener('click', (e) => {
+    const item = e.target.closest('.fn-item');
+    if (!item) return;
+    const name = item.dataset.name;
+    selected.has(name) ? selected.delete(name) : selected.add(name);
+    render();
+    document.getElementById('result-area').innerHTML = '<div class="empty">勾选函数后点击「打包构建」</div>';
+  });
+
+  document.getElementById('btn-build').addEventListener('click', () => {
+    const usedSize = [...selected].reduce((s, name) => s + utils.find(fn => fn.name === name).size, 0);
+    const bundleSize = baseSize + usedSize;
+    const unusedSize = totalSize - bundleSize;
+    const pct = (unusedSize / totalSize * 100).toFixed(1);
+
+    document.getElementById('result-area').innerHTML =
+      '<div class="result-box">' +
+        '<div class="result-row"><span class="result-label">打包体积</span><span class="result-val good">' + bundleSize + ' B</span></div>' +
+        '<div class="result-row"><span class="result-label">基础开销</span><span class="result-val">' + baseSize + ' B</span></div>' +
+        '<div class="result-row"><span class="result-label">已导入函数</span><span class="result-val">' + usedSize + ' B (' + selected.size + ' 个)</span></div>' +
+      '</div>' +
+      '<div class="highlight" style="margin-top:8px">' +
+        '<div class="result-row"><span class="result-label">Tree Shaking 自动移除</span><span class="result-val good">' + unusedSize + ' B</span></div>' +
+        '<div class="result-row"><span class="result-label">消除函数</span><span style="font-size:11px;color:#6b7280">' + (5 - selected.size) + ' 个</span></div>' +
+      '</div>' +
+      '<div class="result-box" style="margin-top:8px">' +
+        '<div class="result-row"><span class="result-label">不开启 Tree Shaking 的体积</span><span class="result-val bad">' + totalSize + ' B</span></div>' +
+        '<div class="result-row"><span class="result-label">体积减少</span><span class="result-val good">' + pct + '%</span></div>' +
+      '</div>';
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    selected = new Set();
+    render();
+    document.getElementById('result-area').innerHTML = '<div class="empty">勾选函数后点击「打包构建」</div>';
+  });
+
+  render();
+</script>
+</body>
+</html>

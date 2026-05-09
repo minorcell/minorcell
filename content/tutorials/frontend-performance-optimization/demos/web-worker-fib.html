@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff; color: #111827;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px;
+  }
+  .container { display: flex; flex-direction: column; gap: 14px; max-width: 520px; width: 100%; }
+  .row { display: flex; gap: 12px; }
+  .col {
+    flex: 1; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb;
+    background: #f8f9fa; display: flex; flex-direction: column; gap: 12px;
+  }
+  .col-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; font-weight: 600; }
+  .col-sub { font-size: 11px; color: #9ca3af; margin-top: -8px; }
+  .btn {
+    width: 100%; padding: 12px 16px; border-radius: 8px; border: none;
+    color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.15s ease;
+  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
+  .btn-red { background: #dc2626; }
+  .btn-red:hover:not(:disabled) { background: #b91c1c; }
+  .btn-blue { background: #2563eb; }
+  .btn-blue:hover:not(:disabled) { background: #1d4ed8; }
+  .result { font-size: 12px; color: #6b7280; min-height: 36px; line-height: 1.6; }
+  .result .num { color: #2563eb; font-weight: 700; }
+  .result .time-good { color: #16a34a; font-weight: 700; }
+  .result .time-bad { color: #dc2626; font-weight: 700; }
+  .test-section {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px; border-radius: 12px; border: 1px solid #e5e7eb;
+    background: #f8f9fa;
+  }
+  .test-label { font-size: 13px; color: #6b7280; }
+  .click-count { font-size: 32px; font-weight: 700; color: #16a34a; min-width: 40px; text-align: center; font-variant-numeric: tabular-nums; line-height: 1; }
+  .test-btn {
+    margin-left: auto; padding: 10px 20px; border-radius: 8px;
+    border: 2px solid #e5e7eb; background: #fff; color: #111827;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: inherit; transition: all 0.15s ease;
+  }
+  .test-btn:hover { background: #f0f1f3; border-color: #d1d5db; }
+  .test-btn:active { background: #16a34a; border-color: #16a34a; color: #fff; transition: none; }
+  .hint { text-align: center; font-size: 11px; color: #9ca3af; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="hint">计算 Fibonacci(43) — 约 2-4 秒 CPU 密集型任务</div>
+  <div class="row">
+    <div class="col">
+      <span class="col-label">主线程直接计算</span>
+      <span class="col-sub">计算期间 UI 冻结</span>
+      <button class="btn btn-red" id="btn-no-worker">开始计算</button>
+      <div class="result" id="result-no-worker"></div>
+    </div>
+    <div class="col">
+      <span class="col-label">Web Worker 后台</span>
+      <span class="col-sub">主线程保持响应</span>
+      <button class="btn btn-blue" id="btn-worker">开始计算</button>
+      <div class="result" id="result-worker"></div>
+    </div>
+  </div>
+  <div class="test-section">
+    <span class="test-label">测试响应</span>
+    <span class="click-count" id="click-count">0</span>
+    <button class="test-btn" id="btn-test">点我 +1</button>
+  </div>
+  <div class="hint">先点红色按钮 → 计算期间反复点「点我 +1」→ 再试蓝色按钮对比</div>
+</div>
+<script>
+  const workerCode = 'self.onmessage=function(e){const n=e.data;self.postMessage(function f(n){return n<=1?n:f(n-1)+f(n-2)}(n))}';
+  const workerUrl = URL.createObjectURL(new Blob([workerCode], { type: 'application/javascript' }));
+
+  document.getElementById('btn-no-worker').addEventListener('click', function() {
+    const btn = this; btn.disabled = true; btn.textContent = '计算中…';
+    const el = document.getElementById('result-no-worker');
+    requestAnimationFrame(() => { requestAnimationFrame(() => {
+      const t0 = performance.now();
+      function fib(n) { return n <= 1 ? n : fib(n-1) + fib(n-2); }
+      const r = fib(43);
+      const t = (performance.now() - t0).toFixed(0);
+      el.innerHTML = '结果 <span class="num">' + r + '</span><br>耗时 <span class="time-bad">' + t + ' ms</span>';
+      btn.disabled = false; btn.textContent = '开始计算';
+    })});
+  });
+
+  document.getElementById('btn-worker').addEventListener('click', function() {
+    const btn = this; btn.disabled = true; btn.textContent = '计算中…';
+    const el = document.getElementById('result-worker');
+    const t0 = performance.now();
+    const w = new Worker(workerUrl);
+    w.onmessage = function(e) {
+      const t = (performance.now() - t0).toFixed(0);
+      el.innerHTML = '结果 <span class="num">' + e.data + '</span><br>耗时 <span class="time-good">' + t + ' ms</span>';
+      btn.disabled = false; btn.textContent = '开始计算';
+      w.terminate();
+    };
+    w.postMessage(43);
+  });
+
+  let clicks = 0;
+  document.getElementById('btn-test').addEventListener('click', () => {
+    clicks++;
+    document.getElementById('click-count').textContent = clicks;
+  });
+</script>
+</body>
+</html>

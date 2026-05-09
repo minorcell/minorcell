@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    max-width: 560px;
+    width: 100%;
+  }
+  .card {
+    background: #f8f9fa; border: 1px solid #e5e7eb;
+    border-radius: 10px; overflow: hidden; transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #d1d5db; }
+  .preview {
+    height: 80px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #dbeafe, #ede9fe, #fce7f3);
+  }
+  .preview-dot {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #7c3aed, #db2777);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+  }
+  .info {
+    padding: 10px 12px; display: flex; justify-content: space-between;
+    align-items: center; font-size: 11px; border-top: 1px solid #e5e7eb;
+  }
+  .format { font-weight: 700; color: #111827; letter-spacing: 0.04em; }
+  .size { color: #6b7280; font-variant-numeric: tabular-nums; }
+  .size.big { color: #dc2626; font-weight: 600; }
+  .size.good { color: #16a34a; font-weight: 600; }
+  .summary {
+    grid-column: 1 / -1; text-align: center;
+    font-size: 12px; color: #9ca3af; padding: 6px 0;
+  }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">JPG</span><span class="size big">483 KB</span></div>
+  </div>
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">PNG</span><span class="size big">2.2 MB</span></div>
+  </div>
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">WebP</span><span class="size good">126 KB</span></div>
+  </div>
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">AVIF</span><span class="size good">98 KB</span></div>
+  </div>
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">GIF</span><span class="size big">780 KB</span></div>
+  </div>
+  <div class="card">
+    <div class="preview"><div class="preview-dot"></div></div>
+    <div class="info"><span class="format">SVG</span><span class="size good">4 KB</span></div>
+  </div>
+  <div class="summary">同一个画面 · 体积差可达 500 倍</div>
+</div>
+</body>
+</html>

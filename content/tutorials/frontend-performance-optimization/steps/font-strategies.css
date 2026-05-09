@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'Brand Serif';
+  src: url('/fonts/brand-serif.woff2') format('woff2'),
+       url('/fonts/brand-serif.woff')  format('woff');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+4E00-9FFF;
+}
+
+/*
+  font-display 四种策略：
+  auto     — 浏览器默认行为
+  block    — 短 FOIT (~3s) 后回退，加载完切换
+  swap     — 立即用系统字，加载完切换（推荐正文）
+  fallback — 极短 FOIT (~100ms)，加载慢则放弃
+  optional — 极短 FOIT，不切换（适合装饰字体）
+*/
+
+<link rel="preload" href="/fonts/brand-serif.woff2"
+      as="font" type="font/woff2" crossorigin>
+
+@font-face {
+  font-family: 'Brand Variable';
+  src: url('/fonts/brand-variable.woff2') format('woff2-variations');
+  font-weight: 300 800;
+  font-stretch: 75% 125%;
+  font-display: swap;
+}
+
+body {
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #fff; color: #111827;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 32px;
+  }
+  .card {
+    max-width: 380px; width: 100%; padding: 28px;
+    border-radius: 14px; border: 1px solid #e5e7eb; background: #f8f9fa;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .title { font-size: 15px; font-weight: 600; color: #111827; }
+  .refresh-btn {
+    width: 100%; padding: 12px 20px; border-radius: 10px; border: none;
+    background: #2563eb; color: #fff; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: inherit; transition: background 0.15s ease;
+  }
+  .refresh-btn:hover { background: #1d4ed8; }
+  .metric-list { display: flex; flex-direction: column; gap: 8px; }
+  .metric {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px; border-radius: 10px;
+    border: 1px solid #e5e7eb; background: #fff;
+    transition: border-color 0.3s;
+  }
+  .metric-name { font-size: 13px; font-weight: 500; color: #6b7280; }
+  .metric-value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .metric-value .unit { font-size: 12px; font-weight: 400; color: #6b7280; }
+  .metric-value.good { color: #16a34a; }
+  .metric-value.warn { color: #d97706; }
+  .metric-value.bad  { color: #dc2626; }
+  .empty-state { text-align: center; padding: 24px; color: #9ca3af; font-size: 14px; }
+  .footnote {
+    text-align: center; font-size: 11px; color: #9ca3af;
+    padding-top: 12px; border-top: 1px solid #e5e7eb;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="title">Paint Timing 实时测量</div>
+  <button class="refresh-btn" id="reload-btn">重新加载页面以获取数据</button>
+  <div class="metric-list" id="metrics"></div>
+  <div class="footnote">数据来自 PerformanceObserver · 首次加载为空时请刷新</div>
+</div>
+<script>
+  function classify(value, name) {
+    const t = name === 'first-paint' ? 1000 : 1800;
+    if (value < t) return 'good';
+    if (value < t * 2) return 'warn';
+    return 'bad';
+  }
+  function label(name) {
+    return name === 'first-paint'
+      ? 'FP · First Paint'
+      : 'FCP · First Contentful Paint';
+  }
+  function render() {
+    const el = document.getElementById('metrics');
+    el.innerHTML = '<div class="empty-state">正在读取 Paint Timing…</div>';
+
+    const observer = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      if (entries.length === 0) {
+        el.innerHTML = '<div class="empty-state">暂无数据 — 点击上方按钮刷新页面</div>';
+        return;
+      }
+      el.innerHTML = entries.map(e => {
+        const cls = classify(e.startTime, e.name);
+        return '<div class="metric">' +
+          '<span class="metric-name">' + label(e.name) + '</span>' +
+          '<span class="metric-value ' + cls + '">' + e.startTime.toFixed(1) + ' <span class="unit">ms</span></span>' +
+          '</div>';
+      }).join('');
+      observer.disconnect();
+    });
+
+    observer.observe({ type: 'paint', buffered: true });
+  }
+
+  document.getElementById('reload-btn').addEventListener('click', () => location.reload());
+  render();
+</script>
+</body>
+</html>
