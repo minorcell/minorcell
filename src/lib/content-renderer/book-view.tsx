@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { BookOpen, MessageCircle } from 'lucide-react'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { DiscussionDrawer, type DiscussionDrawerHandle } from '@/components/common/DiscussionDrawer'
 import { CodeWave, type StepContent } from '@/components/interactive/CodeWave'
@@ -112,14 +113,14 @@ function TOCDrawer({
           </div>
 
           {/* Book index — always first */}
-          <a
+          <TransitionLink
             href={`/books/${book.slug}`}
             onClick={onClose}
             data-toc-slug="__index__"
             className="mb-4 block border-l-[1.5px] border-l-transparent py-[0.3rem] pl-3 text-[0.85em] leading-[1.4] text-muted-foreground transition-all duration-200 hover:border-l-border hover:text-foreground"
           >
             概览与目录
-          </a>
+          </TransitionLink>
 
           {book.volumes.map((vol) => (
             <div key={vol.number} className="mb-4">
@@ -132,7 +133,7 @@ function TOCDrawer({
                   const isIntro = ch.chapter === 0
                   const isCurrent = ch.slug === currentChapterSlug
                   return (
-                    <a
+                    <TransitionLink
                       key={ch.slug}
                       data-toc-slug={ch.slug}
                       href={`/books/${book.slug}/${ch.slug}`}
@@ -148,7 +149,7 @@ function TOCDrawer({
                       }`}
                     >
                       {isIntro ? `导读：${ch.title}` : ch.title}
-                    </a>
+                    </TransitionLink>
                   )
                 })}
               </div>
@@ -406,20 +407,20 @@ function InteractiveChapter({
         <nav className="flex items-center justify-between border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-5 font-mono text-[11px] uppercase tracking-[0.14em]">
           <div>
             {prev ? (
-              <a href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                 ← {prev.title}
-              </a>
+              </TransitionLink>
             ) : (
-              <a href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                 ← 目录
-              </a>
+              </TransitionLink>
             )}
           </div>
           <div>
             {next ? (
-              <a href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                 {next.title} →
-              </a>
+              </TransitionLink>
             ) : (
               <span className="text-muted-foreground/30">完</span>
             )}
@@ -506,20 +507,20 @@ function ChapterPage({
           <nav className="mt-14 flex items-center justify-between border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-5 font-mono text-[11px] uppercase tracking-[0.14em]">
             <div>
               {prev ? (
-                <a href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                   ← {prev.title}
-                </a>
+                </TransitionLink>
               ) : (
-                <a href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                   ← 目录
-                </a>
+                </TransitionLink>
               )}
             </div>
             <div>
               {next ? (
-                <a href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
                   {next.title} →
-                </a>
+                </TransitionLink>
               ) : (
                 <span className="text-muted-foreground/30">完</span>
               )}

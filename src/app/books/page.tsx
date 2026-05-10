@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import type { Metadata } from 'next'
 import { buildPageMetadata } from '@/lib/seo'
 import { createBreadcrumbJsonLd } from '@/lib/structured-data'
-import Link from 'next/link'
+import { BookCard } from '@/components/common/BookCard'
 
 export const metadata: Metadata = buildPageMetadata({
   title: '小书',
@@ -79,63 +79,20 @@ export default function BooksPage() {
                 borderBottomColor: 'oklch(0.62 0.06 70)',
               }}
             >
-              {books.map((book, i) => {
-                const spineColors = [
-                  'oklch(0.55 0.05 70)',
-                  'oklch(0.48 0.06 250)',
-                  'oklch(0.42 0.05 290)',
-                  'oklch(0.52 0.04 150)',
-                ]
-                const spineColor = spineColors[i % spineColors.length]
-
-                const totalChapters = book.volumes.reduce(
-                  (sum, v) => sum + v.chapters.filter((c) => c.chapter > 0).length,
-                  0,
-                )
-
-                return (
-                  <Link
-                    key={book.slug}
-                    href={`/books/${book.slug}`}
-                    className="group relative flex w-[220px] flex-col rounded-[3px_6px_6px_3px] border border-border bg-card transition-all duration-[0.35s] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-1.5 hover:border-[var(--link-accent)] max-sm:w-[160px]"
-                    style={{
-                      minHeight: 280,
-                      boxShadow:
-                        '0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.06)',
-                    }}
-                  >
-                    {/* Spine */}
-                    <span
-                      className="absolute left-0 top-0 bottom-0 w-[5px] rounded-l-sm transition-all duration-[0.35s] group-hover:w-2"
-                      style={{ backgroundColor: spineColor }}
-                    />
-
-                    {/* Cover content */}
-                    <div className="flex flex-1 flex-col py-[1.35rem] pr-5 pl-7">
-                      <div className="mb-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">
-                        {book.volumes.length} 卷 · {totalChapters} 章
-                      </div>
-                      <div
-                        className="mb-2 text-[1.15em] leading-[1.3] tracking-[-0.01em] text-foreground"
-                        style={{
-                          fontFamily: 'Georgia, "Times New Roman", serif',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {book.title}
-                      </div>
-                      {book.description && (
-                        <div className="line-clamp-3 text-[0.82em] leading-[1.45] text-muted-foreground">
-                          {book.description}
-                        </div>
-                      )}
-                      <div className="mt-auto border-t border-border pt-3 font-mono text-[10px] tracking-[0.08em] text-muted-foreground">
-                        {totalChapters} 章
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
+              {books.map((book, i) => (
+                <BookCard
+                  key={book.slug}
+                  slug={book.slug}
+                  title={book.title}
+                  description={book.description}
+                  volumeCount={book.volumes.length}
+                  chapterCount={book.volumes.reduce(
+                    (sum, v) => sum + v.chapters.filter((c) => c.chapter > 0).length,
+                    0,
+                  )}
+                  index={i}
+                />
+              ))}
             </div>
           </div>
         ) : (
