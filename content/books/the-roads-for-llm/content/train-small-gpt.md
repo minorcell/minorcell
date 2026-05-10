@@ -200,6 +200,8 @@ class TransformerBlock(nn.Module):
 
 总参数量 ≈ vocab_size × d_model（词嵌入）+ block_size × d_model（位置嵌入）+ 6 × (4 × d_model²)（Transformer 块）+ d_model × vocab_size（输出头）。在 vocab_size 约 4000、d_model=256 时，总计约 1000 万参数——完全可以在普通笔记本电脑的 CPU 上训练。
 
+> **关于"从零"的范围**：为了代码简洁，`TransformerBlock` 中使用了 PyTorch 内置的 `nn.MultiheadAttention`，而非从矩阵乘法级别实现 Self-Attention。`nn.MultiheadAttention` 内部封装了 W_Q、W_K、W_V 的线性投影和缩放点积 Attention——这些正是第 23-24 章逐行拆解的内容。如需完全从矩阵乘法手写 Self-Attention，可参考第 24 章的实现。此外，自回归生成循环（`torch.cat` 逐 token 拼接）在生产环境中会被 KV Cache 替代以提升效率——这属于工程优化而非教学简化，不影响本章的核心学习目标。
+
 ---
 
 ## 31.6 第五步：训练循环
