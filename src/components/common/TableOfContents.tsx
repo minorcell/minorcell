@@ -38,17 +38,37 @@ export function TableOfContents({ rawContent }: Props) {
   const headings = useRef(parseHeadings(rawContent)).current
   const [activeId, setActiveId] = useState<string | null>(null)
 
-  // Inject IDs into DOM heading elements
+  // Inject IDs and anchor links into DOM heading elements
   useEffect(() => {
     if (headings.length === 0) return
     const articleBody = document.querySelector('.article-markdown')
     if (!articleBody) return
     const domHeadings = articleBody.querySelectorAll('h2, h3')
     domHeadings.forEach((el, i) => {
-      if (i < headings.length) {
-        el.id = headings[i].id
+      if (i >= headings.length) return
+      el.id = headings[i].id
+
+      if (!el.querySelector('.heading-anchor')) {
+        const a = document.createElement('a')
+        a.href = `#${headings[i].id}`
+        a.className = 'heading-anchor'
+        a.setAttribute('aria-label', `Link to: ${headings[i].text}`)
+        a.textContent = '#'
+        a.addEventListener('click', (e) => {
+          e.preventDefault()
+          window.history.pushState(null, '', `#${headings[i].id}`)
+          el.scrollIntoView({ behavior: 'smooth' })
+        })
+        el.appendChild(a)
       }
     })
+
+    // Scroll to hash on initial load
+    const hash = window.location.hash.slice(1)
+    if (hash) {
+      const target = document.getElementById(hash)
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 150)
+    }
   }, [headings])
 
   // Scroll-spy: find the heading whose top is just above the viewport threshold
@@ -100,6 +120,7 @@ export function TableOfContents({ rawContent }: Props) {
                   href={`#${h.id}`}
                   onClick={(e) => {
                     e.preventDefault()
+                    window.history.pushState(null, '', `#${h.id}`)
                     document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' })
                   }}
                   className={cn(
