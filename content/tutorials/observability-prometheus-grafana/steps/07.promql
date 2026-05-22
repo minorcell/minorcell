@@ -1,0 +1,13 @@
+rate(http_requests_total[1m])
+
+sum(rate(http_requests_total[1m])) by (endpoint)
+
+sum(rate(http_requests_total{status=~"5.."}[1m])) / sum(rate(http_requests_total[1m]))
+
+http_requests_in_flight
+
+histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint))
+
+histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint))
+
+rate(business_orders_total[1m]) * 60
