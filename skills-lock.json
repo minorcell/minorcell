@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "skills": {
+    "baoyu-article-illustrator": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-article-illustrator/SKILL.md",
+      "computedHash": "ad7720b869c6ec83107ffca42cde601942647391ef9b19f12edfa6da00fb3a2b"
+    },
+    "baoyu-comic": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-comic/SKILL.md",
+      "computedHash": "7bbfd552969e2eb3d954574d664bfd4e104e74132223416c623a546311fd6a81"
+    },
+    "baoyu-compress-image": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-compress-image/SKILL.md",
+      "computedHash": "30bc37968d803621e7833a469b722da6349665d7e80efb9a43d2f38b4928c570"
+    },
+    "baoyu-cover-image": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-cover-image/SKILL.md",
+      "computedHash": "8fd234433773716bc289d2ddbf4a1dfba77740070a095782174a9465108d3755"
+    },
+    "baoyu-danger-gemini-web": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-danger-gemini-web/SKILL.md",
+      "computedHash": "9fd3f06d1ace898ad47e2c7ae67bd5a8b22b683588dd0f32a75d0c68ad20697a"
+    },
+    "baoyu-danger-x-to-markdown": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-danger-x-to-markdown/SKILL.md",
+      "computedHash": "d0bad53d1a7a459009a23943b85e7b0a1af83874f5f7dc76c694526b4616ee7f"
+    },
+    "baoyu-diagram": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-diagram/SKILL.md",
+      "computedHash": "6c588a89cd5aae21f8053aaed688517c1e00921db9219401abe058e879324b87"
+    },
+    "baoyu-format-markdown": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-format-markdown/SKILL.md",
+      "computedHash": "48ebaa7378f4c38f56d05d9b32038476ecc74732c4110160e13840c405cc7082"
+    },
+    "baoyu-image-cards": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-image-cards/SKILL.md",
+      "computedHash": "0a88e94444049988c4d7a3db20f33a53bae5052e7e6e1f4798b720f755ecc65c"
+    },
+    "baoyu-image-gen": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-image-gen/SKILL.md",
+      "computedHash": "213c135550ef14d78b31443eb327483d7f258655cc885a0306fe209a8d559318"
+    },
+    "baoyu-imagine": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-imagine/SKILL.md",
+      "computedHash": "d7374cc6653582b6bc464e20dcaf4a552e7f84936c2855672a3f6a5ecf8a34ca"
+    },
+    "baoyu-infographic": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-infographic/SKILL.md",
+      "computedHash": "641c85710c151fb1535a39e63475ddae36782a7cbebff89e9e8cdcd223000932"
+    },
+    "baoyu-markdown-to-html": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-markdown-to-html/SKILL.md",
+      "computedHash": "68ec2028dbe345908d8df50422fbc79d28215a67b39d3e184bfcc8b45ec33b34"
+    },
+    "baoyu-post-to-wechat": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-post-to-wechat/SKILL.md",
+      "computedHash": "cb697107d9323470e9c3a5c5adfdf55da6d07449036ab910642842fa6be6e7c9"
+    },
+    "baoyu-post-to-weibo": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-post-to-weibo/SKILL.md",
+      "computedHash": "509d9aa87fb0b7ad9b5ae0c013f8d5d0b4334244fbdb8a9887fe4f3701987557"
+    },
+    "baoyu-post-to-x": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-post-to-x/SKILL.md",
+      "computedHash": "a5b9937a4e90d45dd5b19a5a6642275be3ee739ef059531905f126c810c852c4"
+    },
+    "baoyu-slide-deck": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-slide-deck/SKILL.md",
+      "computedHash": "63a5ec3dd00d3a5d69b451fdd192a97f91bffffc82f9798b061c637ee4c663ea"
+    },
+    "baoyu-translate": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-translate/SKILL.md",
+      "computedHash": "3dc723aa4b86c4c6b8557faeec558e54f5bce5f9cf39aa629dd588ed6531df20"
+    },
+    "baoyu-url-to-markdown": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-url-to-markdown/SKILL.md",
+      "computedHash": "b55b97dd2489018ab25588a7c4450eb24ea37bce501aebcb8cee9c294660d21c"
+    },
+    "baoyu-wechat-summary": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-wechat-summary/SKILL.md",
+      "computedHash": "ca99f5225420c1072be6a880d8f1186ca3cb4f12d412db7c33afeca43c004de7"
+    },
+    "baoyu-xhs-images": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-xhs-images/SKILL.md",
+      "computedHash": "bd1fb8c7f747fdfce4e4dd033eec756e92400a399504dc6012f4d42faf1fdc45"
+    },
+    "baoyu-youtube-transcript": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-youtube-transcript/SKILL.md",
+      "computedHash": "27582028cbdd9c81232fba1aafbfa609e4dc1167bff4f2e89ca48a3ecd07049b"
+    },
+    "release-skills": {
+      "source": "jimliu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/release-skills/SKILL.md",
+      "computedHash": "fd4616d141589bcd23621b9ff1be30b29985f86566acf9bca7d55f0a894ab79e"
+    },
+    "seo": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "skillPath": "skills/seo/SKILL.md",
+      "computedHash": "1f1551c898c17a88a976b4f4aa84e17886f115f3887b62d1c4f8a1c040e4d1ef"
+    },
+    "writing-skills": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/writing-skills/SKILL.md",
+      "computedHash": "c0a92e629e39ea91b1f54da67a6aa92723008a8ef5b500c6de078f55485937c7"
+    }
+  }
+}
