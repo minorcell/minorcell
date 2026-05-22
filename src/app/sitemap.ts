@@ -117,14 +117,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  if (books.length > 0) {
-    bookRoutes.push({
-      url: `${baseUrl}/books`,
-      lastModified: latestSiteDate,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    })
-  }
+  bookRoutes.push({
+    url: `${baseUrl}/books`,
+    lastModified: books.length > 0 ? latestSiteDate : new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  })
 
   return [...staticRoutes, ...articleRoutes, ...tutorialRoutes, ...bookRoutes]
 }

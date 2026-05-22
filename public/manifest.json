@@ -33,15 +33,15 @@
   "shortcuts": [
     {
       "name": "文章",
-      "short_name": "Blog",
+      "short_name": "Articles",
       "description": "按时间浏览技术文章",
-      "url": "/blog"
+      "url": "/articles"
     },
     {
       "name": "专题",
-      "short_name": "Topics",
+      "short_name": "Tutorials",
       "description": "按主题深入阅读",
-      "url": "/topics"
+      "url": "/tutorials"
     },
     {
       "name": "项目",

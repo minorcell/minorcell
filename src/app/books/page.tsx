@@ -7,8 +7,10 @@ import { BookCard } from '@/components/common/BookCard'
 
 export const metadata: Metadata = buildPageMetadata({
   title: '小书',
-  description: '书房一角。深度阅读，系统学习。由 mcell 与 AI 协作撰写。',
+  description:
+    'Minor Cell 小书房——深度技术书籍，系统学习前端开发、AI Agent 与全栈工程。由 mcell 与 AI 协作撰写，人工审校。',
   path: '/books',
+  keywords: ['技术书籍', '深度阅读', 'AI 协作', '前端开发', '全栈工程'],
 })
 
 export default function BooksPage() {
