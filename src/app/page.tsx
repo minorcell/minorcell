@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
-import { getAllArticles, getContentHref, isStubArticle } from '@/lib/content-parser'
+import { getAllContent, getContentHref, isStubArticle, getStubTargetSlug } from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
@@ -56,10 +56,16 @@ const InteractiveBadge = () => (
 const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series']
 
 export default function HomePage() {
-  const allPosts = getAllArticles().sort(
-    (a, b) =>
-      new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
+  const allContent = getAllContent()
+  const stubbedSlugs = new Set(
+    allContent.filter(isStubArticle).map(getStubTargetSlug).filter(Boolean)
   )
+  const allPosts = allContent
+    .filter((item) => !(item.type === 'tutorial' && stubbedSlugs.has(item.slug)))
+    .sort(
+      (a, b) =>
+        new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
+    )
 
   const posts = allPosts.slice(0, 5)
   const latestDate = allPosts[0]?.metadata.date
@@ -200,7 +206,7 @@ export default function HomePage() {
                   >
                     {posts[0].metadata.title}
                   </h3>
-                  {isStubArticle(posts[0]) && (
+                  {(isStubArticle(posts[0]) || posts[0].type === 'tutorial') && (
                     <div className="mt-3">
                       <InteractiveBadge />
                     </div>
@@ -263,7 +269,7 @@ export default function HomePage() {
                           >
                             {post.metadata.title}
                           </span>
-                          {isStubArticle(post) && (
+                          {(isStubArticle(post) || post.type === 'tutorial') && (
                             <span className="ml-2 align-middle">
                               <InteractiveBadge />
                             </span>

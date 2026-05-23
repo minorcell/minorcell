@@ -2,6 +2,7 @@
 title: 从零构建一个 Mini Claude Code
 description: 从手写 40 行 ReAct 循环开始，逐步构建出有工具调用、上下文压缩和安全防护的 Code Agent
 type: interactive
+date: 2026-03-02
 entryFile: content.md
 tags: [Agent, TypeScript, Vercel AI SDK, ReAct]
 ---
