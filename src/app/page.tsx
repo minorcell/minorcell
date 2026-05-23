@@ -67,7 +67,7 @@ export default function HomePage() {
         new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
     )
 
-  const posts = allPosts.slice(0, 5)
+  const posts = allPosts.slice(0, 7)
   const latestDate = allPosts[0]?.metadata.date
     ? new Date(allPosts[0].metadata.date)
     : new Date()
