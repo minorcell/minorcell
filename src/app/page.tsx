@@ -53,7 +53,7 @@ const InteractiveBadge = () => (
   </span>
 )
 
-const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series']
+const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series', '§ 04 · Books']
 
 export default function HomePage() {
   const allContent = getAllContent()
@@ -314,7 +314,7 @@ export default function HomePage() {
       <nav
         aria-label="栏目导航"
         data-section="DIRECTORY"
-        className="mt-24 grid gap-7 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-8 sm:mt-28 sm:grid-cols-3 sm:gap-0"
+        className="mt-24 grid gap-7 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-8 sm:mt-28 sm:grid-cols-4 sm:gap-0"
       >
         {siteContent.sections.map((section, idx) => (
           <TransitionLink
