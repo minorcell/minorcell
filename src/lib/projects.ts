@@ -19,17 +19,6 @@ export interface ProjectGroup {
   projects: ProjectItem[]
 }
 
-export const projectQuickLinks: ProjectLink[] = [
-  {
-    label: 'GitHub Profile',
-    href: 'https://github.com/minorcell',
-  },
-  {
-    label: 'Latest Repos',
-    href: 'https://github.com/minorcell?tab=repositories&sort=updated',
-  },
-]
-
 export const projectGroups: ProjectGroup[] = [
   {
     title: 'AI & Agent',
