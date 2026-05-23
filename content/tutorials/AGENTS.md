@@ -37,12 +37,15 @@ content/tutorials/<slug>/
 title: 标题（必填，会用作 H1 + SEO title）
 description: 一句话描述（必填，会用作 SEO description）
 type: interactive
-entryFile: content.md # 仅占位，目前未实际读取，保留以备将来扩展
+date: 2026-01-01       # 必填，决定首页排序位置；缺失会排在最前面
+entryFile: content.md  # 仅占位，目前未实际读取，保留以备将来扩展
 tags: [JavaScript, 手写源码] # 仅占位，目前未渲染。可以留作元信息
 ---
 ```
 
-只有 `title` / `description` / `type` 三个字段是真正生效的。`entryFile` 和 `tags` 写了不会出错，但当前实现不会读它们——别指望它们影响渲染。
+真正生效的字段：`title` / `description` / `type` / `date`。`entryFile` 和 `tags` 写了不会出错，但当前实现不会读它们——别指望它们影响渲染。
+
+**`date` 缺失的后果：** 首页按日期降序排列，缺 `date` 的教程会用 `new Date()`（当前时间）兜底，实际上会排到最顶——视觉上像"置顶"，但不是有意为之。每篇教程都应该写 `date`。
 
 ## 4. 解析模型（最重要的一节）
 
@@ -187,6 +190,16 @@ pnpm dev      # 本地预览滚动同步效果
 1. `pnpm build` 通过。
 2. `pnpm dev` 打开 `/tutorials/<slug>`，从头滚到尾，每段 prose 出现时，左侧代码焦点是不是对的位置；高亮的行是不是真实代码行（非空行 / 非已删的注释）。
 3. 任何出现 `// File not found` 的 step 立即修复。
+
+**首页自动收录：** 教程发布后无需任何额外操作，首页会按 `date` 降序自动列出，带 `§ INTERACTIVE` 标签，点击跳转 `/tutorials/<slug>`。过去曾用 `content/articles/` 下的影子文件（带 `topicSlug`）来代理教程，现已废弃，**不要再建这类文件**。
+
+**导出为文章：** 如需将教程导出为标准 Markdown（用于发布到其他平台），运行：
+
+```bash
+node scripts/export-tutorial.mjs <slug>
+```
+
+输出到 `temp/<slug>.md`，step 代码引用会自动展开，demo HTML 以代码块形式保留，frontmatter 转为 `# 标题` + `> 描述`。`temp/` 不纳入 git。
 
 ## 9. 速查表
 

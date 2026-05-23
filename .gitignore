@@ -43,3 +43,6 @@ yarn-error.log*
 next-env.d.ts
 
 feed.xml
+
+# local exports
+/temp
