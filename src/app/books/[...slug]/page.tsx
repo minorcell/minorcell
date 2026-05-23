@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getAllBooks, getBookBySlug, getBookChapter, getAdjacentChapters } from '@/lib/book-parser'
-import type { BookMeta, BookChapter } from '@/lib/book-parser'
+import type { BookChapter } from '@/lib/book-parser'
 import { BookView } from '@/lib/content-renderer'
 import { JsonLd } from '@/components/seo/JsonLd'
 import type { Metadata } from 'next'

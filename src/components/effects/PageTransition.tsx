@@ -11,7 +11,7 @@ import {
   type ComponentProps,
   type MouseEvent,
 } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 /* ──────────────────────────────────────────────
@@ -55,7 +55,6 @@ export function usePageTransition() {
  *  Provider
  * ────────────────────────────────────────────── */
 export function PageTransitionProvider({ children }: { children: ReactNode }) {
-  const pathname = usePathname()
   const router = useRouter()
 
   const [phase, setPhase] = useState<Phase>('idle')
