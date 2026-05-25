@@ -38,7 +38,7 @@ VS Code 对我来说一直是一个很舒服的平衡点：轻量、快捷、生
 
 ## 直到 AI IDE 开始多起来
 
-最近这大半年，我陆续接触了不少 AI IDE。
+最近这一年多，我陆续接触了不少 AI IDE。
 
 比如 Cursor、Windsurf、Trae 之类。
 
