@@ -7,13 +7,13 @@
 
 /* Light mode (default) — 纸本暖白基调 */
 :root {
-  /* Paper cream — barely warm, tones down stark white into magazine paper */
+  /* Warm cream — barely warm, tones down stark white into magazine tone */
   --background: oklch(0.982 0.005 85);
   --foreground: oklch(0.16 0.005 75);
   --muted: oklch(0.952 0.006 85);
   --muted-foreground: oklch(0.5 0.008 75);
   --border: oklch(0.892 0.008 85);
-  /* Cards / popovers stay slightly brighter than paper — feels "elevated" */
+  /* Cards / popovers stay slightly brighter than background — feels "elevated" */
   --card: oklch(0.995 0.003 85);
   --card-foreground: oklch(0.16 0.005 75);
   --primary: oklch(0.205 0 0);
@@ -51,7 +51,7 @@
 
   /* ── Editorial accent (olive field) ──
    * Used for link / brand hover states across the site.
-   * Stays in the warm hue family of the paper background; mid-lightness +
+   * Stays in the warm hue family; mid-lightness +
    * low chroma reads as muted khaki rather than "colour". */
   --link-accent: oklch(0.5 0.08 110);
 }
@@ -301,7 +301,7 @@
  * to hover first.
  * ─────────────────────────────────────────────────────────────────── */
 
-/* Row link — full-row clickable wrapper. Adds a paper-tint hover bg so
+/* Row link — full-row clickable wrapper. Adds a tinted hover bg so
  * the entire surface reads as one tappable target. Designed to be used
  * together with Tailwind's `group` for child hover states. */
 .row-link {
@@ -366,73 +366,6 @@
   .row-link-arrow,
   .nav-link::after {
     transition: none;
-  }
-}
-
-/* Paper grain background */
-.paper-grain {
-  /* Light: subtle "uncoated paper" — multiply darkens fibres slightly.
-     Background is already a warm cream, so the grain is dialed down. */
-  mix-blend-mode: multiply;
-  opacity: 0.32;
-}
-
-.dark .paper-grain {
-  /* Dark: film/ink grain — screen lightens noise dots */
-  mix-blend-mode: screen;
-  opacity: 0.06;
-}
-
-/* Reusable noise data URI — keep in sync with PaperGrain.tsx */
-:root {
-  --paper-grain-img: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'240'%20height%3D'240'%3E%3Cfilter%20id%3D'n'%3E%3CfeTurbulence%20type%3D'fractalNoise'%20baseFrequency%3D'0.75'%20numOctaves%3D'2'%20seed%3D'7'%20stitchTiles%3D'stitch'%2F%3E%3CfeColorMatrix%20values%3D'0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200.55%200'%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D'100%25'%20height%3D'100%25'%20filter%3D'url(%23n)'%2F%3E%3C%2Fsvg%3E");
-}
-
-/**
- * .paper-surface — Opaque element that should still feel like paper.
- * Use on sticky/fixed overlays (Navbar, Footer, dialog masthead bars) where
- * the global PaperGrain layer behind them is hidden by their own opaque bg.
- * Internally combines the cream background with the same noise via
- * background-blend-mode, producing visually identical "paper" tone.
- */
-.paper-surface {
-  /* Two layers stacked on top of background-color:
-   *   1. translucent paper layer (top)  — dilutes multiply to ~32% strength
-   *   2. noise image (bottom)           — multiplies with bg-color
-   * Result matches body's PaperGrain (multiply, opacity 0.32). */
-  background-color: var(--background);
-  background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--background) 68%, transparent),
-      color-mix(in oklab, var(--background) 68%, transparent)
-    ),
-    var(--paper-grain-img);
-  background-repeat: repeat, repeat;
-  background-size:
-    auto,
-    240px 240px;
-  background-blend-mode: normal, multiply;
-}
-
-.dark .paper-surface {
-  /* Mirror logic for dark: very faint screen, bg overlay near-opaque */
-  background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--background) 94%, transparent),
-      color-mix(in oklab, var(--background) 94%, transparent)
-    ),
-    var(--paper-grain-img);
-  background-blend-mode: normal, screen;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .paper-grain {
-    /* Even quieter for sensitive viewers */
-    opacity: 0.25;
-  }
-
-  .dark .paper-grain {
-    opacity: 0.04;
   }
 }
 
@@ -868,31 +801,13 @@
   box-shadow:
     0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
     0 -24px 48px -28px rgba(0, 0, 0, 0.18);
-  /* opaque paper surface so the cover behind is fully hidden once covered */
+  /* opaque background so the cover behind is fully hidden once covered */
   background-color: var(--background);
-  background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--background) 68%, transparent),
-      color-mix(in oklab, var(--background) 68%, transparent)
-    ),
-    var(--paper-grain-img);
-  background-repeat: repeat, repeat;
-  background-size:
-    auto,
-    240px 240px;
-  background-blend-mode: normal, multiply;
   /* NOTE: never set `overflow: hidden` here — it would silently break
    * `position: sticky` on descendants (e.g. CodeWave's left code panel). */
 }
 
 .dark .tutorial-stage {
-  background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--background) 94%, transparent),
-      color-mix(in oklab, var(--background) 94%, transparent)
-    ),
-    var(--paper-grain-img);
-  background-blend-mode: normal, screen;
   box-shadow:
     0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
     0 -24px 48px -28px rgba(0, 0, 0, 0.6);
@@ -913,7 +828,7 @@
 /* ─────────────────────────────────────────────────────────────────────
  * NAVBAR
  *
- * - Default state: 56px tall, paper surface, bottom hairline
+ * - Default state: 56px tall, solid background, bottom hairline
  * - Scrolled state ([data-scrolled]): 44px tall, backdrop-blur, soft shadow,
  *   subtitle fades; transitions are short (150ms) to feel like a response,
  *   not a dance

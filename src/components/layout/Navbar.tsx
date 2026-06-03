@@ -231,7 +231,7 @@ export function Navbar() {
 
   return (
     <header
-      className="navbar paper-surface sticky top-0 z-[1200]"
+      className="navbar sticky top-0 z-[1200] bg-[var(--background)]"
       data-scrolled={scrolled || undefined}
     >
       <div className="navbar-inner mx-auto flex w-full items-center justify-between gap-4 px-6 sm:px-10 lg:px-16 xl:px-24">

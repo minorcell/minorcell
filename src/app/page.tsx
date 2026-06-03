@@ -39,13 +39,6 @@ const formatShortDate = (value: string) => {
   return `${m}.${d}`
 }
 
-const formatIsoDate = (value: Date) => {
-  const y = value.getFullYear()
-  const m = String(value.getMonth() + 1).padStart(2, '0')
-  const d = String(value.getDate()).padStart(2, '0')
-  return `${y} · ${m} · ${d}`
-}
-
 const padIssue = (n: number) => String(n).padStart(2, '0')
 
 const InteractiveBadge = () => (
@@ -84,7 +77,6 @@ export default function HomePage() {
     ? new Date(allPosts[0].metadata.date)
     : new Date()
   const volumeYear = latestDate.getFullYear()
-  const issueNo = padIssue(allPosts.length)
 
   return (
     <div className="mx-auto w-full px-6 pb-24 sm:px-10 sm:pb-32 lg:px-16 xl:px-24">
@@ -94,19 +86,7 @@ export default function HomePage() {
         className="flex min-h-[calc(100dvh-3.5rem)] flex-col justify-between pt-10 pb-8 sm:pt-14 sm:pb-10"
       >
         {/* Top — issue bar */}
-        <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <div className="flex items-center gap-5">
-            <span className="inline-flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--link-accent)]"
-              />
-              ISSUE №{issueNo} · VOL. {volumeYear}
-            </span>
-            <span className="hidden sm:inline">持续刊行</span>
-          </div>
-          <span>{formatIsoDate(latestDate)}</span>
-        </div>
+        <div className="flex items-center justify-between gap-4 pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground"></div>
 
         {/* Middle — title block, vertically centred in remaining space */}
         <div className="flex flex-col justify-center py-8">

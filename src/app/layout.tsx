@@ -3,7 +3,6 @@ import { Orbitron } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { PaperGrain } from '@/components/effects/PaperGrain'
 import { CursorTracker } from '@/components/effects/CursorTracker'
 import { ScrollDamping } from '@/components/effects/ScrollDamping'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
@@ -95,7 +94,6 @@ export default function RootLayout({
         className={`${orbitron.variable} min-h-screen bg-background text-foreground relative`}
       >
         <ExternalLinkGuard />
-        <PaperGrain />
         <CursorTracker />
         <ScrollDamping>
           <div className="relative z-10 flex min-h-screen flex-col">
