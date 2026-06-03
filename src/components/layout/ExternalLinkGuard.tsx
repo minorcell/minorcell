@@ -306,7 +306,10 @@ export function ExternalLinkGuard() {
 
     let active = true
     const controller = new AbortController()
-    const timeoutId = window.setTimeout(() => controller.abort(), PREVIEW_TIMEOUT_MS)
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      PREVIEW_TIMEOUT_MS,
+    )
 
     const loadPreview = async () => {
       setPreview({ status: 'loading', data: null })

@@ -4,9 +4,15 @@ import React from 'react'
 import { BookOpen, MessageCircle } from 'lucide-react'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { DiscussionDrawer, type DiscussionDrawerHandle } from '@/components/common/DiscussionDrawer'
+import {
+  DiscussionDrawer,
+  type DiscussionDrawerHandle,
+} from '@/components/common/DiscussionDrawer'
 import { CodeWave, type StepContent } from '@/components/interactive/CodeWave'
-import { ImageWave, type ImageStepContent } from '@/components/interactive/ImageWave'
+import {
+  ImageWave,
+  type ImageStepContent,
+} from '@/components/interactive/ImageWave'
 import { WebWave, type WebStepContent } from '@/components/interactive/WebWave'
 import type { BookMeta, BookChapter } from '@/lib/book-parser'
 import type {
@@ -142,11 +148,7 @@ function TOCDrawer({
                         isCurrent
                           ? 'border-l-[var(--link-accent)] font-medium text-[var(--link-accent)]'
                           : 'border-l-transparent text-muted-foreground hover:border-l-border hover:text-foreground'
-                      } ${
-                        isIntro
-                          ? 'italic text-[0.8em]'
-                          : ''
-                      }`}
+                      } ${isIntro ? 'italic text-[0.8em]' : ''}`}
                     >
                       {isIntro ? `导读：${ch.title}` : ch.title}
                     </TransitionLink>
@@ -163,18 +165,20 @@ function TOCDrawer({
 
 // ─── Book index page ─────────────────────────────────────────────────────────
 
-function BookIndex({ book, discussionTerm }: { book: BookMeta; discussionTerm: string }) {
+function BookIndex({
+  book,
+  discussionTerm,
+}: {
+  book: BookMeta
+  discussionTerm: string
+}) {
   const [tocOpen, setTocOpen] = React.useState(false)
   const discussionRef = React.useRef<DiscussionDrawerHandle>(null)
 
   return (
     <div className="mx-auto w-full max-w-[920px] px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
       {/* TOC drawer */}
-      <TOCDrawer
-        book={book}
-        open={tocOpen}
-        onClose={() => setTocOpen(false)}
-      />
+      <TOCDrawer book={book} open={tocOpen} onClose={() => setTocOpen(false)} />
 
       {/* Merged floating toolbar */}
       <div className="fixed bottom-6 right-6 z-50 flex overflow-hidden rounded-full border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-card shadow-[0_2px_16px_rgba(0,0,0,0.07)] sm:bottom-10 sm:right-10">
@@ -195,7 +199,11 @@ function BookIndex({ book, discussionTerm }: { book: BookMeta; discussionTerm: s
         </button>
       </div>
 
-      <DiscussionDrawer ref={discussionRef} discussionTerm={discussionTerm} hideTrigger />
+      <DiscussionDrawer
+        ref={discussionRef}
+        discussionTerm={discussionTerm}
+        hideTrigger
+      />
 
       <header className="mb-12">
         <div className="border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -223,9 +231,15 @@ function BookIndex({ book, discussionTerm }: { book: BookMeta; discussionTerm: s
         )}
 
         <div className="mt-6 flex items-start gap-3 rounded-md border border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] bg-[color:color-mix(in_oklab,var(--muted)_50%,transparent)] px-5 py-3.5">
-          <span aria-hidden className="mt-0.5 shrink-0 font-mono text-[11px] text-muted-foreground">※</span>
+          <span
+            aria-hidden
+            className="mt-0.5 shrink-0 font-mono text-[11px] text-muted-foreground"
+          >
+            ※
+          </span>
           <p className="m-0 text-[0.82em] leading-[1.55] text-muted-foreground">
-            本书由 mcell 与大语言模型（AI）协作撰写。内容经过人工审校与编辑，但不保证完全准确。阅读时请保持独立思考。
+            本书由 mcell
+            与大语言模型（AI）协作撰写。内容经过人工审校与编辑，但不保证完全准确。阅读时请保持独立思考。
           </p>
         </div>
       </header>
@@ -267,40 +281,46 @@ function buildChapterSteps(
 ): (SerializedCodeStep | SerializedImageStep | SerializedDemoStep)[] | null {
   if (!chapter.steps || chapter.steps.length === 0) return null
 
-  const result: (SerializedCodeStep | SerializedImageStep | SerializedDemoStep)[] =
-    chapter.steps.map((s) => {
-      switch (s.kind) {
-        case 'code':
-          return {
-            kind: 'code',
-            code: s.code,
-            language: s.language,
-            highlightLines: s.highlightLines,
-            fileName: s.fileName,
-            prose: s.prose,
-          } satisfies SerializedCodeStep
-        case 'image':
-          return {
-            kind: 'image',
-            src: s.src,
-            alt: s.alt,
-            prose: s.prose,
-          } satisfies SerializedImageStep
-        case 'demo':
-          return {
-            kind: 'demo',
-            html: s.html,
-            title: s.title,
-            height: s.height,
-            aspect: s.aspect,
-            prose: s.prose,
-          } satisfies SerializedDemoStep
-      }
-    })
+  const result: (
+    | SerializedCodeStep
+    | SerializedImageStep
+    | SerializedDemoStep
+  )[] = chapter.steps.map((s) => {
+    switch (s.kind) {
+      case 'code':
+        return {
+          kind: 'code',
+          code: s.code,
+          language: s.language,
+          highlightLines: s.highlightLines,
+          fileName: s.fileName,
+          prose: s.prose,
+        } satisfies SerializedCodeStep
+      case 'image':
+        return {
+          kind: 'image',
+          src: s.src,
+          alt: s.alt,
+          prose: s.prose,
+        } satisfies SerializedImageStep
+      case 'demo':
+        return {
+          kind: 'demo',
+          html: s.html,
+          title: s.title,
+          height: s.height,
+          aspect: s.aspect,
+          prose: s.prose,
+        } satisfies SerializedDemoStep
+    }
+  })
 
   // Merge intro into first step's prose
   if (chapter.intro && result.length > 0) {
-    result[0] = { ...result[0], prose: chapter.intro + '\n\n' + result[0].prose }
+    result[0] = {
+      ...result[0],
+      prose: chapter.intro + '\n\n' + result[0].prose,
+    }
   }
 
   return result
@@ -361,7 +381,10 @@ function InteractiveChapter({
           </div>
           <h1
             className="m-0 mt-6 text-[clamp(1.65rem,1.3rem+1.8vw,2.6rem)] leading-[1.12] tracking-[-0.015em] text-pretty sm:text-balance"
-            style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontWeight: 500 }}
+            style={{
+              fontFamily: 'Georgia, "Times New Roman", serif',
+              fontWeight: 500,
+            }}
           >
             {chapter.title}
           </h1>
@@ -375,7 +398,12 @@ function InteractiveChapter({
             <CodeWave
               steps={(group.steps as SerializedCodeStep[]).map(
                 (s): StepContent => ({
-                  step: { code: s.code, language: s.language, highlightLines: s.highlightLines, fileName: s.fileName },
+                  step: {
+                    code: s.code,
+                    language: s.language,
+                    highlightLines: s.highlightLines,
+                    fileName: s.fileName,
+                  },
                   prose: s.prose,
                 }),
               )}
@@ -393,7 +421,12 @@ function InteractiveChapter({
             <WebWave
               steps={(group.steps as SerializedDemoStep[]).map(
                 (s): WebStepContent => ({
-                  step: { html: s.html, title: s.title, height: s.height, aspect: s.aspect },
+                  step: {
+                    html: s.html,
+                    title: s.title,
+                    height: s.height,
+                    aspect: s.aspect,
+                  },
                   prose: s.prose,
                 }),
               )}
@@ -407,18 +440,27 @@ function InteractiveChapter({
         <nav className="flex items-center justify-between border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-5 font-mono text-[11px] uppercase tracking-[0.14em]">
           <div>
             {prev ? (
-              <TransitionLink href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink
+                href={`/books/${book.slug}/${prev.slug}`}
+                className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+              >
                 ← {prev.title}
               </TransitionLink>
             ) : (
-              <TransitionLink href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink
+                href={`/books/${book.slug}`}
+                className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+              >
                 ← 目录
               </TransitionLink>
             )}
           </div>
           <div>
             {next ? (
-              <TransitionLink href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+              <TransitionLink
+                href={`/books/${book.slug}/${next.slug}`}
+                className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+              >
                 {next.title} →
               </TransitionLink>
             ) : (
@@ -428,7 +470,11 @@ function InteractiveChapter({
         </nav>
       </div>
 
-      <DiscussionDrawer ref={discussionRef} discussionTerm={discussionTerm} hideTrigger />
+      <DiscussionDrawer
+        ref={discussionRef}
+        discussionTerm={discussionTerm}
+        hideTrigger
+      />
     </>
   )
 }
@@ -452,7 +498,13 @@ function ChapterPage({
   // If chapter has interactive steps, render the interactive view
   if (chapter.steps && chapter.steps.length > 0) {
     return (
-      <InteractiveChapter book={book} chapter={chapter} prev={prev} next={next} discussionTerm={discussionTerm} />
+      <InteractiveChapter
+        book={book}
+        chapter={chapter}
+        prev={prev}
+        next={next}
+        discussionTerm={discussionTerm}
+      />
     )
   }
 
@@ -494,7 +546,10 @@ function ChapterPage({
             </div>
             <h1
               className="m-0 mt-6 text-[clamp(1.65rem,1.3rem+1.8vw,2.6rem)] leading-[1.12] tracking-[-0.015em] text-pretty sm:text-balance"
-              style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontWeight: 500 }}
+              style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontWeight: 500,
+              }}
             >
               {chapter.title}
             </h1>
@@ -507,18 +562,27 @@ function ChapterPage({
           <nav className="mt-14 flex items-center justify-between border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-5 font-mono text-[11px] uppercase tracking-[0.14em]">
             <div>
               {prev ? (
-                <TransitionLink href={`/books/${book.slug}/${prev.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink
+                  href={`/books/${book.slug}/${prev.slug}`}
+                  className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+                >
                   ← {prev.title}
                 </TransitionLink>
               ) : (
-                <TransitionLink href={`/books/${book.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink
+                  href={`/books/${book.slug}`}
+                  className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+                >
                   ← 目录
                 </TransitionLink>
               )}
             </div>
             <div>
               {next ? (
-                <TransitionLink href={`/books/${book.slug}/${next.slug}`} className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]">
+                <TransitionLink
+                  href={`/books/${book.slug}/${next.slug}`}
+                  className="text-muted-foreground transition-colors hover:text-[var(--link-accent)]"
+                >
                   {next.title} →
                 </TransitionLink>
               ) : (
@@ -529,7 +593,11 @@ function ChapterPage({
         </div>
       </main>
 
-      <DiscussionDrawer ref={discussionRef} discussionTerm={discussionTerm} hideTrigger />
+      <DiscussionDrawer
+        ref={discussionRef}
+        discussionTerm={discussionTerm}
+        hideTrigger
+      />
     </>
   )
 }

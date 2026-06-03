@@ -35,5 +35,6 @@ class MyPromise {
   }
 }
 
-new MyPromise((res) => setTimeout(() => res(42), 50))
-  .then((v) => console.log(v))
+new MyPromise((res) => setTimeout(() => res(42), 50)).then((v) =>
+  console.log(v),
+)

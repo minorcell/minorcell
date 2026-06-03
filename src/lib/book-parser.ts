@@ -59,7 +59,7 @@ function parseBookChapter(
     volume: fm.volume,
     chapter: fm.chapter,
     description: fm.description as string | undefined,
-    content: hasSteps ? '' : content,       // when interactive, content is split into steps
+    content: hasSteps ? '' : content, // when interactive, content is split into steps
     steps: hasSteps ? steps : undefined,
     intro: hasSteps ? intro : undefined,
   }
@@ -76,7 +76,8 @@ function parseBook(bookDir: string, slug: string): BookMeta | null {
   // Scan chapter files from content/ subdirectory
   const contentDir = path.join(bookDir, 'content')
   const chapterFiles = fs.existsSync(contentDir)
-    ? fs.readdirSync(contentDir)
+    ? fs
+        .readdirSync(contentDir)
         .filter((f) => f.endsWith('.md'))
         .sort()
     : []
@@ -84,7 +85,11 @@ function parseBook(bookDir: string, slug: string): BookMeta | null {
   const chapters: BookChapter[] = []
   for (const file of chapterFiles) {
     const chapterSlug = file.replace(/\.md$/, '')
-    const chapter = parseBookChapter(path.join(contentDir, file), chapterSlug, bookDir)
+    const chapter = parseBookChapter(
+      path.join(contentDir, file),
+      chapterSlug,
+      bookDir,
+    )
     if (chapter) chapters.push(chapter)
   }
 

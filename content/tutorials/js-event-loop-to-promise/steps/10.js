@@ -26,10 +26,8 @@ class MyPromise {
   }
 
   then(onFulfilled, onRejected) {
-    const runFulfilled = () =>
-      queueMicrotask(() => onFulfilled?.(this.value))
-    const runRejected = () =>
-      queueMicrotask(() => onRejected?.(this.reason))
+    const runFulfilled = () => queueMicrotask(() => onFulfilled?.(this.value))
+    const runRejected = () => queueMicrotask(() => onRejected?.(this.reason))
 
     if (this.state === 'fulfilled') runFulfilled()
     else if (this.state === 'rejected') runRejected()

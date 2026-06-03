@@ -34,8 +34,7 @@ export function BookCard({
       className="group relative flex w-[220px] flex-col rounded-[3px_6px_6px_3px] border border-border bg-card transition-all duration-[0.35s] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-y-1.5 hover:border-[var(--link-accent)] max-sm:w-[160px]"
       style={{
         minHeight: 280,
-        boxShadow:
-          '0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.06)',
+        boxShadow: '0 1px 0 rgba(0,0,0,0.04), 2px 3px 6px rgba(0,0,0,0.06)',
       }}
     >
       {/* Spine */}

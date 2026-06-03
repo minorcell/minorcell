@@ -22,7 +22,10 @@ type CopyStatus = 'idle' | 'copied' | 'error'
 type CopyTarget = 'page' | 'body'
 
 async function writeToClipboard(value: string) {
-  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+  if (
+    navigator.clipboard &&
+    typeof navigator.clipboard.writeText === 'function'
+  ) {
     await navigator.clipboard.writeText(value)
     return
   }
@@ -121,7 +124,9 @@ export function CopyPageButton({
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => void onCopy('page')}>
             <span>Copy page</span>
-            {copiedLabel === 'Copy page' && <Check className="ml-auto h-3.5 w-3.5" />}
+            {copiedLabel === 'Copy page' && (
+              <Check className="ml-auto h-3.5 w-3.5" />
+            )}
             {status === 'error' && target === 'page' && (
               <span className="ml-auto text-xs text-muted-foreground">
                 Copy failed

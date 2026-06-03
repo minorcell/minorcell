@@ -3,7 +3,11 @@ import { TransitionLink } from '@/components/effects/PageTransition'
 import { ArrowUpRight } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
 import { cn } from '@/lib/utils'
-import { projectGroups, type ProjectLink, type ProjectStatus } from '@/lib/projects'
+import {
+  projectGroups,
+  type ProjectLink,
+  type ProjectStatus,
+} from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = buildPageMetadata({

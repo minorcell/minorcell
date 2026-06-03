@@ -1,10 +1,9 @@
 ---
-title: "第 22 章：Seq2Seq：机器翻译的旧时代"
+title: '第 22 章：Seq2Seq：机器翻译的旧时代'
 volume: 3
 chapter: 6
 description: '阐述Seq2Seq编码器-解码器架构如何实现序列到序列的转换。讲解上下文向量瓶颈、Teacher Forcing训练技巧，为下一章Attention的引入铺垫——固定向量通道的根本局限。'
 ---
-
 
 > 本章问题：一个模型如何把一种序列变成另一种序列？
 

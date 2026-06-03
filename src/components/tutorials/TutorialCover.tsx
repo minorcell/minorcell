@@ -54,7 +54,10 @@ export function TutorialCover({
         </span>
         <span aria-hidden />
         <span className="tutorial-cover-begin">
-          BEGIN <span className="tutorial-cover-arrow" aria-hidden>↓</span>
+          BEGIN{' '}
+          <span className="tutorial-cover-arrow" aria-hidden>
+            ↓
+          </span>
         </span>
       </div>
     </section>

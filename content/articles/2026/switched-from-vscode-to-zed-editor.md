@@ -4,7 +4,17 @@ title: '我把默认的 code . 换成了 zed .'
 date: 2026-05-25
 updated: 2026-05-25
 description: '从 VS Code 老用户到 Zed 主力编辑器的迁移手记：为什么 AI IDE 越来越重、Zed 的快与克制、ACP 协议解耦思路，以及插件安全边界的重新思考。'
-keywords: [Zed编辑器, VS Code, AI IDE, Electron, 代码编辑器, ACP协议, 开发工具, 编辑器迁移]
+keywords:
+  [
+    Zed编辑器,
+    VS Code,
+    AI IDE,
+    Electron,
+    代码编辑器,
+    ACP协议,
+    开发工具,
+    编辑器迁移,
+  ]
 order: 54
 ---
 

@@ -38,7 +38,9 @@ export async function generateMetadata({
     })
   }
 
-  const tags = Array.isArray(tutorial.metadata.tags) ? tutorial.metadata.tags : []
+  const tags = Array.isArray(tutorial.metadata.tags)
+    ? tutorial.metadata.tags
+    : []
 
   return buildArticleMetadata({
     title: `${tutorial.metadata.title} 教程`,
@@ -78,10 +80,9 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
 
   const allTutorials = getAllTutorials()
   const tutorialIndex = allTutorials.findIndex((t) => t.slug === slug)
-  const issueNumber = String(tutorialIndex >= 0 ? tutorialIndex + 1 : 1).padStart(
-    2,
-    '0',
-  )
+  const issueNumber = String(
+    tutorialIndex >= 0 ? tutorialIndex + 1 : 1,
+  ).padStart(2, '0')
 
   const hasCode = tutorial.steps.some((s) => s.kind === 'code')
   const hasImage = tutorial.steps.some((s) => s.kind === 'image')

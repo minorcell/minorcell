@@ -18,25 +18,38 @@ class MyPromise {
       this.reason = e
       this.rcbs.forEach((cb) => cb())
     }
-    try { executor(resolve, reject) } catch (e) { reject(e) }
+    try {
+      executor(resolve, reject)
+    } catch (e) {
+      reject(e)
+    }
   }
 
   then(onFulfilled, onRejected) {
-    const fulfilled =
-      typeof onFulfilled === 'function' ? onFulfilled : (v) => v
+    const fulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v) => v
     const rejected =
       typeof onRejected === 'function'
         ? onRejected
-        : (e) => { throw e }
+        : (e) => {
+            throw e
+          }
 
     const promise2 = new MyPromise((resolve, reject) => {
       const runFulfilled = () =>
         queueMicrotask(() => {
-          try { resolve(fulfilled(this.value)) } catch (e) { reject(e) }
+          try {
+            resolve(fulfilled(this.value))
+          } catch (e) {
+            reject(e)
+          }
         })
       const runRejected = () =>
         queueMicrotask(() => {
-          try { resolve(rejected(this.reason)) } catch (e) { reject(e) }
+          try {
+            resolve(rejected(this.reason))
+          } catch (e) {
+            reject(e)
+          }
         })
 
       if (this.state === 'fulfilled') runFulfilled()

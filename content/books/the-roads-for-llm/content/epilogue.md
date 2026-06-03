@@ -1,10 +1,9 @@
 ---
-title: "第 39 章：尾声——这条路通向了哪里，接下来往哪走"
+title: '第 39 章：尾声——这条路通向了哪里，接下来往哪走'
 volume: 4
 chapter: 12
 description: '回顾全书四卷从图灵到ChatGPT七十年的完整弧线——展望后Transformer架构、推理时计算、Agent生态成熟与AGI的未来方向。'
 ---
-
 
 > 本章问题：走过图灵、感知机、达特茅斯、反向传播、Transformer、Scaling Law、ChatGPT——这条路最终通往何处？
 

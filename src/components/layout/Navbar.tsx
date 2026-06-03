@@ -1,6 +1,9 @@
 'use client'
 
-import { TransitionLink, usePageTransition } from '@/components/effects/PageTransition'
+import {
+  TransitionLink,
+  usePageTransition,
+} from '@/components/effects/PageTransition'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'

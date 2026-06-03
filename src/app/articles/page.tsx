@@ -2,7 +2,11 @@ import { TransitionLink } from '@/components/effects/PageTransition'
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { getAllArticles, getContentHref, isStubArticle } from '@/lib/content-parser'
+import {
+  getAllArticles,
+  getContentHref,
+  isStubArticle,
+} from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import {
   createBreadcrumbJsonLd,
@@ -30,7 +34,6 @@ const formatShortDate = (value: string) => {
   return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
 
-
 const InteractiveBadge = () => (
   <span
     className="inline-flex items-center gap-1 border border-[color:var(--link-accent)] px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--link-accent)]"
@@ -48,7 +51,8 @@ const pad = (n: number) => String(n).padStart(2, '0')
 export default function ArticlesPage() {
   const posts = getAllArticles().sort(
     (a, b) =>
-      new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
+      new Date(b.metadata.date ?? new Date()).getTime() -
+      new Date(a.metadata.date ?? new Date()).getTime(),
   )
   const [featuredPost, ...remainingPosts] = posts
   const SECONDARY_COUNT = 2
@@ -136,7 +140,9 @@ export default function ArticlesPage() {
               <div className="mb-5 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 <span>№ 01 · LEADING ARTICLE</span>
                 <time>
-                  {formatIsoDate(new Date(featuredPost.metadata.date ?? new Date()))}
+                  {formatIsoDate(
+                    new Date(featuredPost.metadata.date ?? new Date()),
+                  )}
                 </time>
               </div>
               <h3

@@ -1,5 +1,9 @@
 import { TransitionLink } from '@/components/effects/PageTransition'
-import { getArticleBySlug, getAllArticles, getStubTargetSlug } from '@/lib/content-parser'
+import {
+  getArticleBySlug,
+  getAllArticles,
+  getStubTargetSlug,
+} from '@/lib/content-parser'
 import type { ArticleContent } from '@/lib/content-parser'
 import { notFound } from 'next/navigation'
 import { ArticleView } from '@/lib/content-renderer'
@@ -79,7 +83,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ...toStringArray(post.metadata.keywords),
     ...toStringArray(post.metadata.tags),
   ]
-  const modifiedTime = resolveModifiedTime(post.metadata, post.metadata.date ?? '')
+  const modifiedTime = resolveModifiedTime(
+    post.metadata,
+    post.metadata.date ?? '',
+  )
   const image =
     typeof post.metadata.image === 'string' && post.metadata.image.trim()
       ? post.metadata.image
@@ -136,7 +143,10 @@ export default async function ArticlePage({ params }: Props) {
     ...toStringArray(post.metadata.keywords),
     ...toStringArray(post.metadata.tags),
   ]
-  const modifiedTime = resolveModifiedTime(post.metadata, post.metadata.date ?? '')
+  const modifiedTime = resolveModifiedTime(
+    post.metadata,
+    post.metadata.date ?? '',
+  )
   const image =
     typeof post.metadata.image === 'string' && post.metadata.image.trim()
       ? post.metadata.image

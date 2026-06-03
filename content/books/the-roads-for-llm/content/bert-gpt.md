@@ -1,10 +1,9 @@
 ---
-title: "第 25 章：BERT 与 GPT：理解和生成的分岔路"
+title: '第 25 章：BERT 与 GPT：理解和生成的分岔路'
 volume: 3
 chapter: 9
 description: '对比BERT的双向填空路线与GPT的单向续写路线，分析两者在架构设计和训练目标上的根本差异。解释为何Decoder-only最终胜出，以及两阶段预训练-微调范式的深远影响。'
 ---
-
 
 > 本章问题：为什么同样是 Transformer，会出现 BERT 和 GPT 两条路线？
 
@@ -122,7 +121,6 @@ print("GPT 续写:",
 如果你有 GPU 环境（或 Colab 免费 GPU），可以把这个脚本直接粘贴运行，换成自己感兴趣的中文句子来实验。
 
 ---
-
 
 ---
 

@@ -1,7 +1,12 @@
 import type { Metadata } from 'next'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { siteContent } from '@/lib/site-content'
-import { getAllContent, getContentHref, isStubArticle, getStubTargetSlug } from '@/lib/content-parser'
+import {
+  getAllContent,
+  getContentHref,
+  isStubArticle,
+  getStubTargetSlug,
+} from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
 import { MagneticTitle } from '@/components/effects/MagneticTitle'
 
@@ -43,7 +48,6 @@ const formatIsoDate = (value: Date) => {
 
 const padIssue = (n: number) => String(n).padStart(2, '0')
 
-
 const InteractiveBadge = () => (
   <span
     className="inline-flex items-center gap-1 border border-[color:var(--link-accent)] px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--link-accent)]"
@@ -53,18 +57,26 @@ const InteractiveBadge = () => (
   </span>
 )
 
-const SECTION_KICKERS = ['§ 01 · Features', '§ 02 · Workshop', '§ 03 · Series', '§ 04 · Books']
+const SECTION_KICKERS = [
+  '§ 01 · Features',
+  '§ 02 · Workshop',
+  '§ 03 · Series',
+  '§ 04 · Books',
+]
 
 export default function HomePage() {
   const allContent = getAllContent()
   const stubbedSlugs = new Set(
-    allContent.filter(isStubArticle).map(getStubTargetSlug).filter(Boolean)
+    allContent.filter(isStubArticle).map(getStubTargetSlug).filter(Boolean),
   )
   const allPosts = allContent
-    .filter((item) => !(item.type === 'tutorial' && stubbedSlugs.has(item.slug)))
+    .filter(
+      (item) => !(item.type === 'tutorial' && stubbedSlugs.has(item.slug)),
+    )
     .sort(
       (a, b) =>
-        new Date(b.metadata.date ?? new Date()).getTime() - new Date(a.metadata.date ?? new Date()).getTime(),
+        new Date(b.metadata.date ?? new Date()).getTime() -
+        new Date(a.metadata.date ?? new Date()).getTime(),
     )
 
   const posts = allPosts.slice(0, 7)
@@ -206,7 +218,8 @@ export default function HomePage() {
                   >
                     {posts[0].metadata.title}
                   </h3>
-                  {(isStubArticle(posts[0]) || posts[0].type === 'tutorial') && (
+                  {(isStubArticle(posts[0]) ||
+                    posts[0].type === 'tutorial') && (
                     <div className="mt-3">
                       <InteractiveBadge />
                     </div>
@@ -269,7 +282,8 @@ export default function HomePage() {
                           >
                             {post.metadata.title}
                           </span>
-                          {(isStubArticle(post) || post.type === 'tutorial') && (
+                          {(isStubArticle(post) ||
+                            post.type === 'tutorial') && (
                             <span className="ml-2 align-middle">
                               <InteractiveBadge />
                             </span>
@@ -281,7 +295,9 @@ export default function HomePage() {
                           )}
                         </div>
                         <div className="flex items-baseline justify-end gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
-                          <time>{formatShortDate(post.metadata.date ?? '')}</time>
+                          <time>
+                            {formatShortDate(post.metadata.date ?? '')}
+                          </time>
                           <span
                             aria-hidden
                             className="row-link-arrow text-[13px]"

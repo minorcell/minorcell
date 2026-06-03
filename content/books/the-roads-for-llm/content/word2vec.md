@@ -1,10 +1,9 @@
 ---
-title: "第 21 章：Word2Vec：词语如何变成向量"
+title: '第 21 章：Word2Vec：词语如何变成向量'
 volume: 3
 chapter: 5
 description: '基于分布式假设讲解Word2Vec如何将离散词汇映射到稠密语义向量空间。介绍Skip-gram和CBOW两种架构，展示词向量类比性质，分析静态词向量的局限与演进方向。'
 ---
-
 
 > 本章问题：机器如何理解词语之间的关系？
 
@@ -174,7 +173,6 @@ with torch.no_grad():
 在这个超小语料上，cos(cat, dog) 大概率高于 cos(cat, mat)——"猫"与"狗"被相似的上下文推到了一起。
 
 ---
-
 
 ---
 

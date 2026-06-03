@@ -60,8 +60,7 @@ export default function BooksPage() {
             </span>
             <p className="m-0 text-[0.82em] leading-[1.55] text-muted-foreground">
               本栏目的书籍由{' '}
-              <span className="font-medium text-foreground">mcell</span>{' '}
-              与{' '}
+              <span className="font-medium text-foreground">mcell</span> 与{' '}
               <span className="font-medium text-foreground">
                 大语言模型（AI）
               </span>{' '}
@@ -76,7 +75,8 @@ export default function BooksPage() {
             <div className="mb-2 px-1 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">
               书架一
             </div>
-            <div className="flex flex-wrap items-end gap-5 border-b-[6px] px-3 pb-6"
+            <div
+              className="flex flex-wrap items-end gap-5 border-b-[6px] px-3 pb-6"
               style={{
                 borderBottomColor: 'oklch(0.62 0.06 70)',
               }}
@@ -89,7 +89,8 @@ export default function BooksPage() {
                   description={book.description}
                   volumeCount={book.volumes.length}
                   chapterCount={book.volumes.reduce(
-                    (sum, v) => sum + v.chapters.filter((c) => c.chapter > 0).length,
+                    (sum, v) =>
+                      sum + v.chapters.filter((c) => c.chapter > 0).length,
                     0,
                   )}
                   index={i}
@@ -108,7 +109,8 @@ export default function BooksPage() {
           <div className="mb-2 px-1 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">
             书架二
           </div>
-          <div className="border-b-[6px] px-3 pb-6"
+          <div
+            className="border-b-[6px] px-3 pb-6"
             style={{ borderBottomColor: 'oklch(0.62 0.06 70)' }}
           >
             <p className="px-1 font-mono text-[9px] uppercase italic tracking-[0.18em] text-muted-foreground/35">

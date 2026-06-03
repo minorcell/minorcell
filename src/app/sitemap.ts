@@ -79,9 +79,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const tutorialRoutes: MetadataRoute.Sitemap = []
   for (const tutorial of tutorials) {
-    const topicLatestDate = getLatestDate(
-      [tutorial.metadata.date],
-    )
+    const topicLatestDate = getLatestDate([tutorial.metadata.date])
 
     tutorialRoutes.push({
       url: `${baseUrl}/tutorials/${tutorial.slug}`,
@@ -89,7 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.7,
     })
-
   }
 
   const books = getAllBooks()

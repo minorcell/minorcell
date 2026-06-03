@@ -67,7 +67,8 @@ export function TableOfContents({ rawContent }: Props) {
     const hash = window.location.hash.slice(1)
     if (hash) {
       const target = document.getElementById(hash)
-      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 150)
+      if (target)
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 150)
     }
   }, [headings])
 
@@ -103,10 +104,7 @@ export function TableOfContents({ rawContent }: Props) {
   if (headings.length === 0) return null
 
   return (
-    <nav
-      aria-label="Table of Contents"
-      className="hidden xl:block xl:ml-12"
-    >
+    <nav aria-label="Table of Contents" className="hidden xl:block xl:ml-12">
       <div className="sticky top-[120px]">
         <div className="mb-3.5 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
           On this page
@@ -121,7 +119,9 @@ export function TableOfContents({ rawContent }: Props) {
                   onClick={(e) => {
                     e.preventDefault()
                     window.history.pushState(null, '', `#${h.id}`)
-                    document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' })
+                    document
+                      .getElementById(h.id)
+                      ?.scrollIntoView({ behavior: 'smooth' })
                   }}
                   className={cn(
                     'block -ml-px py-1.5 pl-4 text-[13px] leading-[1.5] transition-all duration-200',

@@ -99,7 +99,9 @@ function parseArticle(slug: string, fullPath: string): ArticleContent {
       topicSlug: fm.topicSlug as string | undefined,
       tags: fm.tags as string[] | undefined,
       keywords: Array.isArray(fm.keywords) ? fm.keywords : [],
-      updated: parseDate(fm.updated ?? fm.updatedAt ?? fm.modifiedAt ?? fm.lastmod),
+      updated: parseDate(
+        fm.updated ?? fm.updatedAt ?? fm.modifiedAt ?? fm.lastmod,
+      ),
     } as ContentMeta,
     content,
     rawContent: raw,

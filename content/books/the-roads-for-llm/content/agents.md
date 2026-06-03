@@ -1,10 +1,9 @@
 ---
-title: "第 35 章：Agent：当模型开始使用工具"
+title: '第 35 章：Agent：当模型开始使用工具'
 volume: 4
 chapter: 8
 description: '讲解Agent（智能体）的核心机制与工程实现——ReAct推理行动循环、函数调用原语、多Agent协作模式，让大模型从"只能说话"进化到"能够做事"。'
 ---
-
 
 > 本章问题：语言模型只能"说"——如何让它能"做"？
 
@@ -41,6 +40,7 @@ ReAct 的循环是这样的：
 ```
 
 注意这个过程中的关键点：
+
 - 模型不是一次性输出答案——它在思考、行动和观察之间交替循环。
 - 每个行动的结果（工具返回的值）被追加到模型的上下文中——模型基于新的信息继续推理。
 - 如果某一步失败了（函数返回空或报错）——模型可以重新思考并尝试其他工具。
@@ -84,7 +84,10 @@ tools = [
   "role": "assistant",
   "tool_calls": [
     {
-      "function": {"name": "get_weather", "arguments": "{\"city\": \"Beijing\"}"}
+      "function": {
+        "name": "get_weather",
+        "arguments": "{\"city\": \"Beijing\"}"
+      }
     }
   ]
 }

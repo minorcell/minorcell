@@ -1,6 +1,6 @@
 ---
-title: "大模型之路：从图灵、感知机到 ChatGPT"
-description: "一本写给普通聪明人的大模型入门书：从人工智能史出发，穿过神经网络、深度学习、Transformer 和 ChatGPT，最后带读者亲手跑通一个属于自己的小型语言模型。"
+title: '大模型之路：从图灵、感知机到 ChatGPT'
+description: '一本写给普通聪明人的大模型入门书：从人工智能史出发，穿过神经网络、深度学习、Transformer 和 ChatGPT，最后带读者亲手跑通一个属于自己的小型语言模型。'
 type: book
 ---
 

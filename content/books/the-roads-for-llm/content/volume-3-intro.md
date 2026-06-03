@@ -1,5 +1,5 @@
 ---
-title: "卷三：Transformer 时代"
+title: '卷三：Transformer 时代'
 volume: 3
 chapter: 0
 description: '卷三导语：一条问题驱动的技术链——从"神经网络在算什么"到"规模为什么改变一切"，11章环环相扣，每章都是上一章留下的问题逼出来的。理解这一卷，你就理解了大模型的发动机。'

@@ -1,5 +1,5 @@
 ---
-title: "卷四：抵达真实"
+title: '卷四：抵达真实'
 volume: 4
 chapter: 0
 description: '介绍第四卷"抵达真实"的核心主题——大模型如何从实验室走向真实世界，涵盖ChatGPT、指令微调、RLHF、LoRA、RAG、Agent等实战技术。'

@@ -26,7 +26,8 @@ export default function NotFound() {
         页面不存在
       </h1>
       <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-muted-foreground">
-        您访问的页面可能已被移动、重命名或删除。请检查 URL 是否输入正确，或从以下入口重新开始。
+        您访问的页面可能已被移动、重命名或删除。请检查 URL
+        是否输入正确，或从以下入口重新开始。
       </p>
       <div className="mt-10 flex flex-wrap items-center gap-4">
         <TransitionLink

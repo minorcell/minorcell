@@ -37,8 +37,8 @@ content/tutorials/<slug>/
 title: 标题（必填，会用作 H1 + SEO title）
 description: 一句话描述（必填，会用作 SEO description）
 type: interactive
-date: 2026-01-01       # 必填，决定首页排序位置；缺失会排在最前面
-entryFile: content.md  # 仅占位，目前未实际读取，保留以备将来扩展
+date: 2026-01-01 # 必填，决定首页排序位置；缺失会排在最前面
+entryFile: content.md # 仅占位，目前未实际读取，保留以备将来扩展
 tags: [JavaScript, 手写源码] # 仅占位，目前未渲染。可以留作元信息
 ---
 ```

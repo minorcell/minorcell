@@ -53,7 +53,7 @@
    * Used for link / brand hover states across the site.
    * Stays in the warm hue family of the paper background; mid-lightness +
    * low chroma reads as muted khaki rather than "colour". */
-  --link-accent: oklch(0.50 0.08 110);
+  --link-accent: oklch(0.5 0.08 110);
 }
 
 /* Dark mode */
@@ -93,7 +93,7 @@
   --dotgrid-active: #ffffff;
 
   /* Brighter olive that holds contrast against dark ink */
-  --link-accent: oklch(0.72 0.10 110);
+  --link-accent: oklch(0.72 0.1 110);
 }
 
 @theme inline {
@@ -246,15 +246,22 @@
   /* Inline prose anchors — hairline underline at rest so they don't read as
    * plain copy. .article-markdown defines its own (more specific) override
    * for long-form content. */
-  :where(p)>a {
+  :where(p) > a {
     text-decoration: underline;
-    text-decoration-color: color-mix(in oklab, var(--border) 80%, var(--foreground));
+    text-decoration-color: color-mix(
+      in oklab,
+      var(--border) 80%,
+      var(--foreground)
+    );
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
-    transition: text-decoration-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+    transition:
+      text-decoration-color 0.18s ease,
+      color 0.18s ease,
+      opacity 0.18s ease;
   }
 
-  :where(p)>a:hover {
+  :where(p) > a:hover {
     color: var(--link-accent);
     text-decoration-color: var(--link-accent);
     opacity: 1;
@@ -311,7 +318,9 @@
 .row-link-arrow {
   font-family: var(--font-mono);
   color: color-mix(in oklab, var(--muted-foreground) 55%, transparent);
-  transition: color 160ms ease, transform 160ms ease;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
   white-space: nowrap;
   user-select: none;
 }
@@ -353,7 +362,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .row-link,
   .row-link-arrow,
   .nav-link::after {
@@ -394,19 +402,25 @@
    * Result matches body's PaperGrain (multiply, opacity 0.32). */
   background-color: var(--background);
   background-image:
-    linear-gradient(color-mix(in oklab, var(--background) 68%, transparent),
-      color-mix(in oklab, var(--background) 68%, transparent)),
+    linear-gradient(
+      color-mix(in oklab, var(--background) 68%, transparent),
+      color-mix(in oklab, var(--background) 68%, transparent)
+    ),
     var(--paper-grain-img);
   background-repeat: repeat, repeat;
-  background-size: auto, 240px 240px;
+  background-size:
+    auto,
+    240px 240px;
   background-blend-mode: normal, multiply;
 }
 
 .dark .paper-surface {
   /* Mirror logic for dark: very faint screen, bg overlay near-opaque */
   background-image:
-    linear-gradient(color-mix(in oklab, var(--background) 94%, transparent),
-      color-mix(in oklab, var(--background) 94%, transparent)),
+    linear-gradient(
+      color-mix(in oklab, var(--background) 94%, transparent),
+      color-mix(in oklab, var(--background) 94%, transparent)
+    ),
     var(--paper-grain-img);
   background-blend-mode: normal, screen;
 }
@@ -588,7 +602,8 @@
 .article-markdown :where(pre) {
   margin: 1.4rem 0;
   border: 0;
-  border-left: 1px solid color-mix(in oklab, var(--border) 90%, var(--foreground));
+  border-left: 1px solid
+    color-mix(in oklab, var(--border) 90%, var(--foreground));
   border-radius: 0;
   padding: 0.95rem 1.1rem;
   background: color-mix(in oklab, var(--muted) 50%, transparent);
@@ -630,12 +645,16 @@
 .article-markdown :where(a) {
   color: var(--foreground);
   text-decoration: underline;
-  text-decoration-color: color-mix(in oklab,
-      var(--border) 80%,
-      var(--foreground));
+  text-decoration-color: color-mix(
+    in oklab,
+    var(--border) 80%,
+    var(--foreground)
+  );
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  transition: text-decoration-color 0.18s ease, color 0.18s ease;
+  transition:
+    text-decoration-color 0.18s ease,
+    color 0.18s ease;
 }
 
 .article-markdown :where(a:hover) {
@@ -770,7 +789,7 @@
   color: var(--muted-foreground);
 }
 
-.tutorial-cover-rule>span:nth-child(2) {
+.tutorial-cover-rule > span:nth-child(2) {
   height: 1px;
   background: color-mix(in oklab, var(--border) 70%, transparent);
 }
@@ -823,7 +842,6 @@
 }
 
 @keyframes cover-arrow-bob {
-
   0%,
   100% {
     transform: translateY(0);
@@ -853,11 +871,15 @@
   /* opaque paper surface so the cover behind is fully hidden once covered */
   background-color: var(--background);
   background-image:
-    linear-gradient(color-mix(in oklab, var(--background) 68%, transparent),
-      color-mix(in oklab, var(--background) 68%, transparent)),
+    linear-gradient(
+      color-mix(in oklab, var(--background) 68%, transparent),
+      color-mix(in oklab, var(--background) 68%, transparent)
+    ),
     var(--paper-grain-img);
   background-repeat: repeat, repeat;
-  background-size: auto, 240px 240px;
+  background-size:
+    auto,
+    240px 240px;
   background-blend-mode: normal, multiply;
   /* NOTE: never set `overflow: hidden` here — it would silently break
    * `position: sticky` on descendants (e.g. CodeWave's left code panel). */
@@ -865,8 +887,10 @@
 
 .dark .tutorial-stage {
   background-image:
-    linear-gradient(color-mix(in oklab, var(--background) 94%, transparent),
-      color-mix(in oklab, var(--background) 94%, transparent)),
+    linear-gradient(
+      color-mix(in oklab, var(--background) 94%, transparent),
+      color-mix(in oklab, var(--background) 94%, transparent)
+    ),
     var(--paper-grain-img);
   background-blend-mode: normal, screen;
   box-shadow:
@@ -947,7 +971,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .navbar,
   .navbar-inner,
   .navbar-brand,
@@ -1002,7 +1025,6 @@ a:hover [data-cursor-underline]::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   [data-cursor-underline]::after,
   .fx-ch,
   .fx-amp {
@@ -1011,9 +1033,7 @@ a:hover [data-cursor-underline]::after {
 }
 
 /* On coarse / no-hover devices: never show cursor FX. */
-@media (hover: none),
-(pointer: coarse) {
-
+@media (hover: none), (pointer: coarse) {
   [data-cursor-underline]::after {
     display: none;
   }
