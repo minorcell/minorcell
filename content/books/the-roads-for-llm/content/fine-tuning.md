@@ -1,7 +1,7 @@
 ---
-title: '第 32 章：微调：把通才变成专才'
+title: '第 31 章：微调：把通才变成专才'
 volume: 4
-chapter: 5
+chapter: 4
 description: '讲解微调（Fine-tuning）的原理与实践——如何让预训练通才模型适配特定任务，涵盖全参数微调策略、学习率选择与灾难性遗忘的规避方法。'
 ---
 
@@ -85,8 +85,6 @@ description: '讲解微调（Fine-tuning）的原理与实践——如何让预�
 ---
 
 ## 32.5 最小代码：用 HuggingFace 微调一个中文分类模型
-
-> **架构切换说明**：上一章训练的是 Decoder-only Transformer（GPT 路线，适用于文本生成），本章微调示例切换到了 Encoder-only Transformer（BERT 路线，适用于文本理解/分类任务）。这不是随机的——Decoder-only 模型适合生成任务（续写、翻译、对话），Encoder-only 模型适合理解任务（分类、情感分析、实体识别）。微调的原理（预训练模型 + 少量标注数据继续训练）在两种架构上完全一致。下一章 LoRA 将回到 Decoder-only 模型上演示生成式微调。
 
 以下约 40 行代码，演示微调一个预训练 BERT 做中文文本分类：
 

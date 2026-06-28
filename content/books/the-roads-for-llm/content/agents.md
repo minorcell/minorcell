@@ -1,7 +1,7 @@
 ---
-title: '第 35 章：Agent：当模型开始使用工具'
+title: '第 34 章：Agent：当模型开始使用工具'
 volume: 4
-chapter: 8
+chapter: 7
 description: '讲解Agent（智能体）的核心机制与工程实现——ReAct推理行动循环、函数调用原语、多Agent协作模式，让大模型从"只能说话"进化到"能够做事"。'
 ---
 

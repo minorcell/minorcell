@@ -1,7 +1,7 @@
 ---
-title: '第 33 章：LoRA：只训练「变化量」'
+title: '第 32 章：LoRA：只训练「变化量」'
 volume: 4
-chapter: 6
+chapter: 5
 description: '讲解LoRA（低秩适配）的核心公式与实现原理——只训练增量矩阵而非全量参数，用消费级GPU即可高效微调大语言模型的参数高效微调方法。'
 ---
 
