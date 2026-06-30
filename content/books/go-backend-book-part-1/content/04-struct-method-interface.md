@@ -399,18 +399,11 @@ func (f *FakeEmailSender) Send(to string, subject string, body string) error {
 
 ## 不要为了抽象而抽象
 
-Go 里很容易过早写接口：
+前面我们提取了 `EmailSender`，因为 `WelcomeUser` 确实需要替换发送器来测试。这个接口是有理由的。
 
-```go
-type UserService interface {
-    CreateUser(...)
-    UpdateUser(...)
-    DeleteUser(...)
-    FindUser(...)
-}
-```
+但你可能会想：是不是每个类型都应该有对应接口？比如给 `User` 也写一个 `UserStorer`，给日志也写一个 `Logger`？
 
-如果这个接口只有一个实现，也没有测试替换需求，它可能只是增加了一层名字。
+先不急。`EmailSender` 有用，是因为你已经遇到了需要替换实现的场景。如果你写的类型只有一个实现，也没有测试替换需求，加一个接口只是多了一层名字。
 
 更好的习惯是：先写具体类型。当你真的需要替换实现、隔离外部依赖、或者缩小调用方需要知道的能力时，再提取接口。
 

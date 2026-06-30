@@ -11,6 +11,8 @@ description: '用 net/http 写一个小型 JSON API，讲解 handler、路由、
 
 ## 最小 HTTP 服务
 
+上一章我们给 `config` 包写了一个配置加载器。现在把它接到 HTTP 服务上。
+
 Go 标准库里的 `net/http` 可以直接启动 HTTP 服务：
 
 ```go
@@ -140,13 +142,20 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 
 ```go
 func main() {
+    cfg, err := config.Load("config.json")
+    if err != nil {
+        log.Fatal(err)
+    }
+
     http.HandleFunc("/healthz", healthHandler)
     http.HandleFunc("/users", userHandler)
 
-    log.Println("listening on :8080")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Printf("starting on :%s", cfg.Port)
+    log.Fatal(http.ListenAndServe(":"+cfg.Port, nil))
 }
 ```
+
+端口来自配置，不再写死 `8080`。这就是上一章配置加载器的用武之地。
 
 访问：
 

@@ -2,28 +2,36 @@
 title: '第 5 章：Go 为什么这样处理错误'
 volume: 1
 chapter: 5
-description: '用配置读取、参数校验和外部调用场景解释 error、错误包装和失败路径可见性。'
+description: '用用户注册、邮件发送和配置读取场景解释 error、错误包装和失败路径可见性。'
 ---
 
 > 本章问题：`if err != nil` 看起来重复，为什么 Go 仍然坚持显式错误处理？
 
 ---
 
-## 先看一个会失败的函数
+## 如果发邮件失败了
 
-读取文件可能失败：
+上一章我们写了 `WelcomeUser`：
 
 ```go
-data, err := os.ReadFile("config.json")
-if err != nil {
-    return err
+func WelcomeUser(sender EmailSender, user User) error {
+    return sender.Send(
+        user.Email,
+        "Welcome",
+        "Hello "+user.DisplayName(),
+    )
 }
-fmt.Println(string(data))
 ```
 
-`os.ReadFile` 返回两个值：文件内容和错误。如果读取成功，`err` 是 `nil`；如果失败，`err` 里会包含失败原因。
+`Send` 可能失败——网络超时、邮件服务不可用、收件地址无效。目前 `WelcomeUser` 直接把 `Send` 的 `error` 返回给调用方。调用方收到一个错误，只知道"发送失败了"，但不知道是给谁发的时候失败。
 
-这就是 Go 错误处理最常见的形状：
+这就是后端代码里最常见的场景：一个操作失败了，但错误信息不够用。
+
+---
+
+## Go 的错误处理长什么样
+
+在修这个错误信息之前，先看 Go 错误处理的基本形状：
 
 ```go
 value, err := DoSomething()
@@ -40,7 +48,7 @@ if err != nil {
 
 ## error 只是一个接口
 
-Go 里的 `error` 是内置接口，形状可以理解为：
+上一章我们用 interface 定义了 `EmailSender`。Go 的 `error` 本身也是一个接口：
 
 ```go
 type error interface {
@@ -62,13 +70,63 @@ return errors.New("email is required")
 return fmt.Errorf("invalid age: %d", age)
 ```
 
-后端代码里，错误信息应该帮助定位问题。`failed` 这种信息太弱，`read config config.json: no such file or directory` 就有用得多。
+后端代码里，错误信息应该帮助定位问题。`failed` 这种信息太弱，`send email to alice@example.com: connection refused` 就有用得多。
+
+---
+
+## 包装错误：保留上下文
+
+回到 `WelcomeUser`。我们可以包装 `Send` 返回的错误，补上这一层才知道的信息：
+
+```go
+func WelcomeUser(sender EmailSender, user User) error {
+    if err := sender.Send(
+        user.Email,
+        "Welcome",
+        "Hello "+user.DisplayName(),
+    ); err != nil {
+        return fmt.Errorf("welcome user %s: %w", user.Name, err)
+    }
+    return nil
+}
+```
+
+`%w` 会包装原始错误。错误信息会变成类似 `welcome user alice: send email: connection refused`。每一层补上自己知道的上下文，最终你能看到完整的失败链路。
+
+同时调用方仍然可以用 `errors.Is` 或 `errors.As` 检查底层错误。
+
+这个模式在后端代码里到处都是。再看一个例子——读取配置文件：
+
+```go
+func LoadConfig(path string) ([]byte, error) {
+    data, err := os.ReadFile(path)
+    if err != nil {
+        return nil, fmt.Errorf("read config %s: %w", path, err)
+    }
+    return data, nil
+}
+```
+
+调用方收到错误时，不只知道"没有这个文件"，还知道是读取哪个配置文件时失败：
+
+```go
+data, err := LoadConfig("config.json")
+if err != nil {
+    if errors.Is(err, os.ErrNotExist) {
+        fmt.Println("config file does not exist")
+    }
+    return err
+}
+_ = data
+```
+
+包装错误的目标不是堆叠废话，而是在每一层补上那一层才知道的信息。
 
 ---
 
 ## 参数校验：错误是业务边界的一部分
 
-写一个创建用户的校验函数：
+在给 alice 发欢迎邮件之前，alice 的数据本身也需要检查。创建一个创建用户的校验函数：
 
 ```go
 type CreateUserRequest struct {
@@ -100,53 +158,6 @@ if err := ValidateCreateUser(req); err != nil {
 ```
 
 这里的错误不是系统异常，而是业务边界的一部分。请求参数不可信，校验失败很正常。Go 让你把这种正常失败写成返回值，而不是把它藏进异常流。
-
----
-
-## 包装错误：保留上下文
-
-假设你写了一个读取配置的函数：
-
-```go
-func LoadConfig(path string) ([]byte, error) {
-    data, err := os.ReadFile(path)
-    if err != nil {
-        return nil, err
-    }
-    return data, nil
-}
-```
-
-调用方收到错误时，可能只知道“没有这个文件”，但不知道是在读取哪个配置时失败。
-
-更好的写法是包装错误：
-
-```go
-func LoadConfig(path string) ([]byte, error) {
-    data, err := os.ReadFile(path)
-    if err != nil {
-        return nil, fmt.Errorf("read config %s: %w", path, err)
-    }
-    return data, nil
-}
-```
-
-`%w` 会包装原始错误。这样错误信息会带上上下文，同时调用方仍然可以用 `errors.Is` 或 `errors.As` 检查底层错误。
-
-例如：
-
-```go
-data, err := LoadConfig("config.json")
-if err != nil {
-    if errors.Is(err, os.ErrNotExist) {
-        fmt.Println("config file does not exist")
-    }
-    return err
-}
-_ = data
-```
-
-包装错误的目标不是堆叠废话，而是在每一层补上那一层才知道的信息。
 
 ---
 
@@ -209,10 +220,9 @@ Go 的错误处理不追求隐藏失败，而是要求你正面处理失败。
 你需要建立几个习惯：
 
 - 调用可能失败的函数后，立即检查 `err`
-- 错误信息要包含有用上下文
-- 用 `%w` 包装底层错误
+- 用 `%w` 包装底层错误，在每一层补上上下文
 - 底层少打印日志，多返回错误
 - 在边界层把错误翻译成用户能理解的响应
 - 不要用 `panic` 处理普通业务失败
 
-下一章，我们会把函数和类型放进包里，看看一个小 Go 项目应该如何组织。
+下一章，我们会把到现在为止写过的类型、方法和函数放进包里，看看一个 Go 项目应该如何组织。

@@ -2,24 +2,29 @@
 title: '第 9 章：测试后端代码'
 volume: 1
 chapter: 9
-description: '讲解 Go 的 testing 包、表格驱动测试、临时文件测试和 HTTP handler 测试。'
+description: '用前几章写的校验函数、配置加载和 HTTP handler 讲解 Go 的 testing 包和常见测试模式。'
 ---
 
-> 本章问题：如何用 Go 自带的测试工具，让后端代码可以放心修改？
+> 本章问题：如何用 Go 自带的测试工具，让你在前面写的代码可以放心修改？
 
 ---
 
 ## 测试文件长什么样
 
+前面几章我们写了 `ValidateCreateUser`、`config.Load`、HTTP handler。它们现在能工作，但你怎么知道改了之后不会坏？
+
 Go 测试文件以 `_test.go` 结尾。测试函数以 `Test` 开头：
 
 ```go
-func TestOffset(t *testing.T) {
-    got := Offset(2, 20)
-    want := 20
+func TestValidateCreateUser_Valid(t *testing.T) {
+    req := CreateUserRequest{
+        Name:  "alice",
+        Email: "alice@example.com",
+    }
 
-    if got != want {
-        t.Fatalf("Offset() = %d, want %d", got, want)
+    err := ValidateCreateUser(req)
+    if err != nil {
+        t.Fatalf("ValidateCreateUser() = %v, want nil", err)
     }
 }
 ```
@@ -36,27 +41,28 @@ go test ./...
 
 ## 表格驱动测试
 
-后端代码经常要测试多组输入。Go 常用表格驱动测试：
+`ValidateCreateUser` 有多种合法输入。逐个写测试函数很快会重复。Go 常用表格驱动测试：
 
 ```go
-func TestOffset(t *testing.T) {
+func TestValidateCreateUser_Valid(t *testing.T) {
     tests := []struct {
-        name     string
-        page     int
-        pageSize int
-        want     int
+        name string
+        req  CreateUserRequest
     }{
-        {name: "first page", page: 1, pageSize: 20, want: 0},
-        {name: "second page", page: 2, pageSize: 20, want: 20},
-        {name: "invalid page", page: 0, pageSize: 20, want: 0},
-        {name: "invalid size", page: 2, pageSize: 0, want: 20},
+        {
+            name: "basic user",
+            req:  CreateUserRequest{Name: "alice", Email: "a@example.com"},
+        },
+        {
+            name: "with age",
+            req:  CreateUserRequest{Name: "bob", Email: "b@example.com", Age: 25},
+        },
     }
 
     for _, tt := range tests {
         t.Run(tt.name, func(t *testing.T) {
-            got := Offset(tt.page, tt.pageSize)
-            if got != tt.want {
-                t.Fatalf("Offset() = %d, want %d", got, tt.want)
+            if err := ValidateCreateUser(tt.req); err != nil {
+                t.Fatalf("ValidateCreateUser() = %v, want nil", err)
             }
         })
     }
@@ -71,35 +77,15 @@ func TestOffset(t *testing.T) {
 
 ## 测试错误路径
 
-只测成功路径是不够的。Go 的错误处理显式，测试也应该覆盖关键错误路径。
-
-例如校验函数：
+只测成功路径是不够的。第五章我们花了整章讲错误处理，测试也应该覆盖关键的错误分支：
 
 ```go
-func ValidateCreateUser(req CreateUserRequest) error {
-    if req.Name == "" {
-        return errors.New("name is required")
-    }
-    if req.Email == "" {
-        return errors.New("email is required")
-    }
-    return nil
-}
-```
-
-测试：
-
-```go
-func TestValidateCreateUser(t *testing.T) {
+func TestValidateCreateUser_Invalid(t *testing.T) {
     tests := []struct {
         name    string
         req     CreateUserRequest
         wantErr bool
     }{
-        {
-            name: "valid",
-            req:  CreateUserRequest{Name: "alice", Email: "a@example.com"},
-        },
         {
             name:    "missing name",
             req:     CreateUserRequest{Email: "a@example.com"},
@@ -108,6 +94,11 @@ func TestValidateCreateUser(t *testing.T) {
         {
             name:    "missing email",
             req:     CreateUserRequest{Name: "alice"},
+            wantErr: true,
+        },
+        {
+            name:    "negative age",
+            req:     CreateUserRequest{Name: "alice", Email: "a@example.com", Age: -1},
             wantErr: true,
         },
     }
@@ -127,9 +118,9 @@ func TestValidateCreateUser(t *testing.T) {
 
 ---
 
-## 测试文件读取
+## 测试配置读取
 
-测试配置读取时，不要依赖你电脑上的固定路径。Go 的测试包提供临时目录：
+第七章我们写了 `config.Load`，它从 JSON 文件读取配置。测试时不要依赖你电脑上的固定路径。Go 的测试包提供临时目录：
 
 ```go
 func TestLoadConfig(t *testing.T) {
@@ -154,32 +145,72 @@ func TestLoadConfig(t *testing.T) {
 
 `t.TempDir()` 会创建临时目录，测试结束后自动清理。这样测试不依赖本机环境，也不会污染项目目录。
 
+你也可以测试配置文件不存在的场景：
+
+```go
+func TestLoadConfig_NotExist(t *testing.T) {
+    _, err := Load("/nonexistent/config.json")
+    if err == nil {
+        t.Fatal("Load() should return error for missing file")
+    }
+}
+```
+
+这验证了第五章的错误包装是否正常工作——文件不存在时，错误应该被清楚地传递出来。
+
 ---
 
 ## 测试 HTTP handler
 
-标准库提供 `httptest`，可以不用真的启动端口就测试 handler。
+第八章我们写了 `userHandler` 和 `createUserHandler`。标准库提供 `httptest`，可以不用真的启动端口就测试 handler：
 
 ```go
-func TestHealthHandler(t *testing.T) {
-    req := httptest.NewRequest(http.MethodGet, "/healthz", nil)
+func TestUserHandler(t *testing.T) {
+    req := httptest.NewRequest(http.MethodGet, "/users?id=1", nil)
     rr := httptest.NewRecorder()
 
-    healthHandler(rr, req)
+    userHandler(rr, req)
 
     if rr.Code != http.StatusOK {
         t.Fatalf("status = %d, want %d", rr.Code, http.StatusOK)
-    }
-
-    got := strings.TrimSpace(rr.Body.String())
-    want := `{"status":"ok"}`
-    if got != want {
-        t.Fatalf("body = %q, want %q", got, want)
     }
 }
 ```
 
 `httptest.NewRequest` 构造请求，`httptest.NewRecorder` 记录响应。handler 执行完后，你可以检查状态码、响应头和响应体。
+
+再测试创建用户的 handler：
+
+```go
+func TestCreateUserHandler(t *testing.T) {
+    body := strings.NewReader(`{"name":"alice","email":"a@example.com"}`)
+    req := httptest.NewRequest(http.MethodPost, "/users", body)
+    req.Header.Set("Content-Type", "application/json")
+    rr := httptest.NewRecorder()
+
+    createUserHandler(rr, req)
+
+    if rr.Code != http.StatusCreated {
+        t.Fatalf("status = %d, want %d", rr.Code, http.StatusCreated)
+    }
+}
+```
+
+也可以测试错误场景——缺少必填字段时应该返回 400：
+
+```go
+func TestCreateUserHandler_MissingFields(t *testing.T) {
+    body := strings.NewReader(`{"name":""}`)
+    req := httptest.NewRequest(http.MethodPost, "/users", body)
+    rr := httptest.NewRecorder()
+
+    createUserHandler(rr, req)
+
+    if rr.Code != http.StatusBadRequest {
+        t.Fatalf("status = %d, want %d", rr.Code, http.StatusBadRequest)
+    }
+}
+```
 
 这比手动启动服务再用 curl 测稳定得多，也更适合放进持续集成。
 
