@@ -8,44 +8,44 @@
 /* Light mode (default) — 纸本暖白基调 */
 :root {
   /* Warm cream — barely warm, tones down stark white into magazine tone */
-  --background: oklch(0.982 0.005 85);
-  --foreground: oklch(0.16 0.005 75);
-  --muted: oklch(0.952 0.006 85);
-  --muted-foreground: oklch(0.5 0.008 75);
-  --border: oklch(0.892 0.008 85);
+  --background: #689d31;
+  --foreground: #fff;
+  --muted: color-mix(in oklab, #689d31 82%, white);
+  --muted-foreground: color-mix(in oklab, white 72%, transparent);
+  --border: transparent;
   /* Cards / popovers stay slightly brighter than background — feels "elevated" */
-  --card: oklch(0.995 0.003 85);
-  --card-foreground: oklch(0.16 0.005 75);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --accent: oklch(0.952 0.006 85);
-  --accent-foreground: oklch(0.205 0 0);
-  --ring: oklch(0.7 0.008 75);
+  --card: color-mix(in oklab, #689d31 86%, black);
+  --card-foreground: #fff;
+  --primary: #fff;
+  --primary-foreground: #4b7924;
+  --accent: color-mix(in oklab, white 14%, transparent);
+  --accent-foreground: #fff;
+  --ring: color-mix(in oklab, white 70%, transparent);
   --radius: 0.625rem;
 
   --font-sans: Georgia, 'Times New Roman', Times, serif;
   --font-mono:
     'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
     'Courier New', monospace;
-  --popover: oklch(0.995 0.003 85);
-  --popover-foreground: oklch(0.16 0.005 75);
-  --secondary: oklch(0.952 0.006 85);
-  --secondary-foreground: oklch(0.205 0 0);
+  --popover: color-mix(in oklab, #689d31 86%, black);
+  --popover-foreground: #fff;
+  --secondary: color-mix(in oklab, white 14%, transparent);
+  --secondary-foreground: #fff;
   --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.892 0.008 85);
+  --input: color-mix(in oklab, white 30%, transparent);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: color-mix(in oklab, #689d31 86%, black);
+  --sidebar-foreground: #fff;
+  --sidebar-primary: #fff;
+  --sidebar-primary-foreground: #4b7924;
+  --sidebar-accent: color-mix(in oklab, white 14%, transparent);
+  --sidebar-accent-foreground: #fff;
+  --sidebar-border: transparent;
+  --sidebar-ring: color-mix(in oklab, white 70%, transparent);
   --dotgrid-base: #d3cedb;
   --dotgrid-active: #a49bb6;
 
@@ -53,7 +53,7 @@
    * Used for link / brand hover states across the site.
    * Stays in the warm hue family; mid-lightness +
    * low chroma reads as muted khaki rather than "colour". */
-  --link-accent: oklch(0.5 0.08 110);
+  --link-accent: #e8ffd0;
 }
 
 /* Dark mode */
@@ -141,6 +141,11 @@
   * {
     @apply border-border;
     @apply border-border outline-ring/50;
+  }
+
+  :where(*) {
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 
   html {
@@ -309,7 +314,7 @@
 }
 
 .row-link:hover {
-  background: color-mix(in oklab, var(--muted) 80%, transparent);
+  background: color-mix(in oklab, white 10%, transparent);
 }
 
 /* Trailing arrow indicator inside a row link.
@@ -829,7 +834,7 @@
  * NAVBAR
  *
  * - Default state: 56px tall, solid background, bottom hairline
- * - Scrolled state ([data-scrolled]): 44px tall, backdrop-blur, soft shadow,
+ * - Scrolled state ([data-scrolled]): 44px tall, backdrop-blur,
  *   subtitle fades; transitions are short (150ms) to feel like a response,
  *   not a dance
  * ─────────────────────────────────────────────────────────────────── */
@@ -839,8 +844,7 @@
   overflow-anchor: none;
   transition:
     background-color 150ms ease,
-    backdrop-filter 150ms ease,
-    box-shadow 150ms ease;
+    backdrop-filter 150ms ease;
 }
 
 .navbar-inner {
@@ -865,9 +869,6 @@
   background-color: color-mix(in oklab, var(--background) 78%, transparent);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  box-shadow:
-    0 1px 0 color-mix(in oklab, var(--border) 60%, transparent),
-    0 6px 14px -10px rgba(0, 0, 0, 0.15);
 }
 
 .navbar[data-scrolled] .navbar-inner {

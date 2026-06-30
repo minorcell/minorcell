@@ -81,9 +81,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                const theme = localStorage.getItem('theme') || 'light'
-                if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
+                document.documentElement.classList.remove('dark')
+                try {
+                  localStorage.setItem('theme', 'light')
+                } catch {
+                  // Ignore storage failures; the site should still render light.
                 }
               })()
             `,

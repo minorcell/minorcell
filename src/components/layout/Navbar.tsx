@@ -35,44 +35,6 @@ const navLinks = [
   { label: '项目', href: '/projects' },
 ]
 
-function MoonGlyph({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        fill="currentColor"
-        d="M20.742 13.045a8 8 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.03 8.03 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10 10 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.94 9.94 0 0 0 7.072 2.93a9.93 9.93 0 0 0 7.07-2.929a10 10 0 0 0 2.583-4.491a1 1 0 0 0-1.224-1.224m-2.772 4.301a7.95 7.95 0 0 1-5.656 2.343a7.95 7.95 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a8 8 0 0 1 2.06-1.483a10.03 10.03 0 0 0 2.89 7.848a9.97 9.97 0 0 0 7.848 2.891a8 8 0 0 1-1.484 2.059"
-      />
-    </svg>
-  )
-}
-
-function SunGlyph({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-      >
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-      </g>
-    </svg>
-  )
-}
-
 /**
  * Today's date as a small "field-journal masthead" chip.
  * Renders empty on SSR to avoid hydration mismatch (date depends on client locale & TZ).
@@ -107,15 +69,8 @@ function DateChip() {
 export function Navbar() {
   const pathname = usePathname()
   const { startTransition } = usePageTransition()
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    setTheme(
-      document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-    )
-  }, [])
 
   // Track viewport so we only mount the (gsap-heavy) mobile menu when
   // the user is actually on a small screen — desktop visitors never need
@@ -166,17 +121,6 @@ export function Navbar() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    localStorage.setItem('theme', newTheme)
-  }
-
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)
@@ -209,15 +153,6 @@ export function Navbar() {
       label: 'RSS',
       ariaLabel: '前往 RSS 订阅',
       link: '/feed.xml',
-    },
-    {
-      label: theme === 'light' ? '夜间模式' : '日间模式',
-      ariaLabel: '切换主题',
-      link: '#theme',
-      onClick: (event) => {
-        event.preventDefault()
-        toggleTheme()
-      },
     },
   ]
 
@@ -263,7 +198,7 @@ export function Navbar() {
           </TransitionLink>
         </div>
 
-        {/* RIGHT — nav + search trigger + theme toggle */}
+        {/* RIGHT — nav + search trigger */}
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((item) => {
             const active = isActive(item.href)
@@ -299,18 +234,6 @@ export function Navbar() {
             <kbd className="rounded-sm border border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] px-1.5 py-px text-[9px] font-mono text-muted-foreground/80 group-hover:border-[color:color-mix(in_oklab,var(--border)_100%,transparent)]">
               ⌘K
             </kbd>
-          </button>
-
-          <button
-            onClick={toggleTheme}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[color:color-mix(in_oklab,var(--border)_75%,transparent)] text-muted-foreground transition-colors hover:border-[color:color-mix(in_oklab,var(--foreground)_35%,transparent)] hover:bg-[color:color-mix(in_oklab,var(--muted)_60%,transparent)] hover:text-foreground"
-            aria-label="切换主题"
-          >
-            {theme === 'light' ? (
-              <MoonGlyph className="h-4 w-4" />
-            ) : (
-              <SunGlyph className="h-4 w-4" />
-            )}
           </button>
         </nav>
 
