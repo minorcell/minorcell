@@ -7,6 +7,5 @@
 - [Minor Cell 首页](https://mcell.top): 最新文章与刊物目录
 - [文章归档](https://mcell.top/articles): 按时间整理的全部技术文章
 - [技术专题](https://mcell.top/tutorials): 按主题系统学习的交互式教程
-- [小书](https://mcell.top/books): 深度阅读，系统学习的长篇内容
 - [项目](https://mcell.top/projects): 创建与长期维护的项目列表
 - [RSS Feed](https://mcell.top/feed.xml): 通过 RSS 订阅最新文章
