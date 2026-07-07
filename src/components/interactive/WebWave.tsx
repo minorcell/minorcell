@@ -30,7 +30,7 @@ type ShikiToken = {
 }
 
 const codePlugin = createCodePlugin({
-  themes: ['github-light', 'github-dark'],
+  themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
 
 const readIsDark = () =>
@@ -73,7 +73,7 @@ function SourcePanel({ code }: { code: string }) {
       {
         code,
         language: 'html' as never,
-        themes: ['github-light', 'github-dark'],
+        themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
       },
       (asyncResult) => {
         if (!canceled) {
@@ -100,7 +100,10 @@ function SourcePanel({ code }: { code: string }) {
   const lines = code.split('\n')
 
   return (
-    <div className="h-full overflow-auto overscroll-contain" data-lenis-prevent>
+    <div
+      className="webwave-source-panel h-full overflow-auto overscroll-contain"
+      data-lenis-prevent
+    >
       <pre className="px-4 py-4 text-[12px] leading-[1.6] font-mono sm:px-5">
         <code>
           {lines.map((line, i) => (

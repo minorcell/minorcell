@@ -48,6 +48,8 @@
   --sidebar-ring: color-mix(in oklab, white 70%, transparent);
   --dotgrid-base: #d3cedb;
   --dotgrid-active: #a49bb6;
+  --code-surface: color-mix(in oklab, #689d31 24%, black);
+  --code-surface-border: color-mix(in oklab, white 16%, transparent);
 
   /* ── Editorial accent (olive field) ──
    * Used for link / brand hover states across the site.
@@ -91,6 +93,8 @@
   --sidebar-ring: oklch(0.556 0 0);
   --dotgrid-base: #271e37;
   --dotgrid-active: #ffffff;
+  --code-surface: oklch(0.16 0.025 145);
+  --code-surface-border: oklch(1 0 0 / 12%);
 
   /* Brighter olive that holds contrast against dark ink */
   --link-accent: oklch(0.72 0.1 110);
@@ -563,11 +567,23 @@
   overflow: visible;
 }
 
+.article-markdown :where([data-streamdown='code-block']) {
+  border-color: var(--code-surface-border);
+  background: var(--code-surface);
+}
+
 .article-markdown :where([data-streamdown='code-block']) :where(pre) {
   margin: 0;
   border: 0;
   padding: 0.25rem 0.25rem;
   background: transparent;
+}
+
+.codewave-panel,
+.webwave-source-panel {
+  border: 1px solid var(--code-surface-border);
+  border-radius: var(--radius-lg);
+  background: var(--code-surface);
 }
 
 .article-markdown :where(code:not(pre code)) {

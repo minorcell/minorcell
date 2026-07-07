@@ -58,10 +58,10 @@ const components: Components = {
 }
 
 const lightCodePlugin = createCodePlugin({
-  themes: ['github-light', 'github-light'],
+  themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
 const darkCodePlugin = createCodePlugin({
-  themes: ['github-dark', 'github-dark'],
+  themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
 
 const readIsDark = () =>

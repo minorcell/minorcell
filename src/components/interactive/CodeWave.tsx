@@ -28,7 +28,7 @@ type ShikiToken = {
 }
 
 const codePlugin = createCodePlugin({
-  themes: ['github-light', 'github-dark'],
+  themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
 
 const readIsDark = () =>
@@ -68,7 +68,7 @@ function CodePanel({ step }: { step: CodeStep }) {
       {
         code: step.code,
         language: language as never,
-        themes: ['github-light', 'github-dark'],
+        themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
       },
       (asyncResult) => {
         if (!canceled) {
@@ -131,7 +131,7 @@ function CodePanel({ step }: { step: CodeStep }) {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-y-auto overscroll-contain"
+      className="codewave-panel absolute inset-0 overflow-y-auto overscroll-contain"
       data-lenis-prevent
     >
       <pre
