@@ -26,9 +26,10 @@ export function FloatingActionButton({
   return (
     <button
       type="button"
+      aria-label={label}
       onClick={onClick}
       className={cn(
-        'fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-50 flex items-center gap-2 rounded-3xl border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-background px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground shadow-[0_2px_16px_rgba(0,0,0,0.07)] transition-all duration-300 hover:text-[color:var(--link-accent)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.12)] hover:border-[color:color-mix(in_oklab,var(--link-accent)_50%,transparent)] active:scale-95',
+        'floating-action-button fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-3xl px-5 py-2.5 font-mono text-[11px] tracking-[0.15em] uppercase transition-all duration-300 active:scale-95 sm:right-10 sm:bottom-10',
         hidden
           ? 'pointer-events-none translate-y-3 opacity-0'
           : 'translate-y-0 opacity-100',

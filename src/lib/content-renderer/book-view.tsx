@@ -21,6 +21,12 @@ import type {
   SerializedDemoStep,
 } from '@/components/interactive/InteractiveTutorialView'
 
+const floatingToolbarClassName =
+  'floating-action-toolbar fixed right-6 bottom-6 z-50 flex overflow-hidden rounded-full sm:right-10 sm:bottom-10'
+
+const floatingToolbarButtonClassName =
+  'flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] uppercase transition-colors duration-200'
+
 // ─── TOC Drawer ──────────────────────────────────────────────────────────────
 
 function TOCDrawer({
@@ -181,18 +187,18 @@ function BookIndex({
       <TOCDrawer book={book} open={tocOpen} onClose={() => setTocOpen(false)} />
 
       {/* Merged floating toolbar */}
-      <div className="fixed bottom-6 right-6 z-50 flex overflow-hidden rounded-full border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-card shadow-[0_2px_16px_rgba(0,0,0,0.07)] sm:bottom-10 sm:right-10">
+      <div className={floatingToolbarClassName}>
         <button
           onClick={() => setTocOpen(true)}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <BookOpen className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">目录</span>
         </button>
-        <span className="my-1.5 w-px bg-[color:color-mix(in_oklab,var(--border)_70%,transparent)]" />
+        <span className="floating-action-toolbar-separator my-1.5 w-px" />
         <button
           onClick={() => discussionRef.current?.open()}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <MessageCircle className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">讨论</span>
@@ -355,18 +361,18 @@ function InteractiveChapter({
       />
 
       {/* Merged floating toolbar */}
-      <div className="fixed bottom-6 right-6 z-50 flex overflow-hidden rounded-full border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-card shadow-[0_2px_16px_rgba(0,0,0,0.07)] sm:bottom-10 sm:right-10">
+      <div className={floatingToolbarClassName}>
         <button
           onClick={() => setTocOpen(true)}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <BookOpen className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">目录</span>
         </button>
-        <span className="my-1.5 w-px bg-[color:color-mix(in_oklab,var(--border)_70%,transparent)]" />
+        <span className="floating-action-toolbar-separator my-1.5 w-px" />
         <button
           onClick={() => discussionRef.current?.open()}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <MessageCircle className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">讨论</span>
@@ -519,18 +525,18 @@ function ChapterPage({
       />
 
       {/* Merged floating toolbar */}
-      <div className="fixed bottom-6 right-6 z-50 flex overflow-hidden rounded-full border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-card shadow-[0_2px_16px_rgba(0,0,0,0.07)] sm:bottom-10 sm:right-10">
+      <div className={floatingToolbarClassName}>
         <button
           onClick={() => setTocOpen(true)}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <BookOpen className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">目录</span>
         </button>
-        <span className="my-1.5 w-px bg-[color:color-mix(in_oklab,var(--border)_70%,transparent)]" />
+        <span className="floating-action-toolbar-separator my-1.5 w-px" />
         <button
           onClick={() => discussionRef.current?.open()}
-          className="flex items-center gap-1.5 bg-transparent px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground transition-all duration-200 hover:bg-[color:color-mix(in_oklab,var(--accent)_5%,transparent)] hover:text-[var(--link-accent)]"
+          className={floatingToolbarButtonClassName}
         >
           <MessageCircle className="h-[14px] w-[14px] opacity-70" />
           <span className="hidden sm:inline">讨论</span>

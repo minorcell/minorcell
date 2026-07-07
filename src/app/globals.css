@@ -50,6 +50,12 @@
   --dotgrid-active: #a49bb6;
   --code-surface: color-mix(in oklab, #689d31 24%, black);
   --code-surface-border: color-mix(in oklab, white 16%, transparent);
+  --floating-action-bg: #fff;
+  --floating-action-fg: #4b7924;
+  --floating-action-border: color-mix(in oklab, white 78%, transparent);
+  --floating-action-hover-bg: #e8ffd0;
+  --floating-action-hover-fg: #34591a;
+  --floating-action-separator: color-mix(in oklab, #4b7924 18%, transparent);
 
   /* ── Editorial accent (olive field) ──
    * Used for link / brand hover states across the site.
@@ -95,6 +101,12 @@
   --dotgrid-active: #ffffff;
   --code-surface: oklch(0.16 0.025 145);
   --code-surface-border: oklch(1 0 0 / 12%);
+  --floating-action-bg: oklch(0.94 0.015 120);
+  --floating-action-fg: oklch(0.18 0.03 120);
+  --floating-action-border: oklch(1 0 0 / 18%);
+  --floating-action-hover-bg: oklch(0.72 0.1 110);
+  --floating-action-hover-fg: oklch(0.12 0.02 120);
+  --floating-action-separator: oklch(0.18 0.03 120 / 18%);
 
   /* Brighter olive that holds contrast against dark ink */
   --link-accent: oklch(0.72 0.1 110);
@@ -584,6 +596,34 @@
   border: 1px solid var(--code-surface-border);
   border-radius: var(--radius-lg);
   background: var(--code-surface);
+}
+
+.floating-action-button,
+.floating-action-toolbar {
+  border: 1px solid var(--floating-action-border);
+  background: var(--floating-action-bg);
+  color: var(--floating-action-fg);
+}
+
+.floating-action-button:hover,
+.floating-action-toolbar button:hover {
+  background: var(--floating-action-hover-bg);
+  color: var(--floating-action-hover-fg);
+  border-color: color-mix(
+    in oklab,
+    var(--floating-action-hover-bg) 70%,
+    var(--floating-action-fg)
+  );
+}
+
+.floating-action-button:focus-visible,
+.floating-action-toolbar button:focus-visible {
+  outline: 2px solid var(--floating-action-bg);
+  outline-offset: 3px;
+}
+
+.floating-action-toolbar-separator {
+  background: var(--floating-action-separator);
 }
 
 .article-markdown :where(code:not(pre code)) {
