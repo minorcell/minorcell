@@ -24,6 +24,32 @@ export const projectGroups: ProjectGroup[] = [
     description: 'AI 编码助手与相关工具链项目。',
     projects: [
       {
+        name: 'mini-claude-code',
+        summary: '从零构建一个 Mini Claude Code（TypeScript）',
+        status: 'active',
+        links: [
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/mini-claude-code',
+          },
+        ],
+      },
+      {
+        name: 'aquaregia',
+        summary: 'Aquaregia gives you the agent loop — think → call tools → observe → repeat — so you do not write it yourself. One API. Any provider.',
+        status: 'active',
+        links: [
+          {
+            label: 'Open',
+            href: 'https://aquaregia.mcell.top/',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/aquaregia',
+          },
+        ],
+      },
+      {
         name: 'memo-code',
         summary: 'A lightweight coding agent that runs in your terminal.',
         status: 'active',
@@ -39,29 +65,13 @@ export const projectGroups: ProjectGroup[] = [
         ],
       },
       {
-        name: 'mini-claude-code',
-        summary: '从零构建一个 Mini Claude Code（TypeScript）',
+        name: 'minorcell-skill',
+        summary: 'A collection of skills distilled from minorcell\'s own workflows and useful practices from others.',
         status: 'active',
         links: [
           {
             label: 'GitHub',
-            href: 'https://github.com/minorcell/mini-claude-code',
-          },
-        ],
-      },
-      {
-        name: 'aquaregia',
-        summary:
-          'Provider-agnostic Rust toolkit for building AI applications — unified API across OpenAI, Anthropic, Google, and OpenAI-compatible providers, with streaming, reasoning, and tool-loop support.',
-        status: 'active',
-        links: [
-          {
-            label: 'Docs',
-            href: 'https://docs.rs/aquaregia/latest/aquaregia/',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/aquaregia',
+            href: 'https://github.com/minorcell/minorcell-skill',
           },
         ],
       },
@@ -73,29 +83,6 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/wwcchh0123/hackathonGO',
-          },
-        ],
-      },
-      {
-        name: 'youclaw',
-        summary:
-          'A local-first desktop AI agent workspace built with Tauri, React, and Rust.',
-        status: 'active',
-        links: [
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/youclaw',
-          },
-        ],
-      },
-      {
-        name: 'inner',
-        summary: 'An browser AI agent in sidepanel.',
-        status: 'active',
-        links: [
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/inner',
           },
         ],
       },
@@ -154,13 +141,13 @@ export const projectGroups: ProjectGroup[] = [
     description: '可直接访问的站点、应用与产品化 Demo。',
     projects: [
       {
-        name: 'mcell',
+        name: 'minorcell',
         summary: '记录真实问题、技术选择，以及把想法做成产品的个人技术站。',
         status: 'active',
         links: [
           {
             label: 'Open',
-            href: 'https://mcell.top/',
+            href: 'https://minorcell.top/',
           },
           {
             label: 'GitHub',
@@ -196,36 +183,6 @@ export const projectGroups: ProjectGroup[] = [
         ],
       },
       {
-        name: 'codepaintstudio/cp-email',
-        summary: "CodePaintStudio's tool for send email easily.",
-        status: 'active',
-        links: [
-          {
-            label: 'Open',
-            href: 'http://cpemail.hub.feashow.cn/',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/codepaintstudio/cp-email',
-          },
-        ],
-      },
-      {
-        name: 'dilidili',
-        summary: 'B站视频下载器，支持扫码登陆、选择清晰度和视频下载',
-        status: 'active',
-        links: [
-          {
-            label: 'Open',
-            href: 'https://dilidili.mcell.top/',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/dilidili',
-          },
-        ],
-      },
-      {
         name: 'hub-io',
         summary: 'Access GitHub repository contributor information.',
         status: 'active',
@@ -237,6 +194,22 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/minorcell/hub-io',
+          },
+        ],
+      },
+      {
+        name: 'pick-quote',
+        summary:
+          '让每一次灵光乍现，都有处安放。 一款在浏览中快速收藏信息的轻量工具。',
+        status: 'active',
+        links: [
+          {
+            label: 'Open',
+            href: 'https://minorcell.github.io/pick-quote/',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/pick-quote',
           },
         ],
       },
@@ -255,18 +228,7 @@ export const projectGroups: ProjectGroup[] = [
             href: 'https://github.com/minorcell/mini-portfolio',
           },
         ],
-      },
-      {
-        name: 'ws-chat',
-        summary: '在线聊天室 Demo，基于 WebSocket 的实时通信实验。',
-        status: 'active',
-        links: [
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/ws-chat',
-          },
-        ],
-      },
+      }
     ],
   },
   {
@@ -274,18 +236,18 @@ export const projectGroups: ProjectGroup[] = [
     description: '学习、实验、课程与开源协作相关项目。',
     projects: [
       {
-        name: 'qiniu/techcamp',
+        name: '1024XEngineer/techcamp',
         summary:
           '1024 Techcamp：an open, hands-on platform where engineers grow through real projects, open-source collaboration, and architectural thinking. ',
         status: 'active',
         links: [
           {
             label: 'Open',
-            href: 'https://qiniu.github.io/techcamp/',
+            href: 'https://1024xengineer.github.io/techcamp/',
           },
           {
             label: 'GitHub',
-            href: 'https://github.com/qiniu/techcamp',
+            href: 'https://github.com/1024XEngineer/techcamp',
           },
         ],
       },
@@ -312,17 +274,6 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/codepaintstudio/back-end-learn',
-          },
-        ],
-      },
-      {
-        name: 'liangdengwang/wetalk',
-        summary: '专业综合实践项目，WeTalk，实时聊天室。',
-        status: 'active',
-        links: [
-          {
-            label: 'GitHub',
-            href: 'https://github.com/liangdengwang/wetalk',
           },
         ],
       },
@@ -416,22 +367,6 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/minorcell/sileme-clone',
-          },
-        ],
-      },
-      {
-        name: 'pick-quote',
-        summary:
-          '让每一次灵光乍现，都有处安放。 一款在浏览中快速收藏信息的轻量工具。',
-        status: 'active',
-        links: [
-          {
-            label: 'Open',
-            href: 'https://minorcell.github.io/pick-quote/',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/minorcell/pick-quote',
           },
         ],
       },
