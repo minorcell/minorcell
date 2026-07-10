@@ -1,44 +1,5 @@
-'use client'
-
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import {
-  createContext,
-  useCallback,
-  useContext,
-  type ComponentProps,
-  type ReactNode,
-} from 'react'
-
-interface PageTransitionContextValue {
-  startTransition: (path: string) => void
-  phase: 'idle'
-}
-
-const PageTransitionContext = createContext<PageTransitionContextValue>({
-  startTransition: () => {},
-  phase: 'idle',
-})
-
-export function usePageTransition() {
-  return useContext(PageTransitionContext)
-}
-
-export function PageTransitionProvider({ children }: { children: ReactNode }) {
-  const router = useRouter()
-  const startTransition = useCallback(
-    (path: string) => {
-      router.push(path)
-    },
-    [router],
-  )
-
-  return (
-    <PageTransitionContext.Provider value={{ startTransition, phase: 'idle' }}>
-      {children}
-    </PageTransitionContext.Provider>
-  )
-}
+import type { ComponentProps } from 'react'
 
 type TransitionLinkProps = ComponentProps<typeof Link>
 

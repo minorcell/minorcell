@@ -3,7 +3,6 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
-import { PageTransitionProvider } from '@/components/effects/PageTransition'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
 import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
@@ -85,13 +84,11 @@ export default function RootLayout({
       <body className="relative min-h-screen bg-background text-foreground">
         <ExternalLinkGuard />
         <div className="relative z-10 flex min-h-screen flex-col">
-          <PageTransitionProvider>
-            <Navbar />
-            <main className="relative flex-1" data-pagefind-body>
-              {children}
-            </main>
-            <Footer />
-          </PageTransitionProvider>
+          <Navbar />
+          <main className="relative flex-1" data-pagefind-body>
+            {children}
+          </main>
+          <Footer />
         </div>
       </body>
     </html>

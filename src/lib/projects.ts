@@ -9,7 +9,6 @@ export interface ProjectItem {
   name: string
   summary: string
   status: ProjectStatus
-  tags?: string[]
   links: ProjectLink[]
 }
 
@@ -28,7 +27,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'memo-code',
         summary: 'A lightweight coding agent that runs in your terminal.',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -44,7 +42,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'mini-claude-code',
         summary: '从零构建一个 Mini Claude Code（TypeScript）',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'GitHub',
@@ -57,7 +54,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           'Provider-agnostic Rust toolkit for building AI applications — unified API across OpenAI, Anthropic, Google, and OpenAI-compatible providers, with streaming, reasoning, and tool-loop support.',
         status: 'active',
-        tags: ['Rust'],
         links: [
           {
             label: 'Docs',
@@ -73,7 +69,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'wwcchh0123/hackathonGO',
         summary: 'Let‘s do it ',
         status: 'active',
-        tags: ['TypeScript', 'Fork'],
         links: [
           {
             label: 'GitHub',
@@ -86,7 +81,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           'A local-first desktop AI agent workspace built with Tauri, React, and Rust.',
         status: 'active',
-        tags: ['Rust', 'Tauri'],
         links: [
           {
             label: 'GitHub',
@@ -98,7 +92,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'inner',
         summary: 'An browser AI agent in sidepanel.',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'GitHub',
@@ -116,7 +109,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'kvslite',
         summary: '轻量级rust数据库',
         status: 'active',
-        tags: ['Rust'],
         links: [
           {
             label: 'GitHub',
@@ -128,7 +120,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'goplus/builder',
         summary: 'XBuilder',
         status: 'active',
-        tags: ['TypeScript', 'Fork'],
         links: [
           {
             label: 'Open',
@@ -145,7 +136,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           'VueDir is a lightweight library of custom directives for Vue.js.',
         status: 'active',
-        tags: ['TypeScript', 'Fork'],
         links: [
           {
             label: 'Open',
@@ -167,7 +157,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'mcell',
         summary: '记录真实问题、技术选择，以及把想法做成产品的个人技术站。',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -183,7 +172,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'perfedge',
         summary: 'PerfEdge 集Web性能优化学习、体验为主的开源知识库。',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -200,7 +188,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           'A cloud space system built on Next.js + Prisma + MySQL + TOS.',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'GitHub',
@@ -212,7 +199,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'codepaintstudio/cp-email',
         summary: "CodePaintStudio's tool for send email easily.",
         status: 'active',
-        tags: ['Vue', 'Fork'],
         links: [
           {
             label: 'Open',
@@ -228,7 +214,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'dilidili',
         summary: 'B站视频下载器，支持扫码登陆、选择清晰度和视频下载',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -244,7 +229,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'hub-io',
         summary: 'Access GitHub repository contributor information.',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -261,7 +245,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           'This could be a proof of idea, or it could be an improvised demo.',
         status: 'active',
-        tags: ['Vue'],
         links: [
           {
             label: 'Open',
@@ -277,7 +260,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'ws-chat',
         summary: '在线聊天室 Demo，基于 WebSocket 的实时通信实验。',
         status: 'active',
-        tags: ['Go'],
         links: [
           {
             label: 'GitHub',
@@ -296,7 +278,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           '1024 Techcamp：an open, hands-on platform where engineers grow through real projects, open-source collaboration, and architectural thinking. ',
         status: 'active',
-        tags: ['TypeScript', 'Fork'],
         links: [
           {
             label: 'Open',
@@ -312,7 +293,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'rustful',
         summary: '迟早要学，那不如现在就学。',
         status: 'active',
-        tags: ['Rust'],
         links: [
           {
             label: 'Open',
@@ -328,7 +308,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'codepaintstudio/back-end-learn',
         summary: '针对前端开发同学的全栈学习路线，主Node侧；',
         status: 'active',
-        tags: ['JavaScript', 'Fork'],
         links: [
           {
             label: 'GitHub',
@@ -340,7 +319,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'liangdengwang/wetalk',
         summary: '专业综合实践项目，WeTalk，实时聊天室。',
         status: 'active',
-        tags: ['TypeScript', 'Fork'],
         links: [
           {
             label: 'GitHub',
@@ -352,7 +330,6 @@ export const projectGroups: ProjectGroup[] = [
         name: '1024-talent-rank',
         summary: '七牛云第三届1024创作节，作品《TalentRank》前端源码仓库',
         status: 'active',
-        tags: ['JavaScript'],
         links: [
           {
             label: 'GitHub',
@@ -385,7 +362,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'minecraft-web',
         summary: 'minecraft-web',
         status: 'active',
-        tags: ['JavaScript'],
         links: [
           {
             label: 'Open',
@@ -401,7 +377,6 @@ export const projectGroups: ProjectGroup[] = [
         name: 'oil-paper-umbrella',
         summary: '2024全国大学生数字媒体与创新创意作品赛《泸州油纸伞》作品源码',
         status: 'active',
-        tags: ['JavaScript'],
         links: [
           {
             label: 'Open',
@@ -433,7 +408,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           '使用 Expo + Supabase + Codex 十分钟复刻的“死了么”APP，仅供学习和 demo 使用。',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',
@@ -450,7 +424,6 @@ export const projectGroups: ProjectGroup[] = [
         summary:
           '让每一次灵光乍现，都有处安放。 一款在浏览中快速收藏信息的轻量工具。',
         status: 'active',
-        tags: ['TypeScript'],
         links: [
           {
             label: 'Open',

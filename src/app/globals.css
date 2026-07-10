@@ -35,33 +35,14 @@
   --secondary-foreground: #3a3a3c;
   --destructive: oklch(0.577 0.245 27.325);
   --input: rgb(60 60 67 / 18%);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1d1d1f;
-  --sidebar-primary: #3f6f24;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e9f1e5;
-  --sidebar-accent-foreground: #31571d;
-  --sidebar-border: rgb(60 60 67 / 14%);
-  --sidebar-ring: #4b7d2e;
-  --dotgrid-base: #d2d2d7;
-  --dotgrid-active: #6e6e73;
   --code-surface: #20241f;
   --code-surface-foreground: #f5f5f7;
-  --code-surface-border: transparent;
   --floating-action-bg: #3f6f24;
   --floating-action-fg: #ffffff;
-  --floating-action-border: transparent;
   --floating-action-hover-bg: #31571d;
   --floating-action-hover-fg: #ffffff;
-  --floating-action-separator: rgb(255 255 255 / 24%);
   --link-accent: #3f6f24;
   --surface-hover: #ececef;
-  --surface-selected: #e5eee0;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 16%);
 }
 
@@ -86,33 +67,14 @@
   --secondary-foreground: #f5f5f7;
   --destructive: oklch(0.704 0.191 22.216);
   --input: rgb(255 255 255 / 18%);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: #2c2c2e;
-  --sidebar-foreground: #f5f5f7;
-  --sidebar-primary: #9bc77f;
-  --sidebar-primary-foreground: #17210f;
-  --sidebar-accent: #2f3d29;
-  --sidebar-accent-foreground: #c7e4b5;
-  --sidebar-border: rgb(84 84 88 / 65%);
-  --sidebar-ring: #9bc77f;
-  --dotgrid-base: #3a3a3c;
-  --dotgrid-active: #aeaeb2;
   --code-surface: #161916;
   --code-surface-foreground: #f5f5f7;
-  --code-surface-border: transparent;
   --floating-action-bg: #9bc77f;
   --floating-action-fg: #17210f;
-  --floating-action-border: transparent;
   --floating-action-hover-bg: #b1d798;
   --floating-action-hover-fg: #17210f;
-  --floating-action-separator: rgb(23 33 15 / 22%);
   --link-accent: #9bc77f;
   --surface-hover: #323234;
-  --surface-selected: #2f3d29;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 45%);
 }
 
@@ -129,19 +91,6 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-input: var(--input);
   --color-destructive: var(--destructive);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -286,45 +235,6 @@
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────────
- * INTERACTIVE AFFORDANCES
- *
- * Magazine-style design tends to mute clickability. These utilities
- * give "row-style" cards (whole-row clickable links) and top-nav links
- * a *static* affordance so users see they're interactive without having
- * to hover first.
- * ─────────────────────────────────────────────────────────────────── */
-
-/* Row link — full-row clickable wrapper. Adds a tinted hover bg so
- * the entire surface reads as one tappable target. Designed to be used
- * together with Tailwind's `group` for child hover states. */
-.row-link {
-  transition: none;
-}
-
-.row-link:hover {
-  background: var(--surface-hover);
-}
-
-/* Trailing arrow indicator inside a row link.
- * Render as: <span aria-hidden class="row-link-arrow">→</span>
- * Persistent at-rest (muted), animates to accent on hover. */
-.row-link-arrow {
-  color: var(--muted-foreground);
-  transition:
-    color 160ms ease,
-    transform 160ms ease;
-  white-space: nowrap;
-  user-select: none;
-}
-
-.row-link:hover .row-link-arrow,
-.group:hover .row-link-arrow {
-  color: var(--link-accent);
-  transform: translateX(3px);
-}
-
-/* Compact navigation item with a quiet selected state. */
 .nav-link {
   border-radius: 6px;
   padding: 0.4rem 0.65rem;
@@ -344,45 +254,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row-link,
-  .row-link-arrow,
   .nav-link {
     transition: none;
   }
-}
-
-/* Article list item */
-.article-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
-}
-
-.article-item:last-child {
-  border-bottom: none;
-}
-
-.article-title {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--foreground);
-}
-
-.article-title:hover {
-  opacity: 0.6;
-}
-
-.article-meta {
-  font-size: 0.8rem;
-  color: var(--muted-foreground);
-}
-
-.section-divider {
-  border: 0;
-  border-top: 1px solid color-mix(in oklab, var(--border) 68%, transparent);
-  margin: 2.25rem 0;
 }
 
 .article-markdown {
@@ -429,21 +303,6 @@
   font-size: clamp(1.05rem, 1rem + 0.25vw, 1.18rem);
   line-height: 1.3;
   margin: 1.8rem 0 0.55rem;
-}
-
-/* Anchor links injected alongside heading IDs */
-.article-markdown .heading-anchor {
-  margin-left: 0.4em;
-  font-weight: 400;
-  font-size: 0.9em;
-  color: var(--muted-foreground);
-  text-decoration: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  user-select: none;
-}
-.article-markdown :where(h2, h3):hover .heading-anchor {
-  opacity: 1;
 }
 
 /* Tighter heading-to-content spacing on direct successor */
@@ -529,16 +388,14 @@
   color: var(--code-surface-foreground);
 }
 
-.floating-action-button,
-.floating-action-toolbar {
+.floating-action-button {
   border: 0;
   background: var(--floating-action-bg);
   color: var(--floating-action-fg);
   box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
 }
 
-.floating-action-button:hover,
-.floating-action-toolbar button:hover {
+.floating-action-button:hover {
   background: var(--floating-action-hover-bg);
   color: var(--floating-action-hover-fg);
   border-color: color-mix(
@@ -548,14 +405,9 @@
   );
 }
 
-.floating-action-button:focus-visible,
-.floating-action-toolbar button:focus-visible {
+.floating-action-button:focus-visible {
   outline: 2px solid var(--floating-action-bg);
   outline-offset: 3px;
-}
-
-.floating-action-toolbar-separator {
-  background: var(--floating-action-separator);
 }
 
 .article-markdown :where(code:not(pre code)) {
@@ -640,10 +492,6 @@
 
   h2 {
     font-size: clamp(1.32rem, 1.22rem + 0.4vw, 1.6rem);
-  }
-
-  .section-divider {
-    margin: 1.8rem 0;
   }
 
   /* On mobile, text-wrap: balance leaves significant empty space on the right

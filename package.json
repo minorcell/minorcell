@@ -1,5 +1,5 @@
 {
-  "name": "temp_web",
+  "name": "minorcell",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -26,9 +26,7 @@
     "framer-motion": "^12.23.25",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.556.0",
-    "mermaid": "^11.12.3",
     "next": "16.0.7",
-    "radix-ui": "^1.4.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-medium-image-zoom": "^5.4.0",
