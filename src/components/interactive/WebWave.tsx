@@ -100,10 +100,7 @@ function SourcePanel({ code }: { code: string }) {
   const lines = code.split('\n')
 
   return (
-    <div
-      className="webwave-source-panel h-full overflow-auto overscroll-contain"
-      data-lenis-prevent
-    >
+    <div className="webwave-source-panel h-full overflow-auto overscroll-contain">
       <pre className="px-4 py-4 text-[12px] leading-[1.6] font-mono sm:px-5">
         <code>
           {lines.map((line, i) => (
@@ -164,42 +161,42 @@ function WebPanel({
   }
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-card">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-lg bg-card">
       {/* Header: title + view-mode toggle */}
-      <div className="flex items-center justify-between gap-3 border-b border-border px-3 py-2">
-        <div className="min-w-0 truncate font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+      <div className="flex items-center justify-between gap-3 px-3 py-2.5">
+        <div className="min-w-0 truncate text-[13px] font-medium text-muted-foreground">
           {step.title || 'Web'}
         </div>
         <div
           role="tablist"
-          aria-label="Web view mode"
-          className="inline-flex shrink-0 overflow-hidden rounded-md border border-border text-[11px] font-mono"
+          aria-label="网页视图模式"
+          className="inline-flex shrink-0 rounded-md bg-muted p-0.5 text-[12px]"
         >
           <button
             type="button"
             role="tab"
             aria-selected={mode === 'preview'}
             onClick={() => onToggle('preview')}
-            className={`px-2.5 py-1 transition-colors ${
+            className={`rounded px-2.5 py-1 transition-colors ${
               mode === 'preview'
-                ? 'bg-foreground text-background'
+                ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Preview
+            预览
           </button>
           <button
             type="button"
             role="tab"
             aria-selected={mode === 'source'}
             onClick={() => onToggle('source')}
-            className={`border-l border-border px-2.5 py-1 transition-colors ${
+            className={`rounded px-2.5 py-1 transition-colors ${
               mode === 'source'
-                ? 'bg-foreground text-background'
+                ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            Source
+            源码
           </button>
         </div>
       </div>

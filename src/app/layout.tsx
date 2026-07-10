@@ -1,24 +1,13 @@
 import type { Metadata } from 'next'
-import { Orbitron } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { CursorTracker } from '@/components/effects/CursorTracker'
-import { ScrollDamping } from '@/components/effects/ScrollDamping'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { PageTransitionProvider } from '@/components/effects/PageTransition'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
 import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
 import { createPersonJsonLd, createWebsiteJsonLd } from '@/lib/structured-data'
-
-// Variable axis (wght 400–900) — needed for MagneticTitle's smooth
-// font-variation-settings interpolation. Static cuts would jump.
-const orbitron = Orbitron({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-orbitron',
-})
 
 const rootMetadata = buildPageMetadata({
   title: siteContent.title,
@@ -81,33 +70,29 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                document.documentElement.classList.remove('dark')
                 try {
-                  localStorage.setItem('theme', 'light')
-                } catch {
-                  // Ignore storage failures; the site should still render light.
-                }
+                  var storedTheme = localStorage.getItem('theme')
+                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+                  var useDark = storedTheme === 'dark' || (!storedTheme && prefersDark)
+                  document.documentElement.classList.toggle('dark', useDark)
+                  document.documentElement.style.colorScheme = useDark ? 'dark' : 'light'
+                } catch {}
               })()
             `,
           }}
         />
       </head>
-      <body
-        className={`${orbitron.variable} min-h-screen bg-background text-foreground relative`}
-      >
+      <body className="relative min-h-screen bg-background text-foreground">
         <ExternalLinkGuard />
-        <CursorTracker />
-        <ScrollDamping>
-          <div className="relative z-10 flex min-h-screen flex-col">
-            <PageTransitionProvider>
-              <Navbar />
-              <main className="flex-1 relative" data-pagefind-body>
-                {children}
-              </main>
-              <Footer />
-            </PageTransitionProvider>
-          </div>
-        </ScrollDamping>
+        <div className="relative z-10 flex min-h-screen flex-col">
+          <PageTransitionProvider>
+            <Navbar />
+            <main className="relative flex-1" data-pagefind-body>
+              {children}
+            </main>
+            <Footer />
+          </PageTransitionProvider>
+        </div>
       </body>
     </html>
   )

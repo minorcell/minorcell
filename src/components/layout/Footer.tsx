@@ -1,81 +1,42 @@
-import { TransitionLink } from '@/components/effects/PageTransition'
+import { Github, Mail, Rss } from 'lucide-react'
 import { siteContent } from '@/lib/site-content'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="mt-auto">
-      <div className="mx-auto w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] py-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span>&copy; {currentYear} · MCELL</span>
-            <span className="hidden sm:inline">MCELL.TOP</span>
-          </div>
+    <footer className="mt-auto bg-card/55">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-wrap items-center justify-between gap-4 px-5 py-7 text-[13px] text-muted-foreground sm:px-8 lg:px-10">
+        <span>&copy; {currentYear} Minor Cell</span>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <TransitionLink
-              href="/articles"
-              className="transition-colors hover:text-foreground hover:opacity-100"
-            >
-              文章
-            </TransitionLink>
-            <TransitionLink
-              href="/projects"
-              className="transition-colors hover:text-foreground hover:opacity-100"
-            >
-              项目
-            </TransitionLink>
-            <TransitionLink
-              href="/tutorials"
-              className="transition-colors hover:text-foreground hover:opacity-100"
-            >
-              教程
-            </TransitionLink>
-            <TransitionLink
-              href="/feed.xml"
-              className="transition-colors hover:text-foreground hover:opacity-100"
-            >
-              RSS
-            </TransitionLink>
-            <span aria-hidden className="text-foreground/30">
-              ·
-            </span>
-            {siteContent.contact.github && (
-              <a
-                href={siteContent.contact.github}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
-              >
-                GITHUB ↗
-              </a>
-            )}
+        <div className="flex items-center gap-4">
+          <a
+            href="/feed.xml"
+            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+          >
+            <Rss className="h-3.5 w-3.5" />
+            RSS
+          </a>
+          {siteContent.contact.github ? (
             <a
-              href="https://juejin.cn/user/2280829967146779"
+              href={siteContent.contact.github}
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              掘金 ↗
+              <Github className="h-3.5 w-3.5" />
+              GitHub
             </a>
+          ) : null}
+          {siteContent.contact.email ? (
             <a
-              href="https://space.bilibili.com/1410369961"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
+              href={`mailto:${siteContent.contact.email}`}
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              BILIBILI ↗
+              <Mail className="h-3.5 w-3.5" />
+              邮件
             </a>
-            {siteContent.contact.email && (
-              <a
-                href={`mailto:${siteContent.contact.email}`}
-                className="transition-colors hover:text-[color:var(--link-accent)] hover:opacity-100"
-              >
-                EMAIL ↗
-              </a>
-            )}
-          </div>
+          ) : null}
         </div>
       </div>
     </footer>

@@ -13,40 +13,27 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-[640px] flex-col items-center justify-center px-6 text-center">
-      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-        ERROR 404
+      <span className="text-[14px] font-medium text-[color:var(--link-accent)]">
+        404
       </span>
-      <h1
-        className="mt-6 text-[clamp(2.5rem,2rem+2vw,4rem)] leading-[1.05] tracking-[-0.03em]"
-        style={{
-          fontFamily: 'Georgia, "Times New Roman", serif',
-          fontWeight: 500,
-        }}
-      >
+      <h1 className="mt-4 text-[2.5rem] font-semibold leading-tight sm:text-[3.5rem]">
         页面不存在
       </h1>
-      <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-muted-foreground">
-        您访问的页面可能已被移动、重命名或删除。请检查 URL
-        是否输入正确，或从以下入口重新开始。
+      <p className="mb-0 mt-4 max-w-[38ch] text-[15px] leading-7 text-muted-foreground">
+        页面可能已被移动、重命名或删除。
       </p>
-      <div className="mt-10 flex flex-wrap items-center gap-4">
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
         <TransitionLink
           href="/"
-          className="border border-[color:var(--link-accent)] px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--link-accent)] transition-colors hover:bg-[color:var(--link-accent)] hover:text-background"
+          className="inline-flex h-10 items-center rounded-md bg-primary px-5 text-[14px] font-medium text-primary-foreground transition-colors hover:bg-[color:var(--accent-foreground)] hover:text-primary-foreground"
         >
           返回首页
         </TransitionLink>
         <TransitionLink
           href="/articles"
-          className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)]"
+          className="text-[14px] font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           浏览文章
-        </TransitionLink>
-        <TransitionLink
-          href="/tutorials"
-          className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)]"
-        >
-          查看教程
         </TransitionLink>
       </div>
     </div>

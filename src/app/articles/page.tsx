@@ -1,6 +1,6 @@
-import { TransitionLink } from '@/components/effects/PageTransition'
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
+import { TransitionLink } from '@/components/effects/PageTransition'
 import { JsonLd } from '@/components/seo/JsonLd'
 import {
   getAllArticles,
@@ -13,15 +13,20 @@ import {
   createCollectionPageJsonLd,
 } from '@/lib/structured-data'
 
+const articlesDescription =
+  '浏览 Minor Cell 的全部技术文章，内容涵盖 AI 工程、软件开发、技术选型、工程实践与产品思考，并按发布时间归档。'
+
 export const metadata: Metadata = buildPageMetadata({
   title: '文章归档',
-  description:
-    '浏览 Minor Cell 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
+  description: articlesDescription,
   path: '/articles',
   keywords: [
     '文章归档',
     'AI Agent',
-    '全栈工程',
+    'AI 工程',
+    '软件开发',
+    '技术选型',
+    '工程实践',
     '前端开发',
     'JavaScript',
     'React',
@@ -30,23 +35,11 @@ export const metadata: Metadata = buildPageMetadata({
 })
 
 const formatShortDate = (value: string) => {
-  const d = new Date(value)
-  return `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
+  const date = new Date(value)
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${month}.${day}`
 }
-
-const InteractiveBadge = () => (
-  <span
-    className="inline-flex items-center gap-1 border border-[color:var(--link-accent)] px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--link-accent)]"
-    aria-label="交互式专题"
-  >
-    § INTERACTIVE
-  </span>
-)
-
-const formatIsoDate = (value: Date) =>
-  `${value.getFullYear()} · ${String(value.getMonth() + 1).padStart(2, '0')} · ${String(value.getDate()).padStart(2, '0')}`
-
-const pad = (n: number) => String(n).padStart(2, '0')
 
 export default function ArticlesPage() {
   const posts = getAllArticles().sort(
@@ -54,15 +47,6 @@ export default function ArticlesPage() {
       new Date(b.metadata.date ?? new Date()).getTime() -
       new Date(a.metadata.date ?? new Date()).getTime(),
   )
-  const [featuredPost, ...remainingPosts] = posts
-  const SECONDARY_COUNT = 2
-  const secondaryPosts = remainingPosts.slice(0, SECONDARY_COUNT)
-  const archivePosts = remainingPosts.slice(SECONDARY_COUNT)
-  const listPosts = archivePosts.length > 0 ? archivePosts : posts
-
-  const latestDate = featuredPost?.metadata.date
-    ? new Date(featuredPost.metadata.date)
-    : new Date()
 
   const breadcrumbJsonLd = createBreadcrumbJsonLd([
     { name: '首页', path: '/' },
@@ -70,8 +54,7 @@ export default function ArticlesPage() {
   ])
   const collectionPageJsonLd = createCollectionPageJsonLd({
     title: '文章归档',
-    description:
-      '浏览 Minor Cell 全部文章——关于 AI Agent、全栈工程与日常实践的个人记录。',
+    description: articlesDescription,
     path: '/articles',
     items: posts.map((post) => ({
       name: post.metadata.title,
@@ -79,7 +62,7 @@ export default function ArticlesPage() {
     })),
   })
 
-  const postsByYear = listPosts.reduce<Record<number, typeof posts>>(
+  const postsByYear = posts.reduce<Record<number, typeof posts>>(
     (acc, post) => {
       const year = new Date(post.metadata.date ?? new Date()).getFullYear()
       if (!acc[year]) acc[year] = []
@@ -90,245 +73,74 @@ export default function ArticlesPage() {
   )
   const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a))
 
-  const orbitron = {
-    fontFamily: 'var(--font-orbitron), Georgia, serif',
-  } as const
-  const accentBlue = 'var(--link-accent)'
-
   return (
-    <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
+    <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <JsonLd id="articles-breadcrumb" data={breadcrumbJsonLd} />
       <JsonLd id="articles-collection" data={collectionPageJsonLd} />
 
       <SectionHero
-        sectionLabel="SECTION §01 · ARCHIVE"
-        sectionCountLabel={`${posts.length} ENTRIES`}
-        dateLabel={formatIsoDate(latestDate)}
-        introLabel="THE ARCHIVE"
-        title="Articles & Notes"
-        intro={
-          <>
-            按时间倒序整理的全部文章——最新一篇推到最前，往下是历年归档。当前共{' '}
-            <span className="text-muted-foreground">{posts.length} 篇</span>。
-          </>
-        }
+        title="文章"
+        countLabel={`${posts.length} 篇`}
+        intro="记录 AI 工程、软件开发、技术选择和产品实践，按发布时间倒序整理。"
       />
 
-      {/* EDITOR'S PICK */}
-      {featuredPost && (
-        <section className="mt-20 sm:mt-24">
-          <div className="mb-8 flex items-baseline justify-between border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-3.5">
-            <h2
-              className="m-0 text-[clamp(1.4rem,1.1rem+1.2vw,1.9rem)] tracking-[-0.02em]"
-              style={{ ...orbitron, fontWeight: 700 }}
-            >
-              Editor&rsquo;s Pick
-            </h2>
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-              FEATURE · 本期主推
-            </span>
-          </div>
-
-          <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-stretch lg:gap-14">
-            {/* Feature 头条 */}
-            <TransitionLink
-              href={getContentHref(featuredPost)}
-              className="row-link group flex h-full flex-col px-3 py-2 hover:opacity-100 sm:px-4 lg:border-r lg:border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] lg:pr-14"
-            >
-              {/* Featured — underline only; the "№ 01" text isn't a numeric
-                  badge, so we skip the magnetic target here. */}
-              <div className="mb-5 flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                <span>№ 01 · LEADING ARTICLE</span>
-                <time>
-                  {formatIsoDate(
-                    new Date(featuredPost.metadata.date ?? new Date()),
-                  )}
-                </time>
+      {years.length > 0 ? (
+        <div className="mt-14 max-w-[980px] space-y-12 sm:mt-20 sm:space-y-16">
+          {years.map((year) => (
+            <section key={year} aria-labelledby={`year-${year}`}>
+              <div className="mb-3 flex items-baseline gap-3 px-3">
+                <h2
+                  id={`year-${year}`}
+                  className="m-0 text-[1.375rem] font-semibold"
+                >
+                  {year}
+                </h2>
+                <span className="text-[13px] text-muted-foreground">
+                  {postsByYear[Number(year)].length} 篇
+                </span>
               </div>
-              <h3
-                className="m-0 text-[clamp(1.7rem,1.4rem+1.6vw,3rem)] leading-[1.1] tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
-                style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  fontWeight: 500,
-                }}
-              >
-                {featuredPost.metadata.title}
-              </h3>
-              {isStubArticle(featuredPost) && (
-                <div className="mt-3">
-                  <InteractiveBadge />
-                </div>
-              )}
-              {featuredPost.metadata.description && (
-                <p className="mt-5 line-clamp-4 max-w-[58ch] text-[15px] leading-relaxed text-muted-foreground">
-                  {featuredPost.metadata.description}
-                </p>
-              )}
-              <span
-                className="mt-auto inline-flex items-center gap-2 border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pt-5 font-mono text-[12px] uppercase tracking-[0.18em]"
-                style={{ color: accentBlue }}
-              >
-                <span aria-hidden>§</span>
-                阅读主文 →
-              </span>
-            </TransitionLink>
 
-            {/* Secondary 堆叠列 */}
-            {secondaryPosts.length > 0 && (
-              <ol className="m-0 list-none border-t border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] p-0 lg:border-t-0">
-                <li className="mb-3 hidden font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground lg:block">
-                  ALSO IN THIS ISSUE
-                </li>
-                {secondaryPosts.map((post, idx) => (
-                  <li
-                    key={post.slug}
-                    className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
-                  >
+              <ol className="m-0 list-none space-y-1 p-0">
+                {postsByYear[Number(year)].map((post) => (
+                  <li key={post.slug}>
                     <TransitionLink
                       href={getContentHref(post)}
-                      className="row-link group block px-3 py-5 hover:opacity-100 sm:px-4 sm:py-6"
+                      className="grid gap-2 rounded-lg px-3 py-4 hover:bg-[color:var(--surface-hover)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
                     >
-                      <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                        <span
-                          style={{
-                            ...orbitron,
-                            fontWeight: 500,
-                            fontSize: '1rem',
-                            letterSpacing: '-0.01em',
-                            fontVariantNumeric: 'tabular-nums',
-                          }}
-                        >
-                          {pad(idx + 2)}
-                        </span>
-                        <span className="inline-flex items-baseline gap-2">
-                          <time className="text-[12px] tracking-[0.12em]">
-                            {formatShortDate(post.metadata.date ?? '')}
-                          </time>
-                          <span
-                            aria-hidden
-                            className="row-link-arrow text-[13px]"
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3
+                            className="m-0 text-[1.0625rem] font-medium leading-7 sm:text-[1.125rem]"
+                            style={{ fontFamily: 'var(--font-serif)' }}
                           >
-                            →
-                          </span>
-                        </span>
-                      </div>
-                      <span
-                        className="block text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] leading-[1.3] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
-                        style={{
-                          fontFamily: 'Georgia, "Times New Roman", serif',
-                        }}
-                      >
-                        {post.metadata.title}
-                      </span>
-                      {isStubArticle(post) && (
-                        <div className="mt-1.5">
-                          <InteractiveBadge />
+                            {post.metadata.title}
+                          </h3>
+                          {isStubArticle(post) ? (
+                            <span className="rounded bg-accent px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">
+                              交互
+                            </span>
+                          ) : null}
                         </div>
-                      )}
-                      {post.metadata.description && (
-                        <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground/80">
-                          {post.metadata.description}
-                        </p>
-                      )}
+                        {post.metadata.description ? (
+                          <p className="mb-0 mt-1 line-clamp-1 text-[14px] leading-6 text-muted-foreground">
+                            {post.metadata.description}
+                          </p>
+                        ) : null}
+                      </div>
+                      {post.metadata.date ? (
+                        <time className="text-[13px] text-muted-foreground">
+                          {formatShortDate(post.metadata.date)}
+                        </time>
+                      ) : null}
                     </TransitionLink>
                   </li>
                 ))}
               </ol>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* ARCHIVE BY YEAR */}
-      <section className="mt-24 sm:mt-28">
-        {years.map((year) => (
-          <section key={year} className="relative mb-20 last:mb-0">
-            <div className="mb-6 flex items-baseline justify-between border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-3.5">
-              <h2
-                className="m-0 text-[clamp(1.4rem,1.1rem+1.2vw,1.9rem)] tracking-[-0.02em]"
-                style={{ ...orbitron, fontWeight: 700 }}
-              >
-                Archive · {year}
-              </h2>
-              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                {postsByYear[Number(year)].length} ENTRIES
-              </span>
-            </div>
-
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -top-12 right-0 select-none text-[color:color-mix(in_oklab,var(--foreground)_8%,transparent)] sm:-top-16"
-              style={{
-                ...orbitron,
-                fontWeight: 800,
-                fontSize: 'clamp(4.5rem, 11vw, 9rem)',
-                letterSpacing: '-0.06em',
-                lineHeight: 1,
-                zIndex: -1,
-              }}
-            >
-              {year}
-            </span>
-
-            <ol className="m-0 list-none p-0">
-              {postsByYear[Number(year)].map((post, idx) => (
-                <li
-                  key={post.slug}
-                  className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
-                >
-                  <TransitionLink
-                    href={getContentHref(post)}
-                    className="row-link group grid items-baseline gap-5 px-3 py-4 hover:opacity-100 sm:gap-7 sm:px-4 sm:py-5"
-                    style={{ gridTemplateColumns: '56px 1fr auto' }}
-                  >
-                    <span
-                      className="text-muted-foreground transition-colors duration-200 group-hover:text-[color:var(--link-accent)]"
-                      style={{
-                        ...orbitron,
-                        fontWeight: 500,
-                        fontSize: '1.05rem',
-                        letterSpacing: '-0.01em',
-                        fontVariantNumeric: 'tabular-nums',
-                      }}
-                    >
-                      {pad(idx + 1)}
-                    </span>
-                    <div className="min-w-0">
-                      <span
-                        className="text-[clamp(1rem,0.98rem+0.25vw,1.18rem)] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
-                        style={{
-                          fontFamily: 'Georgia, "Times New Roman", serif',
-                        }}
-                      >
-                        {post.metadata.title}
-                      </span>
-                      {isStubArticle(post) && (
-                        <span className="ml-2 align-middle">
-                          <InteractiveBadge />
-                        </span>
-                      )}
-                      {post.metadata.description && (
-                        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground/75">
-                          · {post.metadata.description}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-baseline justify-end gap-2 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-muted-foreground">
-                      <time>{formatShortDate(post.metadata.date ?? '')}</time>
-                      <span aria-hidden className="row-link-arrow text-[13px]">
-                        →
-                      </span>
-                    </div>
-                  </TransitionLink>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ))}
-      </section>
-
-      {posts.length === 0 && (
-        <div className="py-12 text-center text-muted-foreground">暂无文章</div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <p className="py-16 text-muted-foreground">暂无文章</p>
       )}
     </div>
   )

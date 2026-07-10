@@ -5,111 +5,115 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @source "../../node_modules/streamdown/dist/*.js";
 
-/* Light mode (default) — 纸本暖白基调 */
+/* Light mode (default) */
 :root {
-  /* Warm cream — barely warm, tones down stark white into magazine tone */
-  --background: #689d31;
-  --foreground: #fff;
-  --muted: color-mix(in oklab, #689d31 82%, white);
-  --muted-foreground: color-mix(in oklab, white 72%, transparent);
-  --border: transparent;
-  /* Cards / popovers stay slightly brighter than background — feels "elevated" */
-  --card: color-mix(in oklab, #689d31 86%, black);
-  --card-foreground: #fff;
-  --primary: #fff;
-  --primary-foreground: #4b7924;
-  --accent: color-mix(in oklab, white 14%, transparent);
-  --accent-foreground: #fff;
-  --ring: color-mix(in oklab, white 70%, transparent);
-  --radius: 0.625rem;
+  color-scheme: light;
+  --background: #f5f5f7;
+  --foreground: #1d1d1f;
+  --muted: #e9e9ed;
+  --muted-foreground: #6e6e73;
+  --border: rgb(60 60 67 / 14%);
+  --card: #ffffff;
+  --card-foreground: #1d1d1f;
+  --primary: #3f6f24;
+  --primary-foreground: #ffffff;
+  --accent: #e9f1e5;
+  --accent-foreground: #31571d;
+  --ring: #4b7d2e;
+  --radius: 0.5rem;
 
-  --font-sans: Georgia, 'Times New Roman', Times, serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro SC',
+    'PingFang SC', 'Helvetica Neue', sans-serif;
+  --font-serif: Georgia, 'Songti SC', 'Times New Roman', serif;
   --font-mono:
     'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
     'Courier New', monospace;
-  --popover: color-mix(in oklab, #689d31 86%, black);
-  --popover-foreground: #fff;
-  --secondary: color-mix(in oklab, white 14%, transparent);
-  --secondary-foreground: #fff;
+  --popover: #ffffff;
+  --popover-foreground: #1d1d1f;
+  --secondary: #e9e9ed;
+  --secondary-foreground: #3a3a3c;
   --destructive: oklch(0.577 0.245 27.325);
-  --input: color-mix(in oklab, white 30%, transparent);
+  --input: rgb(60 60 67 / 18%);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: color-mix(in oklab, #689d31 86%, black);
-  --sidebar-foreground: #fff;
-  --sidebar-primary: #fff;
-  --sidebar-primary-foreground: #4b7924;
-  --sidebar-accent: color-mix(in oklab, white 14%, transparent);
-  --sidebar-accent-foreground: #fff;
-  --sidebar-border: transparent;
-  --sidebar-ring: color-mix(in oklab, white 70%, transparent);
-  --dotgrid-base: #d3cedb;
-  --dotgrid-active: #a49bb6;
-  --code-surface: color-mix(in oklab, #689d31 24%, black);
-  --code-surface-border: color-mix(in oklab, white 16%, transparent);
-  --floating-action-bg: #fff;
-  --floating-action-fg: #4b7924;
-  --floating-action-border: color-mix(in oklab, white 78%, transparent);
-  --floating-action-hover-bg: #e8ffd0;
-  --floating-action-hover-fg: #34591a;
-  --floating-action-separator: color-mix(in oklab, #4b7924 18%, transparent);
-
-  /* ── Editorial accent (olive field) ──
-   * Used for link / brand hover states across the site.
-   * Stays in the warm hue family; mid-lightness +
-   * low chroma reads as muted khaki rather than "colour". */
-  --link-accent: #e8ffd0;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #3f6f24;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9f1e5;
+  --sidebar-accent-foreground: #31571d;
+  --sidebar-border: rgb(60 60 67 / 14%);
+  --sidebar-ring: #4b7d2e;
+  --dotgrid-base: #d2d2d7;
+  --dotgrid-active: #6e6e73;
+  --code-surface: #20241f;
+  --code-surface-foreground: #f5f5f7;
+  --code-surface-border: transparent;
+  --floating-action-bg: #3f6f24;
+  --floating-action-fg: #ffffff;
+  --floating-action-border: transparent;
+  --floating-action-hover-bg: #31571d;
+  --floating-action-hover-fg: #ffffff;
+  --floating-action-separator: rgb(255 255 255 / 24%);
+  --link-accent: #3f6f24;
+  --surface-hover: #ececef;
+  --surface-selected: #e5eee0;
+  --shadow-overlay: 0 18px 60px rgb(0 0 0 / 16%);
 }
 
 /* Dark mode */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --ring: oklch(0.556 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+  color-scheme: dark;
+  --background: #1c1c1e;
+  --foreground: #f5f5f7;
+  --muted: #2c2c2e;
+  --muted-foreground: #aeaeb2;
+  --border: rgb(84 84 88 / 65%);
+  --card: #2c2c2e;
+  --card-foreground: #f5f5f7;
+  --primary: #9bc77f;
+  --primary-foreground: #17210f;
+  --accent: #2f3d29;
+  --accent-foreground: #c7e4b5;
+  --ring: #9bc77f;
+  --popover: #2c2c2e;
+  --popover-foreground: #f5f5f7;
+  --secondary: #3a3a3c;
+  --secondary-foreground: #f5f5f7;
   --destructive: oklch(0.704 0.191 22.216);
-  --input: oklch(1 0 0 / 15%);
+  --input: rgb(255 255 255 / 18%);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-  --dotgrid-base: #271e37;
-  --dotgrid-active: #ffffff;
-  --code-surface: oklch(0.16 0.025 145);
-  --code-surface-border: oklch(1 0 0 / 12%);
-  --floating-action-bg: oklch(0.94 0.015 120);
-  --floating-action-fg: oklch(0.18 0.03 120);
-  --floating-action-border: oklch(1 0 0 / 18%);
-  --floating-action-hover-bg: oklch(0.72 0.1 110);
-  --floating-action-hover-fg: oklch(0.12 0.02 120);
-  --floating-action-separator: oklch(0.18 0.03 120 / 18%);
-
-  /* Brighter olive that holds contrast against dark ink */
-  --link-accent: oklch(0.72 0.1 110);
+  --sidebar: #2c2c2e;
+  --sidebar-foreground: #f5f5f7;
+  --sidebar-primary: #9bc77f;
+  --sidebar-primary-foreground: #17210f;
+  --sidebar-accent: #2f3d29;
+  --sidebar-accent-foreground: #c7e4b5;
+  --sidebar-border: rgb(84 84 88 / 65%);
+  --sidebar-ring: #9bc77f;
+  --dotgrid-base: #3a3a3c;
+  --dotgrid-active: #aeaeb2;
+  --code-surface: #161916;
+  --code-surface-foreground: #f5f5f7;
+  --code-surface-border: transparent;
+  --floating-action-bg: #9bc77f;
+  --floating-action-fg: #17210f;
+  --floating-action-border: transparent;
+  --floating-action-hover-bg: #b1d798;
+  --floating-action-hover-fg: #17210f;
+  --floating-action-separator: rgb(23 33 15 / 22%);
+  --link-accent: #9bc77f;
+  --surface-hover: #323234;
+  --surface-selected: #2f3d29;
+  --shadow-overlay: 0 18px 60px rgb(0 0 0 / 45%);
 }
 
 @theme inline {
@@ -155,18 +159,7 @@
 
 @layer base {
   * {
-    @apply border-border;
     @apply border-border outline-ring/50;
-  }
-
-  :where(*) {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  html {
-    /* Hide scrollbars site-wide (Firefox). Scrolling still works. */
-    scrollbar-width: none;
   }
 
   /*
@@ -188,28 +181,11 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
-    font-size: clamp(1rem, 0.98rem + 0.12vw, 1.08rem);
-    line-height: 1.72;
+    font-size: 1rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: pretty;
-    /* IE / legacy Edge */
-    -ms-overflow-style: none;
-  }
-
-  /* Hide scrollbars on every scrollable element (WebKit / Chromium / Safari) */
-  *::-webkit-scrollbar {
-    display: none;
-  }
-
-  *::-webkit-scrollbar-track,
-  *::-webkit-scrollbar-thumb {
-    background: transparent;
-  }
-
-  /* And on Firefox for nested scroll containers */
-  * {
-    scrollbar-width: none;
   }
 
   h1,
@@ -219,9 +195,9 @@
   h5,
   h6 {
     font-family: var(--font-sans);
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.3;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     color: var(--foreground);
   }
 
@@ -238,18 +214,13 @@
 
   p {
     margin-bottom: 1rem;
-    color: color-mix(in oklab, var(--foreground) 92%, transparent);
+    color: var(--foreground);
     text-wrap: pretty;
   }
 
   a {
-    color: var(--foreground);
+    color: inherit;
     text-decoration: none;
-    transition: opacity 0.2s ease;
-  }
-
-  a:hover {
-    opacity: 0.6;
   }
 
   /* Buttons should always read as interactive */
@@ -261,7 +232,7 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 6px;
   }
 
   /* Inline prose anchors — hairline underline at rest so they don't read as
@@ -277,9 +248,8 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
     transition:
-      text-decoration-color 0.18s ease,
-      color 0.18s ease,
-      opacity 0.18s ease;
+      text-decoration-color 120ms ease-out,
+      color 120ms ease-out;
   }
 
   :where(p) > a:hover {
@@ -289,14 +259,14 @@
   }
 
   ::selection {
-    background: var(--foreground);
-    color: var(--background);
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
 
   /* Subtle scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
   }
 
   ::-webkit-scrollbar-track {
@@ -304,12 +274,15 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
+    background-clip: content-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklab, var(--muted-foreground) 30%, transparent);
+    background: color-mix(in oklab, var(--muted-foreground) 65%, transparent);
+    background-clip: content-box;
   }
 }
 
@@ -326,19 +299,18 @@
  * the entire surface reads as one tappable target. Designed to be used
  * together with Tailwind's `group` for child hover states. */
 .row-link {
-  transition: background-color 160ms ease;
+  transition: none;
 }
 
 .row-link:hover {
-  background: color-mix(in oklab, white 10%, transparent);
+  background: var(--surface-hover);
 }
 
 /* Trailing arrow indicator inside a row link.
  * Render as: <span aria-hidden class="row-link-arrow">→</span>
  * Persistent at-rest (muted), animates to accent on hover. */
 .row-link-arrow {
-  font-family: var(--font-mono);
-  color: color-mix(in oklab, var(--muted-foreground) 55%, transparent);
+  color: var(--muted-foreground);
   transition:
     color 160ms ease,
     transform 160ms ease;
@@ -352,71 +324,31 @@
   transform: translateX(3px);
 }
 
-/* Top-nav link — magazine kicker label with hover/active hairline.
- * Apply to plain text nav links; use [data-active] for the current page. */
+/* Compact navigation item with a quiet selected state. */
 .nav-link {
-  position: relative;
-  padding-bottom: 4px;
+  border-radius: 6px;
+  padding: 0.4rem 0.65rem;
+  transition:
+    background-color 100ms ease-out,
+    color 100ms ease-out;
 }
 
-.nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: 50% 50%;
-  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  pointer-events: none;
+.nav-link:hover {
+  background: var(--muted);
 }
 
-.nav-link:hover::after {
-  transform: scaleX(1);
-}
-
-.nav-link[data-active]::after {
-  transform: scaleX(1);
-  background: var(--foreground);
+.nav-link[data-active] {
+  background: var(--card);
+  color: var(--foreground);
+  font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .row-link,
   .row-link-arrow,
-  .nav-link::after {
+  .nav-link {
     transition: none;
   }
-}
-
-/* Year watermark */
-.year-watermark {
-  font-family: var(--font-orbitron), var(--font-sans);
-  font-size: 6.5rem;
-  font-weight: 700;
-  color: color-mix(in oklab, var(--foreground) 14%, transparent);
-  position: absolute;
-  left: -1rem;
-  top: -2.8rem;
-  pointer-events: none;
-  user-select: none;
-  z-index: -1;
-  letter-spacing: -0.05em;
-}
-
-@media (min-width: 640px) {
-  .year-watermark {
-    font-size: 8.8rem;
-    left: -2rem;
-    top: -4.8rem;
-  }
-}
-
-/* Home page brand title */
-.home-brand-title {
-  font-family: var(--font-orbitron), var(--font-sans);
-  font-weight: 700;
 }
 
 /* Article list item */
@@ -454,15 +386,15 @@
 }
 
 .article-markdown {
-  /* Magazine body: 17–18px serif, comfortable but tight line-height */
-  font-size: clamp(1.02rem, 1rem + 0.1vw, 1.08rem);
-  line-height: 1.62;
-  letter-spacing: -0.003em;
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.78;
+  letter-spacing: 0;
 }
 
 .article-markdown :where(p, li, blockquote) {
   text-wrap: pretty;
-  color: color-mix(in oklab, var(--foreground) 92%, transparent);
+  color: var(--foreground);
 }
 
 .article-markdown :where(p) {
@@ -473,20 +405,18 @@
   margin-top: 0;
 }
 
-/* Heading hierarchy — strong contrast, magazine rhythm */
 .article-markdown :where(h2, h3, h4) {
+  font-family: var(--font-sans);
   text-wrap: balance;
   font-weight: 600;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
   color: var(--foreground);
 }
 
 .article-markdown :where(h2) {
   font-size: clamp(1.5rem, 1.3rem + 0.9vw, 1.95rem);
-  line-height: 1.18;
-  margin: 3.2rem 0 0.85rem;
-  padding-bottom: 0.55rem;
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  line-height: 1.25;
+  margin: 3.5rem 0 1rem;
 }
 
 .article-markdown :where(h3) {
@@ -539,28 +469,26 @@
   margin: 0.35rem 0 0.35rem;
 }
 
-/* Blockquote — italic pull-quote feel */
 .article-markdown :where(blockquote) {
-  margin: 1.6rem 0;
-  padding: 0.2rem 0 0.2rem 1.1rem;
-  border-left: 2px solid color-mix(in oklab, var(--foreground) 25%, transparent);
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--muted);
   font-style: italic;
-  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  color: var(--foreground);
 }
 
 .article-markdown :where(blockquote p) {
   margin-bottom: 0.5rem;
 }
 
-/* Code blocks — hairline, no rounded; matches magazine grid */
 .article-markdown :where(pre) {
-  margin: 1.4rem 0;
+  margin: 1.5rem 0;
   border: 0;
-  border-left: 1px solid
-    color-mix(in oklab, var(--border) 90%, var(--foreground));
-  border-radius: 0;
-  padding: 0.95rem 1.1rem;
-  background: color-mix(in oklab, var(--muted) 50%, transparent);
+  border-radius: var(--radius);
+  padding: 1rem 1.125rem;
+  background: var(--code-surface);
   overflow-x: auto;
   font-size: 0.92em;
   line-height: 1.65;
@@ -580,8 +508,10 @@
 }
 
 .article-markdown :where([data-streamdown='code-block']) {
-  border-color: var(--code-surface-border);
+  border: 0;
+  border-radius: var(--radius);
   background: var(--code-surface);
+  color: var(--code-surface-foreground);
 }
 
 .article-markdown :where([data-streamdown='code-block']) :where(pre) {
@@ -593,16 +523,18 @@
 
 .codewave-panel,
 .webwave-source-panel {
-  border: 1px solid var(--code-surface-border);
+  border: 0;
   border-radius: var(--radius-lg);
   background: var(--code-surface);
+  color: var(--code-surface-foreground);
 }
 
 .floating-action-button,
 .floating-action-toolbar {
-  border: 1px solid var(--floating-action-border);
+  border: 0;
   background: var(--floating-action-bg);
   color: var(--floating-action-fg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
 }
 
 .floating-action-button:hover,
@@ -627,9 +559,9 @@
 }
 
 .article-markdown :where(code:not(pre code)) {
-  background: color-mix(in oklab, var(--muted) 70%, transparent);
-  border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
-  border-radius: 2px;
+  background: var(--muted);
+  border: 0;
+  border-radius: 4px;
   padding: 0.05rem 0.34rem;
   font-size: 0.9em;
   font-variant-ligatures: none;
@@ -637,12 +569,12 @@
 
 /* Links — single hairline underline, hover to accent */
 .article-markdown :where(a) {
-  color: var(--foreground);
+  color: var(--link-accent);
   text-decoration: underline;
   text-decoration-color: color-mix(
     in oklab,
-    var(--border) 80%,
-    var(--foreground)
+    var(--link-accent) 55%,
+    transparent
   );
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -652,8 +584,8 @@
 }
 
 .article-markdown :where(a:hover) {
-  color: oklch(0.55 0.1 240);
-  text-decoration-color: oklch(0.55 0.1 240);
+  color: var(--accent-foreground);
+  text-decoration-color: var(--accent-foreground);
   opacity: 1;
 }
 
@@ -671,11 +603,11 @@
   text-align: center;
 }
 
-/* Images — full-width with hairline frame */
 .article-markdown :where(img) {
   display: block;
   margin: 1.6rem 0;
-  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border: 0;
+  border-radius: var(--radius);
 }
 
 /* Table — newspaper-style */
@@ -695,8 +627,8 @@
 .article-markdown :where(th) {
   font-weight: 600;
   font-size: 0.85em;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--muted-foreground);
 }
 
@@ -722,291 +654,19 @@
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────────
- * TOPIC COVER + STAGE
- *
- * The cover sticks to the viewport (height = 100dvh, z=1) while the
- * stage section that follows starts at margin-top:100dvh, so when the
- * user scrolls down the stage naturally rises and covers the cover.
- *
- * `animation-timeline: scroll(root)` makes the cover "recede" slightly
- * as scroll progresses (scale 0.96, gentle dim). Browsers without the
- * feature simply leave it static — both states look fine.
- *
- * The navbar (z = 1200) always sits above both layers.
- * ─────────────────────────────────────────────────────────────────── */
-
-.tutorial-cover {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  height: 100dvh;
-  width: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4vw, 6rem);
-  transform-origin: 50% 30%;
-  will-change: transform, filter;
-  animation: cover-recede linear both;
-  animation-timeline: scroll(root);
-  animation-range: 0 100vh;
-}
-
-@keyframes cover-recede {
-  to {
-    transform: scale(0.96) translateY(-1.5vh);
-    filter: brightness(0.92);
-  }
-}
-
-@supports not (animation-timeline: scroll()) {
-  .tutorial-cover {
-    animation: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tutorial-cover {
-    animation: none;
-  }
-}
-
-.tutorial-cover-rule {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--muted-foreground);
-}
-
-.tutorial-cover-rule > span:nth-child(2) {
-  height: 1px;
-  background: color-mix(in oklab, var(--border) 70%, transparent);
-}
-
-.tutorial-cover-center {
-  display: grid;
-  align-content: center;
-  gap: 1.5rem;
-}
-
-.tutorial-cover-title {
-  font-family: var(--font-orbitron), Georgia, serif;
-  font-weight: 500;
-  font-size: clamp(2.4rem, 7vw, 7rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.tutorial-cover-divider {
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  background: color-mix(in oklab, var(--foreground) 50%, transparent);
-}
-
-.tutorial-cover-standfirst {
-  font-family: var(--font-orbitron), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.05rem, 1.4vw, 1.4rem);
-  line-height: 1.5;
-  color: var(--muted-foreground);
-  max-width: 56ch;
-  margin: 0;
-  text-wrap: pretty;
-}
-
-.tutorial-cover-begin {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--foreground);
-}
-
-.tutorial-cover-arrow {
-  display: inline-block;
-  animation: cover-arrow-bob 2s ease-in-out infinite;
-}
-
-@keyframes cover-arrow-bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(3px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tutorial-cover-arrow {
-    animation: none;
-  }
-}
-
-/* Stage — sits above cover, rises into view as user scrolls */
 .tutorial-stage {
   position: relative;
-  z-index: 2;
-  margin-top: 100dvh;
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  box-shadow:
-    0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
-    0 -24px 48px -28px rgba(0, 0, 0, 0.18);
-  /* opaque background so the cover behind is fully hidden once covered */
   background-color: var(--background);
-  /* NOTE: never set `overflow: hidden` here — it would silently break
-   * `position: sticky` on descendants (e.g. CodeWave's left code panel). */
 }
-
-.dark .tutorial-stage {
-  box-shadow:
-    0 -1px 0 color-mix(in oklab, var(--border) 80%, transparent),
-    0 -24px 48px -28px rgba(0, 0, 0, 0.6);
-}
-
-@media (max-width: 640px) {
-  .tutorial-cover {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-
-  .tutorial-stage {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────────────
- * NAVBAR
- *
- * - Default state: 56px tall, solid background, bottom hairline
- * - Scrolled state ([data-scrolled]): 44px tall, backdrop-blur,
- *   subtitle fades; transitions are short (150ms) to feel like a response,
- *   not a dance
- * ─────────────────────────────────────────────────────────────────── */
 
 .navbar {
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
   overflow-anchor: none;
-  transition:
-    background-color 150ms ease,
-    backdrop-filter 150ms ease;
 }
 
 .navbar-inner {
-  height: 3.5rem;
-  /* 56px */
-  transition: height 150ms ease;
+  height: 3.25rem;
 }
 
 .navbar-brand {
-  font-size: 1.2rem;
-  transition: font-size 150ms ease;
-}
-
-.navbar-subtitle {
-  transition:
-    opacity 150ms ease,
-    transform 150ms ease;
-}
-
-/* Scrolled state */
-.navbar[data-scrolled] {
-  background-color: color-mix(in oklab, var(--background) 78%, transparent);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-}
-
-.navbar[data-scrolled] .navbar-inner {
-  height: 2.75rem;
-  /* 44px */
-}
-
-.navbar[data-scrolled] .navbar-brand {
-  font-size: 1.05rem;
-}
-
-.navbar[data-scrolled] .navbar-subtitle {
-  opacity: 0;
-  transform: translateX(-4px);
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navbar,
-  .navbar-inner,
-  .navbar-brand,
-  .navbar-subtitle {
-    transition: none;
-  }
-}
-
-/* ─ FX 3 · Cursor-position expanding underline ───────────────────── */
-
-[data-cursor-underline] {
-  position: relative;
-  /* Inline display lets the ::after cover the actual run of text rather
-   * than the whole line box of a wider parent. */
-  display: inline;
-}
-
-[data-cursor-underline]::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 1px;
-  background: var(--link-accent);
-  transform: scaleX(0);
-  transform-origin: var(--ux, 50%) 50%;
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-  pointer-events: none;
-}
-
-[data-cursor-underline]:hover::after,
-.group:hover [data-cursor-underline]::after,
-a:hover [data-cursor-underline]::after {
-  transform: scaleX(1);
-}
-
-/* ─ FX 2 · MagneticTitle per-letter slots ────────────────────────── */
-
-.fx-ch {
-  display: inline-block;
-  /* Smooth wght axis interpolation; will be overridden every RAF by JS
-   * when fine-pointer + reduced-motion-off. */
-  transition: font-variation-settings 0.25s ease;
-  will-change: font-variation-settings;
-}
-
-.fx-amp {
-  display: inline-block;
-  transition: transform 0.25s ease;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-cursor-underline]::after,
-  .fx-ch,
-  .fx-amp {
-    transition: none !important;
-  }
-}
-
-/* On coarse / no-hover devices: never show cursor FX. */
-@media (hover: none), (pointer: coarse) {
-  [data-cursor-underline]::after {
-    display: none;
-  }
+  font-size: 0.9375rem;
 }

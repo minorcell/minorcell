@@ -26,7 +26,10 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
   function DiscussionDrawer({ discussionTerm, hideTrigger }, ref) {
     const [open, setOpen] = useState(false)
     const openRef = useRef(open)
-    openRef.current = open
+
+    useEffect(() => {
+      openRef.current = open
+    }, [open])
 
     useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), [])
 
@@ -64,7 +67,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
         {/* Overlay — above navbar (z-[1200]) */}
         <div
           className={cn(
-            'fixed inset-0 z-[1300] bg-black/30 transition-opacity duration-300 dark:bg-black/55',
+            'fixed inset-0 z-[1300] bg-black/25 transition-opacity duration-200 dark:bg-black/55',
             open
               ? 'pointer-events-auto opacity-100'
               : 'pointer-events-none opacity-0',
@@ -74,48 +77,29 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
 
         {/* Drawer panel — above overlay */}
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="讨论"
+          aria-hidden={!open}
           className={cn(
-            'fixed right-0 top-0 bottom-0 z-[1310] flex w-[560px] max-w-full flex-col border-l border-border bg-background shadow-[-12px_0_48px_rgba(0,0,0,0.15)] transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)]',
+            'fixed right-0 top-0 bottom-0 z-[1310] flex w-[560px] max-w-full flex-col bg-background shadow-[var(--shadow-overlay)] transition-transform duration-200 ease-out',
             open ? 'translate-x-0' : 'translate-x-full',
           )}
         >
-          {/* Header — publication-style masthead */}
-          <div className="flex shrink-0 items-end justify-between border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-8 pb-5 pt-8">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                SECTION §02 · ENGAGE
-              </div>
-              <h3
-                className="m-0 mt-3 text-[clamp(1.4rem,1.1rem+0.7vw,1.8rem)] leading-[1.08] tracking-[-0.02em]"
-                style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  fontWeight: 500,
-                }}
-              >
-                Discussion
-              </h3>
-              <p
-                className="m-0 mt-2 text-[14px] leading-[1.55] text-muted-foreground"
-                style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  fontStyle: 'italic',
-                }}
-              >
-                留言区 · GitHub-powered comments via Giscus
-              </p>
-            </div>
+          <div className="flex shrink-0 items-center justify-between px-6 py-5 sm:px-8">
+            <h2 className="m-0 text-[1.25rem] font-semibold">讨论</h2>
             <button
               type="button"
-              aria-label="Close discussion"
+              aria-label="关闭讨论"
               onClick={close}
-              className="mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] bg-transparent text-muted-foreground transition-colors duration-200 hover:text-foreground hover:border-muted-foreground"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
           {/* Body */}
-          <div className="flex-1 overflow-y-auto px-8 py-7">
+          <div className="flex-1 overflow-y-auto px-6 pb-7 sm:px-8">
             <GiscusComments term={discussionTerm} />
           </div>
         </div>

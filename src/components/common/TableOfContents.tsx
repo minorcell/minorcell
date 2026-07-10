@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface HeadingItem {
@@ -30,15 +30,22 @@ function parseHeadings(rawMarkdown: string): HeadingItem[] {
   return headings
 }
 
+function scrollToHeading(id: string, behavior: ScrollBehavior = 'smooth') {
+  const target = document.getElementById(id)
+  if (!target) return
+  const top = target.getBoundingClientRect().top + window.scrollY - 80
+  window.scrollTo({ top, behavior })
+}
+
 interface Props {
   rawContent: string
 }
 
 export function TableOfContents({ rawContent }: Props) {
-  const headings = useRef(parseHeadings(rawContent)).current
+  const headings = useMemo(() => parseHeadings(rawContent), [rawContent])
   const [activeId, setActiveId] = useState<string | null>(null)
 
-  // Inject IDs and anchor links into DOM heading elements
+  // Inject stable IDs into rendered markdown headings.
   useEffect(() => {
     if (headings.length === 0) return
     const articleBody = document.querySelector('.article-markdown')
@@ -47,28 +54,13 @@ export function TableOfContents({ rawContent }: Props) {
     domHeadings.forEach((el, i) => {
       if (i >= headings.length) return
       el.id = headings[i].id
-
-      if (!el.querySelector('.heading-anchor')) {
-        const a = document.createElement('a')
-        a.href = `#${headings[i].id}`
-        a.className = 'heading-anchor'
-        a.setAttribute('aria-label', `Link to: ${headings[i].text}`)
-        a.textContent = '#'
-        a.addEventListener('click', (e) => {
-          e.preventDefault()
-          window.history.pushState(null, '', `#${headings[i].id}`)
-          el.scrollIntoView({ behavior: 'smooth' })
-        })
-        el.appendChild(a)
-      }
     })
 
     // Scroll to hash on initial load
     const hash = window.location.hash.slice(1)
     if (hash) {
-      const target = document.getElementById(hash)
-      if (target)
-        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 150)
+      const timer = window.setTimeout(() => scrollToHeading(hash, 'auto'), 150)
+      return () => window.clearTimeout(timer)
     }
   }, [headings])
 
@@ -104,12 +96,12 @@ export function TableOfContents({ rawContent }: Props) {
   if (headings.length === 0) return null
 
   return (
-    <nav aria-label="Table of Contents" className="hidden xl:block xl:ml-12">
-      <div className="sticky top-[120px]">
-        <div className="mb-3.5 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          On this page
+    <nav aria-label="文章目录" className="hidden w-56 xl:ml-16 xl:block">
+      <div className="sticky top-24">
+        <div className="mb-2 px-3 text-[13px] font-medium text-muted-foreground">
+          目录
         </div>
-        <ol className="m-0 list-none border-l border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] p-0">
+        <ol className="m-0 list-none space-y-0.5 p-0">
           {headings.map((h) => {
             const isActive = activeId === h.id
             return (
@@ -119,16 +111,14 @@ export function TableOfContents({ rawContent }: Props) {
                   onClick={(e) => {
                     e.preventDefault()
                     window.history.pushState(null, '', `#${h.id}`)
-                    document
-                      .getElementById(h.id)
-                      ?.scrollIntoView({ behavior: 'smooth' })
+                    scrollToHeading(h.id)
                   }}
                   className={cn(
-                    'block -ml-px py-1.5 pl-4 text-[13px] leading-[1.5] transition-all duration-200',
-                    h.level === 3 && 'pl-7 text-[12.5px]',
+                    'block rounded-md px-3 py-2 text-[13px] leading-[1.45] transition-colors duration-150',
+                    h.level === 3 && 'pl-6 text-[12.5px]',
                     isActive
-                      ? 'border-l-[2px] border-l-[color:var(--link-accent)] font-medium text-foreground'
-                      : 'border-l-[1.5px] border-l-transparent text-muted-foreground hover:border-l-[color:color-mix(in_oklab,var(--border)_70%,transparent)] hover:text-foreground',
+                      ? 'bg-accent font-medium text-accent-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                   )}
                 >
                   {h.text}

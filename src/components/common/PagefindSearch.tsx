@@ -53,14 +53,9 @@ export function PagefindSearch({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const pagefindRef = useRef<PagefindInstance | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const [mounted, setMounted] = useState(false)
 
   const isOverlay = variant === 'overlay'
   const isActive = isOverlay ? open : true
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
     if (!isActive || !autoFocus) return
@@ -137,15 +132,13 @@ export function PagefindSearch({
 
   useEffect(() => {
     if (!isActive || bundleState !== 'idle') return
-    void ensurePagefind()
+    const frame = requestAnimationFrame(() => void ensurePagefind())
+    return () => cancelAnimationFrame(frame)
   }, [isActive, bundleState, ensurePagefind])
 
   useEffect(() => {
     if (!isActive) return
-    if (query.trim().length < 2) {
-      setHits([])
-      return
-    }
+    if (query.trim().length < 2) return
 
     const handle = setTimeout(async () => {
       const pagefind = await ensurePagefind()
@@ -185,98 +178,71 @@ export function PagefindSearch({
   }, [query, isActive, ensurePagefind])
 
   const resultsSection = (
-    <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8 sm:py-6 max-h-[60vh]">
+    <div className="max-h-[60vh] flex-1 overflow-y-auto px-4 pb-4 sm:px-5 sm:pb-5">
       {errorMessage && (
-        <div className="mb-4 border-l border-destructive/40 px-4 py-3 font-mono text-[12px] text-destructive">
+        <div className="mb-3 rounded-md bg-destructive/10 px-4 py-3 text-[13px] text-destructive">
           <span>{errorMessage}</span>
           <button
             type="button"
-            className="ml-3 border-b border-destructive/40 pb-0.5 uppercase tracking-[0.18em] hover:opacity-70 transition-opacity"
+            className="ml-3 font-medium underline underline-offset-2"
             onClick={resetBundleState}
           >
-            RETRY
+            重试
           </button>
         </div>
       )}
 
       {bundleState === 'loading' && (
-        <div className="flex items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          <span>LOADING INDEX…</span>
+        <div className="flex items-center gap-2 px-3 py-4 text-[14px] text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>正在准备搜索</span>
         </div>
       )}
 
-      {!query && (
-        <p className="py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          —  输入 2 个以上字符以检索全站
+      {!query && bundleState !== 'loading' && (
+        <p className="mb-0 px-3 py-4 text-[14px] text-muted-foreground">
+          输入至少 2 个字符
         </p>
       )}
 
       {query && !isSearching && hits.length === 0 && !errorMessage && (
-        <p className="py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          NO RESULTS · 未找到匹配项
+        <p className="mb-0 px-3 py-4 text-[14px] text-muted-foreground">
+          没有找到相关内容
         </p>
       )}
 
       {isSearching && (
-        <div className="flex items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-          <span>SEARCHING…</span>
+        <div className="flex items-center gap-2 px-3 py-4 text-[14px] text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>正在搜索</span>
         </div>
       )}
 
       {hits.length > 0 && (
         <>
-          <div className="mb-3 flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            <span>RESULTS</span>
-            <span>{hits.length} HITS</span>
+          <div className="mb-1 px-3 py-2 text-[13px] text-muted-foreground">
+            {hits.length} 个结果
           </div>
-          <ol className="m-0 list-none p-0">
+          <ol className="m-0 list-none space-y-1 p-0">
             {hits.map((hit, index) => (
-              <li
-                key={`${hit.url}-${index}`}
-                className="border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] last:border-b-0"
-              >
+              <li key={`${hit.url}-${index}`}>
                 <TransitionLink
                   href={hit.url}
-                  className="row-link group grid items-start gap-4 px-3 py-4 hover:opacity-100"
-                  style={{ gridTemplateColumns: '44px 1fr 18px' }}
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 hover:bg-[color:var(--surface-hover)]"
                   onClick={onClose}
                 >
-                  <span
-                    className="text-muted-foreground transition-[color,transform] duration-200 group-hover:-translate-x-0.5 group-hover:text-[color:var(--link-accent)]"
-                    style={{
-                      fontFamily: 'var(--font-orbitron), serif',
-                      fontWeight: 500,
-                      fontSize: '0.95rem',
-                      letterSpacing: '-0.01em',
-                      fontVariantNumeric: 'tabular-nums',
-                      paddingTop: '2px',
-                    }}
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                   <div className="min-w-0">
-                    <p
-                      className="m-0 text-[15px] leading-[1.35] tracking-[-0.005em] transition-opacity duration-200 group-hover:opacity-60 text-pretty sm:text-balance"
-                      style={{
-                        fontFamily: 'Georgia, "Times New Roman", serif',
-                        fontWeight: 500,
-                      }}
-                    >
+                    <p className="m-0 text-[15px] font-medium leading-6">
                       {hit.title}
                     </p>
                     {hit.excerpt && (
                       <p
-                        className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground/85"
+                        className="mb-0 mt-1 line-clamp-2 text-[13px] leading-5 text-muted-foreground"
                         dangerouslySetInnerHTML={{ __html: hit.excerpt }}
                       />
                     )}
-                    <p className="mt-1.5 truncate font-mono text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground/60">
-                      {hit.url}
-                    </p>
                   </div>
-                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 self-center text-muted-foreground transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
                 </TransitionLink>
               </li>
             ))}
@@ -287,42 +253,35 @@ export function PagefindSearch({
   )
 
   const content = (
-    <div className="flex max-h-[calc(100vh-4rem)] flex-col overflow-hidden border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-background">
-      {/* Masthead bar */}
-      <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-3 sm:px-8">
-        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          <span
-            aria-hidden
-            className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--link-accent)]"
-          />
-          SEARCH · 全站检索
-        </div>
+    <div className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-[var(--shadow-overlay)]">
+      <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-6 sm:pt-6">
+        <h2 className="m-0 text-[1.125rem] font-semibold">搜索</h2>
         {isOverlay && (
           <button
             type="button"
             aria-label="关闭搜索"
             onClick={onClose}
-            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            ESC <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4" />
           </button>
         )}
       </div>
 
-      {/* Search input */}
-      <div className="flex items-baseline gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-6 sm:px-8 sm:py-8">
-        <Search className="h-5 w-5 shrink-0 self-center text-muted-foreground" />
+      <div className="mx-4 my-4 flex items-center gap-3 rounded-lg bg-muted px-4 sm:mx-5">
+        <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
         <input
           ref={inputRef}
           type="search"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          className="w-full bg-transparent text-[clamp(1.4rem,1.1rem+1vw,2rem)] tracking-[-0.015em] text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-          style={{
-            fontFamily: 'Georgia, "Times New Roman", serif',
-            fontWeight: 500,
+          onChange={(event) => {
+            const nextQuery = event.target.value
+            setQuery(nextQuery)
+            if (nextQuery.trim().length < 2) setHits([])
           }}
-          placeholder="查找一篇文章、一个词、一句代码…"
+          className="h-12 w-full bg-transparent text-[16px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+          placeholder="搜索文章和教程"
+          aria-label="全站搜索"
           autoComplete="off"
         />
       </div>
@@ -331,10 +290,10 @@ export function PagefindSearch({
   )
 
   if (isOverlay) {
-    if (!open || !mounted) return null
+    if (!open) return null
 
     return createPortal(
-      <div className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-background/85 px-4 py-12 backdrop-blur-md sm:px-6 sm:py-16">
+      <div className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14">
         <div className="w-full max-w-3xl">{content}</div>
       </div>,
       document.body,

@@ -16,14 +16,6 @@ import {
   createBreadcrumbJsonLd,
 } from '@/lib/structured-data'
 
-const formatIsoDate = (value: string) => {
-  const date = new Date(value)
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y} · ${m} · ${d}`
-}
-
 interface Props {
   params: Promise<{
     slug: string[]
@@ -112,7 +104,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     modifiedTime,
     section: 'Articles',
     tags,
-    keywords: ['AI Agent', '全栈工程', '编程教程'],
+    keywords: ['技术文章'],
   })
 }
 
@@ -169,7 +161,7 @@ export default async function ArticlePage({ params }: Props) {
   ])
 
   return (
-    <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
+    <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <JsonLd id={`article-posting-${slugString}`} data={articleJsonLd} />
       <JsonLd id={`article-breadcrumb-${slugString}`} data={breadcrumbJsonLd} />
       <ArticleView article={post} discussionTerm={discussionTerm} />
@@ -190,58 +182,45 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
       : undefined
 
   return (
-    <div className="mx-auto w-full px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20 lg:px-16 xl:px-24">
+    <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <meta httpEquiv="refresh" content={`0; url=${tutorialHref}`} />
       <link rel="canonical" href={tutorialHref} />
       <TutorialRedirect tutorialHref={tutorialHref} />
 
-      <article className="mx-auto w-full max-w-[920px]">
+      <article className="mx-auto w-full max-w-[780px] pt-8 sm:pt-14">
         <header>
-          <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            <span>SECTION §01 · INTERACTIVE TUTORIAL</span>
-            <time>{formatIsoDate(post.metadata.date ?? '')}</time>
-          </div>
-
           <h1
-            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em] text-pretty sm:text-balance"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontWeight: 500,
-            }}
+            className="m-0 text-[2.25rem] font-medium leading-[1.18] sm:text-[3.25rem]"
+            style={{ fontFamily: 'var(--font-serif)' }}
           >
             {post.metadata.title}
           </h1>
 
-          {description && (
+          {description ? (
             <p
-              className="mt-6 max-w-[58ch] text-[clamp(1.05rem,1rem+0.45vw,1.3rem)] leading-[1.55] tracking-[-0.005em] text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontStyle: 'italic',
-              }}
+              className="mb-0 mt-5 max-w-[58ch] text-[1.0625rem] leading-7 text-muted-foreground sm:text-[1.1875rem] sm:leading-8"
+              style={{ fontFamily: 'var(--font-serif)' }}
             >
               {description}
             </p>
-          )}
+          ) : null}
         </header>
 
-        <div className="mt-12 rounded-md border border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] bg-[color:color-mix(in_oklab,var(--foreground)_3%,transparent)] px-6 py-7 sm:px-8 sm:py-8">
-          <p className="m-0 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            REDIRECT NOTICE · 即将跳转
+        <div className="mt-10 rounded-lg bg-card px-6 py-6 sm:px-7">
+          <p className="m-0 font-medium">正在打开交互教程</p>
+          <p className="mb-0 mt-2 text-[14px] leading-6 text-muted-foreground">
+            页面会自动跳转；如果没有跳转，可以手动继续。
           </p>
-          <p className="m-0 mt-3 leading-relaxed text-foreground/92">
-            这篇内容以「交互式教程」的形态呈现：左侧代码、右侧文档，滚动同步。我们已自动把你转到对应教程；如果没有自动跳转，请点击下方按钮。
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
               href={tutorialHref}
-              className="inline-flex items-center gap-2 border border-[color:var(--link-accent)] px-4 py-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--link-accent)] transition-colors duration-200 hover:bg-[color:var(--link-accent)] hover:text-background"
+              className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-[14px] font-medium text-primary-foreground transition-colors hover:bg-[color:var(--accent-foreground)] hover:text-primary-foreground"
             >
-              前往教程 →
+              前往教程
             </TransitionLink>
             <TransitionLink
               href="/articles"
-              className="inline-flex items-center gap-2 border-b border-[color:color-mix(in_oklab,var(--border)_70%,transparent)] pb-1 font-mono text-[12px] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:border-[color:var(--link-accent)] hover:text-[color:var(--link-accent)]"
+              className="text-[14px] font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               返回归档
             </TransitionLink>

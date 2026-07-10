@@ -1,33 +1,24 @@
-import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
-import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
-import { TableOfContents } from '@/components/common/TableOfContents'
 import { CopyPageButton } from '@/components/common/CopyPageButton'
+import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
+import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
+import { TableOfContents } from '@/components/common/TableOfContents'
 import type { ArticleContent } from '@/lib/content-parser'
 
-function formatIsoDate(value: string) {
+function formatDate(value: string) {
   const date = new Date(value)
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y} · ${m} · ${d}`
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}.${month}.${day}`
 }
 
 function readingMinutes(text: string) {
-  const cnChars = (text.match(/[一-龥]/g) || []).length
-  const enWords = text
+  const chineseCharacters = (text.match(/[一-龥]/g) || []).length
+  const englishWords = text
     .replace(/[一-龥]/g, '')
     .split(/\s+/)
     .filter(Boolean).length
-  return Math.max(1, Math.round(cnChars / 400 + enWords / 220))
-}
-
-function toStringArray(value: unknown): string[] {
-  return Array.isArray(value)
-    ? value.filter(
-        (item): item is string =>
-          typeof item === 'string' && item.trim().length > 0,
-      )
-    : []
+  return Math.max(1, Math.round(chineseCharacters / 400 + englishWords / 220))
 }
 
 interface ArticleViewProps {
@@ -37,65 +28,43 @@ interface ArticleViewProps {
 
 export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
   const { metadata, content, rawContent } = article
-
-  const tags = [
-    ...toStringArray(metadata.keywords),
-    ...toStringArray(metadata.tags),
-  ]
   const minutes = readingMinutes(content)
-  const dateStr = metadata.date ? formatIsoDate(metadata.date) : ''
 
   return (
-    <div className="flex justify-center gap-0">
-      <article className="w-full max-w-[920px]">
-        {/* MASTHEAD */}
-        <header>
-          <div className="flex items-center justify-between gap-4 border-b border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            <div className="flex items-center gap-5">
-              <span>SECTION §01 · ARTICLE</span>
-              <span className="hidden sm:inline">{minutes} MIN READ</span>
-            </div>
-            {dateStr && <time>{dateStr}</time>}
-          </div>
-
-          {tags.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground/85">
-              {tags.map((tag) => (
-                <span key={tag}>#{tag}</span>
-              ))}
-            </div>
-          )}
-
-          <h1
-            className="m-0 mt-7 text-[clamp(1.85rem,1.4rem+2vw,3.4rem)] leading-[1.08] tracking-[-0.02em] text-pretty sm:text-balance"
-            style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontWeight: 500,
-            }}
-          >
-            {metadata.title}
-          </h1>
-
-          {metadata.description && (
-            <p
-              className="mt-6 max-w-[58ch] text-[clamp(1.05rem,1rem+0.45vw,1.3rem)] leading-[1.55] tracking-[-0.005em] text-muted-foreground"
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontStyle: 'italic',
-              }}
+    <div className="flex justify-center">
+      <article className="w-full max-w-[780px]">
+        <header className="relative pt-8 sm:pt-14">
+          <div className="sm:pr-14">
+            <h1
+              className="m-0 text-[2.25rem] font-medium leading-[1.18] sm:text-[3.25rem]"
+              style={{ fontFamily: 'var(--font-serif)' }}
             >
-              {metadata.description}
-            </p>
-          )}
+              {metadata.title}
+            </h1>
 
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[color:color-mix(in_oklab,var(--border)_85%,transparent)] pt-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-            <span>BYLINE · MCELL</span>
-            <CopyPageButton pageContent={rawContent} bodyContent={content} />
+            {metadata.description ? (
+              <p
+                className="mb-0 mt-5 max-w-[58ch] text-[1.0625rem] leading-7 text-muted-foreground sm:text-[1.1875rem] sm:leading-8"
+                style={{ fontFamily: 'var(--font-serif)' }}
+              >
+                {metadata.description}
+              </p>
+            ) : null}
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted-foreground">
+              {metadata.date ? <time>{formatDate(metadata.date)}</time> : null}
+              <span>{minutes} 分钟阅读</span>
+            </div>
           </div>
+
+          <CopyPageButton
+            pageContent={rawContent}
+            bodyContent={content}
+            className="mt-5 sm:absolute sm:right-0 sm:top-14 sm:mt-0"
+          />
         </header>
 
-        {/* Content */}
-        <div className="mt-14 sm:mt-16">
+        <div className="mt-12 sm:mt-16">
           <MarkdownRenderer content={content} />
         </div>
 

@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Check, ChevronDown, Copy } from 'lucide-react'
+import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
@@ -94,19 +93,12 @@ export function CopyPageButton({
     }
   }, [])
 
-  const copiedLabel =
-    status === 'copied' && target === 'page'
-      ? 'Copy page'
-      : status === 'copied' && target === 'body'
-        ? 'Copy body only'
-        : null
-
   const statusAnnouncement =
     status === 'idle' || target === null
       ? ''
       : status === 'copied'
-        ? `${target === 'page' ? 'Copy page' : 'Copy body only'} copied`
-        : `${target === 'page' ? 'Copy page' : 'Copy body only'} failed`
+        ? `${target === 'page' ? '完整页面' : '正文'}已复制`
+        : `${target === 'page' ? '完整页面' : '正文'}复制失败`
 
   return (
     <div className={cn('inline-flex', className)}>
@@ -115,33 +107,44 @@ export function CopyPageButton({
       </span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" size="sm" className="gap-1.5">
-            <Copy className="h-3.5 w-3.5" />
-            <span>Copy</span>
-            <ChevronDown className="h-3.5 w-3.5 opacity-70" />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 text-muted-foreground hover:text-foreground"
+            aria-label="复制页面"
+            title="复制页面"
+          >
+            {status === 'copied' ? (
+              <Check className="h-4 w-4 text-[color:var(--link-accent)]" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent
+          align="end"
+          className="border-0 shadow-[var(--shadow-overlay)]"
+        >
           <DropdownMenuItem onSelect={() => void onCopy('page')}>
-            <span>Copy page</span>
-            {copiedLabel === 'Copy page' && (
+            <span>复制完整页面</span>
+            {status === 'copied' && target === 'page' && (
               <Check className="ml-auto h-3.5 w-3.5" />
             )}
             {status === 'error' && target === 'page' && (
               <span className="ml-auto text-xs text-muted-foreground">
-                Copy failed
+                失败
               </span>
             )}
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={() => void onCopy('body')}>
-            <span>Copy body only</span>
-            {copiedLabel === 'Copy body only' && (
+            <span>只复制正文</span>
+            {status === 'copied' && target === 'body' && (
               <Check className="ml-auto h-3.5 w-3.5" />
             )}
             {status === 'error' && target === 'body' && (
               <span className="ml-auto text-xs text-muted-foreground">
-                Copy failed
+                失败
               </span>
             )}
           </DropdownMenuItem>

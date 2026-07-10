@@ -100,28 +100,9 @@ export function InteractiveTutorialView({
       className="interactive-tutorial relative"
       aria-label={description || title}
     >
-      {/* MOBILE — flat, per-step rendering with desktop-experience hint */}
+      {/* MOBILE — flat, per-step rendering */}
       <div className="lg:hidden">
-        <aside
-          className="mx-auto mb-10 w-full max-w-[920px] border-y border-[color-mix(in_oklab,var(--border)_85%,transparent)] px-6 py-4 sm:px-10"
-          role="note"
-        >
-          <div className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-muted-foreground">
-            VIEWING NOTE
-          </div>
-          <p
-            className="mt-1.5 text-[14px] leading-[1.55] text-muted-foreground"
-            style={{
-              fontFamily: 'var(--font-orbitron), Georgia, serif',
-              fontStyle: 'italic',
-            }}
-          >
-            本专题为「滚动式交互教程」，以左右联动呈现。在手机上为静态平铺版本，
-            建议在桌面端（≥ lg 屏宽）阅读，可获得最佳体验。
-          </p>
-        </aside>
-
-        <div className="mx-auto w-full max-w-[920px] px-6 sm:px-10">
+        <div className="mx-auto w-full max-w-[920px] px-5 sm:px-8">
           {merged.map((step, i) => (
             <MobileStep key={i} step={step} index={i} />
           ))}
@@ -194,7 +175,7 @@ export function InteractiveTutorialView({
  * - demo steps: iframe inline + a collapsed source view via <details>.
  */
 function MobileStep({ step, index }: { step: SerializedStep; index: number }) {
-  const stepLabel = `**Step ${String(index + 1).padStart(2, '0')}**`
+  const stepLabel = `**步骤 ${index + 1}**`
 
   if (step.kind === 'code') {
     const fileLine = step.fileName ? ` · \`${step.fileName}\`` : ''
@@ -238,7 +219,7 @@ function MobileStep({ step, index }: { step: SerializedStep; index: number }) {
     <div className="my-8">
       <MarkdownRenderer content={headerMd} />
       <div
-        className="my-4 overflow-hidden rounded-lg border border-border bg-white"
+        className="my-4 overflow-hidden rounded-lg bg-white"
         style={aspectStyle}
       >
         <iframe
@@ -249,11 +230,11 @@ function MobileStep({ step, index }: { step: SerializedStep; index: number }) {
           className="h-full w-full border-0"
         />
       </div>
-      <details className="my-4 rounded-md border border-border bg-card text-[13px]">
-        <summary className="cursor-pointer select-none px-3 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+      <details className="my-4 rounded-lg bg-card text-[13px]">
+        <summary className="cursor-pointer select-none px-4 py-3 text-[13px] font-medium text-muted-foreground">
           查看源码
         </summary>
-        <div className="border-t border-border">
+        <div className="px-2 pb-2">
           <MarkdownRenderer content={'```html\n' + step.html + '\n```'} />
         </div>
       </details>

@@ -1,10 +1,10 @@
 # Minor Cell
 
-一份关于 AI Agent、全栈工程与日常实践的个人刊物。记录想法、复盘项目、整理那些值得被写下来的代码。
+写代码，也写判断。Minor Cell 记录 AI 工程、软件开发与产品实践中的真实问题、技术选择和工程判断。
 
 ## 主要栏目
 
-- [Minor Cell 首页](https://mcell.top): 最新文章与刊物目录
+- [Minor Cell 首页](https://mcell.top): 最新文章与站点导航
 - [文章归档](https://mcell.top/articles): 按时间整理的全部技术文章
 - [技术专题](https://mcell.top/tutorials): 按主题系统学习的交互式教程
 - [项目](https://mcell.top/projects): 创建与长期维护的项目列表

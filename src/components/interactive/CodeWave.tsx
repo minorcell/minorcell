@@ -132,7 +132,6 @@ function CodePanel({ step }: { step: CodeStep }) {
     <div
       ref={containerRef}
       className="codewave-panel absolute inset-0 overflow-y-auto overscroll-contain"
-      data-lenis-prevent
     >
       <pre
         className="px-4 text-[12px] leading-[1.6] font-mono sm:px-5"

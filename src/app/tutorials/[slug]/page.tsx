@@ -78,25 +78,6 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
     keywords: [tutorial.metadata.title, '技术教程', '交互教程'],
   })
 
-  const allTutorials = getAllTutorials()
-  const tutorialIndex = allTutorials.findIndex((t) => t.slug === slug)
-  const issueNumber = String(
-    tutorialIndex >= 0 ? tutorialIndex + 1 : 1,
-  ).padStart(2, '0')
-
-  const hasCode = tutorial.steps.some((s) => s.kind === 'code')
-  const hasImage = tutorial.steps.some((s) => s.kind === 'image')
-  const hasDemo = tutorial.steps.some((s) => s.kind === 'demo')
-  const compositionParts = [
-    hasCode ? 'CODE' : null,
-    hasImage ? 'VISUAL' : null,
-    hasDemo ? 'INTERACTIVE' : null,
-  ].filter((p): p is string => Boolean(p))
-  const composition =
-    compositionParts.length > 1
-      ? compositionParts.join(' · ')
-      : `${compositionParts[0] ?? 'CODE'} WALKTHROUGH`
-
   return (
     <div>
       <JsonLd id={`tutorial-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
@@ -105,9 +86,7 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
       <TutorialCover
         title={tutorial.metadata.title}
         description={tutorial.metadata.description ?? ''}
-        issueNumber={issueNumber}
         stepsCount={tutorial.steps.length}
-        composition={composition}
       />
 
       <section className="tutorial-stage">

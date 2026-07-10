@@ -165,7 +165,7 @@ export const projectGroups: ProjectGroup[] = [
     projects: [
       {
         name: 'mcell',
-        summary: '一份关于 AI Agent、全栈工程与日常实践的个人刊物',
+        summary: '记录真实问题、技术选择，以及把想法做成产品的个人技术站。',
         status: 'active',
         tags: ['TypeScript'],
         links: [

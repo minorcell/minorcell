@@ -34,7 +34,7 @@ export function ImageWave({ steps }: ImageWaveProps) {
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] flex items-center justify-center">
             <div
-              className="relative rounded-lg border border-border bg-card overflow-hidden w-full"
+              className="relative w-full overflow-hidden rounded-lg bg-card"
               style={{ height: 'calc(100vh - 8rem)' }}
             >
               <AnimatePresence initial={false} mode="sync">
