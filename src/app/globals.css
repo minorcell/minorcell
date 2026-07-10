@@ -25,10 +25,44 @@
   --font-sans:
     -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro SC',
     'PingFang SC', 'Helvetica Neue', sans-serif;
-  --font-serif: Georgia, 'Songti SC', 'Times New Roman', serif;
+  --font-display:
+    'SF Pro Display', 'SF Pro SC', -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Helvetica Neue', sans-serif;
   --font-mono:
     'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
     'Courier New', monospace;
+
+  --type-caption-size: 0.8125rem;
+  --type-caption-leading: 1.125rem;
+  --type-meta-size: 0.875rem;
+  --type-meta-leading: 1.25rem;
+  --type-supporting-size: 0.9375rem;
+  --type-supporting-leading: 1.5rem;
+  --type-body-size: 1rem;
+  --type-body-leading: 1.5rem;
+  --type-intro-size: 1.0625rem;
+  --type-intro-leading: 1.75rem;
+  --type-reading-size: 1.0625rem;
+  --type-reading-leading: 1.75rem;
+  --type-headline-size: 1.0625rem;
+  --type-headline-leading: 1.5rem;
+  --type-card-title-size: 1.25rem;
+  --type-card-title-leading: 1.75rem;
+  --type-section-title-size: 1.5rem;
+  --type-section-title-leading: 1.875rem;
+  --type-feature-title-size: 1.875rem;
+  --type-feature-title-leading: 2.375rem;
+  --type-page-title-size: 2.5rem;
+  --type-page-title-leading: 2.75rem;
+  --type-display-size: 3.5rem;
+  --type-display-leading: 3.75rem;
+  --type-article-title-size: 2.25rem;
+  --type-article-title-leading: 2.625rem;
+  --type-article-deck-size: 1.0625rem;
+  --type-article-deck-leading: 1.75rem;
+  --type-code-size: 0.8125rem;
+  --type-code-leading: 1.3125rem;
+
   --popover: #ffffff;
   --popover-foreground: #1d1d1f;
   --secondary: #e9e9ed;
@@ -130,8 +164,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.65;
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: pretty;
@@ -143,7 +177,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: 0;
@@ -151,12 +185,12 @@
   }
 
   h1 {
-    font-size: clamp(1.95rem, 1.62rem + 1vw, 2.45rem);
+    font-size: 2.1rem;
     margin-bottom: 0.75rem;
   }
 
   h2 {
-    font-size: clamp(1.45rem, 1.26rem + 0.55vw, 1.85rem);
+    font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
   }
@@ -235,6 +269,120 @@
   }
 }
 
+.type-caption {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-leading);
+}
+
+.type-meta {
+  font-size: var(--type-meta-size);
+  line-height: var(--type-meta-leading);
+}
+
+.type-supporting {
+  font-size: var(--type-supporting-size);
+  line-height: var(--type-supporting-leading);
+}
+
+.type-body {
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+}
+
+.type-intro {
+  font-size: var(--type-intro-size);
+  line-height: var(--type-intro-leading);
+}
+
+.type-headline,
+.type-card-title,
+.type-section-title,
+.type-feature-title,
+.type-page-title,
+.type-display,
+.type-article-title {
+  font-family: var(--font-display);
+}
+
+.type-headline {
+  font-size: var(--type-headline-size);
+  font-weight: 600;
+  line-height: var(--type-headline-leading);
+}
+
+.type-card-title {
+  font-size: var(--type-card-title-size);
+  font-weight: 600;
+  line-height: var(--type-card-title-leading);
+}
+
+.type-section-title {
+  font-size: var(--type-section-title-size);
+  font-weight: 600;
+  line-height: var(--type-section-title-leading);
+}
+
+.type-feature-title {
+  font-size: var(--type-feature-title-size);
+  font-weight: 600;
+  line-height: var(--type-feature-title-leading);
+}
+
+.type-page-title {
+  font-size: var(--type-page-title-size);
+  font-weight: 600;
+  line-height: var(--type-page-title-leading);
+}
+
+.type-display {
+  font-size: var(--type-display-size);
+  font-weight: 700;
+  line-height: var(--type-display-leading);
+}
+
+.type-article-title {
+  font-size: var(--type-article-title-size);
+  font-weight: 600;
+  line-height: var(--type-article-title-leading);
+}
+
+.type-article-deck {
+  font-family: var(--font-sans);
+  font-size: var(--type-article-deck-size);
+  line-height: var(--type-article-deck-leading);
+}
+
+.type-code {
+  font-family: var(--font-mono);
+  font-size: var(--type-code-size);
+  line-height: var(--type-code-leading);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --type-intro-size: 1.125rem;
+    --type-intro-leading: 1.875rem;
+    --type-feature-title-size: 2.5rem;
+    --type-feature-title-leading: 3rem;
+    --type-page-title-size: 3.5rem;
+    --type-page-title-leading: 3.75rem;
+    --type-display-size: 4.5rem;
+    --type-display-leading: 4.75rem;
+    --type-article-title-size: 3.25rem;
+    --type-article-title-leading: 3.625rem;
+    --type-article-deck-size: 1.1875rem;
+    --type-article-deck-leading: 2rem;
+  }
+
+  h1 {
+    font-size: 2.45rem;
+  }
+
+  h2 {
+    font-size: 1.85rem;
+  }
+}
+
 .nav-link {
   border-radius: 6px;
   padding: 0.4rem 0.65rem;
@@ -260,9 +408,9 @@
 }
 
 .article-markdown {
-  font-family: var(--font-serif);
-  font-size: 1.0625rem;
-  line-height: 1.78;
+  font-family: var(--font-sans);
+  font-size: var(--type-reading-size);
+  line-height: var(--type-reading-leading);
   letter-spacing: 0;
 }
 
@@ -280,7 +428,7 @@
 }
 
 .article-markdown :where(h2, h3, h4) {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   text-wrap: balance;
   font-weight: 600;
   letter-spacing: 0;
@@ -288,19 +436,19 @@
 }
 
 .article-markdown :where(h2) {
-  font-size: clamp(1.5rem, 1.3rem + 0.9vw, 1.95rem);
+  font-size: 1.5rem;
   line-height: 1.25;
   margin: 3.5rem 0 1rem;
 }
 
 .article-markdown :where(h3) {
-  font-size: clamp(1.2rem, 1.08rem + 0.5vw, 1.45rem);
+  font-size: 1.25rem;
   line-height: 1.25;
   margin: 2.4rem 0 0.7rem;
 }
 
 .article-markdown :where(h4) {
-  font-size: clamp(1.05rem, 1rem + 0.25vw, 1.18rem);
+  font-size: 1.0625rem;
   line-height: 1.3;
   margin: 1.8rem 0 0.55rem;
 }
@@ -484,16 +632,21 @@
   color: var(--muted-foreground);
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  h1 {
-    font-size: clamp(1.75rem, 1.58rem + 0.64vw, 2.1rem);
+@media (min-width: 640px) {
+  .article-markdown :where(h2) {
+    font-size: 1.95rem;
   }
 
-  h2 {
-    font-size: clamp(1.32rem, 1.22rem + 0.4vw, 1.6rem);
+  .article-markdown :where(h3) {
+    font-size: 1.45rem;
   }
 
+  .article-markdown :where(h4) {
+    font-size: 1.1875rem;
+  }
+}
+
+@media (max-width: 639px) {
   /* On mobile, text-wrap: balance leaves significant empty space on the right
      because it balances line lengths. Use 'pretty' instead, which avoids
      orphan words while allowing lines to fill the full available width. */
@@ -516,5 +669,6 @@
 }
 
 .navbar-brand {
-  font-size: 0.9375rem;
+  font-size: var(--type-supporting-size);
+  line-height: var(--type-supporting-leading);
 }

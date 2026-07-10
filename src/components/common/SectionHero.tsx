@@ -10,16 +10,14 @@ export function SectionHero({ title, intro, countLabel }: SectionHeroProps) {
   return (
     <header className="max-w-[760px] pt-10 sm:pt-16">
       <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
-        <h1 className="m-0 text-[2.5rem] font-semibold leading-[1.08] text-foreground sm:text-[3.5rem]">
-          {title}
-        </h1>
+        <h1 className="type-page-title m-0 text-foreground">{title}</h1>
         {countLabel ? (
-          <span className="mb-1 text-[13px] font-medium text-[color:var(--link-accent)]">
+          <span className="type-caption mb-1 font-medium text-[color:var(--link-accent)]">
             {countLabel}
           </span>
         ) : null}
       </div>
-      <p className="mb-0 mt-5 max-w-[58ch] text-[1.0625rem] leading-7 text-muted-foreground sm:text-[1.125rem]">
+      <p className="type-intro mb-0 mt-5 max-w-[58ch] text-muted-foreground">
         {intro}
       </p>
     </header>

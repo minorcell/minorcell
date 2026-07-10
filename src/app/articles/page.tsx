@@ -89,13 +89,10 @@ export default function ArticlesPage() {
           {years.map((year) => (
             <section key={year} aria-labelledby={`year-${year}`}>
               <div className="mb-3 flex items-baseline gap-3 px-3">
-                <h2
-                  id={`year-${year}`}
-                  className="m-0 text-[1.375rem] font-semibold"
-                >
+                <h2 id={`year-${year}`} className="type-section-title m-0">
                   {year}
                 </h2>
-                <span className="text-[13px] text-muted-foreground">
+                <span className="type-caption text-muted-foreground">
                   {postsByYear[Number(year)].length} 篇
                 </span>
               </div>
@@ -109,26 +106,23 @@ export default function ArticlesPage() {
                     >
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3
-                            className="m-0 text-[1.0625rem] font-medium leading-7 sm:text-[1.125rem]"
-                            style={{ fontFamily: 'var(--font-serif)' }}
-                          >
+                          <h3 className="type-headline m-0">
                             {post.metadata.title}
                           </h3>
                           {isStubArticle(post) ? (
-                            <span className="rounded bg-accent px-1.5 py-0.5 text-[11px] font-medium text-accent-foreground">
+                            <span className="type-caption rounded bg-accent px-1.5 py-0.5 font-medium text-accent-foreground">
                               交互
                             </span>
                           ) : null}
                         </div>
                         {post.metadata.description ? (
-                          <p className="mb-0 mt-1 line-clamp-1 text-[14px] leading-6 text-muted-foreground">
+                          <p className="type-meta mb-0 mt-1 line-clamp-1 text-muted-foreground">
                             {post.metadata.description}
                           </p>
                         ) : null}
                       </div>
                       {post.metadata.date ? (
-                        <time className="text-[13px] text-muted-foreground">
+                        <time className="type-caption text-muted-foreground">
                           {formatShortDate(post.metadata.date)}
                         </time>
                       ) : null}

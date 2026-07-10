@@ -101,7 +101,7 @@ function SourcePanel({ code }: { code: string }) {
 
   return (
     <div className="webwave-source-panel h-full overflow-auto overscroll-contain">
-      <pre className="px-4 py-4 text-[12px] leading-[1.6] font-mono sm:px-5">
+      <pre className="type-code px-4 py-4 sm:px-5">
         <code>
           {lines.map((line, i) => (
             <div key={i} className="flex">
@@ -164,13 +164,13 @@ function WebPanel({
     <div className="flex h-full w-full flex-col overflow-hidden rounded-lg bg-card">
       {/* Header: title + view-mode toggle */}
       <div className="flex items-center justify-between gap-3 px-3 py-2.5">
-        <div className="min-w-0 truncate text-[13px] font-medium text-muted-foreground">
+        <div className="type-caption min-w-0 truncate font-medium text-muted-foreground">
           {step.title || 'Web'}
         </div>
         <div
           role="tablist"
           aria-label="网页视图模式"
-          className="inline-flex shrink-0 rounded-md bg-muted p-0.5 text-[12px]"
+          className="type-caption inline-flex shrink-0 rounded-md bg-muted p-0.5"
         >
           <button
             type="button"

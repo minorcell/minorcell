@@ -63,22 +63,20 @@ export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <header className="flex min-h-[360px] max-w-[900px] flex-col justify-center py-16 sm:min-h-[440px] sm:py-24">
-        <h1 className="m-0 text-[3.5rem] font-bold leading-none text-foreground sm:text-[5.5rem]">
-          Minor Cell
-        </h1>
-        <p className="mb-0 mt-7 max-w-[42ch] text-[1.1875rem] leading-8 text-muted-foreground sm:text-[1.375rem] sm:leading-9">
+        <h1 className="type-display m-0 text-foreground">Minor Cell</h1>
+        <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
           写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
         </p>
       </header>
 
       <section aria-labelledby="latest-heading">
         <div className="mb-6 flex items-center justify-between gap-4">
-          <h2 id="latest-heading" className="m-0 text-[1.5rem] font-semibold">
+          <h2 id="latest-heading" className="type-section-title m-0">
             最新发布
           </h2>
           <TransitionLink
             href="/articles"
-            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[color:var(--link-accent)]"
+            className="type-meta inline-flex items-center gap-1.5 font-medium text-[color:var(--link-accent)]"
           >
             全部文章
             <ArrowRight className="h-4 w-4" />
@@ -90,7 +88,7 @@ export default function HomePage() {
             href={getContentHref(featuredPost)}
             className="block rounded-lg bg-card p-6 hover:bg-[color:var(--surface-hover)] sm:p-9"
           >
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted-foreground">
+            <div className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
               <span className="font-medium text-[color:var(--link-accent)]">
                 {featuredPost.type === 'tutorial' || isStubArticle(featuredPost)
                   ? '教程'
@@ -100,14 +98,11 @@ export default function HomePage() {
                 <time>{formatDate(featuredPost.metadata.date)}</time>
               ) : null}
             </div>
-            <h3
-              className="m-0 mt-4 max-w-[24ch] text-[1.875rem] font-medium leading-[1.25] sm:text-[2.5rem]"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
+            <h3 className="type-feature-title m-0 mt-4 max-w-[24ch]">
               {featuredPost.metadata.title}
             </h3>
             {featuredPost.metadata.description ? (
-              <p className="mb-0 mt-4 max-w-[62ch] text-[15px] leading-7 text-muted-foreground sm:text-[16px]">
+              <p className="type-supporting mb-0 mt-4 max-w-[62ch] text-muted-foreground">
                 {featuredPost.metadata.description}
               </p>
             ) : null}
@@ -124,17 +119,14 @@ export default function HomePage() {
                   href={getContentHref(post)}
                   className="block h-full rounded-lg px-5 py-5 hover:bg-[color:var(--surface-hover)] sm:px-6 sm:py-6"
                 >
-                  <div className="text-[13px] text-muted-foreground">
+                  <div className="type-caption text-muted-foreground">
                     {post.metadata.date ? formatDate(post.metadata.date) : null}
                   </div>
-                  <h3
-                    className="m-0 mt-2 text-[1.1875rem] font-medium leading-[1.4]"
-                    style={{ fontFamily: 'var(--font-serif)' }}
-                  >
+                  <h3 className="type-headline m-0 mt-2">
                     {post.metadata.title}
                   </h3>
                   {post.metadata.description ? (
-                    <p className="mb-0 mt-2 line-clamp-2 text-[14px] leading-6 text-muted-foreground">
+                    <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">
                       {post.metadata.description}
                     </p>
                   ) : null}
@@ -155,10 +147,8 @@ export default function HomePage() {
             href={section.path}
             className="rounded-lg bg-card px-5 py-5 hover:bg-[color:var(--surface-hover)]"
           >
-            <h2 className="m-0 text-[1.0625rem] font-semibold">
-              {section.label}
-            </h2>
-            <p className="mb-0 mt-2 line-clamp-2 text-[14px] leading-6 text-muted-foreground">
+            <h2 className="type-headline m-0">{section.label}</h2>
+            <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">
               {section.description}
             </p>
           </TransitionLink>

@@ -88,16 +88,16 @@ export default function ProjectsPage() {
               <div className="flex flex-wrap items-baseline gap-3">
                 <h2
                   id={`group-${group.title}`}
-                  className="m-0 text-[1.375rem] font-semibold"
+                  className="type-section-title m-0"
                 >
                   {group.title}
                 </h2>
-                <span className="text-[13px] text-muted-foreground">
+                <span className="type-caption text-muted-foreground">
                   {group.projects.length} 个
                 </span>
               </div>
               {group.description ? (
-                <p className="mb-0 mt-2 text-[14px] leading-6 text-muted-foreground">
+                <p className="type-meta mb-0 mt-2 text-muted-foreground">
                   {group.description}
                 </p>
               ) : null}
@@ -121,11 +121,9 @@ export default function ProjectsPage() {
 
                     <article className="flex h-full min-h-[210px] flex-col px-6 py-6">
                       <div className="flex items-start justify-between gap-4">
-                        <h3 className="m-0 text-[1.125rem] font-semibold leading-7">
-                          {project.name}
-                        </h3>
+                        <h3 className="type-card-title m-0">{project.name}</h3>
                         <span
-                          className={`shrink-0 text-[12px] font-medium ${
+                          className={`type-caption shrink-0 font-medium ${
                             project.status === 'archived'
                               ? 'text-muted-foreground'
                               : 'text-[color:var(--link-accent)]'
@@ -135,12 +133,12 @@ export default function ProjectsPage() {
                         </span>
                       </div>
 
-                      <p className="mb-0 mt-3 text-[14px] leading-6 text-muted-foreground">
+                      <p className="type-supporting mb-0 mt-3 text-muted-foreground">
                         {project.summary}
                       </p>
 
                       {primaryLink ? (
-                        <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[13px] font-medium text-foreground">
+                        <span className="type-caption mt-auto inline-flex items-center gap-1.5 pt-5 font-medium text-foreground">
                           {primaryLink.label}
                           <ArrowUpRight className="h-3.5 w-3.5" />
                         </span>

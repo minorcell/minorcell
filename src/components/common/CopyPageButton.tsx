@@ -132,7 +132,7 @@ export function CopyPageButton({
               <Check className="ml-auto h-3.5 w-3.5" />
             )}
             {status === 'error' && target === 'page' && (
-              <span className="ml-auto text-xs text-muted-foreground">
+              <span className="type-caption ml-auto text-muted-foreground">
                 失败
               </span>
             )}
@@ -143,7 +143,7 @@ export function CopyPageButton({
               <Check className="ml-auto h-3.5 w-3.5" />
             )}
             {status === 'error' && target === 'body' && (
-              <span className="ml-auto text-xs text-muted-foreground">
+              <span className="type-caption ml-auto text-muted-foreground">
                 失败
               </span>
             )}

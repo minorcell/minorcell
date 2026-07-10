@@ -386,20 +386,20 @@ export function ExternalLinkGuard() {
     >
       <AlertDialogContent className="max-w-lg gap-0 rounded-xl border-0 bg-card p-6 shadow-[var(--shadow-overlay)] sm:p-7">
         <AlertDialogHeader className="space-y-2 text-left">
-          <AlertDialogTitle className="m-0 text-[1.375rem] font-semibold">
+          <AlertDialogTitle className="type-card-title m-0">
             打开外部链接？
           </AlertDialogTitle>
-          <AlertDialogDescription className="m-0 text-[14px] leading-6 text-muted-foreground">
+          <AlertDialogDescription className="type-meta m-0 text-muted-foreground">
             你将离开 Minor Cell，请确认目标地址。
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <div className="mt-5">
           <section className="rounded-lg bg-muted px-4 py-3">
-            <p className="m-0 text-[14px] font-medium text-foreground">
+            <p className="type-meta m-0 font-medium text-foreground">
               {destinationHost || '未知地址'}
             </p>
-            <p className="mb-0 mt-1 break-all font-mono text-[11px] leading-5 text-muted-foreground">
+            <p className="type-caption mb-0 mt-1 break-all font-mono text-muted-foreground">
               {pendingLink?.href}
             </p>
           </section>
@@ -416,13 +416,13 @@ export function ExternalLinkGuard() {
                 />
               ) : null}
               <div className="min-w-0">
-                <p className="m-0 text-[14px] font-medium leading-5 text-foreground">
+                <p className="type-meta m-0 font-medium text-foreground">
                   {preview.data.title ||
                     preview.data.siteName ||
                     destinationHost}
                 </p>
                 {preview.data.description ? (
-                  <p className="mb-0 mt-1 line-clamp-2 text-[12px] leading-5 text-muted-foreground">
+                  <p className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground">
                     {preview.data.description}
                   </p>
                 ) : null}
@@ -440,8 +440,8 @@ export function ExternalLinkGuard() {
                     getRiskTone(risk.level),
                   )}
                 >
-                  <p className="m-0 text-[13px] font-semibold">{risk.label}</p>
-                  <p className="mb-0 mt-0.5 text-[12px] leading-5 opacity-80">
+                  <p className="type-caption m-0 font-semibold">{risk.label}</p>
+                  <p className="type-caption mb-0 mt-0.5 opacity-80">
                     {risk.detail}
                   </p>
                 </div>

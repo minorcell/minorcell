@@ -134,7 +134,7 @@ function CodePanel({ step }: { step: CodeStep }) {
       className="codewave-panel absolute inset-0 overflow-y-auto overscroll-contain"
     >
       <pre
-        className="px-4 text-[12px] leading-[1.6] font-mono sm:px-5"
+        className="type-code px-4 sm:px-5"
         style={{ paddingTop: '20rem', paddingBottom: '20rem' }}
       >
         <code>

@@ -32,9 +32,7 @@ export interface SerializedDemoStep {
 }
 
 export type SerializedStep =
-  | SerializedCodeStep
-  | SerializedImageStep
-  | SerializedDemoStep
+  SerializedCodeStep | SerializedImageStep | SerializedDemoStep
 
 interface InteractiveTutorialViewProps {
   title: string
@@ -230,8 +228,8 @@ function MobileStep({ step, index }: { step: SerializedStep; index: number }) {
           className="h-full w-full border-0"
         />
       </div>
-      <details className="my-4 rounded-lg bg-card text-[13px]">
-        <summary className="cursor-pointer select-none px-4 py-3 text-[13px] font-medium text-muted-foreground">
+      <details className="type-caption my-4 rounded-lg bg-card">
+        <summary className="cursor-pointer select-none px-4 py-3 font-medium text-muted-foreground">
           查看源码
         </summary>
         <div className="px-2 pb-2">

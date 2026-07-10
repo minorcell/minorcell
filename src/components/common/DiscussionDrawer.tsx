@@ -87,7 +87,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           )}
         >
           <div className="flex shrink-0 items-center justify-between px-6 py-5 sm:px-8">
-            <h2 className="m-0 text-[1.25rem] font-semibold">讨论</h2>
+            <h2 className="type-card-title m-0">讨论</h2>
             <button
               type="button"
               aria-label="关闭讨论"

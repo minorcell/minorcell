@@ -180,7 +180,7 @@ export function PagefindSearch({
   const resultsSection = (
     <div className="max-h-[60vh] flex-1 overflow-y-auto px-4 pb-4 sm:px-5 sm:pb-5">
       {errorMessage && (
-        <div className="mb-3 rounded-md bg-destructive/10 px-4 py-3 text-[13px] text-destructive">
+        <div className="type-caption mb-3 rounded-md bg-destructive/10 px-4 py-3 text-destructive">
           <span>{errorMessage}</span>
           <button
             type="button"
@@ -193,26 +193,26 @@ export function PagefindSearch({
       )}
 
       {bundleState === 'loading' && (
-        <div className="flex items-center gap-2 px-3 py-4 text-[14px] text-muted-foreground">
+        <div className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>正在准备搜索</span>
         </div>
       )}
 
       {!query && bundleState !== 'loading' && (
-        <p className="mb-0 px-3 py-4 text-[14px] text-muted-foreground">
+        <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
           输入至少 2 个字符
         </p>
       )}
 
       {query && !isSearching && hits.length === 0 && !errorMessage && (
-        <p className="mb-0 px-3 py-4 text-[14px] text-muted-foreground">
+        <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
           没有找到相关内容
         </p>
       )}
 
       {isSearching && (
-        <div className="flex items-center gap-2 px-3 py-4 text-[14px] text-muted-foreground">
+        <div className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>正在搜索</span>
         </div>
@@ -220,7 +220,7 @@ export function PagefindSearch({
 
       {hits.length > 0 && (
         <>
-          <div className="mb-1 px-3 py-2 text-[13px] text-muted-foreground">
+          <div className="type-caption mb-1 px-3 py-2 text-muted-foreground">
             {hits.length} 个结果
           </div>
           <ol className="m-0 list-none space-y-1 p-0">
@@ -232,12 +232,12 @@ export function PagefindSearch({
                   onClick={onClose}
                 >
                   <div className="min-w-0">
-                    <p className="m-0 text-[15px] font-medium leading-6">
+                    <p className="type-supporting m-0 font-medium">
                       {hit.title}
                     </p>
                     {hit.excerpt && (
                       <p
-                        className="mb-0 mt-1 line-clamp-2 text-[13px] leading-5 text-muted-foreground"
+                        className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
                         dangerouslySetInnerHTML={{ __html: hit.excerpt }}
                       />
                     )}
@@ -255,7 +255,7 @@ export function PagefindSearch({
   const content = (
     <div className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-[var(--shadow-overlay)]">
       <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-6 sm:pt-6">
-        <h2 className="m-0 text-[1.125rem] font-semibold">搜索</h2>
+        <h2 className="type-headline m-0">搜索</h2>
         {isOverlay && (
           <button
             type="button"
@@ -279,7 +279,7 @@ export function PagefindSearch({
             setQuery(nextQuery)
             if (nextQuery.trim().length < 2) setHits([])
           }}
-          className="h-12 w-full bg-transparent text-[16px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+          className="type-body h-12 w-full bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none"
           placeholder="搜索文章和教程"
           aria-label="全站搜索"
           autoComplete="off"

@@ -189,18 +189,10 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
 
       <article className="mx-auto w-full max-w-[780px] pt-8 sm:pt-14">
         <header>
-          <h1
-            className="m-0 text-[2.25rem] font-medium leading-[1.18] sm:text-[3.25rem]"
-            style={{ fontFamily: 'var(--font-serif)' }}
-          >
-            {post.metadata.title}
-          </h1>
+          <h1 className="type-article-title m-0">{post.metadata.title}</h1>
 
           {description ? (
-            <p
-              className="mb-0 mt-5 max-w-[58ch] text-[1.0625rem] leading-7 text-muted-foreground sm:text-[1.1875rem] sm:leading-8"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
+            <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">
               {description}
             </p>
           ) : null}
@@ -208,19 +200,19 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
 
         <div className="mt-10 rounded-lg bg-card px-6 py-6 sm:px-7">
           <p className="m-0 font-medium">正在打开交互教程</p>
-          <p className="mb-0 mt-2 text-[14px] leading-6 text-muted-foreground">
+          <p className="type-meta mb-0 mt-2 text-muted-foreground">
             页面会自动跳转；如果没有跳转，可以手动继续。
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
               href={tutorialHref}
-              className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-[14px] font-medium text-primary-foreground transition-colors hover:bg-[color:var(--accent-foreground)] hover:text-primary-foreground"
+              className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--accent-foreground)] hover:text-primary-foreground"
             >
               前往教程
             </TransitionLink>
             <TransitionLink
               href="/articles"
-              className="text-[14px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="type-meta font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               返回归档
             </TransitionLink>

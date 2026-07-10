@@ -62,17 +62,14 @@ export default function TutorialsPage() {
                 href={`/tutorials/${tutorial.slug}`}
                 className="block h-full rounded-lg bg-card px-6 py-7 hover:bg-[color:var(--surface-hover)] sm:px-7 sm:py-8"
               >
-                <span className="text-[13px] font-medium text-[color:var(--link-accent)]">
+                <span className="type-caption font-medium text-[color:var(--link-accent)]">
                   专题
                 </span>
-                <h2
-                  className="m-0 mt-3 text-[1.375rem] font-medium leading-[1.35] sm:text-[1.5rem]"
-                  style={{ fontFamily: 'var(--font-serif)' }}
-                >
+                <h2 className="type-card-title m-0 mt-3">
                   {tutorial.metadata.title}
                 </h2>
                 {tutorial.metadata.description ? (
-                  <p className="mb-0 mt-3 line-clamp-3 text-[15px] leading-7 text-muted-foreground">
+                  <p className="type-supporting mb-0 mt-3 line-clamp-3 text-muted-foreground">
                     {tutorial.metadata.description}
                   </p>
                 ) : null}

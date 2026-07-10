@@ -35,23 +35,15 @@ export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
       <article className="w-full max-w-[780px]">
         <header className="relative pt-8 sm:pt-14">
           <div className="sm:pr-14">
-            <h1
-              className="m-0 text-[2.25rem] font-medium leading-[1.18] sm:text-[3.25rem]"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
-              {metadata.title}
-            </h1>
+            <h1 className="type-article-title m-0">{metadata.title}</h1>
 
             {metadata.description ? (
-              <p
-                className="mb-0 mt-5 max-w-[58ch] text-[1.0625rem] leading-7 text-muted-foreground sm:text-[1.1875rem] sm:leading-8"
-                style={{ fontFamily: 'var(--font-serif)' }}
-              >
+              <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">
                 {metadata.description}
               </p>
             ) : null}
 
-            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted-foreground">
+            <div className="type-caption mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
               {metadata.date ? <time>{formatDate(metadata.date)}</time> : null}
               <span>{minutes} 分钟阅读</span>
             </div>

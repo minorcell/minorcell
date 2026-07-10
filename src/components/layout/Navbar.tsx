@@ -114,7 +114,7 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               data-active={isActive(item.href) || undefined}
-              className="nav-link text-[13px] text-muted-foreground hover:text-foreground"
+              className="nav-link type-caption text-muted-foreground hover:text-foreground"
             >
               {item.label}
             </TransitionLink>
@@ -164,7 +164,7 @@ export function Navbar() {
                 <DropdownMenuItem key={item.href} asChild>
                   <TransitionLink
                     href={item.href}
-                    className={`flex w-full items-center rounded-md px-3 py-2.5 text-[14px] ${
+                    className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
                       isActive(item.href)
                         ? 'bg-accent font-medium text-accent-foreground'
                         : 'text-foreground'
@@ -178,18 +178,18 @@ export function Navbar() {
               <DropdownMenuSeparator className="bg-border" />
 
               <DropdownMenuItem
-                className="px-3 py-2.5 text-[14px]"
+                className="type-meta px-3 py-2.5"
                 onSelect={() => setSearchOpen(true)}
               >
                 <Search className="h-4 w-4" />
                 <span>搜索</span>
-                <kbd className="ml-auto font-mono text-[11px] text-muted-foreground">
+                <kbd className="type-caption ml-auto font-mono text-muted-foreground">
                   ⌘K
                 </kbd>
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                className="px-3 py-2.5 text-[14px]"
+                className="type-meta px-3 py-2.5"
                 onSelect={toggleTheme}
               >
                 {theme === 'dark' ? (
@@ -203,7 +203,7 @@ export function Navbar() {
               <DropdownMenuItem asChild>
                 <a
                   href="/feed.xml"
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-[14px] text-foreground"
+                  className="type-meta flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-foreground"
                 >
                   <Rss className="h-4 w-4" />
                   RSS

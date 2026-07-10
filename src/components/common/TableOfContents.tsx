@@ -98,7 +98,7 @@ export function TableOfContents({ rawContent }: Props) {
   return (
     <nav aria-label="文章目录" className="hidden w-56 xl:ml-16 xl:block">
       <div className="sticky top-24">
-        <div className="mb-2 px-3 text-[13px] font-medium text-muted-foreground">
+        <div className="type-caption mb-2 px-3 font-medium text-muted-foreground">
           目录
         </div>
         <ol className="m-0 list-none space-y-0.5 p-0">
@@ -114,8 +114,8 @@ export function TableOfContents({ rawContent }: Props) {
                     scrollToHeading(h.id)
                   }}
                   className={cn(
-                    'block rounded-md px-3 py-2 text-[13px] leading-[1.45] transition-colors duration-150',
-                    h.level === 3 && 'pl-6 text-[12.5px]',
+                    'type-caption block rounded-md px-3 py-2 transition-colors duration-150',
+                    h.level === 3 && 'pl-6',
                     isActive
                       ? 'bg-accent font-medium text-accent-foreground'
                       : 'text-muted-foreground hover:bg-muted hover:text-foreground',
