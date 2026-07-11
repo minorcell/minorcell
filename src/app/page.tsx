@@ -101,26 +101,51 @@ export default function HomePage() {
         {featuredPost ? (
           <TransitionLink
             href={getContentHref(featuredPost)}
-            className="block rounded-lg bg-card p-6 hover:bg-[color:var(--surface-hover)] sm:p-9"
+            className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 hover:bg-[color:var(--surface-hover)] sm:p-9"
           >
-            <div className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
-              <span className="font-medium text-[color:var(--link-accent)]">
-                {featuredPost.type === 'tutorial' || isStubArticle(featuredPost)
-                  ? '教程'
-                  : '文章'}
-              </span>
-              {featuredPost.metadata.date ? (
-                <time>{formatDate(featuredPost.metadata.date)}</time>
+            {featuredPost.metadata.image ? (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden md:block md:w-[48%] md:opacity-85 lg:w-[46%]"
+                style={{
+                  maskImage:
+                    'linear-gradient(108deg, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.5) 31%, #000 46%)',
+                  WebkitMaskImage:
+                    'linear-gradient(108deg, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.5) 31%, #000 46%)',
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={featuredPost.metadata.image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transition-none"
+                />
+              </div>
+            ) : null}
+
+            <div className="relative z-10 md:max-w-[62%] lg:max-w-[60%]">
+              <div className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
+                <span className="font-medium text-[color:var(--link-accent)]">
+                  {featuredPost.type === 'tutorial' ||
+                  isStubArticle(featuredPost)
+                    ? '教程'
+                    : '文章'}
+                </span>
+                {featuredPost.metadata.date ? (
+                  <time>{formatDate(featuredPost.metadata.date)}</time>
+                ) : null}
+              </div>
+              <h3 className="type-feature-title m-0 mt-4 max-w-[24ch]">
+                {featuredPost.metadata.title}
+              </h3>
+              {featuredPost.metadata.description ? (
+                <p className="type-supporting mb-0 mt-4 max-w-[62ch] text-muted-foreground">
+                  {featuredPost.metadata.description}
+                </p>
               ) : null}
             </div>
-            <h3 className="type-feature-title m-0 mt-4 max-w-[24ch]">
-              {featuredPost.metadata.title}
-            </h3>
-            {featuredPost.metadata.description ? (
-              <p className="type-supporting mb-0 mt-4 max-w-[62ch] text-muted-foreground">
-                {featuredPost.metadata.description}
-              </p>
-            ) : null}
           </TransitionLink>
         ) : (
           <p className="py-12 text-muted-foreground">暂无内容</p>
