@@ -67,7 +67,17 @@ export default function HomePage() {
         <div className="flex flex-col justify-center">
           <h1 className="type-display m-0 text-foreground">Minor Cell</h1>
           <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
-            写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
+            👋，我是
+            <span> </span>
+            <a
+              href="https://github.com/minorcell"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[color:var(--link-accent)] hover:underline"
+            >
+              minorcell
+            </a>
+            ，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
           </p>
         </div>
 
