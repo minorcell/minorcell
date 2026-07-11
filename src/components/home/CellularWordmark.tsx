@@ -28,6 +28,10 @@ const CELL_SPACING_RATIO = 0.82
 const CAMERA_LOOKAHEAD_MS = 2000 / PLAYBACK_RATE
 const PAN_HALF_LIFE_MS = 220 / PLAYBACK_RATE
 const ZOOM_HALF_LIFE_MS = 150 / PLAYBACK_RATE
+const SIMPLE_LOD_START_PX = 8
+const SIMPLE_LOD_END_PX = 14
+const FULL_LOD_START_PX = 22
+const FULL_LOD_END_PX = 30
 
 type AnimationPhase = 'grow' | 'pause' | 'collapse' | 'handoff'
 
@@ -49,6 +53,8 @@ interface RenderCell {
   y: number
   fromX: number
   fromY: number
+  offsetX: number
+  offsetY: number
   bornAt: number
   stepIndex: number
   tex: number
@@ -57,7 +63,7 @@ interface RenderCell {
 }
 
 interface LayerSnapshot {
-  canvas: HTMLCanvasElement
+  mipmaps: HTMLCanvasElement[]
   width: number
   height: number
   centerX: number
@@ -150,6 +156,7 @@ export function CellularWordmark() {
     let disposed = false
     let seed = Math.floor(Math.random() * 1e9)
     let textures: HTMLCanvasElement[] = []
+    let simpleTextures: HTMLCanvasElement[] = []
     let colors = readThemeColors()
     let lastFrame = performance.now()
     const camera = {
@@ -169,9 +176,11 @@ export function CellularWordmark() {
       canvas.width = Math.floor(width * dpr)
       canvas.height = Math.floor(height * dpr)
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
+      context.imageSmoothingEnabled = true
+      context.imageSmoothingQuality = 'high'
     }
 
-    function makeTexture(index: number) {
+    function makeTexture(index: number, detailed: boolean) {
       const size = 128
       const texture = document.createElement('canvas')
       texture.width = texture.height = size
@@ -185,37 +194,46 @@ export function CellularWordmark() {
       textureContext.clearRect(0, 0, size, size)
       textureContext.save()
       textureContext.translate(size / 2, size / 2)
-      textureContext.rotate((random() - 0.5) * 0.035)
+      if (detailed) textureContext.rotate((random() - 0.5) * 0.035)
       textureContext.font = CELL_GLYPH_FONT
       textureContext.textAlign = 'center'
       textureContext.textBaseline = 'middle'
       textureContext.lineJoin = 'round'
-      textureContext.strokeStyle = deep
-      textureContext.globalAlpha = 0.42
-      textureContext.lineWidth = 3.2
-      textureContext.strokeText(CELL_GLYPH_TEXT, 0, 2)
-      textureContext.globalAlpha = 1
+      if (detailed) {
+        textureContext.strokeStyle = deep
+        textureContext.globalAlpha = 0.42
+        textureContext.lineWidth = 3.2
+        textureContext.strokeText(CELL_GLYPH_TEXT, 0, 2)
+        textureContext.globalAlpha = 1
+      }
       textureContext.fillStyle = base
       textureContext.fillText(CELL_GLYPH_TEXT, 0, 2)
 
-      textureContext.globalCompositeOperation = 'source-atop'
-      const shine = textureContext.createLinearGradient(
-        -size / 3,
-        -size / 4,
-        size / 3,
-        size / 4,
-      )
-      shine.addColorStop(0, 'rgba(255,255,255,0.18)')
-      shine.addColorStop(0.5, 'rgba(255,255,255,0)')
-      shine.addColorStop(1, 'rgba(23,33,15,0.12)')
-      textureContext.fillStyle = shine
-      textureContext.fillRect(-size / 2, -size / 2, size, size)
+      if (detailed) {
+        textureContext.globalCompositeOperation = 'source-atop'
+        const shine = textureContext.createLinearGradient(
+          -size / 3,
+          -size / 4,
+          size / 3,
+          size / 4,
+        )
+        shine.addColorStop(0, 'rgba(255,255,255,0.18)')
+        shine.addColorStop(0.5, 'rgba(255,255,255,0)')
+        shine.addColorStop(1, 'rgba(23,33,15,0.12)')
+        textureContext.fillStyle = shine
+        textureContext.fillRect(-size / 2, -size / 2, size, size)
+      }
       textureContext.restore()
       return texture
     }
 
     function rebuildTextures() {
-      textures = Array.from({ length: 12 }, (_, index) => makeTexture(index))
+      textures = Array.from({ length: 12 }, (_, index) =>
+        makeTexture(index, true),
+      )
+      simpleTextures = Array.from({ length: 12 }, (_, index) =>
+        makeTexture(index, false),
+      )
     }
 
     function buildTargetCells() {
@@ -325,11 +343,14 @@ export function CellularWordmark() {
       stepIndex: number,
     ): RenderCell {
       const value = hash2(x, y, seed)
+      const offsetValue = hash2(y, x, seed ^ 0x85ebca6b)
       return {
         x,
         y,
         fromX,
         fromY,
+        offsetX: ((offsetValue & 255) / 255 - 0.5) * 0.16,
+        offsetY: (((offsetValue >>> 8) & 255) / 255 - 0.5) * 0.32,
         bornAt,
         stepIndex,
         tex: value % textures.length,
@@ -434,28 +455,49 @@ export function CellularWordmark() {
       layer.height = Math.max(1, Math.ceil(layerHeight * dpr))
       const layerContext = layer.getContext('2d')
       if (!layerContext) return null
-      layerContext.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      for (const cell of state.cells.values()) {
-        const point = toScreen(cell.x, cell.y)
-        layerContext.drawImage(
-          textures[cell.tex],
-          point.x - left - size / 2,
-          point.y - top - size / 2,
-          size,
-          size,
-        )
-      }
+      layerContext.imageSmoothingEnabled = true
+      layerContext.imageSmoothingQuality = 'high'
+      layerContext.drawImage(
+        canvas,
+        left * dpr,
+        top * dpr,
+        layerWidth * dpr,
+        layerHeight * dpr,
+        0,
+        0,
+        layer.width,
+        layer.height,
+      )
 
       const initialCellSize = tile * MAX_VIEW_ZOOM
       return {
-        canvas: layer,
+        mipmaps: buildMipmaps(layer),
         width: layerWidth,
         height: layerHeight,
         centerX: left + layerWidth / 2,
         centerY: top + layerHeight / 2,
         targetScale: (initialCellSize * CELL_GLYPH_WIDTH_RATIO) / layerWidth,
       }
+    }
+
+    function buildMipmaps(source: HTMLCanvasElement) {
+      const mipmaps = [source]
+      let current = source
+
+      while (current.width > 2 || current.height > 2) {
+        const next = document.createElement('canvas')
+        next.width = Math.max(1, Math.floor(current.width / 2))
+        next.height = Math.max(1, Math.floor(current.height / 2))
+        const nextContext = next.getContext('2d')
+        if (!nextContext) break
+        nextContext.imageSmoothingEnabled = true
+        nextContext.imageSmoothingQuality = 'high'
+        nextContext.drawImage(current, 0, 0, next.width, next.height)
+        mipmaps.push(next)
+        current = next
+      }
+
+      return mipmaps
     }
 
     function primeState(nextState: AnimationState, now: number) {
@@ -523,9 +565,23 @@ export function CellularWordmark() {
       context.save()
       context.translate(x, y)
       context.rotate(cell.rot + progress * 0.08)
-      context.globalAlpha =
+      const birthAlpha =
         alpha * Math.sin(Math.PI * clamp(progress, 0, 1)) * 0.95
+      const glyphWeight = easeInOut(
+        clamp(
+          (glyphSize * dpr - SIMPLE_LOD_START_PX) /
+            (SIMPLE_LOD_END_PX - SIMPLE_LOD_START_PX),
+          0,
+          1,
+        ),
+      )
       context.fillStyle = glyphColor(cell)
+      context.globalAlpha = birthAlpha * (1 - glyphWeight)
+      const markSize = Math.max(glyphSize * 0.56, 1 / dpr)
+      context.beginPath()
+      context.arc(0, 0, markSize / 2, 0, Math.PI * 2)
+      context.fill()
+      context.globalAlpha = birthAlpha * glyphWeight
       context.font = `800 ${glyphSize * 0.5}px "SF Pro Display", "Helvetica Neue", Arial, sans-serif`
       context.textAlign = 'center'
       context.textBaseline = 'middle'
@@ -537,13 +593,17 @@ export function CellularWordmark() {
       const age = now - cell.bornAt
       const birthProgress = clamp(age / birthMs, 0, 1)
       const moveProgress = easeOutCubic(clamp(age / moveMs, 0, 1))
-      const from = toScreen(cell.fromX, cell.fromY)
-      const target = toScreen(cell.x, cell.y)
+      const from = toScreen(
+        cell.fromX + cell.offsetX,
+        cell.fromY + cell.offsetY,
+      )
+      const target = toScreen(cell.x + cell.offsetX, cell.y + cell.offsetY)
       const x = lerp(from.x, target.x, moveProgress)
       const y = lerp(from.y, target.y, moveProgress)
       const { tile } = worldConfig()
       const size = tile * camera.zoom
-      if (size < 1 || size > 12000) return
+      const physicalSize = size * dpr
+      if (physicalSize < 1 || size > 12000) return
 
       if (age < birthMs) {
         drawBirthGlyph(cell, x, y, size, birthProgress, alpha)
@@ -569,9 +629,57 @@ export function CellularWordmark() {
 
       context.save()
       context.translate(x, y)
-      context.rotate((cell.rot + wobble) * (1 - settle))
-      context.globalAlpha = alpha * fade
-      context.drawImage(textures[cell.tex], -size / 2, -size / 2, size, size)
+      const fullWeight = easeInOut(
+        clamp(
+          (physicalSize - FULL_LOD_START_PX) /
+            (FULL_LOD_END_PX - FULL_LOD_START_PX),
+          0,
+          1,
+        ),
+      )
+      const simpleVisibility = easeInOut(
+        clamp(
+          (physicalSize - SIMPLE_LOD_START_PX) /
+            (SIMPLE_LOD_END_PX - SIMPLE_LOD_START_PX),
+          0,
+          1,
+        ),
+      )
+      const simpleWeight = (1 - fullWeight) * simpleVisibility
+      const markWeight = 1 - fullWeight - simpleWeight
+
+      if (markWeight > 0) {
+        context.globalAlpha = alpha * fade * markWeight
+        context.fillStyle = glyphColor(cell)
+        const markSize = Math.max(size * 0.56, 1 / dpr)
+        context.beginPath()
+        context.arc(0, 0, markSize / 2, 0, Math.PI * 2)
+        context.fill()
+      }
+
+      const rotationVisibility = easeInOut(
+        clamp(
+          (physicalSize - SIMPLE_LOD_END_PX) /
+            (FULL_LOD_START_PX - SIMPLE_LOD_END_PX),
+          0,
+          1,
+        ),
+      )
+      context.rotate((cell.rot + wobble) * (1 - settle) * rotationVisibility)
+      if (simpleWeight > 0) {
+        context.globalAlpha = alpha * fade * simpleWeight
+        context.drawImage(
+          simpleTextures[cell.tex],
+          -size / 2,
+          -size / 2,
+          size,
+          size,
+        )
+      }
+      if (fullWeight > 0) {
+        context.globalAlpha = alpha * fade * fullWeight
+        context.drawImage(textures[cell.tex], -size / 2, -size / 2, size, size)
+      }
       context.restore()
     }
 
@@ -658,15 +766,35 @@ export function CellularWordmark() {
         const drawHeight = snapshot.height * scale
         const centerX = lerp(snapshot.centerX, width / 2, easedCollapse)
         const centerY = lerp(snapshot.centerY, height / 2, easedCollapse)
+        const mipLevel = clamp(
+          Math.log2(1 / scale),
+          0,
+          snapshot.mipmaps.length - 1,
+        )
+        const lowerLevel = Math.floor(mipLevel)
+        const upperLevel = Math.min(snapshot.mipmaps.length - 1, lowerLevel + 1)
+        const mipBlend = mipLevel - lowerLevel
         context.save()
-        context.globalAlpha = 1 - handoffProgress
+        context.imageSmoothingEnabled = true
+        context.imageSmoothingQuality = 'high'
+        context.globalAlpha = (1 - handoffProgress) * (1 - mipBlend)
         context.drawImage(
-          snapshot.canvas,
+          snapshot.mipmaps[lowerLevel],
           centerX - drawWidth / 2,
           centerY - drawHeight / 2,
           drawWidth,
           drawHeight,
         )
+        if (upperLevel !== lowerLevel && mipBlend > 0) {
+          context.globalAlpha = (1 - handoffProgress) * mipBlend
+          context.drawImage(
+            snapshot.mipmaps[upperLevel],
+            centerX - drawWidth / 2,
+            centerY - drawHeight / 2,
+            drawWidth,
+            drawHeight,
+          )
+        }
         context.restore()
 
         if (state.phase === 'handoff' && state.nextSeed) {
