@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
 import { TransitionLink } from '@/components/effects/PageTransition'
+import { CellularWordmark } from '@/components/home/CellularWordmark'
 import {
   getAllContent,
   getContentHref,
@@ -62,11 +63,15 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
-      <header className="flex min-h-[360px] max-w-[900px] flex-col justify-center py-16 sm:min-h-[440px] sm:py-24">
-        <h1 className="type-display m-0 text-foreground">Minor Cell</h1>
-        <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
-          写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
-        </p>
+      <header className="grid min-h-[440px] items-center gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_520px] lg:gap-10 lg:py-20">
+        <div className="flex flex-col justify-center">
+          <h1 className="type-display m-0 text-foreground">Minor Cell</h1>
+          <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
+            写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
+          </p>
+        </div>
+
+        <CellularWordmark />
       </header>
 
       <section aria-labelledby="latest-heading">
