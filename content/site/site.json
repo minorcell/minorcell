@@ -27,14 +27,14 @@
       "description": "按时间整理的技术文章归档"
     },
     {
-      "label": "项目",
-      "path": "/projects",
-      "description": "我创建或长期维护的项目列表"
-    },
-    {
       "label": "教程",
       "path": "/tutorials",
       "description": "按主题深入阅读"
+    },
+    {
+      "label": "项目",
+      "path": "/projects",
+      "description": "我创建或长期维护的项目列表"
     }
   ],
   "contact": {

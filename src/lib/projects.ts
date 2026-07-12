@@ -71,14 +71,14 @@ export const projectGroups: ProjectGroup[] = [
         links: [
           {
             label: 'GitHub',
-            href: 'https://github.com/minorcell/minorcell-skill',
+            href: 'https://github.com/minorcell/minorcell-skills',
           },
         ],
       },
       {
         name: 'wwcchh0123/hackathonGO',
         summary: 'Let‘s do it ',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'GitHub',
@@ -94,8 +94,8 @@ export const projectGroups: ProjectGroup[] = [
     projects: [
       {
         name: 'kvslite',
-        summary: '轻量级rust数据库',
-        status: 'active',
+        summary: 'Rust 学习项目，一个轻量级嵌入式键值存储引擎，基于 Bitcask 模型实现。',
+        status: 'archived',
         links: [
           {
             label: 'GitHub',
@@ -131,6 +131,21 @@ export const projectGroups: ProjectGroup[] = [
           {
             label: 'GitHub',
             href: 'https://github.com/codepaintstudio/vuedir',
+          },
+        ],
+      },
+      {
+        name: 'minorcell-theme-vscode',
+        summary: 'A minimal, customizable VS Code theme that follows the operating system appearance.',
+        status: 'active',
+        links: [
+          {
+            label: 'Open',
+            href: 'https://marketplace.visualstudio.com/items?itemName=minorcell.minorcell-theme',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/minorcell/minorcell-theme-vscode',
           },
         ],
       },
@@ -201,7 +216,7 @@ export const projectGroups: ProjectGroup[] = [
         name: 'pick-quote',
         summary:
           '让每一次灵光乍现，都有处安放。 一款在浏览中快速收藏信息的轻量工具。',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'Open',
@@ -217,7 +232,7 @@ export const projectGroups: ProjectGroup[] = [
         name: 'mini-portfolio',
         summary:
           'This could be a proof of idea, or it could be an improvised demo.',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'Open',
@@ -228,7 +243,7 @@ export const projectGroups: ProjectGroup[] = [
             href: 'https://github.com/minorcell/mini-portfolio',
           },
         ],
-      }
+      },
     ],
   },
   {
@@ -269,7 +284,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         name: 'codepaintstudio/back-end-learn',
         summary: '针对前端开发同学的全栈学习路线，主Node侧；',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'GitHub',
@@ -280,7 +295,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         name: '1024-talent-rank',
         summary: '七牛云第三届1024创作节，作品《TalentRank》前端源码仓库',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'GitHub',
@@ -312,7 +327,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         name: 'minecraft-web',
         summary: 'minecraft-web',
-        status: 'active',
+        status: 'maintained',
         links: [
           {
             label: 'Open',

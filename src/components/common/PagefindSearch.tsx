@@ -1,7 +1,7 @@
 'use client'
 
 import { TransitionLink } from '@/components/effects/PageTransition'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, Loader2, Search, X } from 'lucide-react'
 
@@ -53,9 +53,17 @@ export function PagefindSearch({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const pagefindRef = useRef<PagefindInstance | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const titleId = useId()
 
   const isOverlay = variant === 'overlay'
   const isActive = isOverlay ? open : true
+
+  useEffect(() => {
+    if (!isOverlay || !open) return
+    const previousFocus = document.activeElement as HTMLElement | null
+    return () => previousFocus?.focus()
+  }, [isOverlay, open])
 
   useEffect(() => {
     if (!isActive || !autoFocus) return
@@ -77,6 +85,25 @@ export function PagefindSearch({
     const handler = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose?.()
+        return
+      }
+
+      if (event.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((element) => element.getClientRects().length > 0)
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first?.focus()
+        }
       }
     }
     window.addEventListener('keydown', handler)
@@ -253,9 +280,17 @@ export function PagefindSearch({
   )
 
   const content = (
-    <div className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-[var(--shadow-overlay)]">
+    <div
+      ref={dialogRef}
+      role={isOverlay ? 'dialog' : undefined}
+      aria-modal={isOverlay ? true : undefined}
+      aria-labelledby={isOverlay ? titleId : undefined}
+      className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-[var(--shadow-overlay)]"
+    >
       <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-6 sm:pt-6">
-        <h2 className="type-headline m-0">搜索</h2>
+        <h2 id={titleId} className="type-headline m-0">
+          搜索
+        </h2>
         {isOverlay && (
           <button
             type="button"
@@ -293,7 +328,12 @@ export function PagefindSearch({
     if (!open) return null
 
     return createPortal(
-      <div className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14">
+      <div
+        className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
+        onMouseDown={(event) => {
+          if (event.target === event.currentTarget) onClose?.()
+        }}
+      >
         <div className="w-full max-w-3xl">{content}</div>
       </div>,
       document.body,

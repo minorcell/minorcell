@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Menu, Moon, Rss, Search, Sun } from 'lucide-react'
+import { Menu, Monitor, Moon, Rss, Search, Sun } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { TransitionLink } from '@/components/effects/PageTransition'
@@ -9,7 +9,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { siteContent } from '@/lib/site-content'
@@ -26,23 +31,31 @@ const navLinks = [
   { label: '项目', href: '/projects' },
 ]
 
-type Theme = 'light' | 'dark'
+type ThemePreference = 'auto' | 'light' | 'dark'
 
 const THEME_CHANGE_EVENT = 'minorcell-theme-change'
 
-const getThemeSnapshot = (): Theme =>
-  document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+const getThemeSnapshot = (): ThemePreference => {
+  const stored = localStorage.getItem('theme')
+  return stored === 'light' || stored === 'dark' ? stored : 'auto'
+}
 
-const getServerThemeSnapshot = (): Theme => 'light'
+const getServerThemeSnapshot = (): ThemePreference => 'auto'
+
+const applyTheme = (preference: ThemePreference) => {
+  const useDark =
+    preference === 'dark' ||
+    (preference === 'auto' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches)
+  document.documentElement.classList.toggle('dark', useDark)
+  document.documentElement.style.colorScheme = useDark ? 'dark' : 'light'
+}
 
 const subscribeToTheme = (onChange: () => void) => {
   const media = window.matchMedia('(prefers-color-scheme: dark)')
   const onSystemThemeChange = () => {
-    if (localStorage.getItem('theme')) return
-    document.documentElement.classList.toggle('dark', media.matches)
-    document.documentElement.style.colorScheme = media.matches
-      ? 'dark'
-      : 'light'
+    if (getThemeSnapshot() !== 'auto') return
+    applyTheme('auto')
     onChange()
   }
 
@@ -54,10 +67,38 @@ const subscribeToTheme = (onChange: () => void) => {
   }
 }
 
+function ThemeOptions({
+  value,
+  onValueChange,
+}: {
+  value: ThemePreference
+  onValueChange: (value: ThemePreference) => void
+}) {
+  return (
+    <DropdownMenuRadioGroup
+      value={value}
+      onValueChange={(nextValue) => onValueChange(nextValue as ThemePreference)}
+    >
+      <DropdownMenuRadioItem value="auto">
+        <Monitor className="h-4 w-4" />
+        自动
+      </DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="light">
+        <Sun className="h-4 w-4" />
+        浅色
+      </DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="dark">
+        <Moon className="h-4 w-4" />
+        深色
+      </DropdownMenuRadioItem>
+    </DropdownMenuRadioGroup>
+  )
+}
+
 export function Navbar() {
   const pathname = usePathname()
   const [searchOpen, setSearchOpen] = useState(false)
-  const theme = useSyncExternalStore(
+  const themePreference = useSyncExternalStore(
     subscribeToTheme,
     getThemeSnapshot,
     getServerThemeSnapshot,
@@ -89,13 +130,19 @@ export function Navbar() {
   }, [])
 
   const isActive = (href: string) => pathname.startsWith(href)
-  const toggleTheme = () => {
-    const nextTheme: Theme = theme === 'dark' ? 'light' : 'dark'
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
-    document.documentElement.style.colorScheme = nextTheme
-    localStorage.setItem('theme', nextTheme)
+  const setThemePreference = (preference: ThemePreference) => {
+    if (preference === 'auto') localStorage.removeItem('theme')
+    else localStorage.setItem('theme', preference)
+    applyTheme(preference)
     window.dispatchEvent(new Event(THEME_CHANGE_EVENT))
   }
+
+  const ThemeIcon =
+    themePreference === 'auto'
+      ? Monitor
+      : themePreference === 'dark'
+        ? Moon
+        : Sun
 
   return (
     <header className="navbar sticky top-0 z-[1200] bg-background/85 backdrop-blur-xl">
@@ -129,19 +176,24 @@ export function Navbar() {
           >
             <Search className="h-4 w-4" />
           </button>
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            aria-label={theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
-            title={theme === 'dark' ? '浅色模式' : '深色模式'}
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                aria-label="选择主题"
+                title="主题"
+              >
+                <ThemeIcon className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={8} className="w-40">
+              <ThemeOptions
+                value={themePreference}
+                onValueChange={setThemePreference}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
 
         <div className="md:hidden">
@@ -188,17 +240,18 @@ export function Navbar() {
                 </kbd>
               </DropdownMenuItem>
 
-              <DropdownMenuItem
-                className="type-meta px-3 py-2.5"
-                onSelect={toggleTheme}
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-                <span>{theme === 'dark' ? '浅色模式' : '深色模式'}</span>
-              </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="type-meta px-3 py-2.5">
+                  <ThemeIcon className="h-4 w-4" />
+                  <span>主题</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="w-40">
+                  <ThemeOptions
+                    value={themePreference}
+                    onValueChange={setThemePreference}
+                  />
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
 
               <DropdownMenuItem asChild>
                 <a

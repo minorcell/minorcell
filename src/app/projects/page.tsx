@@ -1,12 +1,7 @@
 import type { Metadata } from 'next'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Github } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
-import { TransitionLink } from '@/components/effects/PageTransition'
-import {
-  projectGroups,
-  type ProjectLink,
-  type ProjectStatus,
-} from '@/lib/projects'
+import { projectGroups, type ProjectStatus } from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = buildPageMetadata({
@@ -29,42 +24,6 @@ const statusLabel: Record<ProjectStatus, string> = {
   active: '进行中',
   maintained: '维护中',
   archived: '已归档',
-}
-
-function getPrimaryLink(links: ProjectLink[]): ProjectLink | null {
-  if (links.length === 0) return null
-  return (
-    links.find((link) => link.label === 'Open') ??
-    links.find((link) => link.label === 'GitHub') ??
-    links[0]
-  )
-}
-
-function ProjectOverlayLink({
-  link,
-  label,
-}: {
-  link: ProjectLink
-  label: string
-}) {
-  const className = 'absolute inset-0 z-10 rounded-lg'
-  const isExternal = /^https?:\/\//.test(link.href)
-
-  if (isExternal) {
-    return (
-      <a
-        href={link.href}
-        target="_blank"
-        rel="noreferrer"
-        className={className}
-        aria-label={label}
-      />
-    )
-  }
-
-  return (
-    <TransitionLink href={link.href} className={className} aria-label={label} />
-  )
 }
 
 export default function ProjectsPage() {
@@ -105,20 +64,15 @@ export default function ProjectsPage() {
 
             <ol className="m-0 grid list-none gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
               {group.projects.map((project) => {
-                const primaryLink = getPrimaryLink(project.links)
+                const openLink = project.links.find(
+                  (link) => link.label === 'Open',
+                )
+                const githubLink = project.links.find(
+                  (link) => link.label === 'GitHub',
+                )
 
                 return (
-                  <li
-                    key={project.name}
-                    className="relative rounded-lg bg-card hover:bg-[color:var(--surface-hover)]"
-                  >
-                    {primaryLink ? (
-                      <ProjectOverlayLink
-                        link={primaryLink}
-                        label={`打开 ${project.name}`}
-                      />
-                    ) : null}
-
+                  <li key={project.name} className="rounded-lg bg-card">
                     <article className="flex h-full min-h-[210px] flex-col px-6 py-6">
                       <div className="flex items-start justify-between gap-4">
                         <h3 className="type-card-title m-0">{project.name}</h3>
@@ -137,11 +91,32 @@ export default function ProjectsPage() {
                         {project.summary}
                       </p>
 
-                      {primaryLink ? (
-                        <span className="type-caption mt-auto inline-flex items-center gap-1.5 pt-5 font-medium text-foreground">
-                          {primaryLink.label}
-                          <ArrowUpRight className="h-3.5 w-3.5" />
-                        </span>
+                      {openLink || githubLink ? (
+                        <div className="mt-auto flex items-center gap-1 pt-4">
+                          {openLink ? (
+                            <a
+                              href={openLink.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="type-caption inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 font-medium text-foreground transition-colors hover:bg-muted"
+                            >
+                              打开项目
+                              <ArrowUpRight className="h-3.5 w-3.5" />
+                            </a>
+                          ) : null}
+                          {githubLink ? (
+                            <a
+                              href={githubLink.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                              aria-label={`在 GitHub 查看 ${project.name}`}
+                              title="GitHub"
+                            >
+                              <Github className="h-4 w-4" />
+                            </a>
+                          ) : null}
+                        </div>
                       ) : null}
                     </article>
                   </li>
