@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface HeadingItem {
@@ -44,6 +44,8 @@ interface Props {
 export function TableOfContents({ rawContent }: Props) {
   const headings = useMemo(() => parseHeadings(rawContent), [rawContent])
   const [activeId, setActiveId] = useState<string | null>(null)
+  const listRef = useRef<HTMLOListElement>(null)
+  const activeLinkRef = useRef<HTMLAnchorElement>(null)
 
   // Inject stable IDs into rendered markdown headings.
   useEffect(() => {
@@ -93,21 +95,46 @@ export function TableOfContents({ rawContent }: Props) {
     }
   }, [headings])
 
+  // Keep the active entry visible when a long table of contents scrolls.
+  useEffect(() => {
+    const list = listRef.current
+    const activeLink = activeLinkRef.current
+    if (!list || !activeLink) return
+
+    const listRect = list.getBoundingClientRect()
+    const linkRect = activeLink.getBoundingClientRect()
+    const edgePadding = 8
+
+    if (linkRect.top < listRect.top + edgePadding) {
+      list.scrollTop -= listRect.top + edgePadding - linkRect.top
+    } else if (linkRect.bottom > listRect.bottom - edgePadding) {
+      list.scrollTop += linkRect.bottom - listRect.bottom + edgePadding
+    }
+  }, [activeId])
+
   if (headings.length === 0) return null
 
   return (
-    <nav aria-label="文章目录" className="hidden w-56 xl:ml-16 xl:block">
-      <div className="sticky top-24">
-        <div className="type-caption mb-2 px-3 font-medium text-muted-foreground">
+    <nav
+      aria-label="文章目录"
+      className="hidden w-56 shrink-0 xl:ml-16 xl:block"
+    >
+      <div className="sticky top-24 flex max-h-[calc(100dvh-8rem)] min-h-0 flex-col">
+        <div className="type-caption mb-2 shrink-0 px-3 font-medium text-muted-foreground">
           目录
         </div>
-        <ol className="m-0 list-none space-y-0.5 p-0">
+        <ol
+          ref={listRef}
+          className="m-0 min-h-0 list-none space-y-0.5 overflow-y-auto overscroll-contain p-0 pr-1 [scrollbar-gutter:stable]"
+        >
           {headings.map((h) => {
             const isActive = activeId === h.id
             return (
               <li key={h.id}>
                 <a
+                  ref={isActive ? activeLinkRef : undefined}
                   href={`#${h.id}`}
+                  aria-current={isActive ? 'location' : undefined}
                   onClick={(e) => {
                     e.preventDefault()
                     window.history.pushState(null, '', `#${h.id}`)

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Streamdown, type Components, type PluginConfig } from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
 import { ZoomImage } from '@/components/common/ZoomImage'
@@ -110,6 +110,14 @@ export function MarkdownRenderer({
   }, [content])
 
   const codePlugin = isDark ? darkCodePlugin : lightCodePlugin
+  const mermaidOptions = useMemo(
+    () => ({
+      config: {
+        theme: isDark ? ('dark' as const) : ('default' as const),
+      },
+    }),
+    [isDark],
+  )
   const plugins = mermaidPlugin
     ? { code: codePlugin, mermaid: mermaidPlugin }
     : { code: codePlugin }
@@ -118,6 +126,7 @@ export function MarkdownRenderer({
     <Streamdown
       mode="static"
       plugins={plugins}
+      mermaid={mermaidPlugin ? mermaidOptions : undefined}
       linkSafety={{ enabled: false }}
       className={['article-markdown', className].filter(Boolean).join(' ')}
       components={components}
