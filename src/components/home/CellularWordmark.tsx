@@ -112,16 +112,24 @@ function hash2(a: number, b: number, c = 0) {
 }
 
 function readThemeColors(): ThemeColors {
-  const root = document.documentElement
-  const dark = root.classList.contains('dark')
+  const styles = getComputedStyle(document.documentElement)
+  const read = (name: string) => styles.getPropertyValue(name).trim()
 
   return {
-    palette: dark
-      ? ['#9bc77f', '#b1d798', '#78a85b', '#c7e4b5', '#86b56a', '#9bc77f']
-      : ['#31571d', '#3f6f24', '#4b7d2e', '#365f20', '#5f8f43', '#4b7d2e'],
-    deep: dark
-      ? ['#78a85b', '#86b56a', '#9bc77f', '#6f9d54']
-      : ['#31571d', '#365f20', '#294a18', '#3f6f24'],
+    palette: [
+      read('--wordmark-palette-1'),
+      read('--wordmark-palette-2'),
+      read('--wordmark-palette-3'),
+      read('--wordmark-palette-4'),
+      read('--wordmark-palette-5'),
+      read('--wordmark-palette-6'),
+    ],
+    deep: [
+      read('--wordmark-deep-1'),
+      read('--wordmark-deep-2'),
+      read('--wordmark-deep-3'),
+      read('--wordmark-deep-4'),
+    ],
   }
 }
 

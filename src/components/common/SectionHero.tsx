@@ -12,7 +12,7 @@ export function SectionHero({ title, intro, countLabel }: SectionHeroProps) {
       <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
         <h1 className="type-page-title m-0 text-foreground">{title}</h1>
         {countLabel ? (
-          <span className="type-caption mb-1 font-medium text-[color:var(--link-accent)]">
+          <span className="type-caption mb-1 font-medium text-link-accent">
             {countLabel}
           </span>
         ) : null}

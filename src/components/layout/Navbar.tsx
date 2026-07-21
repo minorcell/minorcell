@@ -145,12 +145,12 @@ export function Navbar() {
         : Sun
 
   return (
-    <header className="navbar sticky top-0 z-[1200] bg-background/85 backdrop-blur-xl">
+    <header className="navbar sticky top-0 z-nav bg-background/85 backdrop-blur-xl">
       <div className="navbar-inner mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <TransitionLink
           href="/"
           aria-label={siteContent.name}
-          className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-[color:var(--link-accent)]"
+          className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
         >
           天天学习，好好向上。
         </TransitionLink>
@@ -210,7 +210,7 @@ export function Navbar() {
             <DropdownMenuContent
               align="end"
               sideOffset={8}
-              className="z-[1250] w-48 border-0 bg-popover p-1.5 shadow-[var(--shadow-overlay)]"
+              className="z-menu w-48 border-0 bg-popover p-1.5 shadow-overlay"
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>

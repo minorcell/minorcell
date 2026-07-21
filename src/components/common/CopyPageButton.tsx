@@ -116,16 +116,13 @@ export function CopyPageButton({
             title="复制页面"
           >
             {status === 'copied' ? (
-              <Check className="h-4 w-4 text-[color:var(--link-accent)]" />
+              <Check className="h-4 w-4 text-link-accent" />
             ) : (
               <Copy className="h-4 w-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="end"
-          className="border-0 shadow-[var(--shadow-overlay)]"
-        >
+        <DropdownMenuContent align="end" className="border-0 shadow-overlay">
           <DropdownMenuItem onSelect={() => void onCopy('page')}>
             <span>复制完整页面</span>
             {status === 'copied' && target === 'page' && (

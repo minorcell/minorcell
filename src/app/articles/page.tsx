@@ -102,7 +102,7 @@ export default function ArticlesPage() {
                   <li key={post.slug}>
                     <TransitionLink
                       href={getContentHref(post)}
-                      className="grid gap-2 rounded-lg px-3 py-4 hover:bg-[color:var(--surface-hover)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
+                      className="grid gap-2 rounded-lg px-3 py-4 hover:bg-surface-hover sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
                     >
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">

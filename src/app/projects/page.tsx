@@ -80,7 +80,7 @@ export default function ProjectsPage() {
                           className={`type-caption shrink-0 font-medium ${
                             project.status === 'archived'
                               ? 'text-muted-foreground'
-                              : 'text-[color:var(--link-accent)]'
+                              : 'text-link-accent'
                           }`}
                         >
                           {statusLabel[project.status]}

@@ -384,7 +384,7 @@ export function ExternalLinkGuard() {
         }
       }}
     >
-      <AlertDialogContent className="max-w-lg gap-0 rounded-xl border-0 bg-card p-6 shadow-[var(--shadow-overlay)] sm:p-7">
+      <AlertDialogContent className="max-w-lg gap-0 rounded-xl border-0 bg-card p-6 shadow-overlay sm:p-7">
         <AlertDialogHeader className="space-y-2 text-left">
           <AlertDialogTitle className="type-card-title m-0">
             打开外部链接？
@@ -460,7 +460,7 @@ export function ExternalLinkGuard() {
               'm-0 h-9 border-0 px-4 shadow-none',
               hasHighRisk
                 ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'bg-primary text-primary-foreground hover:bg-[color:var(--accent-foreground)]',
+                : 'bg-primary text-primary-foreground hover:bg-accent-foreground',
             )}
           >
             {hasHighRisk ? '仍要继续' : '继续访问'}

@@ -11,7 +11,7 @@ export function TutorialCover({
 }: TutorialCoverProps) {
   return (
     <header className="mx-auto w-full max-w-[1280px] px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-16 lg:px-10">
-      <span className="type-caption font-medium text-[color:var(--link-accent)]">
+      <span className="type-caption font-medium text-link-accent">
         交互教程 · {stepsCount} 步
       </span>
       <h1 className="type-page-title m-0 mt-3 max-w-[20ch]">{title}</h1>

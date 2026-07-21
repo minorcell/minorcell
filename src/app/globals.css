@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'streamdown/styles.css';
 @import 'tw-animate-css';
-@plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 @source "../../node_modules/streamdown/dist/*.js";
 
@@ -78,6 +77,20 @@
   --link-accent: #3f6f24;
   --surface-hover: #ececef;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 16%);
+
+  /* CellularWordmark canvas palette — consumed at runtime via
+   * getComputedStyle in CellularWordmark.tsx, so rebrands only touch
+   * this file. */
+  --wordmark-palette-1: #31571d;
+  --wordmark-palette-2: #3f6f24;
+  --wordmark-palette-3: #4b7d2e;
+  --wordmark-palette-4: #365f20;
+  --wordmark-palette-5: #5f8f43;
+  --wordmark-palette-6: #4b7d2e;
+  --wordmark-deep-1: #31571d;
+  --wordmark-deep-2: #365f20;
+  --wordmark-deep-3: #294a18;
+  --wordmark-deep-4: #3f6f24;
 }
 
 /* Dark mode */
@@ -110,6 +123,17 @@
   --link-accent: #9bc77f;
   --surface-hover: #323234;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 45%);
+
+  --wordmark-palette-1: #9bc77f;
+  --wordmark-palette-2: #b1d798;
+  --wordmark-palette-3: #78a85b;
+  --wordmark-palette-4: #c7e4b5;
+  --wordmark-palette-5: #86b56a;
+  --wordmark-palette-6: #9bc77f;
+  --wordmark-deep-1: #78a85b;
+  --wordmark-deep-2: #86b56a;
+  --wordmark-deep-3: #9bc77f;
+  --wordmark-deep-4: #6f9d54;
 }
 
 @theme inline {
@@ -131,6 +155,15 @@
   --color-secondary: var(--secondary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
+  --color-link-accent: var(--link-accent);
+  --color-surface-hover: var(--surface-hover);
+  --color-code-surface: var(--code-surface);
+  --color-code-surface-foreground: var(--code-surface-foreground);
+  --color-floating-action-bg: var(--floating-action-bg);
+  --color-floating-action-fg: var(--floating-action-fg);
+  --color-floating-action-hover-bg: var(--floating-action-hover-bg);
+  --color-floating-action-hover-fg: var(--floating-action-hover-fg);
+  --shadow-overlay: var(--shadow-overlay);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -671,4 +704,26 @@
 .navbar-brand {
   font-size: var(--type-supporting-size);
   line-height: var(--type-supporting-leading);
+}
+
+/* Stacking-order scale — single source for overlay layering
+ * (nav < menu < drawer overlay < drawer panel < search) */
+@utility z-nav {
+  z-index: 1200;
+}
+
+@utility z-menu {
+  z-index: 1250;
+}
+
+@utility z-drawer {
+  z-index: 1300;
+}
+
+@utility z-drawer-panel {
+  z-index: 1310;
+}
+
+@utility z-search {
+  z-index: 1400;
 }

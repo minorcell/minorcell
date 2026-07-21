@@ -60,9 +60,9 @@ export default function TutorialsPage() {
             <li key={tutorial.slug}>
               <TransitionLink
                 href={`/tutorials/${tutorial.slug}`}
-                className="block h-full rounded-lg bg-card px-6 py-7 hover:bg-[color:var(--surface-hover)] sm:px-7 sm:py-8"
+                className="block h-full rounded-lg bg-card px-6 py-7 hover:bg-surface-hover sm:px-7 sm:py-8"
               >
-                <span className="type-caption font-medium text-[color:var(--link-accent)]">
+                <span className="type-caption font-medium text-link-accent">
                   专题
                 </span>
                 <h2 className="type-card-title m-0 mt-3">

@@ -206,7 +206,7 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
               href={tutorialHref}
-              className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-[color:var(--accent-foreground)] hover:text-primary-foreground"
+              className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往教程
             </TransitionLink>

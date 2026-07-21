@@ -255,7 +255,7 @@ export function PagefindSearch({
               <li key={`${hit.url}-${index}`}>
                 <TransitionLink
                   href={hit.url}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 hover:bg-[color:var(--surface-hover)]"
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 hover:bg-surface-hover"
                   onClick={onClose}
                 >
                   <div className="min-w-0">
@@ -285,7 +285,7 @@ export function PagefindSearch({
       role={isOverlay ? 'dialog' : undefined}
       aria-modal={isOverlay ? true : undefined}
       aria-labelledby={isOverlay ? titleId : undefined}
-      className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-[var(--shadow-overlay)]"
+      className="flex max-h-[calc(100vh-3rem)] flex-col overflow-hidden rounded-xl bg-card shadow-overlay"
     >
       <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-6 sm:pt-6">
         <h2 id={titleId} className="type-headline m-0">
@@ -329,7 +329,7 @@ export function PagefindSearch({
 
     return createPortal(
       <div
-        className="fixed inset-0 z-[1400] flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
+        className="fixed inset-0 z-search flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
         onMouseDown={(event) => {
           if (event.target === event.currentTarget) onClose?.()
         }}

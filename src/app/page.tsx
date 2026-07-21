@@ -73,7 +73,7 @@ export default function HomePage() {
               href="https://github.com/minorcell"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[color:var(--link-accent)] hover:underline"
+              className="text-link-accent hover:underline"
             >
               minorcell
             </a>
@@ -91,7 +91,7 @@ export default function HomePage() {
           </h2>
           <TransitionLink
             href="/articles"
-            className="type-meta inline-flex items-center gap-1.5 font-medium text-[color:var(--link-accent)]"
+            className="type-meta inline-flex items-center gap-1.5 font-medium text-link-accent"
           >
             全部文章
             <ArrowRight className="h-4 w-4" />
@@ -101,7 +101,7 @@ export default function HomePage() {
         {featuredPost ? (
           <TransitionLink
             href={getContentHref(featuredPost)}
-            className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 hover:bg-[color:var(--surface-hover)] sm:p-9"
+            className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 hover:bg-surface-hover sm:p-9"
           >
             {featuredPost.metadata.image ? (
               <div
@@ -127,7 +127,7 @@ export default function HomePage() {
 
             <div className="relative z-10 md:max-w-[62%] lg:max-w-[60%]">
               <div className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
-                <span className="font-medium text-[color:var(--link-accent)]">
+                <span className="font-medium text-link-accent">
                   {featuredPost.type === 'tutorial' ||
                   isStubArticle(featuredPost)
                     ? '教程'
@@ -157,7 +157,7 @@ export default function HomePage() {
               <li key={post.slug}>
                 <TransitionLink
                   href={getContentHref(post)}
-                  className="block h-full rounded-lg px-5 py-5 hover:bg-[color:var(--surface-hover)] sm:px-6 sm:py-6"
+                  className="block h-full rounded-lg px-5 py-5 hover:bg-surface-hover sm:px-6 sm:py-6"
                 >
                   <div className="type-caption text-muted-foreground">
                     {post.metadata.date ? formatDate(post.metadata.date) : null}
@@ -185,7 +185,7 @@ export default function HomePage() {
           <TransitionLink
             key={section.path}
             href={section.path}
-            className="rounded-lg bg-card px-5 py-5 hover:bg-[color:var(--surface-hover)]"
+            className="rounded-lg bg-card px-5 py-5 hover:bg-surface-hover"
           >
             <h2 className="type-headline m-0">{section.label}</h2>
             <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">

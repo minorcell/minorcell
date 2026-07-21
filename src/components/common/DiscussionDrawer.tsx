@@ -64,10 +64,10 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           />
         )}
 
-        {/* Overlay — above navbar (z-[1200]) */}
+        {/* Overlay — above navbar (z-nav) */}
         <div
           className={cn(
-            'fixed inset-0 z-[1300] bg-black/25 transition-opacity duration-200 dark:bg-black/55',
+            'fixed inset-0 z-drawer bg-black/25 transition-opacity duration-200 dark:bg-black/55',
             open
               ? 'pointer-events-auto opacity-100'
               : 'pointer-events-none opacity-0',
@@ -82,7 +82,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           aria-label="讨论"
           aria-hidden={!open}
           className={cn(
-            'fixed right-0 top-0 bottom-0 z-[1310] flex w-[560px] max-w-full flex-col bg-background shadow-[var(--shadow-overlay)] transition-transform duration-200 ease-out',
+            'fixed right-0 top-0 bottom-0 z-drawer-panel flex w-[560px] max-w-full flex-col bg-background shadow-overlay transition-transform duration-200 ease-out',
             open ? 'translate-x-0' : 'translate-x-full',
           )}
         >
