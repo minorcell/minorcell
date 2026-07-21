@@ -190,7 +190,7 @@ function MobileStep({ step, index }: { step: SerializedStep; index: number }) {
   }
 
   if (step.kind === 'image') {
-    const alt = step.alt ? step.alt.replace(/[\[\]]/g, '') : ''
+    const alt = step.alt ? step.alt.replace(/[[\]]/g, '') : ''
     const md = [stepLabel, `![${alt}](${step.src})`, step.prose.trim()]
       .filter(Boolean)
       .join('\n\n')

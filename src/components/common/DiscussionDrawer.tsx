@@ -64,7 +64,9 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           />
         )}
 
-        {/* Overlay — above navbar (z-nav) */}
+        {/* Overlay — above navbar (z-nav). Click-to-close is a pointer-only
+         * convenience; keyboard users close via Escape or the close button. */}
+        {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
         <div
           className={cn(
             'fixed inset-0 z-drawer bg-black/25 transition-opacity duration-200 dark:bg-black/55',
@@ -75,8 +77,11 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           onClick={close}
         />
 
-        {/* Drawer panel — above overlay */}
+        {/* Drawer panel — above overlay. Kept as role="dialog" instead of the
+         * native <dialog> element: the slide-in transition and fixed edge
+         * positioning fight <dialog>'s UA styles. */}
         <div
+          // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
           role="dialog"
           aria-modal="true"
           aria-label="讨论"

@@ -254,6 +254,8 @@ export function Navbar() {
               </DropdownMenuSub>
 
               <DropdownMenuItem asChild>
+                {/* feed.xml is a static public file, not a Next.js page */}
+                {/* oxlint-disable-next-line next/no-html-link-for-pages */}
                 <a
                   href="/feed.xml"
                   className="type-meta flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-foreground"
@@ -272,6 +274,9 @@ export function Navbar() {
           variant="overlay"
           open={searchOpen}
           onClose={() => setSearchOpen(false)}
+          // Modal search palette: focusing the input on open is intended
+          // focus management, not page-load autofocus.
+          // oxlint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
         />
       )}

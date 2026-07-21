@@ -10,6 +10,8 @@ export function Footer() {
         <span>&copy; {currentYear} Minor Cell</span>
 
         <div className="flex items-center gap-4">
+          {/* feed.xml is a static public file, not a Next.js page — Link does not apply */}
+          {/* oxlint-disable-next-line next/no-html-link-for-pages */}
           <a
             href="/feed.xml"
             className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"

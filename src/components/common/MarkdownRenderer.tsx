@@ -45,10 +45,10 @@ function Paragraph({ children, node, ...props }: StreamdownParagraphProps) {
   return <p {...props}>{children}</p>
 }
 
-function HeadingOne({ node, ...props }: StreamdownHeadingOneProps) {
+function HeadingOne({ node, children, ...props }: StreamdownHeadingOneProps) {
   void node
   // Keep a single H1 per page: markdown content is rendered under page-level title.
-  return <h2 {...props} />
+  return <h2 {...props}>{children}</h2>
 }
 
 const components: Components = {

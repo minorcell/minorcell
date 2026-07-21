@@ -328,6 +328,9 @@ export function PagefindSearch({
     if (!open) return null
 
     return createPortal(
+      // Backdrop mousedown-to-close only fires when the backdrop itself is the
+      // target (never the panel); keyboard users close with Escape.
+      // oxlint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         className="fixed inset-0 z-search flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
         onMouseDown={(event) => {
