@@ -3,7 +3,12 @@ import { Slot } from '@radix-ui/react-slot'
 import { cn } from '@/lib/utils'
 
 type Variant =
-  'default' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive'
+  | 'default'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'link'
+  | 'destructive'
 
 type Size = 'default' | 'sm' | 'lg' | 'icon'
 

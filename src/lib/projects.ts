@@ -36,7 +36,8 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         name: 'aquaregia',
-        summary: 'Aquaregia gives you the agent loop — think → call tools → observe → repeat — so you do not write it yourself. One API. Any provider.',
+        summary:
+          'Aquaregia gives you the agent loop — think → call tools → observe → repeat — so you do not write it yourself. One API. Any provider.',
         status: 'active',
         links: [
           {
@@ -66,7 +67,8 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         name: 'minorcell-skill',
-        summary: 'A collection of skills distilled from minorcell\'s own workflows and useful practices from others.',
+        summary:
+          "A collection of skills distilled from minorcell's own workflows and useful practices from others.",
         status: 'active',
         links: [
           {
@@ -94,7 +96,8 @@ export const projectGroups: ProjectGroup[] = [
     projects: [
       {
         name: 'kvslite',
-        summary: 'Rust 学习项目，一个轻量级嵌入式键值存储引擎，基于 Bitcask 模型实现。',
+        summary:
+          'Rust 学习项目，一个轻量级嵌入式键值存储引擎，基于 Bitcask 模型实现。',
         status: 'archived',
         links: [
           {
@@ -136,7 +139,8 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         name: 'minorcell-theme-vscode',
-        summary: 'A minimal, customizable VS Code theme that follows the operating system appearance.',
+        summary:
+          'A minimal, customizable VS Code theme that follows the operating system appearance.',
         status: 'active',
         links: [
           {

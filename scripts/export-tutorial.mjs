@@ -14,7 +14,9 @@ const root = path.resolve(__dirname, '..')
 const slug = process.argv[2]
 if (!slug) {
   console.error('用法：node scripts/export-tutorial.mjs <tutorial-slug>')
-  console.error('示例：node scripts/export-tutorial.mjs js-event-loop-to-promise')
+  console.error(
+    '示例：node scripts/export-tutorial.mjs js-event-loop-to-promise',
+  )
   process.exit(1)
 }
 
@@ -33,7 +35,8 @@ content = content.replace(/^---\n([\s\S]*?)\n---\n/, (_, fm) => {
   const title = fm.match(/^title:\s*['"]?(.+?)['"]?\s*$/m)?.[1]
   const desc = fm.match(/^description:\s*['"]?(.+?)['"]?\s*$/m)?.[1]
   let header = title ? `# ${title}\n` : ''
-  if (title) header += `\n同步更新至个人站点：[${title}](https://mcell.top/tutorials/${slug})\n`
+  if (title)
+    header += `\n同步更新至个人站点：[${title}](https://mcell.top/tutorials/${slug})\n`
   if (desc) header += `\n> ${desc}\n`
   return header + '\n'
 })
@@ -51,19 +54,22 @@ content = content.replace(
       }
     }
     return `\`\`\`${lang}\n${body.trimEnd()}\n\`\`\``
-  }
+  },
 )
 
 // 转换 step-image 注释
 content = content.replace(
   /^<!--\s*step-image\s+src=(\S+)(?:\s+alt=(.+?))?\s*-->$/gm,
-  (_, src, alt) => `![${alt?.trim() ?? ''}](${src})`
+  (_, src, alt) => `![${alt?.trim() ?? ''}](${src})`,
 )
 
 // 展开 step-demo：读取 HTML 文件作为代码块输出
 content = content.replace(/^<!--\s*step-demo\s+(.+?)\s*-->$/gm, (_, attrs) => {
   const src = attrs.match(/src=(\S+)/)?.[1]
-  const title = attrs.match(/title="([^"]+)"/)?.[1] ?? attrs.match(/title='([^']+)'/)?.[1] ?? attrs.match(/title=(\S+)/)?.[1]
+  const title =
+    attrs.match(/title="([^"]+)"/)?.[1] ??
+    attrs.match(/title='([^']+)'/)?.[1] ??
+    attrs.match(/title=(\S+)/)?.[1]
   if (!src) return ''
   const filePath = path.join(tutorialDir, src)
   if (!fs.existsSync(filePath)) {

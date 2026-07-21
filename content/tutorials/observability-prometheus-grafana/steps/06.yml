@@ -2,7 +2,7 @@ services:
   server:
     build: ./server
     ports:
-      - "8080:8080"
+      - '8080:8080'
     restart: unless-stopped
 
   client:
@@ -14,13 +14,13 @@ services:
   prometheus:
     image: prom/prometheus:v2.50.1
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.retention.time=7d"
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=7d'
     depends_on:
       - server
     restart: unless-stopped
@@ -28,7 +28,7 @@ services:
   grafana:
     image: grafana/grafana:10.3.3
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin

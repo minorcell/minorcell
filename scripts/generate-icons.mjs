@@ -102,7 +102,11 @@ async function getMaster() {
   return MASTER_BUFFER
 }
 
-async function emitPng(targetSize, outName, { opaque = false, padPct = 0 } = {}) {
+async function emitPng(
+  targetSize,
+  outName,
+  { opaque = false, padPct = 0 } = {},
+) {
   const out = resolve(PUBLIC, outName)
   const innerSize = Math.round(targetSize * (1 - padPct * 2))
 
@@ -141,7 +145,10 @@ async function emitIco() {
   const buffers = await Promise.all(
     sizes.map((s) =>
       sharp(master)
-        .resize(s, s, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+        .resize(s, s, {
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+        })
         .png()
         .toBuffer(),
     ),

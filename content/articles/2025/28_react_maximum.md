@@ -154,9 +154,7 @@ const flushBatch = useCallback(() => {
 // 5. 新的 SSE 事件处理函数
 const handleLogEvent = useCallback(
   (event) => {
-    const entry = {
-      /* ...解析日志... */
-    }
+    const entry = {/* ...解析日志... */}
 
     // 重点：不再直接调用 appendLog
     // 而是将日志加入缓冲区

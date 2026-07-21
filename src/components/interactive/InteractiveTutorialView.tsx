@@ -32,7 +32,9 @@ export interface SerializedDemoStep {
 }
 
 export type SerializedStep =
-  SerializedCodeStep | SerializedImageStep | SerializedDemoStep
+  | SerializedCodeStep
+  | SerializedImageStep
+  | SerializedDemoStep
 
 interface InteractiveTutorialViewProps {
   title: string

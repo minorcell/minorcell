@@ -116,7 +116,10 @@ function build() {
     const metadata = parsed.data || {}
     const stat = fs.statSync(filePath)
 
-    const slug = toPosix(path.relative(articlesDir, filePath)).replace(/\.mdx?$/i, '')
+    const slug = toPosix(path.relative(articlesDir, filePath)).replace(
+      /\.mdx?$/i,
+      '',
+    )
     const title =
       typeof metadata.title === 'string' && metadata.title.trim()
         ? metadata.title.trim()
@@ -194,7 +197,9 @@ function build() {
         `      <pubDate>${post.date.toUTCString()}</pubDate>`,
       ]
       if (post.description) {
-        item.push(`      <description>${toCdata(post.description)}</description>`)
+        item.push(
+          `      <description>${toCdata(post.description)}</description>`,
+        )
       }
       item.push('    </item>')
       return item
@@ -207,7 +212,9 @@ function build() {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true })
   fs.writeFileSync(outputPath, xml)
 
-  console.log(`Built RSS feed: ${posts.length} posts -> ${path.relative(root, outputPath)}`)
+  console.log(
+    `Built RSS feed: ${posts.length} posts -> ${path.relative(root, outputPath)}`,
+  )
 }
 
 build()

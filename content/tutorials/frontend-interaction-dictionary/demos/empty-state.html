@@ -13,17 +13,32 @@
         --card: #ffffff;
         --accent: #b9483d;
       }
-      * { box-sizing: border-box; }
-      html, body { height: 100%; margin: 0; }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
       body {
         background: var(--bg);
         color: var(--fg);
-        font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+        font:
+          14px/1.55 -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'PingFang SC',
+          'Hiragino Sans GB',
+          sans-serif;
         display: grid;
         place-items: center;
         padding: 32px;
       }
-      .stage { width: 100%; max-width: 340px; }
+      .stage {
+        width: 100%;
+        max-width: 340px;
+      }
       .panel {
         border: 1px dashed var(--border);
         border-radius: 12px;
@@ -35,13 +50,19 @@
         place-items: center;
       }
       .icon {
-        width: 56px; height: 56px;
-        display: grid; place-items: center;
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
         border-radius: 14px;
         background: #f0ebde;
         color: var(--muted);
       }
-      .title { font-size: 15px; font-weight: 500; margin: 0; }
+      .title {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 0;
+      }
       .desc {
         font-size: 13px;
         color: var(--muted);
@@ -62,14 +83,25 @@
         color: #faf8f3;
         transition: background-color 120ms ease;
       }
-      .cta:hover { background: #a63d35; }
+      .cta:hover {
+        background: #a63d35;
+      }
     </style>
   </head>
   <body>
     <div class="stage">
       <div class="panel">
         <div class="icon" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="M3 10h18" />
             <path d="M9 15h6" />

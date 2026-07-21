@@ -13,22 +13,38 @@
         --card: #ffffff;
         --accent: #b9483d;
       }
-      * { box-sizing: border-box; }
-      html, body { height: 100%; margin: 0; }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
       body {
         background: var(--bg);
         color: var(--fg);
         font:
-          14px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
-          'Hiragino Sans GB', sans-serif;
+          14px/1.55 -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'PingFang SC',
+          'Hiragino Sans GB',
+          sans-serif;
         display: grid;
         place-items: center;
         padding: 32px;
       }
-      .stage { width: 100%; max-width: 320px; }
+      .stage {
+        width: 100%;
+        max-width: 320px;
+      }
       .stage-label {
         font:
-          500 10.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+          500 10.5px/1 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
         letter-spacing: 0.22em;
         color: var(--muted);
         text-transform: uppercase;
@@ -53,12 +69,22 @@
           0 2px 6px -2px rgba(20, 18, 14, 0.06);
         border-color: var(--accent);
       }
-      .row { display: flex; align-items: center; gap: 10px; }
-      .dot {
-        width: 8px; height: 8px; border-radius: 999px;
-        background: var(--accent); flex: 0 0 auto;
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-      .title { font-weight: 500; font-size: 14.5px; }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        flex: 0 0 auto;
+      }
+      .title {
+        font-weight: 500;
+        font-size: 14.5px;
+      }
       .desc {
         margin: 8px 0 14px;
         color: var(--muted);
@@ -66,18 +92,27 @@
         line-height: 1.55;
       }
       .meta {
-        display: flex; align-items: center; justify-content: space-between;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font:
-          500 11px/1 ui-monospace, SFMono-Regular, monospace;
+          500 11px/1 ui-monospace,
+          SFMono-Regular,
+          monospace;
         color: var(--muted);
         letter-spacing: 0.04em;
       }
       .arrow {
         opacity: 0;
         transform: translateX(-4px);
-        transition: opacity 200ms ease, transform 200ms ease;
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease;
       }
-      .card:hover .arrow { opacity: 1; transform: translateX(0); }
+      .card:hover .arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
     </style>
   </head>
   <body>
