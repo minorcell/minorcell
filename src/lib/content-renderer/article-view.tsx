@@ -1,8 +1,8 @@
 import { CopyPageButton } from '@/components/common/CopyPageButton'
 import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
-import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { TableOfContents } from '@/components/common/TableOfContents'
 import type { ArticleContent } from '@/lib/content-parser'
+import { renderMarkdown } from '@/lib/content-renderer/markdown'
 
 function formatDate(value: string) {
   const date = new Date(value)
@@ -26,8 +26,12 @@ interface ArticleViewProps {
   discussionTerm: string
 }
 
-export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
-  const { metadata, content, rawContent } = article
+export async function ArticleView({
+  article,
+  discussionTerm,
+}: ArticleViewProps) {
+  const { metadata, content } = article
+  const { node: renderedContent, headings } = await renderMarkdown(content)
   const minutes = readingMinutes(content)
 
   return (
@@ -50,20 +54,19 @@ export function ArticleView({ article, discussionTerm }: ArticleViewProps) {
           </div>
 
           <CopyPageButton
-            pageContent={rawContent}
-            bodyContent={content}
+            content={content}
             className="mt-5 sm:absolute sm:right-0 sm:top-14 sm:mt-0"
           />
         </header>
 
         <div className="mt-12 sm:mt-16">
-          <MarkdownRenderer content={content} />
+          <div className="article-markdown">{renderedContent}</div>
         </div>
 
         <DiscussionDrawer discussionTerm={discussionTerm} />
       </article>
 
-      <TableOfContents rawContent={article.content} />
+      <TableOfContents headings={headings} />
     </div>
   )
 }

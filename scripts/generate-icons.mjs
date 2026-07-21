@@ -1,7 +1,7 @@
 /**
  * generate-icons.mjs
  *
- * Reads `public/logo.png` (the master, transparent-background pixel-art logo)
+ * Reads `scripts/logo.png` (the master, transparent-background pixel-art logo)
  * and emits a complete set of derived icons used across the site:
  *
  *   public/favicon.ico                  multi-size 16/32/48
@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = resolve(__dirname, '..')
 const PUBLIC = resolve(root, 'public')
-const SRC = resolve(PUBLIC, 'logo.png')
+const SRC = resolve(root, 'scripts', 'logo.png')
 
 // Paper-cream tint that matches the site's --background (light) so opaque
 // icons (Apple, OG, maskable) stay in family with the rest of the site.
@@ -36,7 +36,7 @@ async function ensureDir(path) {
 }
 
 /**
- * The master `public/logo.png` is RGB (no alpha) and has the checker
+ * The master `scripts/logo.png` is RGB (no alpha) and has the checker
  * background baked in as light-grey / near-white pixels. We flood-fill from
  * all four corners over pixels that look like background (very bright + low
  * saturation) and zero their alpha. This preserves white pixels inside the
@@ -230,7 +230,7 @@ async function emitOg() {
 }
 
 async function main() {
-  console.log('Generating icons from public/logo.png …\n')
+  console.log('Generating icons from scripts/logo.png …\n')
 
   await emitIco()
   await emitPng(16, 'favicon-16x16.png')

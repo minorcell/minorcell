@@ -30,7 +30,6 @@ export interface ArticleContent {
   slug: string
   metadata: ContentMeta
   content: string
-  rawContent: string
 }
 
 export interface TutorialContent {
@@ -104,7 +103,6 @@ function parseArticle(slug: string, fullPath: string): ArticleContent {
       ),
     } as ContentMeta,
     content,
-    rawContent: raw,
   }
 }
 

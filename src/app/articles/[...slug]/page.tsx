@@ -6,7 +6,7 @@ import {
 } from '@/lib/content-parser'
 import type { ArticleContent } from '@/lib/content-parser'
 import { notFound } from 'next/navigation'
-import { ArticleView } from '@/lib/content-renderer'
+import { ArticleView } from '@/lib/content-renderer/article-view'
 import { TutorialRedirect } from '@/components/common/TutorialRedirect'
 import { JsonLd } from '@/components/seo/JsonLd'
 import type { Metadata } from 'next'

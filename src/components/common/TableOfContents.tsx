@@ -1,33 +1,12 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface HeadingItem {
   id: string
   text: string
   level: 2 | 3
-}
-
-function slugify(text: string) {
-  return text
-    .toLowerCase()
-    .replace(/[^\w一-鿿\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-}
-
-function parseHeadings(rawMarkdown: string): HeadingItem[] {
-  const regex = /^(#{2,3})\s+(.+)$/gm
-  const headings: HeadingItem[] = []
-  let match: RegExpExecArray | null
-  while ((match = regex.exec(rawMarkdown)) !== null) {
-    const level = match[1].length as 2 | 3
-    const text = match[2].trim()
-    headings.push({ id: slugify(text), text, level })
-  }
-  return headings
 }
 
 function scrollToHeading(id: string, behavior: ScrollBehavior = 'smooth') {
@@ -38,25 +17,16 @@ function scrollToHeading(id: string, behavior: ScrollBehavior = 'smooth') {
 }
 
 interface Props {
-  rawContent: string
+  headings: HeadingItem[]
 }
 
-export function TableOfContents({ rawContent }: Props) {
-  const headings = useMemo(() => parseHeadings(rawContent), [rawContent])
+export function TableOfContents({ headings }: Props) {
   const [activeId, setActiveId] = useState<string | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
   const activeLinkRef = useRef<HTMLAnchorElement>(null)
 
-  // Inject stable IDs into rendered markdown headings.
   useEffect(() => {
     if (headings.length === 0) return
-    const articleBody = document.querySelector('.article-markdown')
-    if (!articleBody) return
-    const domHeadings = articleBody.querySelectorAll('h2, h3')
-    domHeadings.forEach((el, i) => {
-      if (i >= headings.length) return
-      el.id = headings[i].id
-    })
 
     // Scroll to hash on initial load
     const hash = window.location.hash.slice(1)
@@ -86,7 +56,7 @@ export function TableOfContents({ rawContent }: Props) {
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
-    // Small delay so DOM IDs from the effect above are in place
+    // Wait for the initial layout before reading heading offsets.
     const timer = setTimeout(onScroll, 100)
 
     return () => {

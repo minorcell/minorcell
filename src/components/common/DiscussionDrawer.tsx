@@ -8,10 +8,18 @@ import {
   useRef,
   useState,
 } from 'react'
+import dynamic from 'next/dynamic'
 import { MessageCircle, X } from 'lucide-react'
-import { GiscusComments } from '@/components/common/GiscusComments'
 import { FloatingActionButton } from '@/components/common/FloatingActionButton'
 import { cn } from '@/lib/utils'
+
+const GiscusComments = dynamic(
+  () =>
+    import('@/components/common/GiscusComments').then(
+      (module) => module.GiscusComments,
+    ),
+  { ssr: false },
+)
 
 export interface DiscussionDrawerHandle {
   open: () => void
@@ -25,13 +33,19 @@ interface Props {
 export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
   function DiscussionDrawer({ discussionTerm, hideTrigger }, ref) {
     const [open, setOpen] = useState(false)
+    const [hasOpened, setHasOpened] = useState(false)
     const openRef = useRef(open)
 
     useEffect(() => {
       openRef.current = open
     }, [open])
 
-    useImperativeHandle(ref, () => ({ open: () => setOpen(true) }), [])
+    const openDrawer = useCallback(() => {
+      setHasOpened(true)
+      setOpen(true)
+    }, [])
+
+    useImperativeHandle(ref, () => ({ open: openDrawer }), [openDrawer])
 
     const close = useCallback(() => setOpen(false), [])
 
@@ -59,7 +73,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
           <FloatingActionButton
             icon={<MessageCircle className="h-[15px] w-[15px] opacity-70" />}
             label="讨论"
-            onClick={() => setOpen(true)}
+            onClick={openDrawer}
             hidden={open}
           />
         )}
@@ -105,7 +119,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
 
           {/* Body */}
           <div className="flex-1 overflow-y-auto px-6 pb-7 sm:px-8">
-            <GiscusComments term={discussionTerm} />
+            {hasOpened && <GiscusComments term={discussionTerm} />}
           </div>
         </div>
       </>

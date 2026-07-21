@@ -14,6 +14,8 @@ export function ZoomImage(props: ZoomImageProps) {
       <img
         {...rest}
         alt={alt ?? ''}
+        loading={rest.loading ?? 'lazy'}
+        decoding={rest.decoding ?? 'async'}
         className="rounded-lg w-full h-auto object-cover"
       />
     </Zoom>
