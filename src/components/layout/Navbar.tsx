@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic'
 import { Menu, Monitor, Moon, Rss, Search, Sun } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import { TransitionLink } from '@/components/effects/PageTransition'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +24,9 @@ const PagefindSearch = dynamic(
   { ssr: false },
 )
 
+// GitHub Pages replaces static assets on each deploy, so navbar links use
+// document navigation instead of relying on a possibly stale client router.
+/* oxlint-disable next/no-html-link-for-pages */
 const navLinks = [
   { label: '文章', href: '/articles' },
   { label: '教程', href: '/tutorials' },
@@ -147,24 +149,24 @@ export function Navbar() {
   return (
     <header className="navbar sticky top-0 z-nav bg-background/85 backdrop-blur-xl">
       <div className="navbar-inner mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        <TransitionLink
+        <a
           href="/"
           aria-label={siteContent.name}
           className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
         >
           天天学习，好好向上。
-        </TransitionLink>
+        </a>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="主导航">
           {navLinks.map((item) => (
-            <TransitionLink
+            <a
               key={item.href}
               href={item.href}
               data-active={isActive(item.href) || undefined}
               className="nav-link type-caption text-muted-foreground hover:text-foreground"
             >
               {item.label}
-            </TransitionLink>
+            </a>
           ))}
 
           <button
@@ -214,7 +216,7 @@ export function Navbar() {
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
-                  <TransitionLink
+                  <a
                     href={item.href}
                     className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
                       isActive(item.href)
@@ -223,7 +225,7 @@ export function Navbar() {
                     }`}
                   >
                     {item.label}
-                  </TransitionLink>
+                  </a>
                 </DropdownMenuItem>
               ))}
 
