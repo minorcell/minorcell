@@ -32,6 +32,21 @@ order: 43
 又过了一段时间，我开始觉得个人站点还是有点单调。VitePress 能改，但做深度定制的时候会有点别扭（有些地方甚至会翻车）。
 索性就 vibe coding 一把：把原先 VitePress 那套，重构到了 **Next.js**。
 
+```mermaid
+timeline TD
+    title 个人站点的技术演进
+    纯静态 HTML : 托管到 GitHub Pages
+                : 功能少，扩展困难
+    全栈自建 : 前端、服务端和数据库一起维护
+             : 成本与维护负担上升
+    VitePress : 回归静态站
+              : GitHub Pages + 自定义域名
+    Next.js SSG : 获得更完整的定制能力
+                : GitHub Actions 自动构建与发布
+    无服务器扩展 : giscus 评论 + pagefind 搜索
+                 : MCP 暴露构建期生成的内容
+```
+
 路线也很清晰：
 
 - Next.js

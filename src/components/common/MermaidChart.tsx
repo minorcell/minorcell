@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useId, useRef } from 'react'
+import { createMermaidTheme } from '@/lib/mermaid-theme'
 
 const readIsDark = () => document.documentElement.classList.contains('dark')
 
@@ -24,9 +25,8 @@ export function MermaidChart({ chart }: { chart: string }) {
       if (cancelled) return
       mermaid.initialize({
         startOnLoad: false,
-        theme: readIsDark() ? 'dark' : 'default',
+        ...createMermaidTheme(readIsDark()),
         securityLevel: 'strict',
-        fontFamily: 'monospace',
         suppressErrorRendering: true,
       })
       try {

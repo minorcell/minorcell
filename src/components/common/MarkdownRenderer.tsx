@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Streamdown, type Components, type PluginConfig } from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
 import { ZoomImage } from '@/components/common/ZoomImage'
+import { createMermaidTheme } from '@/lib/mermaid-theme'
 
 type MermaidPlugin = NonNullable<PluginConfig['mermaid']>
 
@@ -112,9 +113,7 @@ export function MarkdownRenderer({
   const codePlugin = isDark ? darkCodePlugin : lightCodePlugin
   const mermaidOptions = useMemo(
     () => ({
-      config: {
-        theme: isDark ? ('dark' as const) : ('default' as const),
-      },
+      config: createMermaidTheme(isDark),
     }),
     [isDark],
   )

@@ -93,14 +93,27 @@ flowchart LR
 ## 先把十年时间线摊开
 
 ```mermaid
-flowchart TD
-    A[约 2011<br/>Monaco：浏览器里的代码编辑] --> B[2013<br/>Monaco Workbench / Visual Studio Online]
-    B --> C[2015.04<br/>VS Code Preview：进入 Electron 桌面]
-    C --> D[2015.11<br/>扩展接口、Extension Host、开源开发]
-    D --> E[2016<br/>VS Code 1.0 与 Language Server Protocol]
-    E --> F[2019<br/>Remote Development：一套 VS Code 跑在两处]
-    F --> G[2021<br/>Workspace Trust 与 vscode.dev]
-    G --> H[2022-2023<br/>Electron Sandbox：重构进程边界]
+timeline TD
+    title VS Code 十年架构演进
+    section 浏览器探索
+        约 2011 : Monaco
+                  : 浏览器里的代码编辑
+        2013 : Monaco Workbench
+             : Visual Studio Online
+    section 桌面与扩展生态
+        2015.04 : VS Code Preview
+                : 进入 Electron 桌面
+        2015.11 : Extension API 与 Extension Host
+                : Code - OSS 开源开发
+        2016 : VS Code 1.0
+             : Language Server Protocol
+    section 多环境与安全
+        2019 : Remote Development
+             : 一套 VS Code 跑在两处
+        2021 : Workspace Trust
+             : vscode.dev
+        2022-2023 : Electron Sandbox
+                  : 重构进程边界
 ```
 
 如果把这十年压成一句话，大概是：

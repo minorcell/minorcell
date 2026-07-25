@@ -41,11 +41,21 @@ OpenCode 很适合用来观察这个过程。它从一个围绕 Agent loop 工�
 
 截至本文发布，OpenCode 最新的正式 release 是 [`v1.18.4`](https://github.com/anomalyco/opencode/releases/tag/v1.18.4)，仓库里还有一条持续演进的 [`v2` 分支](https://github.com/anomalyco/opencode/tree/v2)。这里用 v2 指代这条架构重构线，不代表已经发布了 v2.0。
 
-| 阶段 | 主要问题                               | 架构关注点                                    |
-| ---- | -------------------------------------- | --------------------------------------------- |
-| v0   | Agent 能不能真正工作                   | 把模型调用、工具执行和循环闭环跑通            |
-| v1   | 怎样把它做成别人每天使用的产品         | 多客户端、项目/会话、服务端 API 和桌面交付    |
-| v2   | 系统怎样继续承载更多项目、插件和运行时 | Session、Location、工具注册、协议和客户端边界 |
+```mermaid
+timeline TD
+    title OpenCode 的三个架构阶段
+    section v0 · 验证
+        Agent 闭环 : 跑通模型调用、工具执行与上下文回流
+                   : 主要入口是 CLI / TUI
+    section v1 · 产品化
+        多客户端 : TUI、Web、Desktop 共享服务端 API
+                 : 统一 Project / Session / Message
+        桌面交付 : Tauri 先满足交付
+                 : Electron 后来统一运行时与进程边界
+    section v2 · 领域重构
+        核心边界 : Session / Location / Tool / Protocol
+                 : 面向长任务、插件和多个运行时
+```
 
 这三个阶段对应着业务范围的持续扩大。产品每承担一类新问题，原有边界都会承受新的压力，架构也随之演进。
 
