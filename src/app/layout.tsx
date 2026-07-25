@@ -3,6 +3,7 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
+import { MoireBackground } from '@/components/effects/MoireBackground'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
 import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
@@ -70,9 +71,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var storedTheme = localStorage.getItem('theme')
-                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-                  var useDark = storedTheme === 'dark' || (!storedTheme && prefersDark)
+                  var useDark = window.matchMedia('(prefers-color-scheme: dark)').matches
                   document.documentElement.classList.toggle('dark', useDark)
                   document.documentElement.style.colorScheme = useDark ? 'dark' : 'light'
                 } catch {}
@@ -83,6 +82,7 @@ export default function RootLayout({
       </head>
       <body className="relative min-h-screen bg-background text-foreground">
         <ExternalLinkGuard />
+        <MoireBackground />
         <div className="relative z-10 flex min-h-screen flex-col">
           <Navbar />
           <main className="relative flex-1" data-pagefind-body>
