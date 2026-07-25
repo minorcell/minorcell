@@ -36,7 +36,7 @@ export function CodeBlock({ children, ...props }: React.ComponentProps<'pre'>) {
         onClick={() => void onCopy()}
         aria-label={copied ? '已复制' : '复制代码'}
         title={copied ? '已复制' : '复制代码'}
-        className="absolute top-2 right-2 rounded-md p-1.5 text-muted-foreground opacity-0 transition-opacity hover:bg-muted hover:text-foreground focus-visible:opacity-100 group-hover:opacity-100"
+        className="absolute top-2 right-2 rounded-md p-1.5 text-muted-foreground opacity-0 transition-[background-color,color,opacity] duration-200 ease-out hover:bg-muted hover:text-foreground focus-visible:opacity-100 group-hover:opacity-100 motion-reduce:transition-none"
       >
         {copied ? (
           <Check className="h-3.5 w-3.5 text-link-accent" />

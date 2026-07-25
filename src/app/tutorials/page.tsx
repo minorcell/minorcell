@@ -60,7 +60,7 @@ export default function TutorialsPage() {
             <li key={tutorial.slug}>
               <TransitionLink
                 href={`/tutorials/${tutorial.slug}`}
-                className="block h-full rounded-lg bg-card px-6 py-7 hover:bg-surface-hover sm:px-7 sm:py-8"
+                className="block h-full rounded-lg bg-card px-6 py-7 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:px-7 sm:py-8"
               >
                 <span className="type-caption font-medium text-link-accent">
                   专题

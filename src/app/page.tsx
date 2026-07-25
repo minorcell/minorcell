@@ -101,7 +101,7 @@ export default function HomePage() {
         {featuredPost ? (
           <TransitionLink
             href={getContentHref(featuredPost)}
-            className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 hover:bg-surface-hover sm:p-9"
+            className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:p-9"
           >
             {featuredPost.metadata.image ? (
               <div
@@ -157,7 +157,7 @@ export default function HomePage() {
               <li key={post.slug}>
                 <TransitionLink
                   href={getContentHref(post)}
-                  className="block h-full rounded-lg px-5 py-5 hover:bg-surface-hover sm:px-6 sm:py-6"
+                  className="block h-full rounded-lg px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:px-6 sm:py-6"
                 >
                   <div className="type-caption text-muted-foreground">
                     {post.metadata.date ? formatDate(post.metadata.date) : null}
@@ -185,7 +185,7 @@ export default function HomePage() {
           <TransitionLink
             key={section.path}
             href={section.path}
-            className="rounded-lg bg-card px-5 py-5 hover:bg-surface-hover"
+            className="rounded-lg bg-card px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
           >
             <h2 className="type-headline m-0">{section.label}</h2>
             <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">

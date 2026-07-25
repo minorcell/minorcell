@@ -255,7 +255,7 @@ export function PagefindSearch({
               <li key={`${hit.url}-${index}`}>
                 <TransitionLink
                   href={hit.url}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 hover:bg-surface-hover"
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
                   onClick={onClose}
                 >
                   <div className="min-w-0">
