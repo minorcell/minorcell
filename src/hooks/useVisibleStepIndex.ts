@@ -20,7 +20,7 @@ export function useVisibleStepIndex(count: number) {
       }
 
       const vh = document.documentElement.clientHeight
-      const margin = Math.round(vh / 2) - 2
+      const margin = Math.max(0, Math.round(vh / 2) - 2)
 
       const obs = new IntersectionObserver(
         (entries) => {
