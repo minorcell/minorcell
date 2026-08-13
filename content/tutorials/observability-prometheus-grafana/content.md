@@ -51,7 +51,7 @@ PromQL 查询这些时间序列，回答你的问题
 Grafana 把查询结果渲染成可视化面板
 ```
 
-<!-- step-image src=https://stack-mcell.tos-cn-shanghai.volces.com/observability-prometheus-grafana-architecture.svg alt=Prometheus 监控架构：Go 服务暴露 /metrics，Prometheus 定期拉取并存储时序数据，Grafana 通过 PromQL 查询展示 -->
+<!-- step-image src=https://stack-mcell.tos-cn-shanghai.volces.com/observability-prometheus-grafana-architecture.png alt=Prometheus 监控架构：Go 服务暴露 /metrics，Prometheus 定期拉取并存储时序数据，Grafana 通过 PromQL 查询展示 -->
 
 ### 整个监控栈的角色分工
 

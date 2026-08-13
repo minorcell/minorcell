@@ -22,13 +22,14 @@ description: >
 ## 2. 配图规则
 
 - **图床统一**：所有图片（封面、插图、截图）上传 TOS 桶 `stack-mcell`，引用裸 URL `https://stack-mcell.tos-cn-shanghai.volces.com/<key>`。上传流程用 `upload-image-to-tos` skill（tosutil + 环境变量凭证，上传后 curl 校验 Content-Type）。
-- **不用 Mermaid**：图表一律手绘 SVG（Mermaid 默认样式与站点不搭）。SVG 设计规范：
-  - 站点配色：亮色 底 `#f5f5f7` / 字 `#1d1d1f` / 次要字 `#6e6e73` / 盒底 `#e9e9ed` / 描边 `#a8a8b0` / 绿 `#3f6f24` / 绿底 `#e9f1e5` / 深绿字 `#31571d`；暗色 底 `#1c1c1e` / 字 `#f5f5f7` / 次要 `#aeaeb2` / 盒底 `#2c2c2e` / 绿 `#9bc77f` / 绿底 `#2f3d29` / 深绿字 `#c7e4b5`。
-  - 暗色适配：颜色全部写 CSS 类，加 `@media (prefers-color-scheme: dark)` 覆盖（外部 SVG 拿不到页面 CSS 变量）。
-  - 风格元素：圆角矩形（rx 9-16）、虚线（`stroke-dasharray`）、绿色接线点、手绘波浪线；关键对象用绿色描边突出。
-  - 字体：`"PingFang SC", "Hiragino Sans GB", sans-serif`；字号 12-15px 为主。
-  - 完成后用 Playwright 打开 `file://` 做几何验证：所有 `<text>` 的 bbox 不得越界（viewBox 外）、两两不得重叠。
-  - SVG 上传时必须 `-contentType=image/svg+xml`（upload-image-to-tos skill 已处理）。
+- **不用 Mermaid**：图表一律手绘 SVG（Mermaid 默认样式与站点不搭）。**SVG 只是设计源文件，文章里引用的是渲染后的 PNG**——把 SVG 原文粘到掘金等平台时矢量文字会因字体缺失渲染错乱，栅格化后任何平台一致。
+  - SVG 设计规范：
+    - 站点配色：亮色 底 `#f5f5f7` / 字 `#1d1d1f` / 次要字 `#6e6e73` / 盒底 `#e9e9ed` / 描边 `#a8a8b0` / 绿 `#3f6f24` / 绿底 `#e9f1e5` / 深绿字 `#31571d`。
+    - 风格元素：圆角矩形（rx 9-16）、虚线（`stroke-dasharray`）、绿色接线点、手绘波浪线；关键对象用绿色描边突出。
+    - 字体：`"PingFang SC", "Hiragino Sans GB", sans-serif`；字号 12-15px 为主。
+    - SVG 根部放 `<rect width="100%" height="100%" fill="#f5f5f7"/>` 背景（转 PNG 后与站点底色融合；PNG 无法响应暗色主题，固定亮色即可，与封面图一致）。
+    - 完成后用 Playwright 打开 `file://` 做几何验证：所有 `<text>` 的 bbox 不得越界（viewBox 外）、两两不得重叠。
+  - 渲染与上传：Playwright 打开 SVG，`device_scale_factor=2` 按 viewBox 尺寸截图输出 PNG → 上传 TOS（key 用 `.png`）→ 文章引用 PNG 地址 → 删除本地 SVG/PNG。SVG 源文件不上传图床（例外：确有矢量需求的场景再单独决定）。
 - **官网截图**：用 Python Playwright（系统已装），`new_context(locale='zh-CN', device_scale_factor=2)` 访问官网取中文版；用 `section:has(h2:text-is("..."))` 定位区块截图。**注意**：带加载动画的页面区块截图可能全黑——截完用 PIL 检查非白像素比例，异常就换区块或放弃。
 - **封面图**：SVG 设计（1536×1024，3:2）→ Chrome headless 渲染 PNG：`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu --screenshot=<out.png> --window-size=1536,1024 --default-background-color=FFFFFFFF file://<svg>` → 上传 TOS → 替换文章占位。PNG 与 SVG 本地文件上传后删除。
 
@@ -49,3 +50,7 @@ description: >
   - h1 会被自动降级为 h2（页面级标题已占 h1）。
 - **验证步骤**：`gray-matter` 解析 frontmatter → 页面 img 全部 `naturalWidth > 0`（ZoomImage 懒加载在 dev 预览可能不触发，eval 时强制 `loading='eager'` 重设 src 再验证）→ console 无错误 → 外链全部 200 → 中文引号配对检查。
 - **完成提醒**：文章无需 push 即可在 dev 预览（图片都在 TOS）；提醒用户 git 提交与发布时机。
+
+## 持续迭代
+
+这个 skill 是活的，不是一次性文档：每次协作中发现新约定、踩到新坑（渲染问题、平台兼容、流程改进、用户偏好变化），都直接更新到本文件——修正过时内容、补充新经验，让它持续吸收这个仓库的实践。

@@ -40,7 +40,7 @@ VS Code 的内核是写死的编辑器；Harness 没有内核。它底层基于�
 - VS Code 是**稳定内核 + 可插拔的外围**：内核离开插件照样活。
 - Harness 是**一堆插件的组合**：拆掉所有插件，什么都不剩。
 
-![VS Code 与 DeepSeek Harness 的架构对比](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-architecture.svg)
+![VS Code 与 DeepSeek Harness 的架构对比](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-architecture.png)
 
 ## 支撑“一切皆插件”的四个机制
 
@@ -99,7 +99,7 @@ plugins:
 
 各插件之间的关系可以画成一张依赖图：官方插件各自把服务挂上上下文，你的插件只面向服务，不面向实现：
 
-![DeepSeek Harness 插件依赖关系图](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-dependency.svg)
+![DeepSeek Harness 插件依赖关系图](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-dependency.png)
 
 你的插件和官方插件在同一个层面工作——官方插件能做的事，你都能做，包括替换掉官方插件本身。
 
@@ -146,7 +146,7 @@ plugins:
 
 整个通知过程是这样的：agent 循环在任务结束时发出事件，你的插件收到后借 `ctx.llm` 做一次总结，再把结果推给企业微信。每一个箭头都不是硬编码调用，而是服务与事件：
 
-![企业微信通知插件的时序图](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-notify-sequence.svg)
+![企业微信通知插件的时序图](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-notify-sequence.png)
 
 二十行左右。前面讲的机制，这段代码全用上了：
 
