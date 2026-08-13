@@ -1,0 +1,17 @@
+{
+  "name": "cordis-mini-harness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx bin.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cordis": "^4.0.0-rc.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4",
+    "typescript": "^5"
+  }
+}
