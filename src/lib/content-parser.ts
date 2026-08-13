@@ -181,6 +181,11 @@ export function getAllTutorials(): TutorialContent[] {
       return parseTutorial(slug, fullPath)
     })
     .filter((t): t is TutorialContent => t !== null)
+    .sort((a, b) => {
+      const da = a.metadata.date ? new Date(a.metadata.date).getTime() : 0
+      const db = b.metadata.date ? new Date(b.metadata.date).getTime() : 0
+      return db - da
+    })
 }
 
 export function getTutorialBySlug(slug: string): TutorialContent | null {
