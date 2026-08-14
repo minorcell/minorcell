@@ -14,6 +14,7 @@ description: >
 
 - **位置与命名**：`content/articles/2026/<slug>.md`，描述性 kebab-case slug（如 `deepseek-harness-everything-is-a-plugin`），不要编号前缀。
 - **frontmatter** 必填字段：`type: article`、`title`、`date`、`updated`、`description`（一两句，含关键词）、`tags`、`keywords`（数组格式）、`order`（排序号，写前先 `grep -h "^order:" content/articles/2026/*.md | sort -t: -k2 -n | tail -3` 取最大值 +1）。
+  - 列表排序规则（`src/lib/content-parser.ts` 的 `getAllArticles`）：`date` 降序为主键，**同 date 时 `order` 降序**，再同则 slug 字典序。新文章 date 用发布当天、order 取最大值 +1，即可保证排在同日文章最前。
 - **封面图**：文章开头第一行放 TOS 图床 PNG：`![](https://stack-mcell.tos-cn-shanghai.volces.com/<key>.png)`。制作法见第 3 节。
 - **中文排版**：全文用中文弯引号（`“”`），**不允许直引号**，含 frontmatter 的 title/description。引用英文原文也用弯引号。写完用脚本检查配对。
 - **站内链接**：`/articles/2026/<slug>`（含年份目录）。引用自己旧文时优先内链。
@@ -32,6 +33,7 @@ description: >
   - 渲染与上传：Playwright 打开 SVG，`device_scale_factor=2` 按 viewBox 尺寸截图输出 PNG → 上传 TOS（key 用 `.png`）→ 文章引用 PNG 地址 → 删除本地 SVG/PNG。SVG 源文件不上传图床（例外：确有矢量需求的场景再单独决定）。
 - **官网截图**：用 Python Playwright（系统已装），`new_context(locale='zh-CN', device_scale_factor=2)` 访问官网取中文版；用 `section:has(h2:text-is("..."))` 定位区块截图。**注意**：带加载动画的页面区块截图可能全黑——截完用 PIL 检查非白像素比例，异常就换区块或放弃。
 - **封面图**：SVG 设计（1536×1024，3:2）→ Chrome headless 渲染 PNG：`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu --screenshot=<out.png> --window-size=1536,1024 --default-background-color=FFFFFFFF file://<svg>` → 上传 TOS → 替换文章占位。PNG 与 SVG 本地文件上传后删除。
+  - 封面 PNG 渲染后视觉验证：会话环境无法直接预览图片（Read/截图返回 Unsupported Image）时，用 PIL 程序化检查替代——尺寸正确、背景色 `(245,245,247)`、标题区有深色像素、卡片区白色占比、绿色元素（代码高亮/描边/箭头）像素计数 > 0。别跳过视觉验证。
 
 ## 3. 事实验证
 
