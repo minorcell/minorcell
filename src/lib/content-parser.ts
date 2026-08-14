@@ -157,7 +157,11 @@ export function getAllArticles(): ArticleContent[] {
     .sort((a, b) => {
       const da = a.metadata.date ? new Date(a.metadata.date).getTime() : 0
       const db = b.metadata.date ? new Date(b.metadata.date).getTime() : 0
-      return db - da
+      if (db !== da) return db - da
+      const oa = a.metadata.order ?? 0
+      const ob = b.metadata.order ?? 0
+      if (oa !== ob) return ob - oa
+      return a.slug.localeCompare(b.slug)
     })
 }
 
