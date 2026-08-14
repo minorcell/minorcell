@@ -31,6 +31,8 @@ description: >
     - SVG 根部放 `<rect width="100%" height="100%" fill="#f5f5f7"/>` 背景（转 PNG 后与站点底色融合；PNG 无法响应暗色主题，固定亮色即可，与封面图一致）。
     - 完成后用 Playwright 打开 `file://` 做几何验证：所有 `<text>` 的 bbox 不得越界（viewBox 外）、两两不得重叠。
   - 渲染与上传：Playwright 打开 SVG，`device_scale_factor=2` 按 viewBox 尺寸截图输出 PNG → 上传 TOS（key 用 `.png`）→ 文章引用 PNG 地址 → 删除本地 SVG/PNG。SVG 源文件不上传图床（例外：确有矢量需求的场景再单独决定）。
+- **GIF 动图**（算法演示/过程动画）：不做 SMIL/JS 动画，用「多帧静态 SVG → 逐帧截图 → PIL 合成」流程：Python 脚本参数化生成每帧 SVG（状态用 dict 描述：节点颜色、边高亮、表格值），Playwright 逐帧截图，`Image.save(save_all=True, append_images=..., duration=[每帧ms], loop=0)` 合成 GIF。每帧独立 `convert('P', palette=ADAPTIVE, colors=64)` 避免调色板串色；帧时长 1.5-3s（末帧定格久一些）；验证用 PIL 逐帧算像素差（>0 即动画有效）+ 关键色像素计数随帧递增。GIF 站内引用与 PNG 相同（`![](url.gif)`），浏览器原生播放。
+  - **选型判断**（2026-08 与用户确认）：内容本质是「状态随时间变化」→ 用动图（算法迭代、状态机转换、协议握手、数据管道、DP 填表等）；信息是并置的（结构关系、概念对比、层级）→ 仍用静态图，动起来反而干扰阅读。
 - **官网截图**：用 Python Playwright（系统已装），`new_context(locale='zh-CN', device_scale_factor=2)` 访问官网取中文版；用 `section:has(h2:text-is("..."))` 定位区块截图。**注意**：带加载动画的页面区块截图可能全黑——截完用 PIL 检查非白像素比例，异常就换区块或放弃。
 - **封面图**：SVG 设计（1536×1024，3:2）→ Chrome headless 渲染 PNG：`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu --screenshot=<out.png> --window-size=1536,1024 --default-background-color=FFFFFFFF file://<svg>` → 上传 TOS → 替换文章占位。PNG 与 SVG 本地文件上传后删除。
   - 封面 PNG 渲染后视觉验证：会话环境无法直接预览图片（Read/截图返回 Unsupported Image）时，用 PIL 程序化检查替代——尺寸正确、背景色 `(245,245,247)`、标题区有深色像素、卡片区白色占比、绿色元素（代码高亮/描边/箭头）像素计数 > 0。别跳过视觉验证。
@@ -41,6 +43,11 @@ description: >
 - 预览期/内测产品的 API（事件名、配置项）来源不明确时：示意代码必须标注，且文中注明"以官方文档为准"。
 - 时效性数据（价格、版本号）加时间限定（如"上线初期（8 月 17 日调价前）"）。
 - 引用的官方表述（tagline、README 原文）区分出处：仓库 tagline 不是 README 副标题。
+- **WebFetch 可能被安全策略拦截**（如 lua.org、go.dev 等官网域名）——改用 `curl -s <url>` 抓 HTML 后用 python 去标签提取文本，比 WebFetch 更可靠，还能精确锚定章节。
+- **教程类文章**：
+  - 定位是"普通教程"，不做"为什么 2026 年还要学 X"式的动机渲染，不夸大其词；开头如有作者观察，平实陈述即可。
+  - 示例代码必须实跑验证：本机装了对应解释器就逐个运行代码块（提取 markdown 代码块 → 运行 → 对比 `-->` 断言注释输出）。print 多参数输出用 tab 分隔，断言注释用空格是惯例；依赖前文变量的代码块单独跑失败是预期，不算错误。
+  - 语言版本口径要对：先查官网版本页（如 lua.org/versions.html）确认最新稳定版，再定"基于 X 版本"的表述与手册链接；安装命令的包名（apt/brew）要查包源确认存在。
 
 ## 4. 渲染验证清单
 
@@ -51,6 +58,7 @@ description: >
   - `hasMermaidFence` 检测到 ```mermaid 才会加载 mermaid 运行时；既然不用 Mermaid，文章里不要出现 mermaid fence。
   - h1 会被自动降级为 h2（页面级标题已占 h1）。
 - **验证步骤**：`gray-matter` 解析 frontmatter → 页面 img 全部 `naturalWidth > 0`（ZoomImage 懒加载在 dev 预览可能不触发，eval 时强制 `loading='eager'` 重设 src 再验证）→ console 无错误 → 外链全部 200 → 中文引号配对检查。
+- **dev 内容缓存坑**：修改 content/ 下的 md 后，dev server 有时不重新编译（页面还是旧内容、新插图不出现）。带 cache-busting 参数访问 `?fresh=<timestamp>` 可强制重编译。
 - **完成提醒**：文章无需 push 即可在 dev 预览（图片都在 TOS）；提醒用户 git 提交与发布时机。
 
 ## 持续迭代
