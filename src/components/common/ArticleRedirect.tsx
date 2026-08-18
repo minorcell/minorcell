@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface ArticleRedirectProps {
@@ -8,16 +8,26 @@ interface ArticleRedirectProps {
 }
 
 /**
- * Client-side redirect for articles that moved to a new slug. Renders nothing;
- * the visible fallback UI lives in the parent server component so users still
- * have a clear link if JS is disabled or the redirect is intercepted.
+ * Countdown redirect for articles that moved to a new slug. The parent server
+ * component renders a meta-refresh fallback for no-JS visitors; this component
+ * shows the visible countdown and performs the client-side jump.
  */
 export function ArticleRedirect({ href }: ArticleRedirectProps) {
   const router = useRouter()
+  const [count, setCount] = useState(3)
 
   useEffect(() => {
-    router.replace(href)
-  }, [router, href])
+    if (count <= 0) {
+      router.replace(href)
+      return
+    }
+    const timer = setTimeout(() => setCount((c) => c - 1), 1000)
+    return () => clearTimeout(timer)
+  }, [count, router, href])
 
-  return null
+  return (
+    <span className="font-medium text-foreground" aria-live="polite">
+      {count}
+    </span>
+  )
 }

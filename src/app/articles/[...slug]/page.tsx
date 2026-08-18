@@ -141,7 +141,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const redirectTarget = getRedirectTarget(post)
   if (redirectTarget) {
-    return <ArticleRedirectView post={post} target={redirectTarget} />
+    return <ArticleRedirectView target={redirectTarget} />
   }
 
   const discussionTerm = `articles/${slugString}`
@@ -242,16 +242,14 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
 }
 
 interface ArticleRedirectViewProps {
-  post: ArticleContent
   target: string
 }
 
-function ArticleRedirectView({ post, target }: ArticleRedirectViewProps) {
+function ArticleRedirectView({ target }: ArticleRedirectViewProps) {
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
-      <meta httpEquiv="refresh" content={`0; url=${target}`} />
+      <meta httpEquiv="refresh" content={`3; url=${target}`} />
       <link rel="canonical" href={target} />
-      <ArticleRedirect href={target} />
 
       <article className="mx-auto w-full max-w-[780px] pt-8 sm:pt-14">
         <header>
@@ -259,9 +257,11 @@ function ArticleRedirectView({ post, target }: ArticleRedirectViewProps) {
         </header>
 
         <div className="mt-10 rounded-lg bg-card px-6 py-6 sm:px-7">
-          <p className="m-0 font-medium">{post.metadata.title}</p>
+          <p className="m-0 font-medium">
+            即将跳转到新地址，请稍候 <ArticleRedirect href={target} /> 秒
+          </p>
           <p className="type-meta mb-0 mt-2 text-muted-foreground">
-            页面会自动跳转到新地址；如果没有跳转，可以手动继续。
+            如果没有跳转，可以手动继续。
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
@@ -269,12 +269,6 @@ function ArticleRedirectView({ post, target }: ArticleRedirectViewProps) {
               className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往新地址
-            </TransitionLink>
-            <TransitionLink
-              href="/articles"
-              className="type-meta font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              返回归档
             </TransitionLink>
           </div>
         </div>
