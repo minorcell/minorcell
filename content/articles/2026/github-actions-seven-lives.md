@@ -104,6 +104,10 @@ OpenAI 官方的 [codex-action](https://learn.chatgpt.com/docs/github-action) �
 
 Bun 走得更远。它的仓库里住着一个叫 robobun 的 AI 机器人：**提一个 bug issue，它自动分析代码、修复、提交 PR**，像一位时刻在线的真人维护者。翻 Bun 的 [workflows 目录](https://github.com/oven-sh/bun/tree/main/.github/workflows)能看到一整套配套——给 bot 的 PR 自动打标签、用 LLM 做 issue 判重。最有意思的是它还专门有个 workflow [关掉 robobun 开多的过期 PR](https://github.com/oven-sh/bun/blob/main/.github/workflows/close-stale-robobun-prs.yml)：**机器开 PR 也会刷屏，自动化自己也需要被管理。** 这个细节比“AI 维护者”本身更值得记住。
 
+![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-robobun.png)
+
+这是 robobun 在 Bun 仓库真实开出的一万个 PR 之一：没有真人参与，issue 一进来自动分析、修复、提交。截至 2026 年 8 月，它累计开过 9300 多个这样的 PR。
+
 AI 不只能干活，还能当被测对象。[Supabase](https://github.com/supabase/supabase/blob/master/.github/workflows/braintrust-evals.yml) 把自家 AI 功能的 LLM 评测（Braintrust evals）跑成 PR 门禁——每次 push 先验证 AI 答案质量和工具调用正确性，坏了 PR 合不进。**AI 代码进仓库之前，AI 自己先考试。**
 
 ## 六、当服务器：仓库成了会自己长大的数据源
@@ -123,6 +127,10 @@ workflow 攒到几十个，自动化自己就成了工程对象。
 [uv](https://github.com/astral-sh/uv) 有 40 多个 workflow，它用 [check-zizmor.yml](https://github.com/astral-sh/uv/blob/main/.github/workflows/check-zizmor.yml) 跑 zizmor——一个专门审计 workflow YAML 安全问题的 linter——扫描自己的所有 workflow 有没有注入漏洞和危险用法，结果直接进 Code Scanning 面板。**用 CI 检查 CI 本身。**
 
 [deno](https://github.com/denoland/deno/blob/main/.github/workflows/ci.ts) 干脆不用 YAML 写 workflow——它的 CI 是 TypeScript 写的，用 `@david/gagen` 库生成最终 YAML，矩阵定义、runner 常量全部代码共享，和普通工程一样被 lint、被 review。
+
+![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-deno-ci.png)
+
+上面就是 deno 的 workflow 源码，注意文件头：`import { createWorkflow } from "jsr:@david/gagen@0.3.1"`——YAML 不再是唯一写法，workflow 也可以是正经的工程代码。
 
 成本也是管理对象。[Next.js](https://github.com/vercel/next.js/blob/canary/.github/workflows/pr_stack_optimizer.yml) 对 stacked PR 智能跳过昂贵 job——堆栈中段的 PR 只跑 lint 和单测这类轻量又关键的检查；还有一个[一键 code freeze](https://github.com/vercel/next.js/blob/canary/.github/workflows/code_freeze.yml)，冻结期间谁也别想合入。
 
