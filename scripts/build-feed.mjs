@@ -132,6 +132,12 @@ function build() {
 
     if (!date) continue
 
+    // Redirected articles point at a newer slug; keep them out of the feed so
+    // subscribers never land on the jump page.
+    if (typeof metadata.redirect === 'string' && metadata.redirect.trim()) {
+      continue
+    }
+
     // Stub posts defer their content to an interactive topic at
     // /topics/<topicSlug>. Point RSS subscribers straight at the topic so they
     // never land on the empty stub page.

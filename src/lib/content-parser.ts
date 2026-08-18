@@ -22,6 +22,7 @@ export interface ContentMeta {
   image?: string
   order?: number
   topicSlug?: string
+  redirect?: string
   [key: string]: unknown
 }
 
@@ -146,7 +147,9 @@ function findTutorialSlugs(): string[] {
 
 // ─── Public API ──────────────────────────────────────────────────────────────
 
-export function getAllArticles(): ArticleContent[] {
+export function getAllArticles(options?: {
+  includeRedirects?: boolean
+}): ArticleContent[] {
   const slugs = mdFilesUnder(ARTICLES_DIR)
   return slugs
     .map((slug) => {
@@ -154,6 +157,7 @@ export function getAllArticles(): ArticleContent[] {
       const fullPath = path.join(ARTICLES_DIR, slug)
       return parseArticle(realSlug, fullPath)
     })
+    .filter((a) => options?.includeRedirects || !getRedirectTarget(a))
     .sort((a, b) => {
       const da = a.metadata.date ? new Date(a.metadata.date).getTime() : 0
       const db = b.metadata.date ? new Date(b.metadata.date).getTime() : 0
@@ -217,6 +221,14 @@ export function getStubTargetSlug(item: ArticleContent): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
+export function getRedirectTarget(item: ContentItem): string | undefined {
+  if (item.type !== 'article') return undefined
+  const target = item.metadata.redirect
+  if (typeof target !== 'string') return undefined
+  const trimmed = target.trim()
+  return trimmed.startsWith('/') ? trimmed : undefined
+}
+
 // ─── URL generation ─────────────────────────────────────────────────────────
 
 export function getContentHref(item: ContentItem): string {
@@ -226,6 +238,10 @@ export function getContentHref(item: ContentItem): string {
   const targetSlug = getStubTargetSlug(item)
   if (targetSlug) {
     return `/tutorials/${targetSlug}`
+  }
+  const redirectTarget = getRedirectTarget(item)
+  if (redirectTarget) {
+    return redirectTarget
   }
   return `/articles/${item.slug}`
 }
