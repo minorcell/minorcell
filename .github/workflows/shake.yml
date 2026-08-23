@@ -12,7 +12,12 @@ jobs:
       - uses: dahan8473/snake-and-commits@v1
         with:
           github_user: ${{ github.repository_owner }}
-          output: dist/snake.svg
+          output: dist/snake-dark.svg
+          theme: matrix
+      - uses: dahan8473/snake-and-commits@v1
+        with:
+          github_user: ${{ github.repository_owner }}
+          output: dist/snake-light.svg
           theme: green
       - uses: crazy-max/ghaction-github-pages@v4
         with:
