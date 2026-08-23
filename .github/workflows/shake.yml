@@ -13,12 +13,12 @@ jobs:
         with:
           github_user: ${{ github.repository_owner }}
           output: dist/snake-dark.svg
-          theme: matrix
+          theme: blue
       - uses: dahan8473/snake-and-commits@v1
         with:
           github_user: ${{ github.repository_owner }}
           output: dist/snake-light.svg
-          theme: green
+          theme: amber
       - uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: output
