@@ -1,0 +1,22 @@
+name: snake
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dahan8473/snake-and-commits@v1
+        with:
+          github_user: ${{ github.repository_owner }}
+          output: dist/snake.svg
+          theme: green
+      - uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
