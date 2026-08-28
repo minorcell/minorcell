@@ -176,6 +176,8 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   /*
@@ -279,26 +281,11 @@
     color: var(--primary-foreground);
   }
 
-  /* Subtle scrollbar */
+  /* Keep scrolling available while hiding native scrollbar chrome. */
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border: 3px solid transparent;
-    border-radius: 999px;
-    background: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
-    background-clip: content-box;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklab, var(--muted-foreground) 65%, transparent);
-    background-clip: content-box;
+    display: none;
+    width: 0;
+    height: 0;
   }
 }
 

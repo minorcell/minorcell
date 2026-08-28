@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
 import { TransitionLink } from '@/components/effects/PageTransition'
-import { CellularWordmark } from '@/components/home/CellularWordmark'
 import {
   getAllContent,
   getContentHref,
@@ -80,8 +79,6 @@ export default function HomePage() {
             ，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
           </p>
         </div>
-
-        <CellularWordmark />
       </header>
 
       <section aria-labelledby="latest-heading">
