@@ -1,7 +1,7 @@
 {
-  "name": "Minor Cell",
+  "name": "minorcell",
   "short_name": "mcell",
-  "description": "记录 AI 工程、软件开发与产品实践中的真实问题、技术选择和工程判断。",
+  "description": "👋，我是 minorcell，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

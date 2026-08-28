@@ -1,5 +1,6 @@
 import { CopyPageButton } from '@/components/common/CopyPageButton'
 import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
+import { ReadingProgress } from '@/components/common/ReadingProgress'
 import { TableOfContents } from '@/components/common/TableOfContents'
 import type { ArticleContent } from '@/lib/content-parser'
 import { renderMarkdown } from '@/lib/content-renderer/markdown'
@@ -35,38 +36,43 @@ export async function ArticleView({
   const minutes = readingMinutes(content)
 
   return (
-    <div className="flex justify-center">
-      <article className="w-full max-w-[780px]">
-        <header className="relative pt-8 sm:pt-14">
-          <div className="sm:pr-14">
-            <h1 className="type-article-title m-0">{metadata.title}</h1>
+    <>
+      <ReadingProgress />
+      <div className="flex justify-center">
+        <article className="w-full max-w-[780px]">
+          <header className="relative pt-8 sm:pt-14">
+            <div className="sm:pr-14">
+              <h1 className="type-article-title m-0">{metadata.title}</h1>
 
-            {metadata.description ? (
-              <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">
-                {metadata.description}
-              </p>
-            ) : null}
+              {metadata.description ? (
+                <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">
+                  {metadata.description}
+                </p>
+              ) : null}
 
-            <div className="type-caption mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
-              {metadata.date ? <time>{formatDate(metadata.date)}</time> : null}
-              <span>{minutes} 分钟阅读</span>
+              <div className="type-caption mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
+                {metadata.date ? (
+                  <time>{formatDate(metadata.date)}</time>
+                ) : null}
+                <span>{minutes} 分钟阅读</span>
+              </div>
             </div>
+
+            <CopyPageButton
+              content={content}
+              className="mt-5 sm:absolute sm:right-0 sm:top-14 sm:mt-0"
+            />
+          </header>
+
+          <div className="mt-12 sm:mt-16">
+            <div className="article-markdown">{renderedContent}</div>
           </div>
 
-          <CopyPageButton
-            content={content}
-            className="mt-5 sm:absolute sm:right-0 sm:top-14 sm:mt-0"
-          />
-        </header>
+          <DiscussionDrawer discussionTerm={discussionTerm} />
+        </article>
 
-        <div className="mt-12 sm:mt-16">
-          <div className="article-markdown">{renderedContent}</div>
-        </div>
-
-        <DiscussionDrawer discussionTerm={discussionTerm} />
-      </article>
-
-      <TableOfContents headings={headings} />
-    </div>
+        <TableOfContents headings={headings} />
+      </div>
+    </>
   )
 }

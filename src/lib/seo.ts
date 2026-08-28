@@ -13,7 +13,7 @@ export const siteAuthor = {
 export const defaultSeoKeywords = Array.from(
   new Set([
     ...siteContent.keywords,
-    'Minor Cell',
+    'minorcell',
     'mcell',
     '个人技术博客',
     'AI 工程',

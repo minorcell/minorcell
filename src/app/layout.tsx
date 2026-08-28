@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { LenisProvider } from '@/components/effects/LenisProvider'
+import { MotionProvider } from '@/components/effects/MotionProvider'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
@@ -81,13 +83,17 @@ export default function RootLayout({
       </head>
       <body className="relative min-h-screen bg-background text-foreground">
         <ExternalLinkGuard />
-        <div className="relative z-10 flex min-h-screen flex-col">
-          <Navbar />
-          <main className="relative flex-1" data-pagefind-body>
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <MotionProvider>
+          <LenisProvider>
+            <div className="relative z-10 flex min-h-screen flex-col">
+              <Navbar />
+              <main className="relative flex-1" data-pagefind-body>
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </LenisProvider>
+        </MotionProvider>
       </body>
     </html>
   )

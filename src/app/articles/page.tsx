@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
 import { TransitionLink } from '@/components/effects/PageTransition'
+import { MotionSurface } from '@/components/effects/MotionPrimitives'
 import { JsonLd } from '@/components/seo/JsonLd'
 import {
   getAllArticles,
@@ -14,7 +15,7 @@ import {
 } from '@/lib/structured-data'
 
 const articlesDescription =
-  '浏览 Minor Cell 的全部技术文章，内容涵盖 AI 工程、软件开发、技术选型、工程实践与产品思考，并按发布时间归档。'
+  '浏览 minorcell 的全部技术文章，内容涵盖 AI 工程、软件开发、技术选型、工程实践与产品思考，并按发布时间归档。'
 
 export const metadata: Metadata = buildPageMetadata({
   title: '文章归档',
@@ -100,33 +101,35 @@ export default function ArticlesPage() {
               <ol className="m-0 list-none space-y-1 p-0">
                 {postsByYear[Number(year)].map((post) => (
                   <li key={post.slug}>
-                    <TransitionLink
-                      href={getContentHref(post)}
-                      className="grid gap-2 rounded-lg px-3 py-4 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="type-headline m-0">
-                            {post.metadata.title}
-                          </h3>
-                          {isStubArticle(post) ? (
-                            <span className="type-caption rounded bg-accent px-1.5 py-0.5 font-medium text-accent-foreground">
-                              交互
-                            </span>
+                    <MotionSurface>
+                      <TransitionLink
+                        href={getContentHref(post)}
+                        className="grid gap-2 rounded-lg px-3 py-4 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
+                      >
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="type-headline m-0">
+                              {post.metadata.title}
+                            </h3>
+                            {isStubArticle(post) ? (
+                              <span className="type-caption rounded bg-accent px-1.5 py-0.5 font-medium text-accent-foreground">
+                                交互
+                              </span>
+                            ) : null}
+                          </div>
+                          {post.metadata.description ? (
+                            <p className="type-meta mb-0 mt-1 line-clamp-1 text-muted-foreground">
+                              {post.metadata.description}
+                            </p>
                           ) : null}
                         </div>
-                        {post.metadata.description ? (
-                          <p className="type-meta mb-0 mt-1 line-clamp-1 text-muted-foreground">
-                            {post.metadata.description}
-                          </p>
+                        {post.metadata.date ? (
+                          <time className="type-caption text-muted-foreground">
+                            {formatShortDate(post.metadata.date)}
+                          </time>
                         ) : null}
-                      </div>
-                      {post.metadata.date ? (
-                        <time className="type-caption text-muted-foreground">
-                          {formatShortDate(post.metadata.date)}
-                        </time>
-                      ) : null}
-                    </TransitionLink>
+                      </TransitionLink>
+                    </MotionSurface>
                   </li>
                 ))}
               </ol>

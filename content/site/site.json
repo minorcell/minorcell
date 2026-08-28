@@ -1,10 +1,10 @@
 {
-  "name": "Minor Cell",
-  "title": "Minor Cell",
-  "url": "https://mcell.top",
+  "name": "minorcell",
+  "title": "minorcell",
+  "url": "https://minorcell.top",
   "locale": "zh-CN",
-  "subtitle": "写代码，也写判断",
-  "description": "Minor Cell 是 mcell 的个人技术站，记录 AI 工程、软件开发与产品实践中的真实问题、技术选择和工程判断。",
+  "subtitle": "天天学习，好好向上。",
+  "description": "👋，我是 minorcell，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。",
   "keywords": [
     "AI Agent",
     "AI 工程",

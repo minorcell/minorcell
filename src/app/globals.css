@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
 @import 'streamdown/styles.css';
 @import 'tw-animate-css';
 @custom-variant dark (&:where(.dark, .dark *));
@@ -77,6 +78,13 @@
   --link-accent: #3f6f24;
   --surface-hover: #ececef;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 16%);
+
+  /* Shared motion language. Keep feedback quick and content transitions
+   * noticeably slower so movement communicates hierarchy instead of noise. */
+  --motion-duration-fast: 140ms;
+  --motion-duration-base: 220ms;
+  --motion-duration-content: 420ms;
+  --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* CellularWordmark canvas palette — consumed at runtime via
    * getComputedStyle in CellularWordmark.tsx, so rebrands only touch
@@ -181,17 +189,12 @@
   }
 
   /*
-   * Scope smooth scrolling to in-page anchor activations only. Applying
-   * `scroll-behavior: smooth` directly on <html> also animates programmatic
-   * `window.scrollTo(0, 0)` calls (notably the one Next.js App Router runs on
-   * route change), which causes scroll-driven animations on /tutorials/<slug>
-   * (the cover's `animation-timeline: scroll(root)`) to play in reverse on
-   * entry — visually: the stage slides down from mid-viewport and the cover
-   * "zooms in". Gating on `:focus-within` keeps anchor jumps smooth without
-   * affecting route-change scroll restoration.
+   * Lenis owns smooth scrolling on normal routes. Tutorial detail pages are
+   * intentionally excluded because their scrollytelling relies on native
+   * root scrolling, so keep anchor jumps smooth only when Lenis is absent.
    */
   @media (prefers-reduced-motion: no-preference) {
-    html:focus-within {
+    html:not(.lenis):focus-within {
       scroll-behavior: smooth;
     }
   }
@@ -404,21 +407,31 @@
 }
 
 .nav-link {
+  position: relative;
   border-radius: 6px;
   padding: 0.4rem 0.65rem;
   transition:
-    background-color 100ms ease-out,
-    color 100ms ease-out;
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
 .nav-link:hover {
   background: var(--muted);
 }
 
+.nav-link:active {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
 .nav-link[data-active] {
   background: var(--card);
   color: var(--foreground);
   font-weight: 600;
+}
+
+.reading-progress {
+  transform-origin: left;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -713,4 +726,9 @@
 
 @utility z-search {
   z-index: 1400;
+}
+
+@utility z-progress {
+  /* Above the sticky navbar, below menus, drawers, and search overlays. */
+  z-index: 1210;
 }

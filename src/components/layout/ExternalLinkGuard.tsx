@@ -390,7 +390,7 @@ export function ExternalLinkGuard() {
             打开外部链接？
           </AlertDialogTitle>
           <AlertDialogDescription className="type-meta m-0 text-muted-foreground">
-            你将离开 Minor Cell，请确认目标地址。
+            你将离开 minorcell，请确认目标地址。
           </AlertDialogDescription>
         </AlertDialogHeader>
 

@@ -5,6 +5,11 @@ import { Menu, Rss, Search } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
+  MotionActiveIndicator,
+  MotionButton,
+  MotionLink,
+} from '@/components/effects/MotionPrimitives'
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -19,9 +24,6 @@ const PagefindSearch = dynamic(
   { ssr: false },
 )
 
-// GitHub Pages replaces static assets on each deploy, so navbar links use
-// document navigation instead of relying on a possibly stale client router.
-/* oxlint-disable next/no-html-link-for-pages */
 const navLinks = [
   { label: '文章', href: '/articles' },
   { label: '教程', href: '/tutorials' },
@@ -74,47 +76,53 @@ export function Navbar() {
   return (
     <header className="navbar sticky top-0 z-nav bg-background/85 backdrop-blur-xl">
       <div className="navbar-inner mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        <a
+        <MotionLink
           href="/"
+          prefetch={false}
           aria-label={siteContent.name}
           className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
         >
           天天学习，好好向上。
-        </a>
+        </MotionLink>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="主导航">
           {navLinks.map((item) => (
-            <a
+            <MotionLink
               key={item.href}
               href={item.href}
+              prefetch={false}
+              aria-current={isActive(item.href) ? 'page' : undefined}
               data-active={isActive(item.href) || undefined}
-              className="nav-link type-caption text-muted-foreground hover:text-foreground"
+              className="nav-link type-caption text-muted-foreground hover:text-foreground active:bg-muted active:text-foreground"
             >
               {item.label}
-            </a>
+              {isActive(item.href) ? (
+                <MotionActiveIndicator layoutId="site-nav-active" />
+              ) : null}
+            </MotionLink>
           ))}
 
-          <button
+          <MotionButton
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
             aria-label="搜索"
             title="搜索（⌘K）"
           >
             <Search className="h-4 w-4" />
-          </button>
+          </MotionButton>
         </nav>
 
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
+              <MotionButton
                 type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
                 aria-label="打开导航菜单"
               >
                 <Menu className="h-5 w-5" />
-              </button>
+              </MotionButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
@@ -123,8 +131,10 @@ export function Navbar() {
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
-                  <a
+                  <MotionLink
                     href={item.href}
+                    prefetch={false}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
                     className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
                       isActive(item.href)
                         ? 'bg-accent font-medium text-accent-foreground'
@@ -132,7 +142,7 @@ export function Navbar() {
                     }`}
                   >
                     {item.label}
-                  </a>
+                  </MotionLink>
                 </DropdownMenuItem>
               ))}
 
@@ -165,17 +175,15 @@ export function Navbar() {
         </div>
       </div>
 
-      {searchOpen && (
-        <PagefindSearch
-          variant="overlay"
-          open={searchOpen}
-          onClose={() => setSearchOpen(false)}
-          // Modal search palette: focusing the input on open is intended
-          // focus management, not page-load autofocus.
-          // oxlint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus
-        />
-      )}
+      <PagefindSearch
+        variant="overlay"
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        // Modal search palette: focusing the input on open is intended
+        // focus management, not page-load autofocus.
+        // oxlint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
+      />
     </header>
   )
 }

@@ -1,7 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import type Lenis from 'lenis'
+import { useLenis } from 'lenis/react'
 import { cn } from '@/lib/utils'
+import {
+  MotionHighlight,
+  MotionLayoutGroup,
+} from '@/components/effects/MotionPrimitives'
 
 interface HeadingItem {
   id: string
@@ -9,11 +15,17 @@ interface HeadingItem {
   level: 2 | 3
 }
 
-function scrollToHeading(id: string, behavior: ScrollBehavior = 'smooth') {
+function scrollToHeading(id: string, lenis?: Lenis, immediate = false) {
   const target = document.getElementById(id)
   if (!target) return
+
+  if (lenis) {
+    lenis.scrollTo(target, { offset: -80, immediate })
+    return
+  }
+
   const top = target.getBoundingClientRect().top + window.scrollY - 80
-  window.scrollTo({ top, behavior })
+  window.scrollTo({ top, behavior: immediate ? 'auto' : 'smooth' })
 }
 
 interface Props {
@@ -21,6 +33,7 @@ interface Props {
 }
 
 export function TableOfContents({ headings }: Props) {
+  const lenis = useLenis()
   const [activeId, setActiveId] = useState<string | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
   const activeLinkRef = useRef<HTMLAnchorElement>(null)
@@ -31,10 +44,13 @@ export function TableOfContents({ headings }: Props) {
     // Scroll to hash on initial load
     const hash = window.location.hash.slice(1)
     if (hash) {
-      const timer = window.setTimeout(() => scrollToHeading(hash, 'auto'), 150)
+      const timer = window.setTimeout(
+        () => scrollToHeading(hash, lenis, true),
+        150,
+      )
       return () => window.clearTimeout(timer)
     }
-  }, [headings])
+  }, [headings, lenis])
 
   // Scroll-spy: find the heading whose top is just above the viewport threshold
   useEffect(() => {
@@ -93,37 +109,43 @@ export function TableOfContents({ headings }: Props) {
         <div className="type-caption mb-2 shrink-0 px-3 font-medium text-muted-foreground">
           目录
         </div>
-        <ol
-          ref={listRef}
-          className="m-0 min-h-0 list-none space-y-0.5 overflow-y-auto overscroll-contain p-0 pr-1 [scrollbar-gutter:stable]"
-        >
-          {headings.map((h) => {
-            const isActive = activeId === h.id
-            return (
-              <li key={h.id}>
-                <a
-                  ref={isActive ? activeLinkRef : undefined}
-                  href={`#${h.id}`}
-                  aria-current={isActive ? 'location' : undefined}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    window.history.pushState(null, '', `#${h.id}`)
-                    scrollToHeading(h.id)
-                  }}
-                  className={cn(
-                    'type-caption block rounded-md px-3 py-2 transition-colors duration-150',
-                    h.level === 3 && 'pl-6',
-                    isActive
-                      ? 'bg-accent font-medium text-accent-foreground'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                  )}
-                >
-                  {h.text}
-                </a>
-              </li>
-            )
-          })}
-        </ol>
+        <MotionLayoutGroup id="article-toc">
+          <ol
+            ref={listRef}
+            data-lenis-prevent
+            className="m-0 min-h-0 list-none space-y-0.5 overflow-y-auto overscroll-contain p-0 pr-1 [scrollbar-gutter:stable]"
+          >
+            {headings.map((h) => {
+              const isActive = activeId === h.id
+              return (
+                <li key={h.id}>
+                  <a
+                    ref={isActive ? activeLinkRef : undefined}
+                    href={`#${h.id}`}
+                    aria-current={isActive ? 'location' : undefined}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      window.history.pushState(null, '', `#${h.id}`)
+                      scrollToHeading(h.id, lenis)
+                    }}
+                    className={cn(
+                      'type-caption relative isolate block rounded-md px-3 py-2 transition-colors duration-150',
+                      h.level === 3 && 'pl-6',
+                      isActive
+                        ? 'font-medium text-accent-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                    )}
+                  >
+                    {isActive ? (
+                      <MotionHighlight layoutId="toc-active-highlight" />
+                    ) : null}
+                    <span className="relative z-10">{h.text}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ol>
+        </MotionLayoutGroup>
       </div>
     </nav>
   )

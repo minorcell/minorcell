@@ -196,7 +196,7 @@ async function emitOg() {
         .rule  { stroke: #c8c0b3; stroke-width: 1; }
       </style>
       <text x="${textX}" y="270" class="brand" font-size="108">
-        Minor Cell
+        minorcell
       </text>
       <line x1="${textX}" y1="310" x2="${textX + 72}" y2="310" class="rule" />
       <text x="${textX + 88}" y="316" class="kicker">A FIELD JOURNAL</text>

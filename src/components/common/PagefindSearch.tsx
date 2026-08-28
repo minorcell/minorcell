@@ -1,7 +1,13 @@
 'use client'
 
 import { TransitionLink } from '@/components/effects/PageTransition'
+import {
+  MotionList,
+  MotionListItem,
+  MotionOverlay,
+} from '@/components/effects/MotionPrimitives'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useLenis } from 'lenis/react'
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, Loader2, Search, X } from 'lucide-react'
 
@@ -51,6 +57,7 @@ export function PagefindSearch({
   const [bundleState, setBundleState] = useState<BundleState>('idle')
   const [isSearching, setIsSearching] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const lenis = useLenis()
   const pagefindRef = useRef<PagefindInstance | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -75,10 +82,12 @@ export function PagefindSearch({
     if (!isOverlay || !open) return
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    lenis?.stop()
     return () => {
       document.body.style.overflow = previousOverflow
+      if (previousOverflow !== 'hidden') lenis?.start()
     }
-  }, [isOverlay, open])
+  }, [isOverlay, open, lenis])
 
   useEffect(() => {
     if (!isOverlay || !open) return
@@ -205,7 +214,10 @@ export function PagefindSearch({
   }, [query, isActive, ensurePagefind])
 
   const resultsSection = (
-    <div className="max-h-[60vh] flex-1 overflow-y-auto px-4 pb-4 sm:px-5 sm:pb-5">
+    <div
+      data-lenis-prevent
+      className="max-h-[60vh] flex-1 overflow-y-auto px-4 pb-4 sm:px-5 sm:pb-5"
+    >
       {errorMessage && (
         <div className="type-caption mb-3 rounded-md bg-destructive/10 px-4 py-3 text-destructive">
           <span>{errorMessage}</span>
@@ -251,28 +263,30 @@ export function PagefindSearch({
             {hits.length} 个结果
           </div>
           <ol className="m-0 list-none space-y-1 p-0">
-            {hits.map((hit, index) => (
-              <li key={`${hit.url}-${index}`}>
-                <TransitionLink
-                  href={hit.url}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
-                  onClick={onClose}
-                >
-                  <div className="min-w-0">
-                    <p className="type-supporting m-0 font-medium">
-                      {hit.title}
-                    </p>
-                    {hit.excerpt && (
-                      <p
-                        className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
-                        dangerouslySetInnerHTML={{ __html: hit.excerpt }}
-                      />
-                    )}
-                  </div>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                </TransitionLink>
-              </li>
-            ))}
+            <MotionList>
+              {hits.map((hit, index) => (
+                <MotionListItem key={`${hit.url}-${index}`}>
+                  <TransitionLink
+                    href={hit.url}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+                    onClick={onClose}
+                  >
+                    <div className="min-w-0">
+                      <p className="type-supporting m-0 font-medium">
+                        {hit.title}
+                      </p>
+                      {hit.excerpt && (
+                        <p
+                          className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
+                          dangerouslySetInnerHTML={{ __html: hit.excerpt }}
+                        />
+                      )}
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </TransitionLink>
+                </MotionListItem>
+              ))}
+            </MotionList>
           </ol>
         </>
       )}
@@ -325,20 +339,16 @@ export function PagefindSearch({
   )
 
   if (isOverlay) {
-    if (!open) return null
-
     return createPortal(
-      // Backdrop mousedown-to-close only fires when the backdrop itself is the
-      // target (never the panel); keyboard users close with Escape.
-      // oxlint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
+      <MotionOverlay
+        open={open}
+        onBackdropPointerDown={onClose}
+        preventScroll
         className="fixed inset-0 z-search flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
-        onMouseDown={(event) => {
-          if (event.target === event.currentTarget) onClose?.()
-        }}
+        panelClassName="w-full max-w-3xl"
       >
-        <div className="w-full max-w-3xl">{content}</div>
-      </div>,
+        {content}
+      </MotionOverlay>,
       document.body,
     )
   }

@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="mt-auto bg-card/55">
       <div className="type-caption mx-auto flex w-full max-w-[1280px] flex-wrap items-center justify-between gap-4 px-5 py-7 text-muted-foreground sm:px-8 lg:px-10">
-        <span>&copy; {currentYear} Minor Cell</span>
+        <span>&copy; {currentYear} minorcell </span>
 
         <div className="flex items-center gap-4">
           {/* feed.xml is a static public file, not a Next.js page — Link does not apply */}

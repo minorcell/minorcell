@@ -100,7 +100,10 @@ function SourcePanel({ code }: { code: string }) {
   const lines = code.split('\n')
 
   return (
-    <div className="webwave-source-panel h-full overflow-auto overscroll-contain">
+    <div
+      data-lenis-prevent
+      className="webwave-source-panel h-full overflow-auto overscroll-contain"
+    >
       <pre className="type-code px-4 py-4 sm:px-5">
         <code>
           {lines.map((line, i) => (

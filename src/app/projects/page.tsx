@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ArrowUpRight, Github } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
+import { MotionSurface } from '@/components/effects/MotionPrimitives'
 import { projectGroups, type ProjectStatus } from '@/lib/projects'
 import { buildPageMetadata } from '@/lib/seo'
 
@@ -72,53 +73,57 @@ export default function ProjectsPage() {
                 )
 
                 return (
-                  <li key={project.name} className="rounded-lg bg-card">
-                    <article className="flex h-full min-h-[210px] flex-col px-6 py-6">
-                      <div className="flex items-start justify-between gap-4">
-                        <h3 className="type-card-title m-0">{project.name}</h3>
-                        <span
-                          className={`type-caption shrink-0 font-medium ${
-                            project.status === 'archived'
-                              ? 'text-muted-foreground'
-                              : 'text-link-accent'
-                          }`}
-                        >
-                          {statusLabel[project.status]}
-                        </span>
-                      </div>
-
-                      <p className="type-supporting mb-0 mt-3 text-muted-foreground">
-                        {project.summary}
-                      </p>
-
-                      {openLink || githubLink ? (
-                        <div className="mt-auto flex items-center gap-1 pt-4">
-                          {openLink ? (
-                            <a
-                              href={openLink.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="type-caption inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 font-medium text-foreground transition-colors hover:bg-muted"
-                            >
-                              打开项目
-                              <ArrowUpRight className="h-3.5 w-3.5" />
-                            </a>
-                          ) : null}
-                          {githubLink ? (
-                            <a
-                              href={githubLink.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                              aria-label={`在 GitHub 查看 ${project.name}`}
-                              title="GitHub"
-                            >
-                              <Github className="h-4 w-4" />
-                            </a>
-                          ) : null}
+                  <li key={project.name} className="h-full">
+                    <MotionSurface className="h-full rounded-lg bg-card">
+                      <article className="flex h-full min-h-[210px] flex-col px-6 py-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <h3 className="type-card-title m-0">
+                            {project.name}
+                          </h3>
+                          <span
+                            className={`type-caption shrink-0 font-medium ${
+                              project.status === 'archived'
+                                ? 'text-muted-foreground'
+                                : 'text-link-accent'
+                            }`}
+                          >
+                            {statusLabel[project.status]}
+                          </span>
                         </div>
-                      ) : null}
-                    </article>
+
+                        <p className="type-supporting mb-0 mt-3 text-muted-foreground">
+                          {project.summary}
+                        </p>
+
+                        {openLink || githubLink ? (
+                          <div className="mt-auto flex items-center gap-1 pt-4">
+                            {openLink ? (
+                              <a
+                                href={openLink.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="type-caption inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 font-medium text-foreground transition-colors hover:bg-muted"
+                              >
+                                打开项目
+                                <ArrowUpRight className="h-3.5 w-3.5" />
+                              </a>
+                            ) : null}
+                            {githubLink ? (
+                              <a
+                                href={githubLink.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                                aria-label={`在 GitHub 查看 ${project.name}`}
+                                title="GitHub"
+                              >
+                                <Github className="h-4 w-4" />
+                              </a>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </article>
+                    </MotionSurface>
                   </li>
                 )
               })}
