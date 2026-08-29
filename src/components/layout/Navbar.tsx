@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import {
   MotionActiveIndicator,
   MotionButton,
-  MotionLink,
 } from '@/components/effects/MotionPrimitives'
 import {
   DropdownMenu,
@@ -24,6 +23,10 @@ const PagefindSearch = dynamic(
   { ssr: false },
 )
 
+// Static exports on GitHub Pages can retain stale RSC assets after a deploy.
+// Use document navigation for site links so the browser always loads the
+// current page and its matching client assets.
+/* oxlint-disable next/no-html-link-for-pages */
 const navLinks = [
   { label: '文章', href: '/articles' },
   { label: '教程', href: '/tutorials' },
@@ -76,21 +79,19 @@ export function Navbar() {
   return (
     <header className="navbar sticky top-0 z-nav bg-background/85 backdrop-blur-xl">
       <div className="navbar-inner mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        <MotionLink
+        <a
           href="/"
-          prefetch={false}
           aria-label={siteContent.name}
           className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
         >
           天天学习，好好向上。
-        </MotionLink>
+        </a>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="主导航">
           {navLinks.map((item) => (
-            <MotionLink
+            <a
               key={item.href}
               href={item.href}
-              prefetch={false}
               aria-current={isActive(item.href) ? 'page' : undefined}
               data-active={isActive(item.href) || undefined}
               className="nav-link type-caption text-muted-foreground hover:text-foreground active:bg-muted active:text-foreground"
@@ -99,7 +100,7 @@ export function Navbar() {
               {isActive(item.href) ? (
                 <MotionActiveIndicator layoutId="site-nav-active" />
               ) : null}
-            </MotionLink>
+            </a>
           ))}
 
           <MotionButton
@@ -131,9 +132,8 @@ export function Navbar() {
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
-                  <MotionLink
+                  <a
                     href={item.href}
-                    prefetch={false}
                     aria-current={isActive(item.href) ? 'page' : undefined}
                     className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
                       isActive(item.href)
@@ -142,7 +142,7 @@ export function Navbar() {
                     }`}
                   >
                     {item.label}
-                  </MotionLink>
+                  </a>
                 </DropdownMenuItem>
               ))}
 
