@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ArrowUpRight } from 'lucide-react'
 import { SectionHero } from '@/components/common/SectionHero'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import { MotionSurface } from '@/components/effects/MotionPrimitives'
@@ -89,45 +90,47 @@ export default function ArticlesPage() {
         <div className="mt-14 max-w-[980px] space-y-12 sm:mt-20 sm:space-y-16">
           {years.map((year) => (
             <section key={year} aria-labelledby={`year-${year}`}>
-              <div className="mb-3 flex items-baseline gap-3 px-3">
-                <h2 id={`year-${year}`} className="type-section-title m-0">
+              <div className="flex items-baseline gap-4 border-b-2 border-foreground pb-3">
+                <h2
+                  id={`year-${year}`}
+                  className="type-feature-title m-0 tracking-tight"
+                >
                   {year}
                 </h2>
-                <span className="type-caption text-muted-foreground">
+                <span className="swiss-label ml-auto text-muted-foreground">
                   {postsByYear[Number(year)].length} 篇
                 </span>
               </div>
 
-              <ol className="m-0 list-none space-y-1 p-0">
+              <ol className="m-0 list-none p-0">
                 {postsByYear[Number(year)].map((post) => (
                   <li key={post.slug}>
                     <MotionSurface>
                       <TransitionLink
                         href={getContentHref(post)}
-                        className="grid gap-2 rounded-lg px-3 py-4 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
+                        className="swiss-index-row group !px-1 sm:!px-2"
                       >
+                        <span className="swiss-label text-muted-foreground/60">
+                          {post.metadata.date
+                            ? formatShortDate(post.metadata.date)
+                            : '——'}
+                        </span>
                         <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="type-headline m-0">
-                              {post.metadata.title}
-                            </h3>
+                          <h3 className="type-headline m-0 transition-colors group-hover:text-link-accent">
+                            {post.metadata.title}
                             {isStubArticle(post) ? (
-                              <span className="type-caption rounded bg-accent px-1.5 py-0.5 font-medium text-accent-foreground">
+                              <span className="swiss-label ml-3 align-middle text-link-accent">
                                 交互
                               </span>
                             ) : null}
-                          </div>
+                          </h3>
                           {post.metadata.description ? (
-                            <p className="type-meta mb-0 mt-1 line-clamp-1 text-muted-foreground">
+                            <p className="type-meta m-0 mt-1 line-clamp-1 text-muted-foreground">
                               {post.metadata.description}
                             </p>
                           ) : null}
                         </div>
-                        {post.metadata.date ? (
-                          <time className="type-caption text-muted-foreground">
-                            {formatShortDate(post.metadata.date)}
-                          </time>
-                        ) : null}
+                        <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-link-accent" />
                       </TransitionLink>
                     </MotionSurface>
                   </li>

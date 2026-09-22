@@ -40,9 +40,18 @@ export async function ArticleView({
       <ReadingProgress />
       <div className="flex justify-center">
         <article className="w-full max-w-[780px]">
-          <header className="relative pt-8 sm:pt-14">
+          <header className="relative border-b border-border pb-10 pt-8 sm:pt-14">
             <div className="sm:pr-14">
-              <h1 className="type-article-title m-0">{metadata.title}</h1>
+              <div className="flex items-center gap-3">
+                <span aria-hidden="true" className="swiss-mark !h-1.5 !w-1.5" />
+                <span className="swiss-label text-muted-foreground">
+                  Article — {minutes} min read
+                </span>
+              </div>
+
+              <h1 className="type-article-title m-0 mt-5 tracking-tight">
+                {metadata.title}
+              </h1>
 
               {metadata.description ? (
                 <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">
@@ -50,11 +59,11 @@ export async function ArticleView({
                 </p>
               ) : null}
 
-              <div className="type-caption mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
+              <div className="swiss-label mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-muted-foreground">
                 {metadata.date ? (
                   <time>{formatDate(metadata.date)}</time>
                 ) : null}
-                <span>{minutes} 分钟阅读</span>
+                <span>minorcell</span>
               </div>
             </div>
 

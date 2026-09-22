@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { ArrowRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import {
   MotionGreeting,
@@ -46,6 +46,8 @@ const formatDate = (value: string) => {
   return `${year}.${month}.${day}`
 }
 
+const padIndex = (n: number) => String(n).padStart(2, '0')
+
 export default function HomePage() {
   const allContent = getAllContent()
   const stubbedSlugs = new Set(
@@ -66,10 +68,21 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
-      <header className="grid min-h-[440px] items-center gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_520px] lg:gap-10 lg:py-20">
-        <div className="flex flex-col justify-center">
-          <h1 className="type-display m-0 text-foreground">minorcell</h1>
-          <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
+      {/* ——— Poster hero ——— */}
+      <header className="border-b border-border pb-12 pt-14 sm:pb-16 sm:pt-20">
+        <div className="flex items-baseline justify-between gap-4">
+          <span className="swiss-label text-muted-foreground">
+            Personal Publication — Est. 2024
+          </span>
+          <span className="swiss-label hidden text-muted-foreground sm:block">
+            47.37&deg;N / 8.54&deg;E
+          </span>
+        </div>
+
+        <h1 className="type-display m-0 mt-8">minorcell</h1>
+
+        <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-12">
+          <p className="type-intro m-0 max-w-[46ch] text-muted-foreground sm:col-span-7">
             <MotionGreeting />
             ，我是
             <span> </span>
@@ -77,77 +90,61 @@ export default function HomePage() {
               href="https://github.com/minorcell"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-link-accent hover:underline"
+              className="font-semibold text-link-accent"
             >
               minorcell
             </a>
             ，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
           </p>
+          <div className="swiss-label flex flex-col gap-3 text-muted-foreground sm:col-span-5 sm:items-end">
+            <span>写代码，也写判断</span>
+            <span className="flex items-center gap-2">
+              <span aria-hidden="true" className="swiss-mark !h-1.5 !w-1.5" />
+              {posts.length}+ Publications
+            </span>
+          </div>
         </div>
       </header>
 
-      <section aria-labelledby="latest-heading">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <h2 id="latest-heading" className="type-section-title m-0">
-            最新发布
+      {/* ——— Latest index ——— */}
+      <section aria-labelledby="latest-heading" className="mt-14 sm:mt-20">
+        <div className="mb-2 flex items-baseline justify-between gap-4">
+          <h2 id="latest-heading" className="swiss-label text-foreground">
+            01 — 最新发布
           </h2>
           <TransitionLink
             href="/articles"
-            className="type-meta inline-flex items-center gap-1.5 font-medium text-link-accent"
+            className="swiss-label inline-flex items-center gap-1 text-link-accent"
           >
             全部文章
-            <ArrowRight className="h-4 w-4" />
+            <ArrowUpRight className="h-3 w-3" />
           </TransitionLink>
         </div>
+        <div className="swiss-rule" />
 
         {featuredPost ? (
           <MotionSurface>
             <TransitionLink
               href={getContentHref(featuredPost)}
-              className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:p-9"
+              className="group grid gap-4 border-b border-border px-2 py-8 sm:grid-cols-12 sm:gap-6 sm:px-4 sm:py-10"
             >
-              {featuredPost.metadata.image ? (
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden md:block md:w-[48%] md:opacity-85 lg:w-[46%]"
-                  style={{
-                    maskImage:
-                      'linear-gradient(108deg, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.5) 31%, #000 46%)',
-                    WebkitMaskImage:
-                      'linear-gradient(108deg, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.5) 31%, #000 46%)',
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={featuredPost.metadata.image}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transition-none"
-                  />
-                </div>
-              ) : null}
-
-              <div className="relative z-10 md:max-w-[62%] lg:max-w-[60%]">
-                <div className="type-caption flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
-                  <span className="font-medium text-link-accent">
-                    {featuredPost.type === 'tutorial' ||
-                    isStubArticle(featuredPost)
-                      ? '教程'
-                      : '文章'}
-                  </span>
-                  {featuredPost.metadata.date ? (
-                    <time>{formatDate(featuredPost.metadata.date)}</time>
-                  ) : null}
-                </div>
-                <h3 className="type-feature-title m-0 mt-4 max-w-[24ch]">
+              <div className="swiss-label text-muted-foreground sm:col-span-2">
+                {featuredPost.metadata.date
+                  ? formatDate(featuredPost.metadata.date)
+                  : '——'}
+              </div>
+              <div className="sm:col-span-9">
+                <h3 className="type-feature-title m-0 max-w-[22ch] tracking-tight transition-colors group-hover:text-link-accent">
                   {featuredPost.metadata.title}
                 </h3>
                 {featuredPost.metadata.description ? (
-                  <p className="type-supporting mb-0 mt-4 max-w-[62ch] text-muted-foreground">
+                  <p className="type-supporting m-0 mt-4 max-w-[58ch] text-muted-foreground">
                     {featuredPost.metadata.description}
                   </p>
                 ) : null}
+              </div>
+              <div className="hidden justify-end sm:col-span-1 sm:flex">
+                <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-link-accent" />
               </div>
             </TransitionLink>
           </MotionSurface>
@@ -156,27 +153,32 @@ export default function HomePage() {
         )}
 
         {recentPosts.length > 0 ? (
-          <ol className="mt-4 grid list-none gap-2 p-0 md:grid-cols-2">
-            {recentPosts.map((post) => (
+          <ol className="m-0 list-none p-0">
+            {recentPosts.map((post, i) => (
               <li key={post.slug}>
-                <MotionSurface className="h-full">
+                <MotionSurface>
                   <TransitionLink
                     href={getContentHref(post)}
-                    className="block h-full rounded-lg px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:px-6 sm:py-6"
+                    className="swiss-index-row group !px-2 sm:!px-4"
                   >
-                    <div className="type-caption text-muted-foreground">
+                    <span className="swiss-label text-muted-foreground/60">
+                      {padIndex(i + 2)}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="type-headline m-0 transition-colors group-hover:text-link-accent">
+                        {post.metadata.title}
+                      </h3>
+                      {post.metadata.description ? (
+                        <p className="type-meta m-0 mt-1 line-clamp-1 text-muted-foreground">
+                          {post.metadata.description}
+                        </p>
+                      ) : null}
+                    </div>
+                    <time className="swiss-label shrink-0 text-muted-foreground">
                       {post.metadata.date
                         ? formatDate(post.metadata.date)
                         : null}
-                    </div>
-                    <h3 className="type-headline m-0 mt-2">
-                      {post.metadata.title}
-                    </h3>
-                    {post.metadata.description ? (
-                      <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">
-                        {post.metadata.description}
-                      </p>
-                    ) : null}
+                    </time>
                   </TransitionLink>
                 </MotionSurface>
               </li>
@@ -185,18 +187,27 @@ export default function HomePage() {
         ) : null}
       </section>
 
+      {/* ——— Sections ——— */}
       <nav
         aria-label="栏目导航"
-        className="mt-20 grid gap-3 sm:mt-24 sm:grid-cols-2 lg:grid-cols-4"
+        className="mt-20 grid gap-px border border-border bg-border sm:mt-24 sm:grid-cols-3"
       >
-        {siteContent.sections.map((section) => (
+        {siteContent.sections.map((section, i) => (
           <MotionSurface key={section.path} className="h-full">
             <TransitionLink
               href={section.path}
-              className="block h-full rounded-lg bg-card px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+              className="group block h-full bg-background px-5 py-6 transition-colors hover:bg-surface-hover"
             >
-              <h2 className="type-headline m-0">{section.label}</h2>
-              <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">
+              <div className="flex items-center justify-between">
+                <span className="swiss-label text-muted-foreground/60">
+                  0{i + 1}
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-link-accent" />
+              </div>
+              <h2 className="type-section-title m-0 mt-6 tracking-tight">
+                {section.label}
+              </h2>
+              <p className="type-meta m-0 mt-2 text-muted-foreground">
                 {section.description}
               </p>
             </TransitionLink>

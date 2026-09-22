@@ -4,10 +4,7 @@ import dynamic from 'next/dynamic'
 import { Menu, Rss, Search } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import {
-  MotionActiveIndicator,
-  MotionButton,
-} from '@/components/effects/MotionPrimitives'
+import { MotionButton } from '@/components/effects/MotionPrimitives'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,9 +25,9 @@ const PagefindSearch = dynamic(
 // current page and its matching client assets.
 /* oxlint-disable next/no-html-link-for-pages */
 const navLinks = [
-  { label: '文章', href: '/articles' },
-  { label: '教程', href: '/tutorials' },
-  { label: '项目', href: '/projects' },
+  { index: '01', label: '文章', href: '/articles' },
+  { index: '02', label: '教程', href: '/tutorials' },
+  { index: '03', label: '项目', href: '/projects' },
 ]
 
 export function Navbar() {
@@ -77,41 +74,56 @@ export function Navbar() {
   const isActive = (href: string) => pathname.startsWith(href)
 
   return (
-    <header className="navbar sticky top-0 z-nav bg-background/85 backdrop-blur-xl">
+    <header className="navbar sticky top-0 z-nav border-b border-border bg-background/90 backdrop-blur-md">
       <div className="navbar-inner mx-auto flex w-full max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <a
           href="/"
           aria-label={siteContent.name}
-          className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
+          className="navbar-brand flex items-baseline gap-2 font-semibold tracking-tight text-foreground"
         >
-          天天学习，好好向上。
+          <span
+            aria-hidden="true"
+            className="swiss-mark translate-y-[-1px]"
+          />
+          minorcell
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="主导航">
+        <nav className="hidden items-center md:flex" aria-label="主导航">
           {navLinks.map((item) => (
             <a
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? 'page' : undefined}
               data-active={isActive(item.href) || undefined}
-              className="nav-link type-caption text-muted-foreground hover:text-foreground active:bg-muted active:text-foreground"
+              className="swiss-label flex items-center gap-1.5 border-l border-border px-4 py-5 text-muted-foreground transition-colors hover:text-foreground data-[active]:text-foreground"
             >
+              <span
+                aria-hidden="true"
+                className="text-[0.5625rem] font-medium text-muted-foreground/70"
+              >
+                {item.index}
+              </span>
               {item.label}
               {isActive(item.href) ? (
-                <MotionActiveIndicator layoutId="site-nav-active" />
+                <span
+                  aria-hidden="true"
+                  className="swiss-mark ml-0.5 !h-1.5 !w-1.5"
+                />
               ) : null}
             </a>
           ))}
 
-          <MotionButton
-            type="button"
-            onClick={() => setSearchOpen(true)}
-            className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
-            aria-label="搜索"
-            title="搜索（⌘K）"
-          >
-            <Search className="h-4 w-4" />
-          </MotionButton>
+          <div className="flex items-center border-l border-border pl-3">
+            <MotionButton
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="inline-flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="搜索"
+              title="搜索（⌘K）"
+            >
+              <Search className="h-4 w-4" />
+            </MotionButton>
+          </div>
         </nav>
 
         <div className="md:hidden">
@@ -119,7 +131,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <MotionButton
                 type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
+                className="inline-flex h-10 w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                 aria-label="打开导航菜单"
               >
                 <Menu className="h-5 w-5" />
@@ -128,19 +140,22 @@ export function Navbar() {
             <DropdownMenuContent
               align="end"
               sideOffset={8}
-              className="z-menu w-48 border-0 bg-popover p-1.5 shadow-overlay"
+              className="z-menu w-48 rounded-none border-border bg-popover p-1.5 shadow-overlay"
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
                   <a
                     href={item.href}
                     aria-current={isActive(item.href) ? 'page' : undefined}
-                    className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
+                    className={`type-meta flex w-full items-center gap-2 rounded-none px-3 py-2.5 ${
                       isActive(item.href)
                         ? 'bg-accent font-medium text-accent-foreground'
                         : 'text-foreground'
                     }`}
                   >
+                    <span className="text-[0.5625rem] font-medium text-muted-foreground/70">
+                      {item.index}
+                    </span>
                     {item.label}
                   </a>
                 </DropdownMenuItem>
@@ -149,7 +164,7 @@ export function Navbar() {
               <DropdownMenuSeparator className="bg-border" />
 
               <DropdownMenuItem
-                className="type-meta px-3 py-2.5"
+                className="type-meta rounded-none px-3 py-2.5"
                 onSelect={() => setSearchOpen(true)}
               >
                 <Search className="h-4 w-4" />
@@ -164,7 +179,7 @@ export function Navbar() {
                 {/* oxlint-disable-next-line next/no-html-link-for-pages */}
                 <a
                   href="/feed.xml"
-                  className="type-meta flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-foreground"
+                  className="type-meta flex w-full items-center gap-2 rounded-none px-3 py-2.5 text-foreground"
                 >
                   <Rss className="h-4 w-4" />
                   RSS

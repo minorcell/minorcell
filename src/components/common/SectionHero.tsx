@@ -8,16 +8,18 @@ interface SectionHeroProps {
 
 export function SectionHero({ title, intro, countLabel }: SectionHeroProps) {
   return (
-    <header className="max-w-[760px] pt-10 sm:pt-16">
-      <div className="flex flex-wrap items-end gap-x-4 gap-y-2">
-        <h1 className="type-page-title m-0 text-foreground">{title}</h1>
+    <header className="border-b border-border pb-10 pt-10 sm:pb-14 sm:pt-16">
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="swiss-label text-muted-foreground">Archive</span>
         {countLabel ? (
-          <span className="type-caption mb-1 font-medium text-link-accent">
+          <span className="swiss-label flex items-center gap-2 text-link-accent">
+            <span aria-hidden="true" className="swiss-mark !h-1.5 !w-1.5" />
             {countLabel}
           </span>
         ) : null}
       </div>
-      <p className="type-intro mb-0 mt-5 max-w-[58ch] text-muted-foreground">
+      <h1 className="type-page-title m-0 mt-6 tracking-tight">{title}</h1>
+      <p className="type-intro m-0 mt-5 max-w-[58ch] text-muted-foreground">
         {intro}
       </p>
     </header>

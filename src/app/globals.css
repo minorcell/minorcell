@@ -23,11 +23,11 @@
   --radius: 0.5rem;
 
   --font-sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro SC',
-    'PingFang SC', 'Helvetica Neue', sans-serif;
+    'Helvetica Neue', Helvetica, 'Inter', Arial, -apple-system,
+    BlinkMacSystemFont, 'PingFang SC', sans-serif;
   --font-display:
-    'SF Pro Display', 'SF Pro SC', -apple-system, BlinkMacSystemFont,
-    'PingFang SC', 'Helvetica Neue', sans-serif;
+    'Helvetica Neue', Helvetica, 'Inter', Arial, -apple-system,
+    BlinkMacSystemFont, 'PingFang SC', sans-serif;
   --font-mono:
     'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
     'Courier New', monospace;
@@ -104,44 +104,44 @@
 /* Dark mode */
 .dark {
   color-scheme: dark;
-  --background: #1c1c1e;
-  --foreground: #f5f5f7;
-  --muted: #2c2c2e;
-  --muted-foreground: #aeaeb2;
-  --border: rgb(84 84 88 / 65%);
-  --card: #2c2c2e;
-  --card-foreground: #f5f5f7;
-  --primary: #9bc77f;
-  --primary-foreground: #17210f;
-  --accent: #2f3d29;
-  --accent-foreground: #c7e4b5;
-  --ring: #9bc77f;
-  --popover: #2c2c2e;
-  --popover-foreground: #f5f5f7;
-  --secondary: #3a3a3c;
-  --secondary-foreground: #f5f5f7;
+  --background: #101010;
+  --foreground: #f2f0ea;
+  --muted: #1d1d1c;
+  --muted-foreground: #9c9c94;
+  --border: rgb(242 240 234 / 18%);
+  --card: #171716;
+  --card-foreground: #f2f0ea;
+  --primary: #ff5a52;
+  --primary-foreground: #14080a;
+  --accent: #33161a;
+  --accent-foreground: #ff8a84;
+  --ring: #ff5a52;
+  --popover: #171716;
+  --popover-foreground: #f2f0ea;
+  --secondary: #1d1d1c;
+  --secondary-foreground: #f2f0ea;
   --destructive: oklch(0.704 0.191 22.216);
-  --input: rgb(255 255 255 / 18%);
-  --code-surface: #161916;
-  --code-surface-foreground: #f5f5f7;
-  --floating-action-bg: #9bc77f;
-  --floating-action-fg: #17210f;
-  --floating-action-hover-bg: #b1d798;
-  --floating-action-hover-fg: #17210f;
-  --link-accent: #9bc77f;
-  --surface-hover: #323234;
+  --input: rgb(242 240 234 / 22%);
+  --code-surface: #0b0b0a;
+  --code-surface-foreground: #f2f0ea;
+  --floating-action-bg: #f2f0ea;
+  --floating-action-fg: #111110;
+  --floating-action-hover-bg: #ff5a52;
+  --floating-action-hover-fg: #14080a;
+  --link-accent: #ff5a52;
+  --surface-hover: #1c1c1a;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 45%);
 
-  --wordmark-palette-1: #9bc77f;
-  --wordmark-palette-2: #b1d798;
-  --wordmark-palette-3: #78a85b;
-  --wordmark-palette-4: #c7e4b5;
-  --wordmark-palette-5: #86b56a;
-  --wordmark-palette-6: #9bc77f;
-  --wordmark-deep-1: #78a85b;
-  --wordmark-deep-2: #86b56a;
-  --wordmark-deep-3: #9bc77f;
-  --wordmark-deep-4: #6f9d54;
+  --wordmark-palette-1: #f2f0ea;
+  --wordmark-palette-2: #ff5a52;
+  --wordmark-palette-3: #8b8b84;
+  --wordmark-palette-4: #b33b36;
+  --wordmark-palette-5: #4a4a46;
+  --wordmark-palette-6: #ff5a52;
+  --wordmark-deep-1: #f2f0ea;
+  --wordmark-deep-2: #6e6e68;
+  --wordmark-deep-3: #b33b36;
+  --wordmark-deep-4: #ff5a52;
 }
 
 @theme inline {
@@ -361,6 +361,7 @@
   font-size: var(--type-display-size);
   font-weight: 700;
   line-height: var(--type-display-leading);
+  letter-spacing: -0.03em;
 }
 
 .type-article-title {
