@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { MotionIconSwap } from '@/components/effects/MotionPrimitives'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -87,16 +88,18 @@ export function CopyPageButton({ content, className }: CopyPageButtonProps) {
         type="button"
         variant="ghost"
         size="icon"
-        className="h-9 w-9 text-muted-foreground hover:text-foreground"
+        className="h-11 w-11 text-muted-foreground hover:text-foreground"
         aria-label="复制正文"
         title="复制正文"
         onClick={() => void onCopy()}
       >
-        {status === 'copied' ? (
-          <Check className="h-4 w-4 text-link-accent" />
-        ) : (
-          <Copy className="h-4 w-4" />
-        )}
+        <MotionIconSwap active={status === 'copied'}>
+          {status === 'copied' ? (
+            <Check className="h-4 w-4 text-link-accent" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </MotionIconSwap>
       </Button>
     </div>
   )

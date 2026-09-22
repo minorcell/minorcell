@@ -21,7 +21,7 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
         <TransitionLink
           href="/"
-          className="type-meta inline-flex h-10 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground hover:text-primary-foreground"
+          className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
         >
           返回首页
         </TransitionLink>

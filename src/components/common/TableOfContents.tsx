@@ -129,7 +129,7 @@ export function TableOfContents({ headings }: Props) {
                       scrollToHeading(h.id, lenis)
                     }}
                     className={cn(
-                      'type-caption relative isolate block rounded-md px-3 py-2 transition-colors duration-150',
+                      'type-caption relative isolate flex min-h-10 items-center rounded-md px-3 py-2 transition-colors duration-150',
                       h.level === 3 && 'pl-6',
                       isActive
                         ? 'font-medium text-accent-foreground'

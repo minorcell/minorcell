@@ -24,7 +24,7 @@ export function MotionSurface({ children, ...props }: MotionSurfaceProps) {
   return (
     <motion.div
       whileTap={{ scale: 0.985 }}
-      transition={{ duration: 0.18, ease: 'easeOut' }}
+      transition={{ duration: 0.15, ease: 'easeOut' }}
       {...props}
     >
       {children}
@@ -44,8 +44,8 @@ export const MotionButton = forwardRef<HTMLButtonElement, MotionButtonProps>(
     return (
       <motion.button
         ref={ref}
-        whileTap={{ scale: 0.94, opacity: 0.72 }}
-        transition={{ duration: 0.12, ease: 'easeOut' }}
+        whileTap={{ scale: 0.96 }}
+        transition={{ duration: 0.15, ease: 'easeOut' }}
         {...props}
       >
         {children}
@@ -67,8 +67,8 @@ export const MotionLink = forwardRef<HTMLAnchorElement, MotionLinkProps>(
     return (
       <MotionNextLink
         ref={ref}
-        whileTap={{ scale: 0.96, opacity: 0.72 }}
-        transition={{ duration: 0.12, ease: 'easeOut' }}
+        whileTap={{ scale: 0.96 }}
+        transition={{ duration: 0.15, ease: 'easeOut' }}
         {...props}
       >
         {children}
@@ -206,6 +206,29 @@ export function MotionProgress({ value }: { value: MotionValue<number> }) {
       className="reading-progress h-full origin-left bg-link-accent"
       style={{ scaleX: value }}
     />
+  )
+}
+
+export function MotionIconSwap({
+  active,
+  children,
+}: {
+  active: boolean
+  children: ReactNode
+}) {
+  return (
+    <AnimatePresence initial={false} mode="popLayout">
+      <motion.span
+        key={active ? 'active' : 'inactive'}
+        initial={{ opacity: 0, scale: 0.25, filter: 'blur(4px)' }}
+        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+        exit={{ opacity: 0, scale: 0.25, filter: 'blur(4px)' }}
+        transition={{ type: 'spring', duration: 0.3, bounce: 0 }}
+        className="inline-flex"
+      >
+        {children}
+      </motion.span>
+    </AnimatePresence>
   )
 }
 

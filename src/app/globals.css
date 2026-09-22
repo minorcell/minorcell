@@ -188,6 +188,11 @@
     -ms-overflow-style: none;
   }
 
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   /*
    * Lenis owns smooth scrolling on normal routes. Tutorial detail pages are
    * intentionally excluded because their scrollytelling relies on native
@@ -204,8 +209,6 @@
     font-family: var(--font-sans);
     font-size: var(--type-body-size);
     line-height: var(--type-body-leading);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-wrap: pretty;
   }
 
@@ -220,6 +223,7 @@
     line-height: 1.3;
     letter-spacing: 0;
     color: var(--foreground);
+    text-wrap: balance;
   }
 
   h1 {
@@ -408,11 +412,25 @@
 
 .nav-link {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
   border-radius: 6px;
-  padding: 0.4rem 0.65rem;
+  padding: 0.4rem 0.75rem;
   transition:
     background-color var(--motion-duration-fast) var(--motion-ease-standard),
     color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+/* Button-sized controls. 0.96 is the press scale; anything smaller feels exaggerated. */
+.pressable {
+  transition-property: background-color, color, opacity, scale;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.pressable:active {
+  scale: 0.96;
 }
 
 .nav-link:hover {
@@ -435,8 +453,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nav-link {
+  .nav-link,
+  .pressable {
     transition: none;
+  }
+
+  .pressable:active {
+    scale: 1;
   }
 }
 
@@ -641,6 +664,12 @@
   margin: 1.6rem 0;
   border: 0;
   border-radius: var(--radius);
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
+}
+
+.dark .article-markdown :where(img) {
+  outline-color: oklch(1 0 0 / 0.1);
 }
 
 /* Table — newspaper-style */
@@ -683,6 +712,12 @@
   /* On mobile, text-wrap: balance leaves significant empty space on the right
      because it balances line lengths. Use 'pretty' instead, which avoids
      orphan words while allowing lines to fill the full available width. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
   .article-markdown :where(h2, h3, h4) {
     text-wrap: pretty;
   }

@@ -102,7 +102,7 @@ export default function ProjectsPage() {
                                 href={openLink.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="type-caption inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 font-medium text-foreground transition-colors hover:bg-muted"
+                                className="type-caption inline-flex h-11 items-center gap-1.5 rounded-md pl-2.5 pr-2 font-medium text-foreground transition-colors hover:bg-muted"
                               >
                                 打开项目
                                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -113,7 +113,7 @@ export default function ProjectsPage() {
                                 href={githubLink.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                                 aria-label={`在 GitHub 查看 ${project.name}`}
                                 title="GitHub"
                               >

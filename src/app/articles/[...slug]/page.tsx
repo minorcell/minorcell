@@ -224,7 +224,7 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
               href={tutorialHref}
-              className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground hover:text-primary-foreground"
+              className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往教程
             </TransitionLink>
@@ -266,7 +266,7 @@ function ArticleRedirectView({ target }: ArticleRedirectViewProps) {
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <TransitionLink
               href={target}
-              className="type-meta inline-flex h-9 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground hover:text-primary-foreground"
+              className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往新地址
             </TransitionLink>

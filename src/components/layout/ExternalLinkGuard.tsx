@@ -411,7 +411,7 @@ export function ExternalLinkGuard() {
                 <img
                   src={preview.data.image}
                   alt=""
-                  className="h-12 w-12 shrink-0 rounded-md object-cover"
+                  className="h-12 w-12 shrink-0 rounded-md object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
                   loading="lazy"
                 />
               ) : null}
@@ -451,13 +451,13 @@ export function ExternalLinkGuard() {
         </div>
 
         <AlertDialogFooter className="mt-6 flex-row items-center justify-end gap-2">
-          <AlertDialogCancel className="m-0 h-9 border-0 bg-muted px-4 shadow-none hover:bg-muted/80">
+          <AlertDialogCancel className="m-0 h-11 border-0 bg-muted px-4 shadow-none hover:bg-muted/80">
             取消
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleContinue}
             className={cn(
-              'm-0 h-9 border-0 px-4 shadow-none',
+              'm-0 h-11 border-0 px-4 shadow-none',
               hasHighRisk
                 ? 'bg-red-600 text-white hover:bg-red-700'
                 : 'bg-primary text-primary-foreground hover:bg-accent-foreground',

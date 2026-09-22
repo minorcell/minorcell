@@ -26,7 +26,10 @@ export function ArticleRedirect({ href }: ArticleRedirectProps) {
   }, [count, router, href])
 
   return (
-    <span className="font-medium text-foreground" aria-live="polite">
+    <span
+      className="font-medium tabular-nums text-foreground"
+      aria-live="polite"
+    >
       {count}
     </span>
   )

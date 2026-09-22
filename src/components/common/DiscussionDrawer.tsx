@@ -109,7 +109,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
               type="button"
               aria-label="关闭讨论"
               onClick={close}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>

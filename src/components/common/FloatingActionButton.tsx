@@ -30,7 +30,7 @@ export function FloatingActionButton({
       title={label}
       onClick={onClick}
       className={cn(
-        'floating-action-button fixed right-5 bottom-5 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-[background-color,color,opacity,transform] duration-200 active:scale-95 sm:right-8 sm:bottom-8',
+        'floating-action-button fixed right-5 bottom-5 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-[background-color,color,opacity,translate,scale] duration-150 ease-out active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100 sm:right-8 sm:bottom-8',
         hidden
           ? 'pointer-events-none translate-y-3 opacity-0'
           : 'translate-y-0 opacity-100',

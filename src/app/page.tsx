@@ -93,7 +93,7 @@ export default function HomePage() {
           </h2>
           <TransitionLink
             href="/articles"
-            className="type-meta inline-flex items-center gap-1.5 font-medium text-link-accent"
+            className="type-meta inline-flex min-h-11 items-center gap-1.5 font-medium text-link-accent"
           >
             全部文章
             <ArrowRight className="h-4 w-4" />
@@ -104,7 +104,7 @@ export default function HomePage() {
           <MotionSurface>
             <TransitionLink
               href={getContentHref(featuredPost)}
-              className="group relative isolate block overflow-hidden rounded-lg bg-card p-6 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:p-9"
+              className="relative isolate block overflow-hidden rounded-lg bg-card p-6 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:p-9"
             >
               {featuredPost.metadata.image ? (
                 <div
@@ -123,7 +123,7 @@ export default function HomePage() {
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transition-none"
+                    className="h-full w-full object-cover object-center"
                   />
                 </div>
               ) : null}

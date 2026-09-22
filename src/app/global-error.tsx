@@ -29,7 +29,7 @@ export default function GlobalError({
             <button
               type="button"
               onClick={() => reset()}
-              className="type-meta inline-flex h-10 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground transition-colors hover:bg-accent-foreground"
+              className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground"
             >
               重试
             </button>

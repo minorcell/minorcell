@@ -1,11 +1,7 @@
 'use client'
 
 import { TransitionLink } from '@/components/effects/PageTransition'
-import {
-  MotionList,
-  MotionListItem,
-  MotionOverlay,
-} from '@/components/effects/MotionPrimitives'
+import { MotionOverlay } from '@/components/effects/MotionPrimitives'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useLenis } from 'lenis/react'
 import { createPortal } from 'react-dom'
@@ -223,7 +219,7 @@ export function PagefindSearch({
           <span>{errorMessage}</span>
           <button
             type="button"
-            className="ml-3 font-medium underline underline-offset-2"
+            className="pressable ml-3 inline-flex min-h-11 items-center font-medium underline underline-offset-2"
             onClick={resetBundleState}
           >
             重试
@@ -259,34 +255,32 @@ export function PagefindSearch({
 
       {hits.length > 0 && (
         <>
-          <div className="type-caption mb-1 px-3 py-2 text-muted-foreground">
+          <div className="type-caption mb-1 px-3 py-2 tabular-nums text-muted-foreground">
             {hits.length} 个结果
           </div>
           <ol className="m-0 list-none space-y-1 p-0">
-            <MotionList>
-              {hits.map((hit, index) => (
-                <MotionListItem key={`${hit.url}-${index}`}>
-                  <TransitionLink
-                    href={hit.url}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
-                    onClick={onClose}
-                  >
-                    <div className="min-w-0">
-                      <p className="type-supporting m-0 font-medium">
-                        {hit.title}
-                      </p>
-                      {hit.excerpt && (
-                        <p
-                          className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
-                          dangerouslySetInnerHTML={{ __html: hit.excerpt }}
-                        />
-                      )}
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  </TransitionLink>
-                </MotionListItem>
-              ))}
-            </MotionList>
+            {hits.map((hit, index) => (
+              <li key={`${hit.url}-${index}`}>
+                <TransitionLink
+                  href={hit.url}
+                  className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-150 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+                  onClick={onClose}
+                >
+                  <div className="min-w-0">
+                    <p className="type-supporting m-0 font-medium">
+                      {hit.title}
+                    </p>
+                    {hit.excerpt && (
+                      <p
+                        className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
+                        dangerouslySetInnerHTML={{ __html: hit.excerpt }}
+                      />
+                    )}
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                </TransitionLink>
+              </li>
+            ))}
           </ol>
         </>
       )}
@@ -310,7 +304,7 @@ export function PagefindSearch({
             type="button"
             aria-label="关闭搜索"
             onClick={onClose}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="pressable inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>

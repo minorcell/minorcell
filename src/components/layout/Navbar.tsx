@@ -82,7 +82,7 @@ export function Navbar() {
         <a
           href="/"
           aria-label={siteContent.name}
-          className="navbar-brand rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
+          className="navbar-brand inline-flex min-h-11 items-center rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
         >
           天天学习，好好向上。
         </a>
@@ -106,7 +106,7 @@ export function Navbar() {
           <MotionButton
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
+            className="ml-1 inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
             aria-label="搜索"
             title="搜索（⌘K）"
           >
@@ -119,7 +119,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <MotionButton
                 type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
                 aria-label="打开导航菜单"
               >
                 <Menu className="h-5 w-5" />
@@ -128,14 +128,14 @@ export function Navbar() {
             <DropdownMenuContent
               align="end"
               sideOffset={8}
-              className="z-menu w-48 border-0 bg-popover p-1.5 shadow-overlay"
+              className="z-menu w-48 border-0 bg-popover shadow-overlay"
             >
               {navLinks.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
                   <a
                     href={item.href}
                     aria-current={isActive(item.href) ? 'page' : undefined}
-                    className={`type-meta flex w-full items-center rounded-md px-3 py-2.5 ${
+                    className={`type-meta flex min-h-11 w-full items-center px-3 py-3 ${
                       isActive(item.href)
                         ? 'bg-accent font-medium text-accent-foreground'
                         : 'text-foreground'
@@ -149,10 +149,10 @@ export function Navbar() {
               <DropdownMenuSeparator className="bg-border" />
 
               <DropdownMenuItem
-                className="type-meta px-3 py-2.5"
+                className="type-meta min-h-11 px-3 py-3"
                 onSelect={() => setSearchOpen(true)}
               >
-                <Search className="h-4 w-4" />
+                <Search className="h-4 w-4" strokeWidth={1.5} />
                 <span>搜索</span>
                 <kbd className="type-caption ml-auto font-mono text-muted-foreground">
                   ⌘K
@@ -164,9 +164,9 @@ export function Navbar() {
                 {/* oxlint-disable-next-line next/no-html-link-for-pages */}
                 <a
                   href="/feed.xml"
-                  className="type-meta flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-foreground"
+                  className="type-meta flex min-h-11 w-full items-center gap-2 px-3 py-3 text-foreground"
                 >
-                  <Rss className="h-4 w-4" />
+                  <Rss className="h-4 w-4" strokeWidth={1.5} />
                   RSS
                 </a>
               </DropdownMenuItem>

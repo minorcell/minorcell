@@ -180,7 +180,7 @@ function WebPanel({
             role="tab"
             aria-selected={mode === 'preview'}
             onClick={() => onToggle('preview')}
-            className={`rounded px-2.5 py-1 transition-colors ${
+            className={`inline-flex min-h-10 items-center rounded px-3 transition-colors ${
               mode === 'preview'
                 ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -193,7 +193,7 @@ function WebPanel({
             role="tab"
             aria-selected={mode === 'source'}
             onClick={() => onToggle('source')}
-            className={`rounded px-2.5 py-1 transition-colors ${
+            className={`inline-flex min-h-10 items-center rounded px-3 transition-colors ${
               mode === 'source'
                 ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
