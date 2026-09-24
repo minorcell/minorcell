@@ -42,10 +42,10 @@ MONTHS = ["", "jan", "feb", "mar", "apr", "may", "jun",
 # and body, a 4-stop age gradient (bright head -> dim tail), label + frame.
 THEMES = {
     "green": dict(
-        levels=["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-        snake="#39d353", head="#b7ffd0",
-        ramp=[(1, "#8affc1"), (4, "#39d353"), (10, "#26a641"), (21, "#006d32")],
-        text="#7d8590", frame_bg="#0d1117", frame_border="#30363d",
+        levels=["#e9ecef", "#a8ddb5", "#63be7b", "#2f9752", "#17643b"],
+        snake="#c2410c", head="#f97316",
+        ramp=[(1, "#ea580c"), (4, "#c2410c"), (10, "#9a3412"), (21, "#7c2d12")],
+        text="#656d76", frame_bg="#ffffff", frame_border="#d0d7de",
     ),
     "blue": dict(
         levels=["#161b22", "#0f2f56", "#1f5fa6", "#3f8bd6", "#79c0ff"],
@@ -60,10 +60,10 @@ THEMES = {
         text="#8a7752", frame_bg="#0d0b07", frame_border="#4d3d16",
     ),
     "matrix": dict(
-        levels=["#0a0f0a", "#0d3d1a", "#12742f", "#1fb84e", "#39ff7a"],
-        snake="#39ff7a", head="#d6ffe4",
-        ramp=[(1, "#d6ffe4"), (4, "#39ff7a"), (10, "#1fb84e"), (21, "#12742f")],
-        text="#3fa060", frame_bg="#000000", frame_border="#123d1f",
+        levels=["#30363d", "#1b5234", "#1c7542", "#299d56", "#52d47d"],
+        snake="#ffb45b", head="#fff0d6",
+        ramp=[(1, "#ffd699"), (4, "#ffb45b"), (10, "#f08c2e"), (21, "#c45a00")],
+        text="#8b949e", frame_bg="#0d1117", frame_border="#30363d",
     ),
 }
 
@@ -94,6 +94,21 @@ def fetch_weeks(user, tok):
     if data.get("errors"):
         sys.exit(f"GitHub API error: {data['errors']}")
     return data["data"]["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]
+
+
+def calendar_grid(weeks):
+    """Build a rectangular Sunday-first grid, keeping missing weeks traversable."""
+    grid, counts = [], []
+    for week in weeks:
+        levels, totals = [0] * 7, [0] * 7
+        for day in week["contributionDays"]:
+            date = datetime.strptime(day["date"], "%Y-%m-%d").date()
+            row = (date.weekday() + 1) % 7  # Python Monday=0; calendar Sunday=0.
+            levels[row] = LEVEL[day["contributionLevel"]]
+            totals[row] = day["contributionCount"]
+        grid.append(levels)
+        counts.append(totals)
+    return grid, counts
 
 
 def solve(grid, cap=999):
@@ -146,15 +161,23 @@ def solve(grid, cap=999):
         if cell in remaining:
             eat(cell)
         while len(body) > allowed():
-            occupied.discard(body.popleft())
+            tail = body.popleft()
+            # Re-entering a vacating tail is legal; keep the cell occupied by
+            # the new head when the old tail and new head share coordinates.
+            if tail != cell:
+                occupied.discard(tail)
 
     if start in remaining:
         eat(start)
 
+    def tail_will_vacate(cell):
+        return (cell == body[0] and cell not in remaining and
+                len(body) + 1 > allowed())
+
     def safe(cell):
-        if len(body) < 8:
-            return True
         grows = cell in remaining
+        if cell == body[0] and not grows and not tail_will_vacate(cell):
+            return False
         occ = set(occupied)
         occ.add(cell)
         b0 = body[0]
@@ -192,10 +215,15 @@ def solve(grid, cap=999):
         tail = body[0]
         tp = bfs(head, tail, blocked - {tail})
         nxt = None
-        if tp and len(tp) > 1 and tp[1] not in occupied and safe(tp[1]):
+        # Moving into the current tail is legal when it is about to vacate
+        # (the move does not eat a cell, so the snake does not grow).
+        if (tp and len(tp) > 1 and
+                (tp[1] not in occupied or tail_will_vacate(tp[1])) and
+                safe(tp[1])):
             nxt = tp[1]
         else:
-            free = [nb for nb in neighbors(head) if nb not in occupied]
+            free = [nb for nb in neighbors(head)
+                    if nb not in occupied or tail_will_vacate(nb)]
             pool = [nb for nb in free if safe(nb)] or free
             if pool:
                 nxt = max(pool, key=lambda cr: sum(1 for n in neighbors(cr) if n not in occupied))
@@ -329,10 +357,11 @@ def main():
         sys.exit("error: no token found. set GH_TOKEN (or GITHUB_TOKEN).")
 
     weeks = fetch_weeks(opts.user, tok)
-    grid = [[LEVEL[d["contributionLevel"]] for d in w["contributionDays"]] for w in weeks]
-    counts = [[d["contributionCount"] for d in w["contributionDays"]] for w in weeks]
+    grid, counts = calendar_grid(weeks)
     months, seen = [], None
     for c, w in enumerate(weeks):
+        if not w["contributionDays"]:
+            continue
         m = int(w["contributionDays"][0]["date"].split("-")[1])
         if m != seen:
             months.append((c, MONTHS[m]))
