@@ -88,7 +88,13 @@ def main():
     scale = args.scale
 
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        try:
+            browser = p.chromium.launch()
+        except Exception as exc:
+            chrome = Path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+            if not chrome.exists() or 'Executable doesn\'t exist' not in str(exc):
+                raise
+            browser = p.chromium.launch(executable_path=str(chrome))
         page = browser.new_page(viewport={"width": vw, "height": vh}, device_scale_factor=scale)
         page.goto(args.svg.resolve().as_uri())
         page.wait_for_timeout(400)
