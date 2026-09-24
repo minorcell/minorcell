@@ -8,15 +8,6 @@ description: >
 
 # minorcell 博客文章写作
 
-## 使用前提：必须搭配 writing-blog
-
-**本仓库写任何文章，两个 skill 都要遵循**：
-
-1. **`writing-blog`（通用写作原则）**：读者意识、结构、文风、证据组织等通用规范。写作前先加载它，按它的原则构思与行文。
-2. **本 skill（write-article）**：只覆盖 minorcell 仓库特有的约定（frontmatter、排版、引用、配图、上传、验证流程）。
-
-顺序：先遵循 writing-blog 完成写作构思与正文，再按本 skill 执行仓库流程（frontmatter → 配图 → 上传 TOS → 事实验证 → 渲染验证）。二者冲突时以本 skill 为准（仓库约定优先）。
-
 ## 1. 文章结构与排版
 
 - **位置与命名**：`content/articles/2026/<slug>.md`，描述性 kebab-case slug（如 `deepseek-harness-everything-is-a-plugin`），不要编号前缀。
