@@ -8,7 +8,7 @@ keywords: [Node.js, spawn, 子进程管理, 进程通信, 后端开发]
 order: 43
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202622.png)
+![图题写着 Memo Code 安全设计：子进程、命令防护与权限审批。正文提到三道防线和 dangerously 模式，画面本身是几台像素风服务器。](https://stack-mcell.tos-cn-shanghai.volces.com/202622.png)
 
 做 memo 之前，我对 Node.js 子进程的理解基本等于零。
 

@@ -18,7 +18,7 @@ keywords:
 order: 54
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202646.png)
+![信息图：默认编辑器从 VS Code 换成 Zed。Zed 更快更轻，并通过 ACP 接入 Claude Code、Codex 和 Copilot，扩展权限也更受约束。](https://stack-mcell.tos-cn-shanghai.volces.com/202646.png)
 
 本期唠嗑。
 
@@ -41,7 +41,7 @@ VS Code 对我来说一直是一个很舒服的平衡点：轻量、快捷、生
 
 所以在相当长的一段时间里，我其实都是 VS Code 粉。不是信仰粉，而是很实用主义地觉得：它确实好用。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/vscode-rust.png)
+![VS Code 打开 Rust 文件，悬停 clone 时弹出 rust-analyzer 的类型和文档提示。](https://stack-mcell.tos-cn-shanghai.volces.com/vscode-rust.png)
 
 ## AI IDE 用着用着，感觉有点不对了
 
@@ -65,7 +65,7 @@ VS Code 对我来说一直是一个很舒服的平衡点：轻量、快捷、生
 
 （吐槽：Cursor 的 agent window 打开是真的满啊，和 Codex 桌面版一样，不过人家有个 Loading 效果，Cursor 的 Agent Window 直接白屏。。。）
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/cursor-slow.png)
+![Cursor 的 Agents Window 打开后是一块黑屏，里面只有鼠标指针。](https://stack-mcell.tos-cn-shanghai.volces.com/cursor-slow.png)
 
 但 agent window 是另一个东西。
 
@@ -95,7 +95,7 @@ VS Code 已经算快了，这点我必须承认。冷启动两三秒，打开项
 
 但 Zed 给我的感觉是另一种状态。它是那种“点开就开了”的感觉。冷启动快，开项目快，切 workspace 快，文件切换也快。我没有做严格 benchmark，也没有拿秒表计时，这些都是体感。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/zed-switch-project.png)
+![Zed 的项目切换菜单，当前项目是 minorcell，最近项目里高亮着 from-vscode-to-zed。](https://stack-mcell.tos-cn-shanghai.volces.com/zed-switch-project.png)
 
 但编辑器这种东西，体感其实很重要。
 
@@ -113,7 +113,7 @@ Zed 的思路看起来更像是：编辑器保持轻，agent 通过协议接进�
 
 它借助 ACP，可以把外部 agent 接进侧边栏里。比如 Claude Code CLI、Codex CLI、Open Code 这些，只要支持对应协议，就可以作为外部 agent 接进来。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/zed-fast.png)
+![Zed 的 agent 菜单，外部 agent 列出 Claude Agent、Codex CLI、GitHub Copilot 和 OpenCode。](https://stack-mcell.tos-cn-shanghai.volces.com/zed-fast.png)
 
 这个方向我真的很喜欢。
 
@@ -133,7 +133,7 @@ VS Code 插件市场太大了，背后又是 Node 和 npm 生态。npm 作为全
 
 相信大家最近也刷到了：GitHub 员工安装了一个被投毒的插件，直接导致泄露了近 4000 个私有代码仓库。这种事听起来离谱，但在一个过于庞大的生态里，它就是可能发生。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-3800-repos.png)
+![Reddit r/webdev 帖子，标题是 GitHub confirms breach of 3,800 repos via malicious VSCode extension。](https://stack-mcell.tos-cn-shanghai.volces.com/github-3800-repos.png)
 
 所以我现在对插件市场越来越谨慎。
 
@@ -145,7 +145,7 @@ Zed 的插件生态目前还很小，截止到现在也就一千零几个。这�
 
 这不代表天然安全，但至少更收口、更透明。不是那种无限开放的“什么插件都可以进来改一切”的感觉。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/my-zed-exts.png)
+![Zed 扩展页的 Language Servers 分类，列出 HTML、Java、Dockerfile、PHP、Vue 和 Ruby。](https://stack-mcell.tos-cn-shanghai.volces.com/my-zed-exts.png)
 
 对我来说，目前这一千多个插件就已经满足绝大的多开发情况了（实际我安装的插件也不过二十多个），已经够日常开发用了。
 

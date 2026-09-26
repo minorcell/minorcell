@@ -9,7 +9,7 @@ keywords: [程序员, 建造者, AI Coding, 软件工程, AI Agent, 技术债]
 order: 67
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/from-coder-to-builder-cover.svg)
+![从写代码到建造软件。左边是变便宜的生成代码，箭头指向右边的产品取舍、架构判断和交付责任。](https://stack-mcell.tos-cn-shanghai.volces.com/from-coder-to-builder-cover.svg)
 
 先说结论：**编程在死，软件工程没死，而死掉的那部分，本来就不是你最值钱的部分。**
 

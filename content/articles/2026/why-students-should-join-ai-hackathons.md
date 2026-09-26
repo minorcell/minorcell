@@ -9,7 +9,7 @@ keywords: [黑客松, AI黑客松, 校招, 招聘通道, 直通面试, 学生求
 order: 64
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026-hackathon-cover.png)
+![示意图：简历海选标着 100 比 1 的投递比，72 小时黑客松则直通终面和 Offer 直通卡。](https://stack-mcell.tos-cn-shanghai.volces.com/2026-hackathon-cover.png)
 
 最近两年，我明显感觉到身边的 AI 黑客松变多了。大厂在办，地方政府在办，学生自己也在办，而且很多都面向在校生。恰好我所在的公司，今年的秋招和暑期实习全部改成了三天的比赛筛选——不投简历不刷题，直接组队三天做项目，评委现场打分。这让我开始认真想一个问题：要不要推荐学生们多去参加这类 AI 黑客松？
 
@@ -19,7 +19,7 @@ order: 64
 
 先看就业的基本盘。教育部数据，2026 届高校毕业生 1270 万人，同比又多了 48 万（[光明网](https://m.gmw.cn/2025-11/20/content_1304232603.htm)）。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/graduates-2026-chart.png)
+![条形图：2025 届高校毕业生 1222 万，2026 届 1270 万，增加 48 万。来源是教育部 2025 年 11 月就业工作会议。](https://stack-mcell.tos-cn-shanghai.volces.com/graduates-2026-chart.png)
 
 岗位结构也在分化：传统岗位收缩，AI 岗位扩张。据 [21 世纪经济报道](https://www.21jingji.com/article/20250904/herald/4c8bf4e308432adaf6fc27be49ccfed2.html)，2026 年前五个月新发校招 AI 岗位同比增长 47.3%，机器人行业应届职位涨了 83.8%。
 
@@ -31,17 +31,17 @@ order: 64
 
 ## 黑客松正在成为新的面试
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/hackathon-vs-traditional-hiring.png)
+![两条路径：传统校招要经过投简历、海选和笔试面试，投递比 100 比 1；黑客松是报名、72 小时开发、路演，然后直通终面。](https://stack-mcell.tos-cn-shanghai.volces.com/hackathon-vs-traditional-hiring.png)
 
 我开头提到我们公司的筛选方式，这不是个例。近两年企业把黑客松当招聘通道，已经从“偶尔一试”变成了常规操作。几个我验证过的例子：
 
 **七牛云 [XEngineer 实训营](https://hr.qiniu.com/)**：面向 2025–2029 届高校毕业生及在校生，不限学历、不限专业，72 小时作品挑战加两个月入营实战，100+ Offer 直通卡、20 万+ 实训奖金池，优秀学员进 2027 届校招绿色通道。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/qiniu-xengineer-program.png)
+![七牛云 XEngineer 暑期实训营报名页，写着 100 多个校招直通卡和 20 万以上奖金池。](https://stack-mcell.tos-cn-shanghai.volces.com/qiniu-xengineer-program.png)
 
 **腾讯云黑客松**：[游戏开发挑战赛](https://competehub.dev/zh/competitions/urlsd07c330bd43fc48ea0b3020f7993e37f)的优秀选手可以直通腾讯 IEG 和 CSIG 的实习生终面；[AI Agent 高校赛](https://cloud.tencent.cn/developer/article/2564506)的冠军队伍同样有实习生终面绿色通道，总决赛就办在腾讯全球数字生态大会上，现场还有个“鹅厂 HR 简历面试舱”，HR 一对一做简历诊断。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/tencent-hackathon-ai-agent.png)
+![腾讯云文章页面，标题是黑客松 AI Agent 应用创新高校赛，正文写冠军奖金五万元，并列出各高校报名入口。](https://stack-mcell.tos-cn-shanghai.volces.com/tencent-hackathon-ai-agent.png)
 
 **OPPO 和深信服**：在[香港城市大学（东莞）的黑客松](https://www.cityu-dg.edu.cn/zh/news/1238.html)里出题，获奖同学拿校招“直通面试卡”，免初筛、免专业笔试、免复筛。
 
@@ -55,7 +55,7 @@ order: 64
 
 这也不是国内独有。印度招聘研究机构 Xpheno 的数据显示，采用黑客松筛选的科技公司数量近两年几乎翻倍；Infosys 的 HackWithInfy 从 2018 年至今累计 150 万参赛者、发出两万多个面试机会（[Forbes India](https://www.forbesindia.com/article/ai-tracker/hiring-through-a-hackathon/2992405/1)）。印度财经媒体 Business Standard 去年底直接以 [《Hackathon way of hiring》](https://www.business-standard.com/technology/tech-news/hackathon-way-of-hiring-it-firms-seek-engineers-with-practical-skills-125110900672_1.html) 为题报道了这个趋势，一位通过黑客松拿到 offer 的毕业生总结招聘者到底在看什么：“实践思维、协作、清晰度，以及在时间压力下做出可用成果的能力。”
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/forbes-hackathon-hiring.png)
+![Forbes India 文章 Hiring through a hackathon，副题写道客松正在补充科技公司的传统招聘。](https://stack-mcell.tos-cn-shanghai.volces.com/forbes-hackathon-hiring.png)
 
 ## 黑客松也是一扇看行业的窗
 
@@ -65,11 +65,11 @@ order: 64
 
 昨天（8 月 14 日）刚在佛山启幕的[“创青春”AI 黑客松](https://wap.cyol.com/commonDetail/1443060)就是个典型：150 名参赛者从全国近 500 名报名者中筛选出来，课题全部来自顺德企业的真实痛点，支持单位是海信家电、新宝股份、小熊电器这些顺德本土制造企业。用主办方的话说，“不是在出考题，是在帮企业找解法”。顺德区委常委汪精华在开幕式上说得更直接：“我们不是离开制造业寻找新产业，而是从制造业内部长出新产业。”
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/shunde-hackathon-report.png)
+![中国青年报客户端报道：2026 百所高校顺德行暨创青春 AI 黑客松在佛山启幕。](https://stack-mcell.tos-cn-shanghai.volces.com/shunde-hackathon-report.png)
 
 再往前一点，东莞 5 月的[“莞客松”黑客马拉松](https://pub.timedg.com/a/2026-05/18/AP6a0ae9e8e4b0965515225c60.html)，25 小时限时开发，题目是互动空间小游戏和视觉搜索 VLM 大模型。VLM、Agent 这些词，你在实验室里可能只是看过论文，在赛场上得直接用它做出能演示的东西。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/guansong-hackathon.png)
+![东莞时间网报道：莞客松黑客马拉松在松山湖举行，近百名学生用 25 小时完成作品。](https://stack-mcell.tos-cn-shanghai.volces.com/guansong-hackathon.png)
 
 地方政府也在下场。南京鼓楼办[“南客松”](http://js.people.com.cn/n2/2025/0701/c360301-41278003.html)，建邺区配套每年 5000 万元算力补贴办[“模法黑客松”](http://bjtime.china.com.cn/2025-12/17/content_43309730.html)，无锡梁溪给[黑客松参赛者](https://www.cqcb.com/jiangsusheng/2025-11-25/6014970_pc.html)发算力、基金和场景对接。对地方政府来说，黑客松是比人才引进政策更直接的“抢人”工具；对参赛学生来说，这些配套政策就是参赛之外的红利。
 

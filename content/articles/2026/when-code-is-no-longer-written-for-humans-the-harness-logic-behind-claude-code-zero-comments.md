@@ -8,7 +8,7 @@ order: 47
 description: 当协作对象从「人 + 机器」变成「Agent + 机器」，代码注释的定位必须重新评估，它的职能应该从「代码内的静态说明」，转移到 Harness 的动态信息注入层里去。
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202637.png)
+![对比图：给人看的注释容易过时；给 Agent 看的代码保持干净，背景信息改由 Harness 在运行时注入。](https://stack-mcell.tos-cn-shanghai.volces.com/202637.png)
 
 前几天 Claude Code 因为 sourcemap 没关，导致源码被公开。这件事在技术圈引起的讨论密度很高，因为这种真正跑在生产环境里的闭源通用 Agent 产品，它的内部实现本身就是一份高价值的学习材料。
 

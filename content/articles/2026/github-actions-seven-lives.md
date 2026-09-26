@@ -9,7 +9,7 @@ keywords: [GitHub Action, GitHub Actions, workflow, CI, CD, 自动化, issue 自
 order: 65
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-seven-lives-cover.png)
+![示意图：一台带权限、可定时、可联网的 runner，分出跑测试、为自己、发出去、管起来、给 AI、当服务器和管自动化七种用法。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-seven-lives-cover.png)
 
 GitHub Actions 本质上是 GitHub 白送的一台远程主机：按触发条件自动开机、自带仓库权限、跑你写好的命令。但多数人只拿它跑测试和 lint——这是它最无聊的一种活法。
 
@@ -37,7 +37,7 @@ jobs:
 
 到这里，记住全篇唯一的一句话：**runner 是一台远程主机，主机能做的事它都能做。** 后面六种活法，都是这句话的自然推论。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-checks.png)
+![GitHub Actions 运行页：test workflow 状态是 Action required，需要维护者批准后才能继续。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-checks.png)
 
 ## 二、为自己：把微软的服务器当自己的 cron
 
@@ -57,7 +57,7 @@ on:
 
 **主页仪表盘。** [waka-readme](https://github.com/athul/waka-readme) 每天把你的编码时长统计写进 profile README；[running_page](https://github.com/yihong0618/running_page) 定时同步 Strava / Nike 跑步数据，自动生成跑步地图和统计页——中文圈的“跑步主页”文化就靠它。最出圈的是 [snk](https://github.com/Platane/snk)：六千多星的仓库，每天把你的 commit 热力图渲染成一条贪吃蛇动画，commit 回你的主页。访客点进你的 GitHub，看到的是一条蛇在吃你的贡献格子：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-snake.png)
+![GitHub 个人主页 README 里的贡献格，绿色方块排成一条贪吃蛇。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-snake.png)
 
 这层的共同点是：**仓库不再只是代码，它是你的数据面板、你的个人品牌、你的自动化生活。** GitHub 主页成了你不需要自己搭服务器的个人网站。
 
@@ -67,7 +67,7 @@ on:
 
 [Ant Design](https://github.com/ant-design/ant-design) 发布一个版本 tag，好几个 workflow 同时被踢起来：自动发推、往三个钉钉群推送 changelog、[构建并部署文档站点](https://github.com/ant-design/ant-design/blob/master/.github/workflows/site-deploy.yml)（dumi 全站构建 + bundle 分析 + GitHub Pages / Gitee / surge 三处部署 + Release 附件，一次跑 30–45 分钟）。维护者只需要打一个 tag，剩下的交给 runner 连轴转。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-antd-release.png)
+![github-actions 发布的 Ant Design 6.6.1 更新说明，列出无障碍名称、DatePicker 用词和 Upload 等修复。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-antd-release.png)
 
 发布的安全也在升级。npm 的可信发布（OIDC）让仓库里**不再存 npm token**：
 
@@ -88,7 +88,7 @@ steps:
 
 [Windup](https://github.com/1024XEngineer/Windup) 是个开源学生项目，它把 issue 治理做成了流水线：8 类 issue 模板强制标题前缀，issue 一进来，workflow 用 [github-script](https://github.com/actions/github-script) 跑一段 JS——注入一个**已带好权限的 GitHub API 客户端**——按标题正则自动分类、打 label、挂里程碑、设 issue type，字段被逐项点亮：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-triage.gif)
+![示意图：issue 一创建，triage workflow 就自动打上 bug 标签、挂上里程碑，并设置 issue 类型。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-triage.gif)
 
 几个值得抄的细节：判断 PR 是否关联 issue 用 GraphQL 的 `closingIssuesReferences`（描述里的 `Closes #123` 和 Development 侧栏关联都能识别）；提醒类 comment 埋一个隐藏标记防止每次 push 重复刷屏；检查类 workflow 要挂到 **required status checks** 上——纯提醒没有强制力，挂上闸门才能让不合规的 PR 合不进来。
 
@@ -104,7 +104,7 @@ OpenAI 官方的 [codex-action](https://learn.chatgpt.com/docs/github-action) �
 
 Bun 走得更远。它的仓库里住着一个叫 robobun 的 AI 机器人：**提一个 bug issue，它自动分析代码、修复、提交 PR**，像一位时刻在线的真人维护者。翻 Bun 的 [workflows 目录](https://github.com/oven-sh/bun/tree/main/.github/workflows)能看到一整套配套——给 bot 的 PR 自动打标签、用 LLM 做 issue 判重。最有意思的是它还专门有个 workflow [关掉 robobun 开多的过期 PR](https://github.com/oven-sh/bun/blob/main/.github/workflows/close-stale-robobun-prs.yml)：**机器开 PR 也会刷屏，自动化自己也需要被管理。** 这个细节比“AI 维护者”本身更值得记住。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-robobun.png)
+![robobun 打开的拉取请求，评论写着 Fixes #39492，并解释 Bun.markdown 的 wiki link 边界问题。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-robobun.png)
 
 这是 robobun 在 Bun 仓库真实开出的一万个 PR 之一：没有真人参与，issue 一进来自动分析、修复、提交。截至 2026 年 8 月，它累计开过 9300 多个这样的 PR。
 
@@ -116,7 +116,7 @@ AI 不只能干活，还能当被测对象。[Supabase](https://github.com/supab
 
 [upptime](https://upptime.js.org)（1.7 万星）把 GitHub 拼成了一整套商业监控服务的免费替代：每 5 分钟探测一次网站可用性、每 6 小时记录响应时间、每天生成图表、挂了自动开 issue 当告警单、GitHub Pages 出状态页。**Actions 当探测器、Issues 当告警工单、Pages 当状态页**，Canonical 等公司都在用。数据全在 git 历史里，不怕平台跑路。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-upptime.png)
+![upptime 状态页：Google、Wikipedia、Hacker News 和 Secret Site 的可用率都是 100%，旁边是响应时间曲线。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-upptime.png)
 
 同样的模式用在数据上，仓库就成了**会自己长大的活数据源**：[fanmingming/live](https://github.com/fanmingming/live)（2.8 万星）每 2 小时抓取合并一次 IPTV 直播源；[blackmatrix7 的分流规则集](https://github.com/blackmatrix7/ios_rule_script)（2.7 万星）提交记录几乎全是 `github-actions[bot]`——一个仓库每天自动更新自己，下游项目再从这个仓库派生，形成一条“Actions 数据链”。还有 [chinese-independent-developer](https://github.com/1c7/chinese-independent-developer)（6 万星）用定时 workflow 爬取开发者信息生成榜单。不需要数据库、不需要后端：**git 提交历史就是数据库，README 和 Pages 就是前端。**
 
@@ -128,7 +128,7 @@ workflow 攒到几十个，自动化自己就成了工程对象。
 
 [deno](https://github.com/denoland/deno/blob/main/.github/workflows/ci.ts) 干脆不用 YAML 写 workflow——它的 CI 是 TypeScript 写的，用 `@david/gagen` 库生成最终 YAML，矩阵定义、runner 常量全部代码共享，和普通工程一样被 lint、被 review。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-deno-ci.png)
+![Deno 仓库用 TypeScript 写的 CI，从 jsr:@david/gagen 引入 createWorkflow，并用代码声明各平台 runner。](https://stack-mcell.tos-cn-shanghai.volces.com/github-actions-deno-ci.png)
 
 上面就是 deno 的 workflow 源码，注意文件头：`import { createWorkflow } from "jsr:@david/gagen@0.3.1"`——YAML 不再是唯一写法，workflow 也可以是正经的工程代码。
 

@@ -10,7 +10,7 @@ keywords:
 order: 57
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026050.png)
+![时间线：VS Code 从 2011 年的 Monaco 编辑器，演进到 Workbench、扩展宿主、语言服务器、远程开发和 Electron 沙箱。](https://stack-mcell.tos-cn-shanghai.volces.com/2026050.png)
 
 学习一个成熟项目的架构，不应只盯着它今天的样子。
 

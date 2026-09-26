@@ -8,7 +8,7 @@ keywords: [个人博客, 零成本, Next.js, GitHub Pages, 静态站点, MCP]
 order: 43
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202617.png)
+![CELLSTACK 关于页：简介写着一个写代码的、偶尔也写字的，下面是 JavaScript、React、Go、Rust、DevOps 和 AI 的熟练度条。](https://stack-mcell.tos-cn-shanghai.volces.com/202617.png)
 
 > 站点地址：[mcell.top](mcell.top)，包含完整的：写作、评论、部署、MCP支持...
 
@@ -27,7 +27,7 @@ order: 43
 
 然后我就重构了一次：直接上 VitePress。部署？还是 GitHub Pages。那时候至少配上了自定义域名，看起来舒服多了：[mcell.top](mcell.top)
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202618.png)
+![用 VitePress 做的 CELLSTACK 博客首页，标题是文章列表，下面是文章卡片。](https://stack-mcell.tos-cn-shanghai.volces.com/202618.png)
 
 又过了一段时间，我开始觉得个人站点还是有点单调。VitePress 能改，但做深度定制的时候会有点别扭（有些地方甚至会翻车）。
 索性就 vibe coding 一把：把原先 VitePress 那套，重构到了 **Next.js**。
@@ -58,10 +58,10 @@ timeline TD
 后面我又陆续补了评论和文档搜索功能。用到服务器了吗？没有。
 
 - 评论用的是 **giscus**：本质是把评论托管在 **GitHub Discussions** 里，前端加载组件就行，也不用数据库。
-  ![](https://stack-mcell.tos-cn-shanghai.volces.com/202619.png)
+  ![博客文章页里的 giscus 评论区，标题是欢迎交流与反馈。](https://stack-mcell.tos-cn-shanghai.volces.com/202619.png)
 
 - 搜索用的是 **pagefind**：还是静态站那套玩法，构建阶段生成索引，运行时纯前端查询。
-  ![](https://stack-mcell.tos-cn-shanghai.volces.com/202621.png)
+  ![站点搜索框输入 memo 后的结果列表，命中的标题和摘要被高亮。](https://stack-mcell.tos-cn-shanghai.volces.com/202621.png)
 
 再后面，我还给博客加了 MCP 功能。同样，还是没有服务器：
 SSG 阶段生成一份 JSON docs，只要把路径映射到 MCP server 就行；然后我做了个本地的 MCP server，用户安装大概这样：
@@ -70,7 +70,7 @@ SSG 阶段生成一份 JSON docs，只要把路径映射到 MCP server 就行；
 memo mcp add stack-mcepp npx -y @mcell/stack-mcell
 ```
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202620.png)
+![CellStack MCP 接入弹窗，列出 Codex、Claude Code、Memo Code 的安装命令，以及标准 MCP 配置。](https://stack-mcell.tos-cn-shanghai.volces.com/202620.png)
 
 > [memo code](https://github.com/minorcell/memo-code/) 是我最近自己写的一个轻量级编程Agent，类似Claude code那种，感兴趣可以参与进来。
 

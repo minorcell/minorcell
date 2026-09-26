@@ -82,12 +82,20 @@ export default function RootLayout({
         />
       </head>
       <body className="relative min-h-screen bg-background text-foreground">
-        <ExternalLinkGuard />
+        <a className="skip-link" href="#main">
+          跳到正文
+        </a>
         <MotionProvider>
           <LenisProvider>
+            <ExternalLinkGuard />
             <div className="relative z-10 flex min-h-screen flex-col">
               <Navbar />
-              <main className="relative flex-1" data-pagefind-body>
+              <main
+                id="main"
+                tabIndex={-1}
+                className="relative flex-1"
+                data-pagefind-body
+              >
                 {children}
               </main>
               <Footer />

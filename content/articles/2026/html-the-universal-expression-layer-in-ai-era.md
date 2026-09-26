@@ -8,7 +8,7 @@ keywords: [HTML, AI Coding, 通用表达层, 前端, AI生成]
 order: 52
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202641.png)
+![信息图：HTML 正在从网页的展示层变成 AI 时代的通用表达层，可用于幻灯片、海报、视频、文档和原型。](https://stack-mcell.tos-cn-shanghai.volces.com/202641.png)
 
 ## 观察
 

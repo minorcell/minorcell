@@ -141,7 +141,7 @@ stateDiagram-v2
 
 > 念头通达，交给 codex 快速帮我实现了一个版本。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202614.png)
+![终端里的多行输入框，底部标明 Enter 发送、Shift+Enter 换行。](https://stack-mcell.tos-cn-shanghai.volces.com/202614.png)
 
 ## 收尾
 

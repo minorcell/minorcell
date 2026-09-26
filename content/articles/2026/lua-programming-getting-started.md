@@ -9,7 +9,7 @@ keywords: [Lua, Lua 教程, Lua 入门, Lua 语法, table, 元表, 嵌入式脚�
 order: 63
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-getting-started-cover.png)
+![Lua 编程入门封面。右侧表格说明 table 可以同时是从 1 开始的数组、字典、函数，以及带冒号语法糖的对象。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-getting-started-cover.png)
 
 最近整理旧笔记时，注意到一门我平时几乎没见过的语言——Lua。本来以为是什么小众玩具，查了一下才发现：它 1993 年就发布了，使用范围其实相当广，只是大多数时候都嵌在别的软件里，不写对应场景的代码就见不到它。
 
@@ -29,7 +29,7 @@ Lua 诞生于巴西里约热内卢天主教大学（PUC-Rio）的 Tecgraf 实验
 
 所以 Lua 的使用场景大多是“别人的软件，Lua 的配置”：游戏行业用得最多——《魔兽世界》的插件用 Lua 写，[Roblox](https://luau.org/) 的脚本语言 Luau 是 Lua 的一个方言；编辑器 [Neovim](https://neovim.io/) 用 Lua 做配置语言；[Redis](https://redis.io/docs/latest/develop/programmability/) 内置 Lua 脚本；[OpenResty](https://openresty.org/en/) 用 Lua 给 Nginx 写逻辑；macOS 上的自动化工具 [Hammerspoon](https://www.hammerspoon.org/) 也用 Lua。另外还有 [LÖVE](https://love2d.org/) 这类直接用 Lua 写游戏的框架。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-embed-architecture.png)
+![宿主程序里，C 或 C++ 写的核心逻辑通过 C API 调用 Lua 解释器。游戏引擎、编辑器、数据库和 Web 服务器都是这种宿主。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-embed-architecture.png)
 
 补充一个常见的疑问：Lua 和 LuaJIT 是什么关系。LuaJIT 是另一个实现，带 JIT 编译，速度远超官方解释器，但它完整支持的是 Lua 5.1 的语法。官方解释器的最新稳定版是 5.5（2025 年 12 月发布）。本文示例基于 Lua 5.5。
 
@@ -81,7 +81,7 @@ print(type({}))       --> table
 - **`number` 只有一种**。整数和浮点数统一成一个类型（和 JS 的 `Number` 一样），内部自动区分，比如 `10 // 3` 是整数运算，`10 / 3` 是浮点运算。
 - **只有 `false` 和 `nil` 为假**。`0` 和空字符串 `""` 都是真值。这一点和 JS 差异极大：JS 里 `0`、`""`、`null`、`undefined`、`NaN` 全是假值，Lua 里只有两个。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-falsy-values.png)
+![对比图：Lua 里只有 false 和 nil 为假，0 和空字符串是真值；JavaScript 里 0、空字符串、null、undefined、NaN 和 false 都是假值。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-falsy-values.png)
 
 变量默认是全局的，用 `local` 声明局部变量——作用类似 JS 的 `let`。区别是 JS 不加关键字会报错，Lua 不加关键字就是全局：
 
@@ -250,7 +250,7 @@ Lua 实现了正确的尾调用：尾递归的写法不会撑爆调用栈。写�
 
 实际使用中记住两件事就够了：`t[1]` 是第一个元素，`t[#t]` 是最后一个：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-array-index.png)
+![对比图：Lua 数组从 t[1] 开始，JavaScript 数组从 arr[0] 开始。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-array-index.png)
 
 ```lua
 local colors = {"red", "green", "blue"}
@@ -287,7 +287,7 @@ local mix = {10, 20, name = "moon"}
 print(mix[1], mix[2], mix.name)   --> 10 20 moon
 ```
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-table-mix.png)
+![示意图：local mix = {10, 20, name = "moon"} 同时有从 1 开始的数组部分和字符串键的字典部分。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-table-mix.png)
 
 给字段赋 `nil` 等于删除它：
 
@@ -344,7 +344,7 @@ local t = setmetatable({}, {__index = defaults})
 print(t.color)           --> green（t 里没有，去 defaults 里找）
 ```
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-metatable-lookup.png)
+![访问 t.foo 时表里没有 foo，就顺着元表的 __index 找到 defaults，返回 color 的值 green。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-metatable-lookup.png)
 
 这是 Lua 里实现“继承”的基础：把 `__index` 指向“父类” table，子对象就自动拥有父类的方法。
 
@@ -460,7 +460,7 @@ Lua 的标准库很小，几个常用的：
 
 图长这样：六个点，边上的数字是走这条边的代价（权重）：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-graph.png)
+![六个节点的带权图。绿色标出 A 到 F 的最短路径 A、C、B、D、E、F，总长 13。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-graph.png)
 
 问题是：**从 A 出发，到每个点的最短距离是多少？** 比如 A 到 F，直观看可以走 A → B → D → F（4+5+6=15），也可以走 A → C → B → D → E → F（2+1+5+2+3=13），后者更短。人眼能凑出来，程序怎么算？
 
@@ -475,7 +475,7 @@ Dijkstra 的想法很朴素，一步步来：
 
 拿上面的图走一遍，完整过程如下（绿色边是每轮正在检查的边，右侧 dist 表里绿色的行是被更新过的值）：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-animation.gif)
+![动画：在同一张带权图上跑 Dijkstra。绿色边是当前正在检查的边，距离表里的绿色行是刚被更新的值。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-animation.gif)
 
 动图里最值得注意的一刻在第二轮：B 从 4 变成 3——“绕路比直连更近”是反直觉的，这正是松弛的价值。
 

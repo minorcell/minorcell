@@ -8,7 +8,7 @@ keywords: [Memo Code, 提示词架构, 系统提示词, 上下文组装, Agent�
 order: 44
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202623.webp)
+![系统提示词组装图：模板、用户偏好、项目上下文、动态技能、工具说明和工具定义进入组装引擎，再连上配置与历史，输出最终系统提示。](https://stack-mcell.tos-cn-shanghai.volces.com/202623.webp)
 
 做 Agent 开发时，系统提示词（System Prompt）是影响模型行为的第一优先级。一个好的提示词架构不仅要清晰可维护，还要能动态适配不同场景。这篇来聊聊 Memo Code 的提示词组装方案。
 

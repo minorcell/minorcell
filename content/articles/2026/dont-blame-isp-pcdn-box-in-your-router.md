@@ -8,7 +8,7 @@ keywords: [PCDN, 合租网络, 宽带, 网络安全, 斐讯N1, 麻雀云]
 order: 55
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202647.png)
+![信息图：合租网络变慢，是因为路由器上的设备在跑 PCDN，占用上行带宽帮平台缓存和分发数据。](https://stack-mcell.tos-cn-shanghai.volces.com/202647.png)
 
 > 2026年6月2日，上海晴转多云，我的网络终于好了。今天必须写点东西，记录一下这两天的糟心经历。
 

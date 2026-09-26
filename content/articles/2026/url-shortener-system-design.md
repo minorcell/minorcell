@@ -9,7 +9,7 @@ keywords:
 order: 56
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026048.png)
+![短链接设计图，列出七个连续问题：短码位数、哈希截断碰撞、唯一 ID 来源、每次跳转是否查库、返回 301 还是 302、何时分片，以及核心链路跑通后才能上线。](https://stack-mcell.tos-cn-shanghai.volces.com/2026048.png)
 
 你大抵见过这样的链接：刷 X 时，一条帖子末尾挂着 `t.co/xxxx`；收到快递或活动短信时，正文里跟着一串 `t.cn/xxxx`。它们只有短短几位字符，点开后却能准确跳到一篇文章、一个商品页，或者某个长得离谱的活动地址。
 

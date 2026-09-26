@@ -8,7 +8,7 @@ keywords: [MCP, 内容站点, AI集成, npx, CI/CD, 博客工具]
 order: 41
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202610.png)
+![示意图：内容站点的 JSON 接到本地 npx MCP 服务，再把工具和知识提供给 Codex、Claude、Memo 和其他 Agent。](https://stack-mcell.tos-cn-shanghai.volces.com/202610.png)
 
 最近看 MUI 文档时，我注意到它已经有 MCP 了。然后我就顺手把本地的 Codex、Claude 这类 code agent 都接进了它的 MCP。
 
@@ -89,7 +89,7 @@ order: 41
 
 ## 5. 接入体验：一句命令 + 站点内直接给配置
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202609.png)
+![Codex 终端正在回答博客近期文章，底部输入框显示还剩 95% 上下文。](https://stack-mcell.tos-cn-shanghai.volces.com/202609.png)
 
 现在接入基本一句命令：
 
@@ -97,7 +97,7 @@ order: 41
 
 此外我在站点右上角加了 MCP 图标和配置弹窗，直接给 Codex / Claude / Memo / 标准配置的可复制示例，尽量把接入门槛压到最低。
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202608.png)
+![stack.mcell.top 上的 CellStack MCP 接入弹窗，标准配置里写出了 npx 启动的 mcpServers JSON。](https://stack-mcell.tos-cn-shanghai.volces.com/202608.png)
 
 相关记录：
 

@@ -8,7 +8,7 @@ keywords: [Bun, Bun.Image, sharp, 图像处理, 缩略图, WebP, Node.js]
 order: 53
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202642.png)
+![信息图：云相册原图拖垮首屏，Bun 1.3.14 内置图像 API 可以在运行时做缩略图和封面压缩，用来替代 sharp。](https://stack-mcell.tos-cn-shanghai.volces.com/202642.png)
 
 25年初我写过一个云相册 app，里面有一个非常常见的场景：相册页。
 

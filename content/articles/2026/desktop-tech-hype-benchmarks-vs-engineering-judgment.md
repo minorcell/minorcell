@@ -19,7 +19,7 @@ keywords:
 order: 55
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026048.png)
+![短链接设计图，列出七个连续问题：短码位数、哈希截断碰撞、唯一 ID 来源、每次跳转是否查库、返回 301 还是 302、何时分片，以及核心链路跑通后才能上线。](https://stack-mcell.tos-cn-shanghai.volces.com/2026048.png)
 
 昨天又刷到一篇文章，标题大意是「Electron、Tauri2 该进历史了，Zero-Native 才是未来」。
 

@@ -16,7 +16,7 @@ order: 46
 >
 > Memo Code：https://memo.mcell.top/
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202636.png)
+![终端里运行 mini-opencode：左侧是对话和 Composer，右侧显示本轮用了 37k token。](https://stack-mcell.tos-cn-shanghai.volces.com/202636.png)
 
 前阵子，我写过一篇 [从零构建 Mini Claude Code](https://mcell.top/blog/2026/agent-development-course-for-beginners) 的 Agent 开发入门教程。
 

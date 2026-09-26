@@ -8,7 +8,7 @@ keywords: [批判性思维, AI Coding, Vibe Coding, 编程学习, 初级程序�
 order: 51
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202640.png)
+![信息图：对比 Vibe Coding 和 AI Coding，并列出批判性思维的四个问题。结论是用 AI，但不要把判断和责任交出去。](https://stack-mcell.tos-cn-shanghai.volces.com/202640.png)
 
 > Claude Code、Cursor、GitHub Copilot……这些工具早就不是新鲜事，它们已经悄无声息地嵌进了我们每天的工作流里。几乎所有的代码，都有 AI 的参与。
 >

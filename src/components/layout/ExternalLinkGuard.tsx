@@ -1,16 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useLenis } from 'lenis/react'
 import { cn } from '@/lib/utils'
 import {
   EXTERNAL_LINK_REQUEST_EVENT,
@@ -214,14 +205,25 @@ export function ExternalLinkGuard() {
     status: 'idle',
     data: null,
   })
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const cancelRef = useRef<HTMLButtonElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
+  const titleId = useId()
+  const descriptionId = useId()
+  const lenis = useLenis()
 
   useEffect(() => {
-    const openExternalConfirm = (nextUrl: URL, target: string | null) => {
+    const openExternalConfirm = (
+      nextUrl: URL,
+      target: string | null,
+      trigger: HTMLElement | null,
+    ) => {
       if (nextUrl.origin === window.location.origin) {
         navigateTo(nextUrl.href, target)
         return
       }
 
+      triggerRef.current = trigger
       setPendingLink({
         href: nextUrl.href,
         target,
@@ -258,7 +260,7 @@ export function ExternalLinkGuard() {
       if (nextUrl.origin === window.location.origin) return
 
       event.preventDefault()
-      openExternalConfirm(nextUrl, anchor.getAttribute('target'))
+      openExternalConfirm(nextUrl, anchor.getAttribute('target'), anchor)
     }
 
     const onExternalRequest = (event: Event) => {
@@ -276,7 +278,11 @@ export function ExternalLinkGuard() {
       }
 
       if (!['http:', 'https:'].includes(nextUrl.protocol)) return
-      openExternalConfirm(nextUrl, customEvent.detail?.target ?? null)
+      const opener =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null
+      openExternalConfirm(nextUrl, customEvent.detail?.target ?? null, opener)
     }
 
     document.addEventListener('click', onClickCapture, true)
@@ -364,109 +370,161 @@ export function ExternalLinkGuard() {
     () => risks.some((risk) => risk.level === 'high'),
     [risks],
   )
-  const handleContinue = () => {
-    if (!pendingLink) return
-    navigateTo(pendingLink.href, pendingLink.target)
-
+  const clearPending = () => {
     setOpen(false)
     setPendingLink(null)
     setPreview({ status: 'idle', data: null })
+    const trigger = triggerRef.current
+    triggerRef.current = null
+    trigger?.focus()
   }
 
+  const handleContinue = () => {
+    if (!pendingLink) return
+    const { href, target } = pendingLink
+    const dialog = dialogRef.current
+    if (dialog?.open) dialog.close()
+    else clearPending()
+    navigateTo(href, target)
+  }
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog || !open) return
+
+    if (!dialog.open) dialog.showModal()
+    cancelRef.current?.focus()
+
+    let active = true
+    const onClose = () => {
+      if (!active) return
+      clearPending()
+    }
+    const onClick = (event: MouseEvent) => {
+      if (event.target === dialog) dialog.close()
+    }
+    dialog.addEventListener('close', onClose)
+    dialog.addEventListener('click', onClick)
+    return () => {
+      active = false
+      dialog.removeEventListener('close', onClose)
+      dialog.removeEventListener('click', onClick)
+      if (dialog.open) dialog.close()
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    lenis?.stop()
+    return () => {
+      document.body.style.overflow = previousOverflow
+      if (previousOverflow !== 'hidden') lenis?.start()
+    }
+  }, [open, lenis])
+
   return (
-    <AlertDialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        setOpen(nextOpen)
-        if (!nextOpen) {
-          setPendingLink(null)
-          setPreview({ status: 'idle', data: null })
-        }
-      }}
+    <dialog
+      ref={dialogRef}
+      className="external-link-dialog"
+      aria-labelledby={open ? titleId : undefined}
+      aria-describedby={open ? descriptionId : undefined}
     >
-      <AlertDialogContent className="max-w-lg gap-0 rounded-xl border-0 bg-card p-6 shadow-overlay sm:p-7">
-        <AlertDialogHeader className="space-y-2 text-left">
-          <AlertDialogTitle className="type-card-title m-0">
+      {pendingLink ? (
+        <div className="rounded-xl bg-card p-6 shadow-overlay sm:p-7">
+          <h2 id={titleId} className="type-card-title m-0 text-left">
             打开外部链接？
-          </AlertDialogTitle>
-          <AlertDialogDescription className="type-meta m-0 text-muted-foreground">
-            你将离开 minorcell，请确认目标地址。
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-
-        <div className="mt-5">
-          <section className="rounded-lg bg-muted px-4 py-3">
-            <p className="type-meta m-0 font-medium text-foreground">
-              {destinationHost || '未知地址'}
-            </p>
-            <p className="type-caption mb-0 mt-1 break-all font-mono text-muted-foreground">
-              {pendingLink?.href}
-            </p>
-          </section>
-
-          {preview.status === 'ready' && preview.data ? (
-            <section className="mt-4 flex gap-3 px-1">
-              {preview.data.image ? (
-                // eslint-disable-next-line @next/next/no-img-element -- preview image source is dynamic and external.
-                <img
-                  src={preview.data.image}
-                  alt=""
-                  className="h-12 w-12 shrink-0 rounded-md object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-                  loading="lazy"
-                />
-              ) : null}
-              <div className="min-w-0">
-                <p className="type-meta m-0 font-medium text-foreground">
-                  {preview.data.title ||
-                    preview.data.siteName ||
-                    destinationHost}
-                </p>
-                {preview.data.description ? (
-                  <p className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground">
-                    {preview.data.description}
-                  </p>
-                ) : null}
-              </div>
-            </section>
-          ) : null}
-
-          {risks.length > 0 ? (
-            <section className="mt-4 space-y-2">
-              {risks.map((risk, index) => (
-                <div
-                  key={`${risk.label}-${index}`}
-                  className={cn(
-                    'rounded-md px-3 py-2.5',
-                    getRiskTone(risk.level),
-                  )}
-                >
-                  <p className="type-caption m-0 font-semibold">{risk.label}</p>
-                  <p className="type-caption mb-0 mt-0.5 opacity-80">
-                    {risk.detail}
-                  </p>
-                </div>
-              ))}
-            </section>
-          ) : null}
-        </div>
-
-        <AlertDialogFooter className="mt-6 flex-row items-center justify-end gap-2">
-          <AlertDialogCancel className="m-0 h-11 border-0 bg-muted px-4 shadow-none hover:bg-muted/80">
-            取消
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleContinue}
-            className={cn(
-              'm-0 h-11 border-0 px-4 shadow-none',
-              hasHighRisk
-                ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'bg-primary text-primary-foreground hover:bg-accent-foreground',
-            )}
+          </h2>
+          <p
+            id={descriptionId}
+            className="type-meta m-0 mt-2 text-left text-muted-foreground"
           >
-            {hasHighRisk ? '仍要继续' : '继续访问'}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            你将离开 minorcell，请确认目标地址。
+          </p>
+
+          <div className="mt-5">
+            <section className="rounded-lg bg-muted px-4 py-3">
+              <p className="type-meta m-0 font-medium text-foreground">
+                {destinationHost || '未知地址'}
+              </p>
+              <p className="type-caption mb-0 mt-1 break-all font-mono text-foreground">
+                {pendingLink.href}
+              </p>
+            </section>
+
+            {preview.status === 'ready' && preview.data ? (
+              <section className="mt-4 flex gap-3 px-1">
+                {preview.data.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- preview image source is dynamic and external.
+                  <img
+                    src={preview.data.image}
+                    alt=""
+                    className="h-12 w-12 shrink-0 rounded-md object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+                    loading="lazy"
+                  />
+                ) : null}
+                <div className="min-w-0">
+                  <p className="type-meta m-0 font-medium text-foreground">
+                    {preview.data.title ||
+                      preview.data.siteName ||
+                      destinationHost}
+                  </p>
+                  {preview.data.description ? (
+                    <p className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground">
+                      {preview.data.description}
+                    </p>
+                  ) : null}
+                </div>
+              </section>
+            ) : null}
+
+            {risks.length > 0 ? (
+              <section className="mt-4 space-y-2">
+                {risks.map((risk, index) => (
+                  <div
+                    key={`${risk.label}-${index}`}
+                    className={cn(
+                      'rounded-md px-3 py-2.5',
+                      getRiskTone(risk.level),
+                    )}
+                  >
+                    <p className="type-caption m-0 font-semibold">
+                      {risk.label}
+                    </p>
+                    <p className="type-caption mb-0 mt-0.5 opacity-80">
+                      {risk.detail}
+                    </p>
+                  </div>
+                ))}
+              </section>
+            ) : null}
+          </div>
+
+          <div className="mt-6 flex flex-row items-center justify-end gap-2">
+            <button
+              ref={cancelRef}
+              type="button"
+              className="pressable type-meta inline-flex h-11 items-center justify-center rounded-md bg-muted px-4 font-medium text-foreground hover:bg-muted/80"
+              onClick={() => dialogRef.current?.close()}
+            >
+              取消
+            </button>
+            <button
+              type="button"
+              onClick={handleContinue}
+              className={cn(
+                'pressable type-meta inline-flex h-11 items-center justify-center rounded-md px-4 font-medium',
+                hasHighRisk
+                  ? 'bg-red-600 text-white hover:bg-red-700'
+                  : 'bg-primary text-primary-foreground hover:bg-accent-foreground',
+              )}
+            >
+              {hasHighRisk ? '仍要继续' : '继续访问'}
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </dialog>
   )
 }

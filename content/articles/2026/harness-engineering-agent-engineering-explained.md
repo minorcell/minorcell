@@ -8,7 +8,7 @@ keywords: [Harness工程, Agent工程, AI架构, 软件工程, 系统设计]
 order: 45
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202635.png)
+![示意图：Agent 等于模型加工具环境的循环。Harness 覆盖上下文装配、工具治理、安全审批、反馈状态、熵管理和任务验证。](https://stack-mcell.tos-cn-shanghai.volces.com/202635.png)
 
 最近 Agent 圈突然开始密集讨论一个词：**Harness**。
 

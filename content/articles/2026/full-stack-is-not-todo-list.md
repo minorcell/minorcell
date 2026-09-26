@@ -8,7 +8,7 @@ keywords: [全栈工程师, Microsoft To Do, TodoList, 云同步, 系统设计, 
 order: 59
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026051.png)
+![信息图：从 TodoList 到 Microsoft To Do，全栈要管客户端、接口、同步、协作、上线运维和架构取舍，而不是只把页面、接口和数据库接起来。](https://stack-mcell.tos-cn-shanghai.volces.com/2026051.png)
 
 先说结论：**做出前端页面、后端接口和数据库，可以算一次全栈实践，但不足以说明一个人已经具备完整的全栈能力。**
 

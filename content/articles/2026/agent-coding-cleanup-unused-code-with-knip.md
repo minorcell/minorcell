@@ -9,7 +9,7 @@ keywords: [AI Coding, vibe coding, Knip, TypeScript, 冗余代码, 未使用文�
 order: 66
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/knip-ai-coding-cleanup-cover-20260918-v2.png)
+![示意图：应用入口仍连着当前页面和有效依赖；虚线框里的旧页面和旧组件已经没有入口。](https://stack-mcell.tos-cn-shanghai.volces.com/knip-ai-coding-cleanup-cover-20260918-v2.png)
 
 最近，我拿 [Knip](https://knip.dev/) 跑了两个现有项目，清理掉了不少冗余代码和未使用文件。清完以后，我又让 agent 翻 Git 记录，看看这些东西是怎么留下来的。
 

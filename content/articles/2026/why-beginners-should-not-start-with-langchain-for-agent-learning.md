@@ -8,7 +8,7 @@ keywords: [Agent学习, LangChain, 初学者, AI框架, Agent开发]
 order: 48
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202638.png)
+![示意图：先用框架是配配置，先懂机制是手写思考、记忆、行动、观察的闭环。白板列出状态、决策、工具、Loop 和子 Agent 五个问题。](https://stack-mcell.tos-cn-shanghai.volces.com/202638.png)
 
 前两天回校，和想做 Agent 的学弟聊了聊。我发现一个很普遍的现象：很多人一开始接触 Agent，第一反应不是先去理解 Agent 的机制，而是先找 LangChain 这类框架把东西跑起来。
 

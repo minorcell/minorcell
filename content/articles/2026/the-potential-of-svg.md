@@ -9,7 +9,7 @@ keywords: [SVG, 矢量图, AI 生图, 博客配图, 图像生成, Nano Banana, �
 order: 62
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-cover.png)
+![左边是一段 SVG 源码，箭头指向右边由这段代码画出的圆和虚线框。标题是论 SVG 的潜力，副题是一张图就是一段代码。](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-cover.png)
 
 最近我的博客配图方式又换了：从 AI 生图，换成了 AI 生成 SVG。
 
@@ -39,7 +39,7 @@ order: 62
 
 浓缩成一张对比图：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-2.svg)
+![对比图：PNG 按图像 token 计费、生成后不能改、放大会糊；SVG 按文本 token 计费、改一行代码即可、可以无损缩放并适配暗色模式。](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-2.svg)
 
 ## SVG：图形世界的“纯文本文件”
 
@@ -64,7 +64,7 @@ SVG 是个老标准了：1998 年 W3C 成立工作组，2001 年 9 月 SVG 1.0 �
 
 这段代码保存成文件、扔给浏览器，渲染出来就是下面这张图——没有任何中间环节：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-1.svg)
+![一张 SVG 图，标题是论 SVG 的潜力，副题是一张图就是一段代码，旁边有虚线圆和 svg 标记。](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-1.svg)
 
 这就是 AI 最近给我生成的东西。每一张“图”都长这样：有结构、有坐标、有文字。**它同时是一张图，也是一段可以 diff、可以 review、可以 git 管理的代码。**
 
@@ -96,7 +96,7 @@ SVG 是个老标准了：1998 年 W3C 成立工作组，2001 年 9 月 SVG 1.0 �
 
 然后逐帧截图、合成 GIF，一段算法演示动画就出来了。下面这张 GIF 就是这么来的——8 帧，全程没有“画”过任何一帧：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-animation.gif)
+![动画：在同一张带权图上跑 Dijkstra。绿色边是当前正在检查的边，距离表里的绿色行是刚被更新的值。](https://stack-mcell.tos-cn-shanghai.volces.com/lua-programming-dijkstra-animation.gif)
 
 有意思的是这个过程里的分工：**状态是算法给的，画面是模板给的。** 帧与帧之间天然一致——同一个模板渲染，节点位置、配色、字号绝不会跑偏；要改演示内容，改的是状态数据，不是画布。写代码的人描述状态最顺手，这比让 AI 逐帧“画”动画靠谱多了——位图模型的画面连贯性，恰恰是它最不擅长的事。
 
@@ -126,7 +126,7 @@ SVG 擅长的是**结构化图形**：信息图、架构图、流程图、封面
 
 因为一个格式有没有潜力，从来不取决于它自己，取决于**生产它的成本**。SVG 过去二十多年一直是“人类手写费劲、工具又没动力支持”的鸡肋格式：画一张架构图要手写几百行坐标，谁受得了。现在 AI 来写，人只需要一句话。比如我让 AI“画一张 RAG 架构图，绿色接线点，浅色背景”，几秒钟后拿到的就是这样一张图——它同时是一段可以继续改的源码：
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-3.svg)
+![RAG 架构图。索引路是文档、Embedding、向量库；查询路是提问、检索、生成、回答，向量库用虚线连到检索。](https://stack-mcell.tos-cn-shanghai.volces.com/the-potential-of-svg-example-3.svg)
 
 位图生成越用越贵，生成即定型；SVG 生成越用越便宜，生成还能再改。当图形的成本和文本的成本不再有本质区别，图形的修改、版本管理、二次创作，就会全部并进文本的工作流——git diff 一张图，会是稀松平常的事。
 

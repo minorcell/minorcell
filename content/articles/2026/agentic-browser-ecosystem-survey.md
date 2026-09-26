@@ -24,7 +24,7 @@ keywords:
 order: 61
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/agentic-browser-survey-cover.png)
+![示意图：Agent 连到一棵 HTML 结构树，而不是像素。图注写着模型看见的不是像素，是结构。](https://stack-mcell.tos-cn-shanghai.volces.com/agentic-browser-survey-cover.png)
 
 去年 10 月底的公司黑客松上，我们组做了一个能操作电脑的 Agent：让它自己打开浏览器、帮我导航网页（当时的演示我传到了 [B 站](https://www.bilibili.com/video/BV1oTszz7EuP/)）。Agent 本身的调用没问题，但它在操作浏览器时慢得让人着急：每一步都要先详细解析一遍页面结构，操作期间我还只能在旁边干看着，不能动这台电脑。这种速度和效率，还不如我自己上手点。
 

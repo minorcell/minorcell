@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 interface FloatingActionButtonProps {
@@ -16,18 +16,21 @@ interface FloatingActionButtonProps {
   className?: string
 }
 
-export function FloatingActionButton({
-  icon,
-  label,
-  onClick,
-  hidden,
-  className,
-}: FloatingActionButtonProps) {
+export const FloatingActionButton = forwardRef<
+  HTMLButtonElement,
+  FloatingActionButtonProps
+>(function FloatingActionButton(
+  { icon, label, onClick, hidden, className },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type="button"
       aria-label={label}
       title={label}
+      aria-hidden={hidden || undefined}
+      tabIndex={hidden ? -1 : undefined}
       onClick={onClick}
       className={cn(
         'floating-action-button fixed right-5 bottom-5 z-50 flex h-11 w-11 items-center justify-center rounded-full transition-[background-color,color,opacity,translate,scale] duration-150 ease-out active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100 sm:right-8 sm:bottom-8',
@@ -40,4 +43,4 @@ export function FloatingActionButton({
       {icon}
     </button>
   )
-}
+})

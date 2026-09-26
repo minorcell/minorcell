@@ -8,7 +8,7 @@ keywords: [文生图, 提示词, AI绘画, 图像生成, 博客配图]
 order: 45
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/202630.png)
+![六格指南：卡通信息图用手绘横向构图、少量卡通元素、替换敏感人物、拒绝写实、留白，并用 Nano Banana Pro 按原文语言出图。](https://stack-mcell.tos-cn-shanghai.volces.com/202630.png)
 
 比如在这个分享中，几乎所有的图片我都是用这个提示词生成的。
 

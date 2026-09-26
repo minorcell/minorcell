@@ -9,7 +9,7 @@ keywords: [DeepSeek Harness, 一切皆插件, Cordis, 插件架构, Agent Harnes
 order: 60
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-cover.png)
+![示意图：DeepSeek Harness 没有内核，llm、sessions、tools、agents 和你的插件排在同一条可替换的链上。](https://stack-mcell.tos-cn-shanghai.volces.com/deepseek-harness-cover.png)
 
 8 月 12 日深夜，DeepSeek 悄然上线了 V4 Pro 正式版：100 万 Token 上下文、最大 38.4 万输出，官方自测的 Agent 基准相比 4 月的预览版有了代际级别的提升——DeepSWE 从 12.8 跳到 62.7，Cybergym 到了 83.3。13 日官方公众号正式官宣，App、网页端和 API 同步上线。
 

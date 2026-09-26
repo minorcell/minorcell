@@ -8,7 +8,7 @@ keywords: [注释, 代码质量, 重构, 可维护性, 工程实践]
 order: 57
 ---
 
-![](https://stack-mcell.tos-cn-shanghai.volces.com/2026049.png)
+![对比图：左边用注释解释意图不清的代码，右边重写成能读懂的加权和，注释只说明为什么。](https://stack-mcell.tos-cn-shanghai.volces.com/2026049.png)
 
 别给烂代码写注释——重写它；
 

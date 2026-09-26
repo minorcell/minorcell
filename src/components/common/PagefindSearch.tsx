@@ -322,7 +322,7 @@ export function PagefindSearch({
             setQuery(nextQuery)
             if (nextQuery.trim().length < 2) setHits([])
           }}
-          className="type-body h-12 w-full bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none"
+          className="type-body h-12 w-full bg-transparent text-foreground placeholder:text-muted-foreground"
           placeholder="搜索文章和教程"
           aria-label="全站搜索"
           autoComplete="off"
