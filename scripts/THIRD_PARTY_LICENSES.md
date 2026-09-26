@@ -1,6 +1,6 @@
 # Third-Party Licenses
 
-## `snake-and-commits` generator
+## TypeScript port of `snake-and-commits`
 
 Source: https://github.com/dahan8473/snake-and-commits
 

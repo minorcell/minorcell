@@ -1,4 +1,4 @@
-name: snake
+name: Generate Contribution Snake
 on:
   schedule:
     - cron: "0 */12 * * *"
@@ -11,20 +11,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
+          node-version: "24"
+      - name: Test snake generator
+        run: node --test scripts/test-snake-and-commits.ts
       - name: Generate snake SVGs
         env:
           # Repository secret: a PAT owned by github.repository_owner with read:user.
           GH_TOKEN: ${{ secrets.SNAKE_GITHUB_TOKEN }}
         run: |
-          python3 scripts/snake-and-commits.py \
+          node scripts/snake-and-commits.ts \
             --user "${{ github.repository_owner }}" \
             --output dist/snake-dark.svg \
             --theme matrix
-          python3 scripts/snake-and-commits.py \
+          node scripts/snake-and-commits.ts \
             --user "${{ github.repository_owner }}" \
             --output dist/snake-light.svg \
             --theme green
