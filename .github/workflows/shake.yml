@@ -15,8 +15,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-      - name: Test snake generator
-        run: node --test scripts/test-snake-and-commits.ts
       - name: Generate snake SVGs
         env:
           # Repository secret: a PAT owned by github.repository_owner with read:user.

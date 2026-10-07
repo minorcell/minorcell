@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/dev.mjs",
-    "icons": "node scripts/generate-icons.mjs",
-    "prebuild": "node scripts/build-feed.mjs",
+    "dev": "node scripts/dev.ts",
+    "icons": "node scripts/generate-icons.ts",
+    "prebuild": "node scripts/build-feed.ts",
     "build": "next build",
     "postbuild": "pagefind --site out",
     "start": "serve out",

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 将教程导出为标准 Markdown 文章，展开所有步骤代码引用。
- * 用法：node scripts/export-tutorial.mjs <tutorial-slug>
+ * 用法：node scripts/export-tutorial.ts <tutorial-slug>
  */
 
 import fs from 'fs'
@@ -13,9 +13,9 @@ const root = path.resolve(__dirname, '..')
 
 const slug = process.argv[2]
 if (!slug) {
-  console.error('用法：node scripts/export-tutorial.mjs <tutorial-slug>')
+  console.error('用法：node scripts/export-tutorial.ts <tutorial-slug>')
   console.error(
-    '示例：node scripts/export-tutorial.mjs js-event-loop-to-promise',
+    '示例：node scripts/export-tutorial.ts js-event-loop-to-promise',
   )
   process.exit(1)
 }

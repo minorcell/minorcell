@@ -12,7 +12,11 @@ import * as pagefind from 'pagefind'
 const parser = unified().use(remarkParse).use(remarkGfm)
 const contentDir = path.resolve('content')
 
-function isSearchSource(section, filename, eventType = 'change') {
+function isSearchSource(
+  section: string,
+  filename: string | Buffer | null,
+  eventType = 'change',
+) {
   if (!filename) return true
   const relative = String(filename).split(path.sep).join('/')
   if (section === 'tutorials') {
@@ -31,11 +35,11 @@ function isSearchSource(section, filename, eventType = 'change') {
 }
 
 function createSearchScheduler(
-  rebuild,
+  rebuild: () => Promise<void>,
   { delay = 300, onError = console.error } = {},
 ) {
-  let timer
-  let running
+  let timer: ReturnType<typeof setTimeout> | undefined
+  let running: Promise<void> | undefined
   let pending = false
   let stopped = false
 
@@ -69,13 +73,20 @@ function createSearchScheduler(
   }
 }
 
-function textContent(node) {
+type MarkdownNode = {
+  type: string
+  children?: MarkdownNode[]
+  value?: string
+  alt?: string | null
+}
+
+function textContent(node: MarkdownNode): string {
   if (node.type === 'html') return ''
   if (node.children) return node.children.map(textContent).join(' ')
   return node.value ?? node.alt ?? ''
 }
 
-async function markdownFiles(directory) {
+async function markdownFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })
   const files = await Promise.all(
     entries.map(async (entry) => {
@@ -87,7 +98,7 @@ async function markdownFiles(directory) {
   return files.flat()
 }
 
-function check(response) {
+function check<T extends { errors: string[] }>(response: T): T {
   if (response.errors.length) throw new Error(response.errors.join('\n'))
   return response
 }
@@ -160,7 +171,7 @@ if (process.argv.includes('--index-only')) {
     },
   )
   let stopping = false
-  function stop(signal = 'SIGTERM') {
+  function stop(signal: NodeJS.Signals = 'SIGTERM') {
     if (stopping) return
     stopping = true
     for (const watcher of watchers) watcher.close()

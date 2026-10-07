@@ -9,12 +9,12 @@ const articlesDir = path.join(root, 'content', 'articles')
 const siteConfigPath = path.join(root, 'content', 'site', 'site.json')
 const outputPath = path.join(root, 'public', 'feed.xml')
 
-function walkMarkdownFiles(dir) {
+function walkMarkdownFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) return []
 
-  const files = []
+  const files: string[] = []
 
-  function walk(currentDir) {
+  function walk(currentDir: string) {
     const entries = fs.readdirSync(currentDir, { withFileTypes: true })
     for (const entry of entries) {
       const fullPath = path.join(currentDir, entry.name)
@@ -32,17 +32,18 @@ function walkMarkdownFiles(dir) {
   return files
 }
 
-function toPosix(value) {
+function toPosix(value: string) {
   return value.replace(/\\/g, '/')
 }
 
-function parseDate(value, fallback) {
-  const date = new Date(value ?? fallback)
+function parseDate(value: string | number | Date | undefined, fallback: Date) {
+  const input = value ?? fallback
+  const date = input instanceof Date ? input : new Date(input)
   if (Number.isNaN(date.getTime())) return undefined
   return date
 }
 
-function stripMarkdown(markdown) {
+function stripMarkdown(markdown: string) {
   return markdown
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/`[^`]+`/g, ' ')
@@ -55,13 +56,13 @@ function stripMarkdown(markdown) {
     .trim()
 }
 
-function excerptFromContent(content, maxLength = 180) {
+function excerptFromContent(content: string, maxLength = 180) {
   const text = stripMarkdown(content)
   if (text.length <= maxLength) return text
   return `${text.slice(0, maxLength).trim()}...`
 }
 
-function encodePath(pathname) {
+function encodePath(pathname: string) {
   return pathname
     .split('/')
     .filter(Boolean)
@@ -69,7 +70,7 @@ function encodePath(pathname) {
     .join('/')
 }
 
-function escapeXml(value) {
+function escapeXml(value: unknown) {
   return String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -78,11 +79,11 @@ function escapeXml(value) {
     .replace(/'/g, '&apos;')
 }
 
-function toCdata(value) {
+function toCdata(value: unknown) {
   return `<![CDATA[${String(value ?? '').replace(/]]>/g, ']]]]><![CDATA[>')}]]>`
 }
 
-function normalizeBaseUrl(value) {
+function normalizeBaseUrl(value: unknown) {
   if (typeof value !== 'string' || !value.trim()) return undefined
   const trimmed = value.trim()
 

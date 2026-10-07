@@ -196,7 +196,7 @@ pnpm dev      # 本地预览滚动同步效果
 **导出为文章：** 如需将教程导出为标准 Markdown（用于发布到其他平台），运行：
 
 ```bash
-node scripts/export-tutorial.mjs <slug>
+node scripts/export-tutorial.ts <slug>
 ```
 
 输出到 `temp/<slug>.md`，step 代码引用会自动展开，demo HTML 以代码块形式保留，frontmatter 转为 `# 标题` + `> 描述`。`temp/` 不纳入 git。

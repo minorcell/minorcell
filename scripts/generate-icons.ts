@@ -1,5 +1,5 @@
 /**
- * generate-icons.mjs
+ * generate-icons.ts
  *
  * Reads `scripts/logo.png` (the master, transparent-background pixel-art logo)
  * and emits a complete set of derived icons used across the site:
@@ -31,7 +31,7 @@ const SRC = resolve(root, 'scripts', 'logo.png')
 // icons (Apple, OG, maskable) stay in family with the rest of the site.
 const PAPER = { r: 248, g: 244, b: 236, alpha: 1 } // ≈ oklch(0.982 0.005 85)
 
-async function ensureDir(path) {
+async function ensureDir(path: string) {
   await mkdir(dirname(path), { recursive: true })
 }
 
@@ -64,7 +64,7 @@ async function loadMasterLogo() {
   }
 
   // Pixel test: very bright + grey (R, G, B all high & close)
-  const isBg = (r, g, b) => {
+  const isBg = (r: number, g: number, b: number) => {
     if (r < 220 || g < 220 || b < 220) return false
     const max = Math.max(r, g, b)
     const min = Math.min(r, g, b)
@@ -73,14 +73,14 @@ async function loadMasterLogo() {
 
   // Iterative flood fill from corners — don't recurse, JS stack is small
   const visited = new Uint8Array(W * H)
-  const stack = [
+  const stack: [number, number][] = [
     [0, 0],
     [W - 1, 0],
     [0, H - 1],
     [W - 1, H - 1],
   ]
   while (stack.length) {
-    const [x, y] = stack.pop()
+    const [x, y] = stack.pop()!
     if (x < 0 || y < 0 || x >= W || y >= H) continue
     const idx = y * W + x
     if (visited[idx]) continue
@@ -96,15 +96,15 @@ async function loadMasterLogo() {
     .toBuffer()
 }
 
-let MASTER_BUFFER = null
+let MASTER_BUFFER: string | Buffer | null = null
 async function getMaster() {
   if (!MASTER_BUFFER) MASTER_BUFFER = await loadMasterLogo()
   return MASTER_BUFFER
 }
 
 async function emitPng(
-  targetSize,
-  outName,
+  targetSize: number,
+  outName: string,
   { opaque = false, padPct = 0 } = {},
 ) {
   const out = resolve(PUBLIC, outName)
