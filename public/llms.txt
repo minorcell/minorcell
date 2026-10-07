@@ -7,5 +7,4 @@
 - [minorcell 首页](https://minorcell.top): 最新文章与站点导航
 - [文章归档](https://minorcell.top/articles): 按时间整理的全部技术文章
 - [技术专题](https://minorcell.top/tutorials): 按主题系统学习的交互式教程
-- [项目](https://minorcell.top/projects): 创建与长期维护的项目列表
 - [RSS Feed](https://minorcell.top/feed.xml): 通过 RSS 订阅最新文章

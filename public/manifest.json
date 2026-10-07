@@ -42,12 +42,6 @@
       "short_name": "Tutorials",
       "description": "按主题深入阅读",
       "url": "/tutorials"
-    },
-    {
-      "name": "项目",
-      "short_name": "Projects",
-      "description": "查看我的项目与链接",
-      "url": "/projects"
     }
   ],
   "prefer_related_applications": false

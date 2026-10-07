@@ -30,8 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const latestTopicDate = getLatestDate(
     tutorials.flatMap((tutorial) => tutorial.metadata.date),
   )
-  const latestSiteDate = getLatestDate([latestBlogDate, latestTopicDate])
-
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -50,12 +48,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: latestTopicDate,
       changeFrequency: 'weekly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects`,
-      lastModified: latestSiteDate,
-      changeFrequency: 'weekly',
-      priority: 0.75,
     },
   ]
 
