@@ -35,6 +35,9 @@ type SearchHit = {
 
 type BundleState = 'idle' | 'loading' | 'ready' | 'error'
 
+const pagefindBasePath =
+  process.env.NODE_ENV === 'development' ? '/pagefind-dev/' : '/pagefind/'
+
 type Props = {
   variant?: 'page' | 'overlay'
   open?: boolean
@@ -130,7 +133,7 @@ export function PagefindSearch({
       setErrorMessage(null)
 
       try {
-        const pagefindBundlePath: string = '/pagefind/pagefind.js'
+        const pagefindBundlePath: string = `${pagefindBasePath}pagefind.js`
         const mod = (await import(
           /* webpackIgnore: true */ pagefindBundlePath
         )) as PagefindInstance
@@ -140,7 +143,7 @@ export function PagefindSearch({
         }
 
         if (typeof mod.options === 'function') {
-          await mod.options({ basePath: '/pagefind/', baseUrl: '/' })
+          await mod.options({ basePath: pagefindBasePath, baseUrl: '/' })
         }
 
         const instance = mod as PagefindInstance
@@ -156,7 +159,9 @@ export function PagefindSearch({
         console.error('Failed to load Pagefind', error)
         setBundleState('error')
         setErrorMessage(
-          '找不到 Pagefind 索引，请先运行构建（pnpm build）后再试。',
+          process.env.NODE_ENV === 'development'
+            ? '搜索索引加载失败，请确认通过 pnpm dev 启动后刷新页面。'
+            : '找不到 Pagefind 索引，请先运行构建（pnpm build）后再试。',
         )
         return null
       }

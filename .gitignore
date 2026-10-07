@@ -18,6 +18,7 @@
 /.next/
 /out/
 /public/mcp/
+/public/pagefind-dev/
 
 # production
 /build
