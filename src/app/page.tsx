@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { ArrowRight } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { TransitionLink } from '@/components/effects/PageTransition'
 import {
   MotionGreeting,
@@ -96,7 +96,7 @@ export default function HomePage() {
             className="type-meta inline-flex min-h-11 items-center gap-1.5 font-medium text-link-accent"
           >
             全部文章
-            <ArrowRight className="h-4 w-4" />
+            <Icon name="arrow-right-line" className="h-4 w-4" />
           </TransitionLink>
         </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Menu, Rss, Search } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
@@ -109,7 +109,7 @@ export function Navbar() {
             aria-label="搜索"
             title="搜索（⌘K）"
           >
-            <Search className="h-4 w-4" />
+            <Icon name="search-line" className="h-4 w-4" />
           </MotionButton>
         </nav>
 
@@ -121,7 +121,7 @@ export function Navbar() {
                 className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
                 aria-label="打开导航菜单"
               >
-                <Menu className="h-5 w-5" />
+                <Icon name="menu-line" className="h-5 w-5" />
               </MotionButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -151,7 +151,7 @@ export function Navbar() {
                 className="type-meta min-h-11 px-3 py-3"
                 onSelect={() => setSearchOpen(true)}
               >
-                <Search className="h-4 w-4" strokeWidth={1.5} />
+                <Icon name="search-line" className="h-4 w-4" />
                 <span>搜索</span>
                 <kbd className="type-caption ml-auto font-mono text-muted-foreground">
                   ⌘K
@@ -165,7 +165,7 @@ export function Navbar() {
                   href="/feed.xml"
                   className="type-meta flex min-h-11 w-full items-center gap-2 px-3 py-3 text-foreground"
                 >
-                  <Rss className="h-4 w-4" strokeWidth={1.5} />
+                  <Icon name="rss-line" className="h-4 w-4" />
                   RSS
                 </a>
               </DropdownMenuItem>

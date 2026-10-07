@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { MotionIconSwap } from '@/components/effects/MotionPrimitives'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -95,9 +95,9 @@ export function CopyPageButton({ content, className }: CopyPageButtonProps) {
       >
         <MotionIconSwap active={status === 'copied'}>
           {status === 'copied' ? (
-            <Check className="h-4 w-4 text-link-accent" />
+            <Icon name="check-line" className="h-4 w-4 text-link-accent" />
           ) : (
-            <Copy className="h-4 w-4" />
+            <Icon name="file-copy-line" className="h-4 w-4" />
           )}
         </MotionIconSwap>
       </Button>

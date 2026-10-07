@@ -11,7 +11,7 @@ import {
 } from 'react'
 import dynamic from 'next/dynamic'
 import { useLenis } from 'lenis/react'
-import { MessageCircle, X } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { FloatingActionButton } from '@/components/common/FloatingActionButton'
 import { MotionLoading } from '@/components/effects/MotionPrimitives'
 
@@ -100,7 +100,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
         {!hideTrigger && (
           <FloatingActionButton
             ref={triggerRef}
-            icon={<MessageCircle className="h-[15px] w-[15px] opacity-70" />}
+            icon={<Icon name="message-3-line" className="h-[15px] w-[15px] opacity-70" />}
             label="讨论"
             onClick={openDrawer}
             hidden={open}
@@ -124,7 +124,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
                   onClick={close}
                   className="pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
-                  <X className="h-4 w-4" />
+                  <Icon name="close-line" className="h-4 w-4" />
                 </button>
               </div>
 

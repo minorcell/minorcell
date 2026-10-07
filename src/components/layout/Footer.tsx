@@ -1,4 +1,4 @@
-import { Github, Mail, Rss } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { siteContent } from '@/lib/site-content'
 
 export function Footer() {
@@ -16,7 +16,7 @@ export function Footer() {
             href="/feed.xml"
             className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
           >
-            <Rss className="h-3.5 w-3.5" strokeWidth={1.5} />
+            <Icon name="rss-line" className="h-3.5 w-3.5" />
             RSS
           </a>
           {siteContent.contact.github ? (
@@ -26,7 +26,7 @@ export function Footer() {
               rel="noreferrer"
               className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <Github className="h-3.5 w-3.5" strokeWidth={1.5} />
+              <Icon name="github-line" className="h-3.5 w-3.5" />
               GitHub
             </a>
           ) : null}
@@ -35,7 +35,7 @@ export function Footer() {
               href={`mailto:${siteContent.contact.email}`}
               className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <Mail className="h-3.5 w-3.5" strokeWidth={1.5} />
+              <Icon name="mail-line" className="h-3.5 w-3.5" />
               邮件
             </a>
           ) : null}

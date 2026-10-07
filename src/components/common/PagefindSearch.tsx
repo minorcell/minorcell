@@ -5,7 +5,7 @@ import { MotionOverlay } from '@/components/effects/MotionPrimitives'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useLenis } from 'lenis/react'
 import { createPortal } from 'react-dom'
-import { ArrowUpRight, Loader2, Search, X } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 
 type PagefindInstance = {
   search: (query: string) => Promise<{
@@ -275,7 +275,7 @@ export function PagefindSearch({
 
       {bundleState === 'loading' && (
         <div className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Icon name="loader-4-line" className="h-4 w-4 animate-spin" />
           <span>正在准备搜索</span>
         </div>
       )}
@@ -297,7 +297,7 @@ export function PagefindSearch({
           className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground"
           aria-live="polite"
         >
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Icon name="loader-4-line" className="h-4 w-4 animate-spin" />
           <span>正在搜索</span>
         </div>
       )}
@@ -337,7 +337,7 @@ export function PagefindSearch({
                       />
                     )}
                   </div>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <Icon name="arrow-up-right-line" className="h-4 w-4 shrink-0 text-muted-foreground" />
                 </TransitionLink>
               </li>
             ))}
@@ -366,13 +366,13 @@ export function PagefindSearch({
             onClick={onClose}
             className="pressable inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
           >
-            <X className="h-4 w-4" />
+            <Icon name="close-line" className="h-4 w-4" />
           </button>
         )}
       </div>
 
       <div className="mx-4 my-4 flex items-center gap-3 rounded-lg bg-muted px-4 sm:mx-5">
-        <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <Icon name="search-line" className="h-4 w-4 shrink-0 text-muted-foreground" />
         <input
           ref={inputRef}
           type="search"
@@ -399,7 +399,7 @@ export function PagefindSearch({
             aria-label="清空搜索"
             title="清空搜索"
           >
-            <X className="h-4 w-4" />
+            <Icon name="close-line" className="h-4 w-4" />
           </button>
         )}
       </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { Check, Copy } from 'lucide-react'
+import { Icon } from '@/components/ui/icon'
 import { MotionIconSwap } from '@/components/effects/MotionPrimitives'
 
 /**
@@ -41,9 +41,9 @@ export function CodeBlock({ children, ...props }: React.ComponentProps<'pre'>) {
       >
         <MotionIconSwap active={copied}>
           {copied ? (
-            <Check className="h-3.5 w-3.5 text-link-accent" />
+            <Icon name="check-line" className="h-3.5 w-3.5 text-link-accent" />
           ) : (
-            <Copy className="h-3.5 w-3.5" />
+            <Icon name="file-copy-line" className="h-3.5 w-3.5" />
           )}
         </MotionIconSwap>
       </button>
