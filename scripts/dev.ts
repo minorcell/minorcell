@@ -86,6 +86,14 @@ function textContent(node: MarkdownNode): string {
   return node.value ?? node.alt ?? ''
 }
 
+function stringList(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+  return value.filter(
+    (item): item is string =>
+      typeof item === 'string' && item.trim().length > 0,
+  )
+}
+
 async function markdownFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })
   const files = await Promise.all(
@@ -123,12 +131,35 @@ async function buildSearchIndex() {
             ? relative.split('/')[0]
             : relative.replace(/\.mdx?$/, '')
         const title = String(data.title || path.basename(slug))
+        const keywords = [
+          ...stringList(data.keywords),
+          ...stringList(data.tags),
+        ]
+        // Pagefind weights terms by frequency. Repeating editorial metadata
+        // makes exact title and keyword matches reliably outrank body-only hits.
+        const searchableContent = [
+          title,
+          title,
+          keywords.join(' '),
+          keywords.join(' '),
+          data.description,
+          section === 'tutorials' ? '教程 专题' : '文章',
+          textContent(parser.parse(content)),
+        ]
+          .filter(
+            (value): value is string =>
+              typeof value === 'string' && value.trim().length > 0,
+          )
+          .join('\n')
         check(
           await index.addCustomRecord({
             url: `/${section}/${slug.split('/').map(encodeURIComponent).join('/')}`,
-            content: `${title} ${data.description || ''} ${textContent(parser.parse(content))}`,
+            content: searchableContent,
             language: 'zh-cn',
-            meta: { title },
+            meta: {
+              title,
+              type: section === 'tutorials' ? '教程' : '文章',
+            },
           }),
         )
         count++

@@ -34,15 +34,28 @@ export async function ArticleView({
   const { metadata, content } = article
   const { node: renderedContent, headings } = await renderMarkdown(content)
   const minutes = readingMinutes(content)
+  const searchTerms = [
+    ...(metadata.keywords ?? []),
+    ...(metadata.tags ?? []),
+  ].filter(
+    (term): term is string =>
+      typeof term === 'string' && term.trim().length > 0,
+  )
 
   return (
     <>
       <ReadingProgress />
       <div className="flex justify-center">
-        <article className="w-full max-w-[780px]">
+        <article className="w-full max-w-[780px]" data-pagefind-body>
           <header className="relative pt-8 sm:pt-14">
             <div className="sm:pr-14">
               <h1 className="type-article-title m-0">{metadata.title}</h1>
+
+              {searchTerms.length > 0 ? (
+                <span className="sr-only" data-pagefind-weight="10">
+                  关键词：{searchTerms.join('、')}
+                </span>
+              ) : null}
 
               {metadata.description ? (
                 <p className="type-article-deck mb-0 mt-5 max-w-[58ch] text-muted-foreground">

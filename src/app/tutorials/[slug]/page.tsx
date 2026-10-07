@@ -79,7 +79,7 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
   })
 
   return (
-    <div>
+    <div data-pagefind-body>
       <JsonLd id={`tutorial-breadcrumb-${slug}`} data={breadcrumbJsonLd} />
       <JsonLd id={`tutorial-techarticle-${slug}`} data={tutorialJsonLd} />
 

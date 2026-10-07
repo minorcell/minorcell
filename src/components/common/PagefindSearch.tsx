@@ -31,6 +31,7 @@ type SearchHit = {
   url: string
   title: string
   excerpt?: string
+  type?: string
 }
 
 type BundleState = 'idle' | 'loading' | 'ready' | 'error'
@@ -53,6 +54,7 @@ export function PagefindSearch({
 }: Props) {
   const [query, setQuery] = useState('')
   const [hits, setHits] = useState<SearchHit[]>([])
+  const [resultCount, setResultCount] = useState(0)
   const [bundleState, setBundleState] = useState<BundleState>('idle')
   const [isSearching, setIsSearching] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -60,6 +62,7 @@ export function PagefindSearch({
   const pagefindRef = useRef<PagefindInstance | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const searchRequestRef = useRef(0)
   const titleId = useId()
 
   const isOverlay = variant === 'overlay'
@@ -174,45 +177,83 @@ export function PagefindSearch({
   }, [isActive, bundleState, ensurePagefind])
 
   useEffect(() => {
-    if (!isActive) return
-    if (query.trim().length < 2) return
+    const normalizedQuery = query.trim().replace(/\s+/g, ' ')
+    if (!isActive) {
+      searchRequestRef.current += 1
+      setIsSearching(false)
+      return
+    }
+    if (!normalizedQuery) {
+      searchRequestRef.current += 1
+      setHits([])
+      setResultCount(0)
+      setIsSearching(false)
+      setErrorMessage(null)
+      return
+    }
+
+    const requestId = ++searchRequestRef.current
 
     const handle = setTimeout(async () => {
       const pagefind = await ensurePagefind()
       if (!pagefind) return
 
+      if (requestId !== searchRequestRef.current) return
       setIsSearching(true)
       setErrorMessage(null)
 
       try {
-        const search = await pagefind.search(query)
-        const detailed = await Promise.all(
-          search.results.slice(0, 20).map(async (result: PagefindHit, idx) => {
-            const data = await result.data()
-            return {
-              url: data.url,
-              title:
-                (data.meta && typeof data.meta.title === 'string'
-                  ? data.meta.title
-                  : data.url) ?? `结果 ${idx + 1}`,
-              excerpt:
-                typeof data.excerpt === 'string'
-                  ? data.excerpt
-                  : data.content?.slice(0, 200),
-            }
-          }),
+        const search = await pagefind.search(normalizedQuery)
+        const detailed = (
+          await Promise.allSettled(
+            search.results
+              .slice(0, 20)
+              .map(async (result: PagefindHit, idx) => {
+                const data = await result.data()
+                return {
+                  url: data.url,
+                  title:
+                    data.meta && typeof data.meta.title === 'string'
+                      ? data.meta.title
+                      : data.url || `结果 ${idx + 1}`,
+                  excerpt:
+                    typeof data.excerpt === 'string'
+                      ? data.excerpt
+                      : data.content?.slice(0, 200),
+                  type:
+                    data.meta && typeof data.meta.type === 'string'
+                      ? data.meta.type
+                      : data.url.includes('/tutorials/')
+                        ? '教程'
+                        : '文章',
+                }
+              }),
+          )
+        ).flatMap((result) =>
+          result.status === 'fulfilled' ? [result.value] : [],
         )
+
+        if (requestId !== searchRequestRef.current) return
         setHits(detailed)
+        setResultCount(search.results.length)
       } catch (error) {
+        if (requestId !== searchRequestRef.current) return
         console.error('Search failed', error)
         setErrorMessage('搜索时出错，请稍后再试。')
       } finally {
-        setIsSearching(false)
+        if (requestId === searchRequestRef.current) setIsSearching(false)
       }
     }, 180)
 
     return () => clearTimeout(handle)
   }, [query, isActive, ensurePagefind])
+
+  const clearQuery = () => {
+    setQuery('')
+    setHits([])
+    setResultCount(0)
+    inputRef.current?.focus()
+  }
 
   const resultsSection = (
     <div
@@ -239,20 +280,23 @@ export function PagefindSearch({
         </div>
       )}
 
-      {!query && bundleState !== 'loading' && (
+      {!query.trim() && bundleState !== 'loading' && (
         <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
-          输入至少 2 个字符
+          输入关键词开始搜索
         </p>
       )}
 
-      {query && !isSearching && hits.length === 0 && !errorMessage && (
+      {query.trim() && !isSearching && hits.length === 0 && !errorMessage && (
         <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
           没有找到相关内容
         </p>
       )}
 
       {isSearching && (
-        <div className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground">
+        <div
+          className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground"
+          aria-live="polite"
+        >
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>正在搜索</span>
         </div>
@@ -260,8 +304,12 @@ export function PagefindSearch({
 
       {hits.length > 0 && (
         <>
-          <div className="type-caption mb-1 px-3 py-2 tabular-nums text-muted-foreground">
-            {hits.length} 个结果
+          <div
+            className="type-caption mb-1 px-3 py-2 tabular-nums text-muted-foreground"
+            aria-live="polite"
+          >
+            找到 {resultCount} 个结果
+            {resultCount > hits.length ? `，显示前 ${hits.length} 个` : ''}
           </div>
           <ol className="m-0 list-none space-y-1 p-0">
             {hits.map((hit, index) => (
@@ -272,9 +320,16 @@ export function PagefindSearch({
                   onClick={onClose}
                 >
                   <div className="min-w-0">
-                    <p className="type-supporting m-0 font-medium">
-                      {hit.title}
-                    </p>
+                    <div className="flex min-w-0 items-center gap-2">
+                      {hit.type && (
+                        <span className="type-caption shrink-0 text-link-accent">
+                          {hit.type}
+                        </span>
+                      )}
+                      <p className="type-supporting m-0 min-w-0 truncate font-medium">
+                        {hit.title}
+                      </p>
+                    </div>
                     {hit.excerpt && (
                       <p
                         className="type-caption mb-0 mt-1 line-clamp-2 text-muted-foreground"
@@ -325,13 +380,28 @@ export function PagefindSearch({
           onChange={(event) => {
             const nextQuery = event.target.value
             setQuery(nextQuery)
-            if (nextQuery.trim().length < 2) setHits([])
+            setErrorMessage(null)
+            if (!nextQuery.trim()) {
+              setHits([])
+              setResultCount(0)
+            }
           }}
-          className="type-body h-12 w-full bg-transparent text-foreground placeholder:text-muted-foreground"
-          placeholder="搜索文章和教程"
+          className="type-body h-12 w-full bg-transparent pr-8 text-foreground placeholder:text-muted-foreground"
+          placeholder="搜索文章和教程，可输入标题或关键词"
           aria-label="全站搜索"
           autoComplete="off"
         />
+        {query && (
+          <button
+            type="button"
+            className="pressable inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-background hover:text-foreground"
+            onClick={clearQuery}
+            aria-label="清空搜索"
+            title="清空搜索"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
       {resultsSection}
     </div>

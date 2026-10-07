@@ -47,9 +47,21 @@ interface TutorialViewProps {
 
 export function TutorialView({ tutorial, discussionTerm }: TutorialViewProps) {
   const serializedSteps: SerializedStep[] = tutorial.steps.map(toSerializedStep)
+  const searchTerms = [
+    ...(tutorial.metadata.keywords ?? []),
+    ...(tutorial.metadata.tags ?? []),
+  ].filter(
+    (term): term is string =>
+      typeof term === 'string' && term.trim().length > 0,
+  )
 
   return (
     <>
+      {searchTerms.length > 0 ? (
+        <span className="sr-only" data-pagefind-weight="10">
+          关键词：{searchTerms.join('、')}
+        </span>
+      ) : null}
       <InteractiveTutorialView
         title={tutorial.metadata.title}
         description={tutorial.metadata.description ?? ''}

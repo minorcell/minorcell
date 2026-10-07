@@ -90,12 +90,7 @@ export default function RootLayout({
             <ExternalLinkGuard />
             <div className="relative z-10 flex min-h-screen flex-col">
               <Navbar />
-              <main
-                id="main"
-                tabIndex={-1}
-                className="relative flex-1"
-                data-pagefind-body
-              >
+              <main id="main" tabIndex={-1} className="relative flex-1">
                 {children}
               </main>
               <Footer />
