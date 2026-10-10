@@ -80,6 +80,10 @@ export async function collectGitHubActivity({
       node.repository ?? node.issue?.repository ?? node.pullRequest?.repository
     if (repo?.visibility !== 'PUBLIC') return
     if (kind === 'commit' && !node.commitCount) return
+    // GitHub can return boundary-day contributions outside the requested times,
+    // including a daily commit bucket timestamp later than the current time.
+    const occurredAt = Date.parse(node.occurredAt)
+    if (occurredAt < beginning.getTime() || occurredAt > now.getTime()) return
     const day = node.occurredAt.slice(0, 10)
     const nextDay = new Date(Date.parse(`${day}T00:00:00Z`) + 86_400_000)
       .toISOString()
