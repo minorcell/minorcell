@@ -1,10 +1,13 @@
-name: Generate Contribution Snake
+name: Generate Contribution Snake and GitHub Profile
 on:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: '0 */12 * * *'
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: github-output
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +17,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: '24'
+      - name: Generate GitHub profile JSON
+        env:
+          GH_TOKEN: ${{ secrets.SNAKE_GITHUB_TOKEN }}
+        run: node scripts/sync-github-profile.ts --output dist/github.json
       - name: Generate snake SVGs
         env:
           # Repository secret: a PAT owned by github.repository_owner with read:user.

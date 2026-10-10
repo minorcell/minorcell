@@ -30,6 +30,11 @@
       "label": "教程",
       "path": "/tutorials",
       "description": "按主题深入阅读"
+    },
+    {
+      "label": "关于",
+      "path": "/about",
+      "description": "GitHub 公开档案、开源仓库与贡献记录"
     }
   ],
   "contact": {

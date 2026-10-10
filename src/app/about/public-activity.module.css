@@ -1,0 +1,379 @@
+.activity {
+  padding: 32px 0;
+}
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.heading h2,
+.activity > h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+.heading > p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 620px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.viewport[data-dragging] {
+  cursor: grabbing;
+}
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+.routes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.routes path {
+  fill: none;
+  stroke: var(--muted-foreground);
+  stroke-width: 1;
+  opacity: 0.2;
+  transition: opacity 180ms;
+  stroke-linejoin: round;
+}
+.routes path[data-active] {
+  stroke: var(--activity-color);
+  stroke-width: 2.5;
+  opacity: 0.9;
+}
+.activity [data-kind='commit'] {
+  --activity-color: #26845d;
+}
+.activity [data-kind='pr'] {
+  --activity-color: #9261c3;
+}
+.activity [data-kind='issue'] {
+  --activity-color: #b28227;
+}
+.activity [data-kind='review'] {
+  --activity-color: #2786a0;
+}
+.hub {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%);
+  padding: 8px;
+  background: var(--background);
+  color: var(--foreground);
+}
+.hub img {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.hub strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+.project {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 184px;
+  min-height: 110px;
+  padding: 0 4px;
+  transform: translate(-50%, -19px);
+  background: transparent;
+  cursor: pointer;
+}
+.pin {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--activity-color);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--activity-color);
+  transition:
+    color 160ms,
+    background 160ms;
+}
+.project[aria-pressed='true'] .pin,
+.project:hover .pin {
+  background: var(--activity-color);
+  color: white;
+  box-shadow: 0 0 0 5px
+    color-mix(in srgb, var(--activity-color) 12%, transparent);
+}
+.projectName {
+  margin-top: 8px;
+  max-width: 100%;
+  padding: 0 3px;
+  background: var(--background);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.owner,
+.projectCount {
+  padding: 1px 3px;
+  background: var(--background);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+.project[aria-pressed='true'] .projectCount {
+  color: var(--activity-color);
+}
+.mapTools {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 4;
+}
+.mapTools button,
+.recordControl button,
+.close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 4px;
+  background: var(--background);
+  cursor: pointer;
+}
+.mapTools button {
+  background: var(--muted);
+}
+.mapTools button:hover,
+.recordControl button:hover:not(:disabled),
+.close:hover {
+  background: var(--muted);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--activity-color);
+  font-size: 11px;
+}
+.activity button:focus-visible,
+.activity a:focus-visible {
+  outline: 2px solid var(--link-accent);
+  outline-offset: 3px;
+}
+.tether {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.tether path {
+  fill: none;
+  stroke: var(--activity-color);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+.note {
+  position: absolute;
+  z-index: 3;
+  max-height: calc(100% - 24px);
+  overflow: auto;
+  padding: 18px;
+  border-radius: 6px;
+  background: var(--background);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 10%);
+  cursor: auto;
+  touch-action: pan-y;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.noteHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.noteHeading > div {
+  flex: 1;
+  min-width: 0;
+}
+.noteHeading p {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+.noteHeading h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.noteHeading h3 svg {
+  display: inline-block;
+  margin-inline-start: 6px;
+}
+.close {
+  margin: -10px -10px 0 0;
+}
+.contributionMix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+}
+.contributionMix > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--activity-color);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.mixLabel {
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+.footprints {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  margin: 20px 0 16px;
+  padding: 3px 2px 9px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  touch-action: pan-x;
+}
+.footprints button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 38px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--activity-color) 10%, var(--background));
+  color: var(--activity-color);
+  cursor: pointer;
+}
+.footprints button[aria-pressed='true'] {
+  background: var(--activity-color);
+  color: white;
+}
+.memory {
+  min-height: 94px;
+}
+.recordMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.recordMeta > span {
+  color: var(--activity-color);
+}
+.recordMeta a {
+  overflow-wrap: anywhere;
+}
+.recordTitle {
+  display: block;
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.recordTitle svg {
+  display: inline-block;
+  margin-inline-start: 6px;
+}
+.recordControl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin: 10px -8px -8px 0;
+}
+.recordControl > span {
+  margin-inline-end: auto;
+  min-width: 52px;
+  font-size: 11px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+.recordControl button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.range,
+.empty {
+  margin: 16px 0 0;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+.mapFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 20px;
+  padding-top: 16px;
+}
+.mapFooter .range {
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .viewport {
+    height: 440px;
+  }
+  .note {
+    max-height: calc(100% - 120px);
+    padding: 14px;
+  }
+  .mapTools {
+    top: 10px;
+    right: 10px;
+  }
+  .legend {
+    gap: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pin,
+  .routes path {
+    transition: none;
+  }
+}

@@ -48,5 +48,7 @@ feed.xml
 
 # local exports
 /temp
+/content/site/github.local.json
+/content/site/snake-*.local.svg
 
 __pycache__/

@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "node scripts/dev.ts",
     "icons": "node scripts/generate-icons.ts",
+    "github:sync": "node scripts/sync-github-profile.ts",
+    "test:github": "node --test scripts/github-profile.test.ts",
     "prebuild": "node scripts/build-feed.ts",
     "build": "next build",
     "postbuild": "pagefind --site out",

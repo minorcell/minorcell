@@ -526,6 +526,60 @@ function render(
 `
 }
 
+export function renderContributionSnake(
+  days: { date: string; count: number }[],
+  theme: 'green' | 'matrix',
+): string {
+  const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date))
+  if (!sorted.length) throw new Error('No contribution days available')
+  const first = new Date(`${sorted[0].date}T00:00:00Z`)
+  const start = first.getTime() - first.getUTCDay() * 86_400_000
+  const peak = Math.max(1, ...sorted.map((day) => day.count))
+  const weeks: Week[] = []
+  const levels = Object.keys(LEVEL) as (keyof typeof LEVEL)[]
+  for (const day of sorted) {
+    const index = Math.floor(
+      (Date.parse(`${day.date}T00:00:00Z`) - start) / (7 * 86_400_000),
+    )
+    while (weeks.length <= index) weeks.push({ contributionDays: [] })
+    weeks[index].contributionDays.push({
+      date: day.date,
+      contributionCount: day.count,
+      contributionLevel:
+        levels[
+          day.count === 0 ? 0 : Math.min(4, Math.ceil((day.count / peak) * 4))
+        ],
+    })
+  }
+  const { grid, counts } = calendarGrid(weeks)
+  const months: [number, string][] = []
+  let previousMonth = ''
+  weeks.forEach((week, index) => {
+    const date = week.contributionDays[0]?.date
+    if (date && date.slice(0, 7) !== previousMonth) {
+      months.push([index, MONTHS[Number(date.slice(5, 7))]])
+      previousMonth = date.slice(0, 7)
+    }
+  })
+  if (months[0]?.[0] === 0 && months.length > 1 && months[1][0] <= 2)
+    months.shift()
+  let result = solve(grid, 48)
+  for (const cap of [40, 34, 28, 24, 20, 16, 12]) {
+    if (!result.left) break
+    result = solve(grid, cap)
+  }
+  return render(
+    grid,
+    counts,
+    months,
+    result.route,
+    result.eats,
+    result.growth,
+    theme,
+    { counter: true, frame: false },
+  )
+}
+
 function parseArgs(args: string[]): Options {
   const options: Options = {
     user: process.env.GH_USER ?? process.env.GITHUB_REPOSITORY_OWNER ?? '',

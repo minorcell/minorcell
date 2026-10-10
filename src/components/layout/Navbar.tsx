@@ -30,6 +30,7 @@ const PagefindSearch = dynamic(
 const navLinks = [
   { label: '文章', href: '/articles' },
   { label: '教程', href: '/tutorials' },
+  { label: '关于', href: '/about' },
 ]
 
 export function Navbar() {
