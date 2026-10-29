@@ -27,7 +27,7 @@ description: >
 
 ## 3. 配图规则
 
-- **图床统一**：所有图片（封面、插图、截图）上传 TOS 桶 `stack-mcell`，引用裸 URL `https://stack-mcell.tos-cn-shanghai.volces.com/<key>`。上传流程用 `upload-image-to-tos` skill（tosutil + 环境变量凭证，上传后 curl 校验 Content-Type）。
+- **图床统一**：所有图片（封面、插图、截图）上传 TOS 桶 `stack-mcell`，引用裸 URL `https://stack-mcell.tos-cn-shanghai.volces.com/<key>`。上传用 `tosutil cp <file> tos://stack-mcell/<key> -contentType=image/png -acl=public-read`，**走 `~/.tosutilconfig` 里的默认凭证**；显式传 `-e/-i/-k`（环境变量里的 `TOS_AK/TOS_SK`）会报 `InvalidAccessKeyId`。上传后 `curl -sI` 校验 200 与 `Content-Type`。
 - **固化脚本**（在 `.claude/skills/write-article/scripts/` 下，所有转换过程优先用脚本，不要每次手写）：
   - `svg2png.py`：SVG → PNG。自动做 text 越界/重叠几何验证、按 viewBox 渲染截图、尺寸与四角背景色检查。用法：`python3 svg2png.py in.svg [-o out.png] [--scale 1|2] [--bg r,g,b]`（默认 2x；封面图用 `--scale 1` 输出 1536×1024）。
   - `svg2gif.py`：多帧静态 SVG → GIF 动图。逐帧截图、逐帧独立量化（防调色板串色）、末帧加长、逐帧像素差验证动画有效。用法：`python3 svg2gif.py frames/ -o out.gif [--pattern "frame-*.svg"] [--duration 800,800,2000]`。**帧 SVG 的生成仍由内容决定**：用 Python 脚本参数化生成各帧（状态用 dict 描述：节点颜色、边高亮、表格值），本脚本只负责转换与验证。
