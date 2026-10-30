@@ -2,6 +2,7 @@ import { TransitionLink } from '@/components/effects/PageTransition'
 import {
   getArticleBySlug,
   getAllArticles,
+  getRelatedArticles,
   getStubTargetSlug,
   getRedirectTarget,
 } from '@/lib/content-parser'
@@ -73,10 +74,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     (typeof post.metadata.description === 'string'
       ? post.metadata.description
       : undefined) ?? post.metadata.title
-  const tags = [
-    ...toStringArray(post.metadata.keywords),
-    ...toStringArray(post.metadata.tags),
-  ]
+  const tags = Array.from(
+    new Set([
+      ...toStringArray(post.metadata.keywords),
+      ...toStringArray(post.metadata.tags),
+    ]),
+  )
   const modifiedTime = resolveModifiedTime(
     post.metadata,
     post.metadata.date ?? '',
@@ -149,10 +152,12 @@ export default async function ArticlePage({ params }: Props) {
     (typeof post.metadata.description === 'string'
       ? post.metadata.description
       : undefined) ?? post.metadata.title
-  const tags = [
-    ...toStringArray(post.metadata.keywords),
-    ...toStringArray(post.metadata.tags),
-  ]
+  const tags = Array.from(
+    new Set([
+      ...toStringArray(post.metadata.keywords),
+      ...toStringArray(post.metadata.tags),
+    ]),
+  )
   const modifiedTime = resolveModifiedTime(
     post.metadata,
     post.metadata.date ?? '',
@@ -177,12 +182,17 @@ export default async function ArticlePage({ params }: Props) {
     { name: '文章', path: '/articles' },
     { name: post.metadata.title, path: `/articles/${slugString}` },
   ])
+  const related = getRelatedArticles(post)
 
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <JsonLd id={`article-posting-${slugString}`} data={articleJsonLd} />
       <JsonLd id={`article-breadcrumb-${slugString}`} data={breadcrumbJsonLd} />
-      <ArticleView article={post} discussionTerm={discussionTerm} />
+      <ArticleView
+        article={post}
+        discussionTerm={discussionTerm}
+        related={related}
+      />
     </div>
   )
 }
@@ -202,7 +212,6 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <meta httpEquiv="refresh" content={`0; url=${tutorialHref}`} />
-      <link rel="canonical" href={tutorialHref} />
       <TutorialRedirect tutorialHref={tutorialHref} />
 
       <article className="mx-auto w-full max-w-[780px] pt-8 sm:pt-14">
@@ -249,7 +258,6 @@ function ArticleRedirectView({ target }: ArticleRedirectViewProps) {
   return (
     <div className="mx-auto w-full max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <meta httpEquiv="refresh" content={`3; url=${target}`} />
-      <link rel="canonical" href={target} />
 
       <article className="mx-auto w-full max-w-[780px] pt-8 sm:pt-14">
         <header>

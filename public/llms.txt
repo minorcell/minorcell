@@ -1,10 +1,91 @@
 # minorcell
 
-👋，我是 minorcell，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
+> 👋，我是 minorcell，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。
 
-## 主要栏目
+个人技术博客，记录 AI 工程、软件开发、技术选择与产品实践。内容以中文为主。
 
-- [minorcell 首页](https://minorcell.top): 最新文章与站点导航
-- [文章归档](https://minorcell.top/articles): 按时间整理的全部技术文章
-- [技术专题](https://minorcell.top/tutorials): 按主题系统学习的交互式教程
+## 文章
+
+- [打开 Clash 之后，你的电脑里发生了什么](https://minorcell.top/articles/2026/what-happens-when-you-enable-clash): Clash 一开，GitHub 秒开，npm 飞快——但你的电脑里到底发生了什么？本文从网卡、数据包、路由表、socket、DNS 五个地基概念出发，配合精密机械风格等距插图，讲透系统代理、TUN 模式、fake-ip、分流与隧道的完整链路。 · 2026-10-17
+- [程序员即将隐退，建造者持续闪耀](https://minorcell.top/articles/2026/from-coder-to-builder): AI 正在接管写代码这一环，却没有接管产品取舍、架构判断和交付责任。本文聊聊程序员如何从 coding 迁移到建造软件，以及 AI 时代真正稀缺的品味、判断与责任。 · 2026-09-23
+- [那他们呢？写给 AI 原生的一代](https://minorcell.top/articles/2026/what-about-them-ai-native-generation): 从刘胜与的提问出发，记录 AI 改变软件工程和新人培养的现场：规格、验证、自动化悖论，以及我还愿意押注的三件事。 · 2026-09-23
+- [用 Knip 清理 AI Coding 留下的冗余代码](https://minorcell.top/articles/2026/agent-coding-cleanup-unused-code-with-knip): 最近用 Knip 清理了两个项目，再让 agent 翻 Git 记录，发现不少冗余来自快速实现和页面重构。聊聊这些旧代码为什么能躲过 lint，以及它们如何影响下一次 AI Coding。 · 2026-09-18
+- [GitHub Actions 玩法大赏：一台远程主机的七种活法](https://minorcell.top/articles/2026/github-actions-seven-lives): 多数人只拿 GitHub Actions 跑测试，但它本质是一台带权限、可定时的远程主机。盘点开源项目把它玩出的七种活法：签到与贪吃蛇、发布多米诺、issue 治理、AI 维护者、监控台与活数据，直到用机器人管理机器人。 · 2026-08-17
+- [Lua 编程入门：从基础语法到元表](https://minorcell.top/articles/2026/lua-programming-getting-started): 一篇朴素的 Lua 入门教程：基本类型、运算符、控制流、函数，以及 Lua 最独特的 table 与元表机制。示例代码基于 Lua 5.5。 · 2026-08-15
+- [为什么我推荐学生们多参加 AI 黑客松](https://minorcell.top/articles/2026/why-students-should-join-ai-hackathons): 企业把招聘通道写进黑客松规则，政府把算力补贴摆在参赛者面前，黑客松正在成为学生求职和开阔视野的新通道。本文用七牛云、腾讯云、华为等案例说明为什么值得参加。 · 2026-08-15
+- [谁在为 AI 开车：Agent 浏览器生态调研（2026）](https://minorcell.top/articles/2026/agentic-browser-ecosystem-survey): 调研 2025-2026 年 Agent 专用浏览器生态：Chrome DevTools MCP 与 Playwright MCP 的定位差异、DOM 与视觉两条技术路线、Kitesurf 与 Lightpanda 等轻量浏览器，以及 CDP 到 WebMCP 的协议演进。 · 2026-08-14
+- [论 SVG 的潜力](https://minorcell.top/articles/2026/the-potential-of-svg): 从博客配图的演变说起：手画、AI 生图、再到 AI 生成 SVG。位图生成贵在图像 token，SVG 赢在只是文本；便宜只是开始，可编辑、可缩放、可动画，还能把算法演示做成动图——SVG 的潜力在 AI 时代才刚刚被释放。 · 2026-08-14
+- [DeepSeek Harness 速览：“一切皆插件”意味着什么](https://minorcell.top/articles/2026/deepseek-harness-everything-is-a-plugin): 从 “Everything is a Plugin” 出发，速览 DeepSeek Harness 的插件化架构：Cordis 的服务、依赖注入、事件分发与可逆副作用，并亲手写一个企业微信通知插件，感受这套架构的扩展体验。 · 2026-08-13
+- [从 TodoList 到 Microsoft To Do：全栈工程师到底要管什么？](https://minorcell.top/articles/2026/full-stack-is-not-todo-list): 会写前端页面、后端接口，再接一张数据库表，只能说明你做过一次全栈实践。本文以 TodoList 和 Microsoft To Do 为例，看看一个真正上线的产品还要处理哪些问题。 · 2026-07-26
+- [从 VS Code 学系统架构：回到当时，理解它为什么这样演进](https://minorcell.top/articles/2026/learning-system-architecture-from-vscode): VS Code 的架构不是一次设计完成的。本文结合团队博客、历史源码和当时的技术环境，回到 Monaco、Electron、Extension Host、LSP、Remote、Web 与 Sandbox 等关键节点，分析团队为什么做出那些选择，以及早期决策后来怎样影响了系统的演进。 · 2026-07-14
+- [别给烂代码写注释——重写它](https://minorcell.top/articles/2026/dont-comment-bad-code-rewrite-it): 注释应该用来解释「为什么」，而不是弥补代码本身的晦涩。当你想用注释解释一段代码在做什么时，真正该做的往往是重写它，让代码自解释。 · 2026-07-13
+- [你以为短链接只是 Hash + 301/302？](https://minorcell.top/articles/2026/url-shortener-system-design): 短链接看上去只是 Hash 加重定向，真正实现时却要依次解决短码长度、哈希碰撞、唯一 ID、缓存、301/302 取舍和数据库分片。本文从七个连续问题出发，拆解 7 个字符背后的系统设计。 · 2026-07-11
+- [锐评桌面端技术营销：别拿跑分当工程判断](https://minorcell.top/articles/2026/desktop-tech-hype-benchmarks-vs-engineering-judgment): 从 Zero-Native 的跑分营销文说起，拆解桌面端技术选型中容易被忽略的关键问题——渲染一致性、签名公证、长期维护成本。用 VSCode 和 Zed 两个案例说明：真正的工程能力不是知道哪个框架跑分更高。 · 2026-06-20
+- [别急着骂运营商，你家路由器里可能藏着一台 PCDN 盒子](https://minorcell.top/articles/2026/dont-blame-isp-pcdn-box-in-your-router): 合租网络突然卡到微信都发不出去，登录路由器发现有人用斐讯N1盒子跑PCDN，874MB流量被偷跑。科普PCDN的运作逻辑、法律风险，以及合租场景下的应对方案。 · 2026-06-02
+- [我把默认的 code . 换成了 zed .](https://minorcell.top/articles/2026/switched-from-vscode-to-zed-editor): 从 VS Code 老用户到 Zed 主力编辑器的迁移手记：为什么 AI IDE 越来越重、Zed 的快与克制、ACP 协议解耦思路，以及插件安全边界的重新思考。 · 2026-05-25
+- [从云相册的缩略图说起：Bun.Image 让我告别 sharp](https://minorcell.top/articles/2026/from-cloud-album-thumbnails-to-bun-image): Bun v1.3.14 发布了内置的 Bun.Image API：drop-in 替代 sharp，零 native 模块。从我当年做云相册缩略图踩 sharp 的坑，到现在用 Bun 写图片压缩 CLI，再到这次官方把图像处理收编进 runtime——这是一条很清晰的演进线。 · 2026-05-17
+- [HTML：AI 时代的通用表达层](https://minorcell.top/articles/2026/html-the-universal-expression-layer-in-ai-era): HTML 正在从"Web 的展示层"进化为 AI 时代的通用表达层。做 PPT、做海报、写设计文档……越来越多的场景在用 HTML 承载内容。AI 让 HTML 的生产成本趋近于零，也彻底释放了它的表达能力。 · 2026-05-14
+- [批判性思维：AI 时代程序员最容易忽视的能力](https://minorcell.top/articles/2026/critical-thinking-the-most-overlooked-skill-for-programmers-in-ai-era): AI 编程工具已经融入日常工作流，几乎所有代码都有 AI 参与。但我观察到，不少学生和初级程序员开始 Vibe Coding——能跑就行，不问为何。批判性思维，是这个时代最容易被忽视、却不该被放弃的东西。 · 2026-05-13
+- [为什么我不建议初学者一上来就用框架学 Agent](https://minorcell.top/articles/2026/why-beginners-should-not-start-with-langchain-for-agent-learning): 框架隐藏了 Agent 最核心的工程问题：状态管理、决策逻辑、工具设计、循环收敛和子 Agent 隔离。建议初学者先手写最小闭环，理解底层机制后再使用框架。 · 2026-04-23
+- [macOS 下实现 AI 操控电脑（Computer Use）的思考](https://minorcell.top/articles/2026/macos-computer-use-accessibility-api-over-screenshot): 截图识别不是 AI 操控电脑的最优解——macOS Accessibility API 提供结构化 UI 树，结合 AppleScript 和本地视觉兜底，构建可靠的四层 Computer Use 架构。 · 2026-04-12
+- [当代码不再为人类而写：Claude Code 0 注释背后的 Harness 逻辑](https://minorcell.top/articles/2026/when-code-is-no-longer-written-for-humans-the-harness-logic-behind-claude-code-zero-comments): 当协作对象从「人 + 机器」变成「Agent + 机器」，代码注释的定位必须重新评估，它的职能应该从「代码内的静态说明」，转移到 Harness 的动态信息注入层里去。 · 2026-04-08
+- [【万字长文】从 AI SDK 到 mini-opencode：一次很巧的 Go Agent 架构实践](https://minorcell.top/articles/2026/from-ai-sdk-to-mini-opencode-a-coincidental-go-agent-architecture-practice): 一个架构实践里，最怕的不是“还没做完”，而是“系统边界已经糊了”。只要边界清楚，下一步该补什么、该在哪层补，都是清晰的。 · 2026-03-26
+- [Harness 工程：不是新词，而是 Agent 工程终于被讲明白了](https://minorcell.top/articles/2026/harness-engineering-agent-engineering-explained): 深入解析 Harness 的本质：它不是新技术发明，而是 Agent 工程中那部分一直存在但从未被完整命名的软件工程现实。 · 2026-03-23
+- [关于 Openclaw，最近的一点思考](https://minorcell.top/articles/2026/ai-trust-and-security-boundary): 人与人之间都很难建立绝对信任，更别说人与 AI。 · 2026-03-15
+- [不是最强，是最适合](https://minorcell.top/articles/2026/why-i-prefer-deepseek-for-personal-use): 从不再手写代码，到把工作交给 Claude、Codex 这类 agent，再到在轻量小工具里继续用 DeepSeek，我越来越在意的不是“谁最强”，而是“谁最适合”。 · 2026-03-14
+- [分享一个常用的文生图提示词](https://minorcell.top/articles/2026/share-an-image-gen-prompt): 我经常使用这个提示词来让 AI 生成一些技术文档或者博客的配图，感觉效果还不错，就分享出来。 · 2026-02-28
+- [Memo Code 系统提示词架构解析：从模板到上下文组装](https://minorcell.top/articles/2026/memo-prompt-architecture): 深入解析 Memo Code 如何组装系统提示词，包括基础模板、用户偏好、项目配置、工具描述等各层级的构成逻辑，以及 XML 格式的系统提示在异常处理中的应用。 · 2026-02-23
+- [Node.js 子进程管理：我是如何被 spawn 逼疯的](https://minorcell.top/articles/2026/node-spawn-and-child-process): 做 memo 之前，我对 Node.js 子进程的理解基本等于零。不就是 spawn 一下吗？能有多难？结果...还真挺难的。 · 2026-02-15
+- [Memo Code 安全设计：子进程、命令防护与权限审批的统一方案](https://minorcell.top/articles/2026/memo-code-security-design): 从 memo 的实践中提炼出安全设计的三道防线：子进程管理防止内存泄漏与资源耗尽、命令守卫拦截危险操作、审批系统平衡权限与体验。还有那把「双刃剑」——dangerous 模式。 · 2026-02-14
+- [如何零成本搭建个人站点](https://minorcell.top/articles/2026/how-to-build-a-blog-with-zero-cost): 写作平台写久了就想有个自己的站。一路从纯 HTML、到全栈自建，再到 VitePress、Next.js 静态站，最终用 GitHub Pages 把评论、搜索、MCP 都做成无服务器方案：0 成本也能做个不单调的个人博客。 · 2026-02-13
+- [为什么 Memo Code 先做 CLI：以及终端输入框到底有多难搞](https://minorcell.top/articles/2026/why-memo-code-cli-first-and-the-terminal-input-challenge): 做 memo code 时我在 Web UI 和 CLI 之间犹豫过，最后还是选了终端。结果真正卡住我的不是模型和工具，而是一个看起来很基础的东西：输入框。 · 2026-02-12
+- [从一个想法到可发布：我把博客接进 MCP 的完整实践](https://minorcell.top/articles/2026/mcp-from-idea-to-delivery-for-content-site): 这篇不只是复盘一次实现，而是分享一套可复用的接入思路：静态数据产物 + 本地 npx MCP Server + CI 自动发包。 · 2026-02-11
+- [AI 编程的隐形陷阱：被 Hardcode 淹没的代码库](https://minorcell.top/articles/2026/ai-always-like-hard-code): 建议各位用 AI 跑代码的朋友，现在就去检查一下你的代码库。别让 AI 的便利，变成未来重构时的眼泪。 · 2026-02-10
+- [细说我日常 AI coding 碰到的十个问题](https://minorcell.top/articles/2026/ten-common-problems-in-daily-ai-coding): 这一年大量 vibe coding，经典翻车现场真的不少。有些是模型习惯问题，有些是 Agent 工具链缺陷，还有些属于“工程现实 vs 最佳实践”的冲突。 · 2026-02-10
+- [用 AI 批量生成组件集合](https://minorcell.top/articles/2026/ai-batch-component-generation): 与其猜想要什么效果，不如一次性生成 20 个方案，直接挑。 · 2026-02-06
+- [Rust 所有权与借用：从堆栈开始建立心智模型](https://minorcell.top/articles/2026/rust-ownership-and-borrowing): 写 Rust 的第一道坎不是语法，而是所有权。本文从堆栈原理出发，用实例讲透 Rust 的所有权、移动、借用规则，帮你建立清晰的心智模型。 · 2026-01-24
+- [10分钟复刻爆火「死了么」App：vibe coding 实战（Expo+Supabase+MCP）](https://minorcell.top/articles/2026/replicating-the-dead-app-in-10-minutes): 这期用 vibe coding 的方式，10分钟复刻「死了么」App 的核心功能。我不讲原理、不展开细节，只讲“怎么做”。跟着视频步骤走，你也能做出一个可运行的 App 原型。 · 2026-01-15
+- [2025：被 AI 推着往前走的一年](https://minorcell.top/articles/2026/2025-being-pushed-forward-by-ai-a-year-in-motion): 也许成长从来不是“我想好了再出发”，而是“我出发了才想明白”。而 2025，就是我在被浪推着往前走的一年。 · 2026-01-12
+- [Electron 瘦身记：我是如何把安装后 900MB 的"巨无霸"砍到 466MB 的？](https://minorcell.top/articles/2025/34_how-to-slim-down-electron-build-products): 从实战角度记录 Electron 应用体积优化全过程：通过关闭 SourceMap、依赖治理、精准排除 node_modules 冗余文件等手段，将 DMG 从 240MB 降至 155MB，安装后体积从 900MB+ 降至 466MB，并显著提升启动速度。 · 2025-12-29
+- [红褐色羽衣](https://minorcell.top/articles/2025/33_1219): 午后去川杨河边散步，距上次来已隔月余。彼时满目葱茏的水杉，如今已换上了一袭深沉的红褐色羽衣，萧疏凋零；唯有对岸几株垂柳，还执着地挽着一抹新绿，在冬日里显得格外生机勃勃。 · 2025-12-19
+- [为什么在 Agent 时代，我选择了 Bun？](https://minorcell.top/articles/2025/32_start): 这不是一篇「Hello World」式的 runtime 教程，而是我作为一个写 Node/TS/Go 的开发者，为什么在 2025 年，突然决定认真学一下 Bun，并决定做一个 ReAct Agent 的记录。 · 2025-12-09
+- [useSearchParams](https://minorcell.top/articles/2025/31_useSearchParams): 通过 useSearchParams 将 React 应用状态提升到 URL 查询参数，支持分享、持久化与浏览器历史控制，并示例防抖与 replace 更新的最佳实践。 · 2025-12-05
+- [LLM 扫盲：什么是 Tokens？](https://minorcell.top/articles/2025/30_llm_tokens): 重新梳理 LLM 的 Token 概念，解析 GPT-5.1 的多语言编码优化、计费与上下文窗口限制，并给出本地用 tiktoken 预估 Token 的实践方案。 · 2025-11-26
+- [前端路由详解：Hash VS History](https://minorcell.top/articles/2025/29_web_router): 全面解析前端路由的 Hash 与 History 两种模式，涵盖原理、实现、优缺点、服务器配置与框架实践，帮助你做出兼顾兼容性与 SEO 的路由选型。 · 2025-11-16
+- [React 如何处理高频的实时数据？](https://minorcell.top/articles/2025/28_react_maximum): 深入解析 React 处理高频实时数据的技术方案，从 Maximum update depth exceeded 错误到批处理优化，完整解决 SSE 推送场景下的性能问题。 · 2025-11-06
+- [AI Agent ReAct 与 Loop](https://minorcell.top/articles/2025/27_react_loop): 深入解析 AI Agent 的 ReAct 架构和工作循环原理，探讨智能体如何实现自动化任务执行，从理论到实践的完整指南。 · 2025-10-27
+- [Agent = LLM + Tools](https://minorcell.top/articles/2025/26_agent_is_llm_plus_tools): 深入浅出地讲解 AI Agent 的本质，从 LLM 到 Tools，从宿主环境到执行机制，用一个简洁的公式帮你理解 Claude Code、Codex 等智能体的工作原理。 · 2025-10-17
+- [Agents.md 是什么](https://minorcell.top/articles/2025/24_agents): 深入解析 AGENTS.md 文件在 AI 编程工具生态中的作用，了解它与 MCP 协议的区别，以及如何为 AI 代理提供结构化项目上下文。 · 2025-10-07
+- [长期以来我对 LLM 的误解](https://minorcell.top/articles/2025/23_llm01): 深入探讨大语言模型（LLM）的工作原理，理解从传统规则编程到概率计算的范式转换，揭秘模型参数与智能的本质。 · 2025-09-27
+- [ECharts 万字入门指南](https://minorcell.top/articles/2025/22_echarts): 详细学习 Apache ECharts 图表库，掌握丰富的图表类型、强大的交互功能和灵活的配置项，实现数据可视化。 · 2025-09-17
+- [GSAP ScrollTrigger 详解](https://minorcell.top/articles/2025/21_gsap02): 深入学习 GSAP ScrollTrigger 插件，掌握如何通过滚动控制动画，实现视差滚动、元素固定、滚动驱动动画等高级交互效果。 · 2025-09-07
+- [GSAP 入门指南](https://minorcell.top/articles/2025/20_gsap01): 深入浅出地讲解 GSAP 动画库的核心概念，从补间动画到时间线，从简单的移动效果到复杂的序列动画，让你彻底掌握 Web 动画的精髓。 · 2025-08-28
+- [JavaScript 的多线程能力：Worker](https://minorcell.top/articles/2025/19_jsworker): 深入探讨 JavaScript 的多线程编程能力，包括 Web Worker、Service Worker 和 Worklet 的原理、使用场景和代码实践，让你的 Web 应用不再卡顿。 · 2025-08-18
+- [Docker 进阶指南](https://minorcell.top/articles/2025/18_dockersecond): Docker 进阶教程，深入学习容器生命周期管理、网络通信、数据持久化和 Docker Compose 多服务编排。通过实战案例掌握 Go 应用与 PostgreSQL 数据库的容器化部署和服务间通信。 · 2025-08-08
+- [Docker 入门教程](https://minorcell.top/articles/2025/17_dockerfirst): 全面的 Docker 入门指南，通过实战案例学会容器化部署。涵盖 Docker 核心概念、Dockerfile 编写、静态网站部署、Go 服务器容器化等内容，帮助前端和后端工程师快速掌握容器技术。 · 2025-07-29
+- [一个技术写作者的抉择](https://minorcell.top/articles/2025/14_whywrite): 深度思考技术写作的本质和价值。从掘金社区5万+阅读经验出发，探讨技术博客写作是追求流量还是创造价值，个人技术站点的建设意义和技术写作者的成长路径。 · 2025-07-19
+- [编程的演进：从指令到意图 - AI时代编程的未来](https://minorcell.top/articles/2025/13_codeinfeature): 深度探讨编程的本质演进：从汇编语言到高级语言，再到AI辅助编程。利用Cursor、Claude Code半年实践，预测未来编程将从写代码转为表达意图的新模式。 · 2025-07-09
+- [Claude Code Sub-agent 模式的详解和实践](https://minorcell.top/articles/2025/12_subagent): 深入解析Claude Code的Sub-agent子代理模式，学会创建专业化AI代理来提升代码生成、数据分析等复杂任务的效率和准确性。附完整实践教程和最佳实践。 · 2025-06-29
+- [提示工程（Prompt Engineering）入门指南](https://minorcell.top/articles/2025/11_prompt): 基于Claude Code官方文档提炼的最实用提示工程技巧。从基础的清晰指令、提供范例，到进阶的思考链、角色设定，全面提升AI交互效果和工作效率。 · 2025-06-19
+- [JavaScript 运行机制详解：再谈 Event Loop](https://minorcell.top/articles/2025/10_jssync): 本文从经典的 Promise 与 setTimeout 执行顺序问题入手，深入浅出地剖析了 JavaScript 的单线程模型、事件循环（Event Loop）机制。通过辨析宏任务与微任务的区别与优先级，帮助你彻底理解 JS 异步执行的底层原理，看懂页面卡顿的真相。 · 2025-06-09
+- [从 Sleep 到 Select：用一个例子掌握 Go 并发编程精髓](https://minorcell.top/articles/2025/09_goprintnum): 深度解析 Go 并发编程从入门到精通的完整路径。从简单的 time.Sleep 阻塞到高效的 select 定时器，从并发误区到正确的 goroutine 模式，最终掌握 context 构建健壮可维护的并发代码。 · 2025-05-30
+- [深度剖析 WebSocket：全双工实时通信原理与实战](https://minorcell.top/articles/2025/08_ws): 最全面的 WebSocket 技术指南：从协议原理到实战应用，深入解析全双工实时通信机制。告别 HTTP 轮询的低效模式，掌握现代实时 Web 应用开发核心技术。 · 2025-05-20
+- [深入浅出哈希算法：原理、应用与哈希表解析](https://minorcell.top/articles/2025/06_hash): 计算机科学核心基础技术——哈希算法的深度解析。从数学原理到实际应用，覆盖密码安全、数据完整性校验、哈希表数据结构等关键场景，全面掌握哈希技术的核心原理和实战技巧。 · 2025-05-10
+- [项目配置管理的进化之路：从混乱到工程化](https://minorcell.top/articles/2025/05_projectconfig): 深入探索项目配置管理的最佳实践和演进路径。从原始的硬编码配置到环境变量，再到现代化的结构化配置系统，全面覆盖 Go/Node.js 等主流技术栈的工程化解决方案。 · 2025-04-30
+- [HTTP 状态码：15 个常见的状态码详解](https://minorcell.top/articles/2025/04_httpcode): 最完整的 HTTP 状态码指南，详细解析 15 个最常见的 HTTP 状态码。从 2xx 成功响应到 5xx 服务器错误，深入理解互联网世界的通用语言，让开发者、运维和产品经理都能在网络调试中如鱼得水。 · 2025-04-20
+- [探索 JS 异步编程：从 setTimeout 到生成器的六种定时实现](https://minorcell.top/articles/2025/03_jsprintnum): 深入探索 JavaScript 异步编程的完整演进路径。以“每秒打印数字”为实例，深入剖析 6 种定时任务实现方法：从经典的闭包问题、Promise 链式调用，到现代的 async/await、生成器函数和函数式编程。 · 2025-04-10
+- [VSCode 自动化代码规范实践指南](https://minorcell.top/articles/2025/02_vscodeformat): 最实用的 VSCode 代码规范自动化配置指南。深入讲解 ESLint + Prettier 的完美组合，实现保存时自动代码检查、格式化和错误修复。提升团队开发效率，确保代码风格一致性。 · 2025-03-31
+- [Vue 样式隔离与动态绑定的工程实践](https://minorcell.top/articles/2025/01_vuestyle): 最全面的 Vue 样式管理指南，深入解析大型 Vue 项目中的样式管理挑战和解决方案。从 Scoped CSS 、CSS Modules 到动态样式绑定，掌握避免全局污染、实现动态更新的最佳实践。 · 2025-03-21
+
+## 教程
+
+- [用 Cordis 从零构建一个 Mini Harness](https://minorcell.top/tutorials/cordis-mini-harness): 从 hello world 插件开始，逐步用服务、依赖注入和事件构建出一个能调用 DeepSeek API、执行 bash/fetch/文件搜索的迷你 Agent 运行框架 · 2026-08-14
+- [可观测性实战：Prometheus + Grafana 全栈监控](https://minorcell.top/tutorials/observability-prometheus-grafana): 从零为 Go HTTP 服务添加 Prometheus 埋点，配置 Grafana 可视化面板，掌握 Counter / Gauge / Histogram 三大指标类型与 PromQL 查询语言 · 2026-05-22
+- [AI 写前端之前：先掌握这些交互](https://minorcell.top/tutorials/frontend-interaction-dictionary): 市面上的 AI 写前端教程都在教你怎么写提示词，但没人告诉你——先懂交互，再用 AI。这份专题把 27 个最关键的交互术语挨个跑给你看，每条都有可交互 demo，帮你建立自己的交互判断力。 · 2026-04-30
+- [JavaScript：从事件循环到手写 Promise](https://minorcell.top/tutorials/js-event-loop-to-promise): 从单线程模型与事件循环出发，逐步推导出 Promise 的设计动机，并手写一个能通过 Promises/A+ 的最小实现 · 2026-04-26
+- [从零构建一个 Mini Claude Code](https://minorcell.top/tutorials/build-mini-claude-code): 从手写 40 行 ReAct 循环开始，逐步构建出有工具调用、上下文压缩和安全防护的 Code Agent · 2026-03-02
+
+## 订阅
+
 - [RSS Feed](https://minorcell.top/feed.xml): 通过 RSS 订阅最新文章
+- [站点地图](https://minorcell.top/sitemap.xml): 全部可索引页面

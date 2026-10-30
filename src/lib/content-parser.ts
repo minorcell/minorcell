@@ -169,6 +169,52 @@ export function getAllArticles(options?: {
     })
 }
 
+const relatedTerms = (article: ArticleContent) =>
+  new Set(
+    [...(article.metadata.tags ?? []), ...(article.metadata.keywords ?? [])]
+      .map((term) => term.trim().toLowerCase())
+      .filter(Boolean),
+  )
+
+/**
+ * Pick a few articles that share tags or keywords with the current one. Falls
+ * back to the newest posts so every article still gets internal links.
+ */
+export function getRelatedArticles(
+  article: ArticleContent,
+  limit = 3,
+): ArticleContent[] {
+  const pool = getAllArticles().filter(
+    (item) => item.slug !== article.slug && !item.metadata.topicSlug,
+  )
+  const terms = relatedTerms(article)
+
+  const ranked = pool
+    .map((item) => {
+      const candidateTerms = relatedTerms(item)
+      let score = 0
+      for (const term of terms) {
+        if (candidateTerms.has(term)) score += 1
+      }
+      return { item, score }
+    })
+    .sort((a, b) => b.score - a.score)
+
+  const picked = ranked.filter((entry) => entry.score > 0).slice(0, limit)
+
+  if (picked.length < limit) {
+    const seen = new Set(picked.map((entry) => entry.item.slug))
+    for (const entry of ranked) {
+      if (picked.length >= limit) break
+      if (seen.has(entry.item.slug)) continue
+      picked.push(entry)
+      seen.add(entry.item.slug)
+    }
+  }
+
+  return picked.map((entry) => entry.item)
+}
+
 export function getArticleBySlug(slug: string): ArticleContent | null {
   const realSlug = slug.replace(/\.mdx?$/, '')
   // Try .md then .mdx

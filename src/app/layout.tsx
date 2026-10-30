@@ -7,8 +7,17 @@ import { Footer } from '@/components/layout/Footer'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
-import { buildPageMetadata, defaultSeoKeywords, siteAuthor } from '@/lib/seo'
-import { createPersonJsonLd, createWebsiteJsonLd } from '@/lib/structured-data'
+import {
+  buildPageMetadata,
+  defaultSeoKeywords,
+  siteAuthor,
+  toAbsoluteUrl,
+} from '@/lib/seo'
+import {
+  createOrganizationJsonLd,
+  createPersonJsonLd,
+  createWebsiteJsonLd,
+} from '@/lib/structured-data'
 
 const rootMetadata = buildPageMetadata({
   title: siteContent.title,
@@ -26,7 +35,9 @@ export const metadata: Metadata = {
   },
   description: rootMetadata.description,
   keywords: rootMetadata.keywords,
-  authors: [{ name: siteAuthor.name, url: siteAuthor.github }],
+  authors: [
+    { name: siteAuthor.name, url: toAbsoluteUrl(siteAuthor.aboutPath) },
+  ],
   creator: siteAuthor.name,
   publisher: siteAuthor.name,
   category: 'technology',
@@ -60,12 +71,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const websiteJsonLd = createWebsiteJsonLd()
+  const organizationJsonLd = createOrganizationJsonLd()
   const personJsonLd = createPersonJsonLd()
 
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <JsonLd id="website-jsonld" data={websiteJsonLd} />
+        <JsonLd id="organization-jsonld" data={organizationJsonLd} />
         <JsonLd id="person-jsonld" data={personJsonLd} />
         <script
           dangerouslySetInnerHTML={{
