@@ -26,9 +26,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllArticles()
   const tutorials = getAllTutorials()
 
-  const latestBlogDate = getLatestDate(posts.map((post) => post.metadata.date))
+  const latestBlogDate = getLatestDate(
+    posts.flatMap((post) => [post.metadata.date, post.metadata.updated]),
+  )
   const latestTopicDate = getLatestDate(
-    tutorials.flatMap((tutorial) => tutorial.metadata.date),
+    tutorials.flatMap((tutorial) => [
+      tutorial.metadata.date,
+      tutorial.metadata.updated,
+    ]),
   )
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -62,14 +67,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((post) => !post.metadata.topicSlug)
     .map((post) => ({
       url: `${baseUrl}/articles/${post.slug}`,
-      lastModified: new Date(post.metadata.date ?? ''),
+      lastModified:
+        toDate(post.metadata.updated) ??
+        toDate(post.metadata.date) ??
+        undefined,
       changeFrequency: 'weekly',
       priority: 0.75,
     }))
 
   const tutorialRoutes: MetadataRoute.Sitemap = []
   for (const tutorial of tutorials) {
-    const topicLatestDate = getLatestDate([tutorial.metadata.date])
+    const topicLatestDate = getLatestDate([
+      tutorial.metadata.date,
+      tutorial.metadata.updated,
+    ])
 
     tutorialRoutes.push({
       url: `${baseUrl}/tutorials/${tutorial.slug}`,

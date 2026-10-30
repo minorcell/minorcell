@@ -53,6 +53,27 @@ function textContent(node: Element | ElementContent): string {
 
 // ─── Custom rehype plugins ───────────────────────────────────────────────────
 
+/**
+ * Articles written as standalone markdown often repeat the frontmatter title
+ * as an H1. The page already renders that title as the only H1, so drop the
+ * duplicate before it becomes a second (demoted) heading.
+ */
+function rehypeDropDuplicateTitle(title?: string) {
+  return (tree: Root) => {
+    const expected = title?.trim()
+    if (!expected) return
+
+    const index = tree.children.findIndex(
+      (child) =>
+        isElement(child) &&
+        child.tagName === 'h1' &&
+        textContent(child).trim() === expected,
+    )
+
+    if (index !== -1) tree.children.splice(index, 1)
+  }
+}
+
 /** Replace mermaid code fences with a placeholder the client island picks up. */
 function rehypeMermaid() {
   return (tree: Root) => {
@@ -144,6 +165,7 @@ const components = {
  */
 export async function renderMarkdown(
   markdown: string,
+  title?: string,
 ): Promise<RenderedMarkdown> {
   const headings: TocHeading[] = []
 
@@ -152,6 +174,7 @@ export async function renderMarkdown(
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeDropDuplicateTitle, title)
     .use(rehypeMermaid)
     .use(rehypeShiki, { theme: CODE_THEME })
     .use(rehypeSlug)

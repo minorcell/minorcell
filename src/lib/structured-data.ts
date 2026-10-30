@@ -29,21 +29,43 @@ interface CollectionPageJsonLdOptions {
 }
 
 const websiteUrl = siteContent.url.replace(/\/$/, '')
+const websiteId = `${websiteUrl}/#website`
+const personId = `${websiteUrl}/#person`
+const organizationId = `${websiteUrl}/#organization`
+const logoUrl = toAbsoluteUrl('/android-chrome-512x512.png')
+
+const organizationJsonLd = {
+  '@type': 'Organization',
+  '@id': organizationId,
+  name: siteContent.name,
+  alternateName: siteAuthor.name,
+  url: websiteUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: logoUrl,
+    width: 512,
+    height: 512,
+  },
+}
 
 export function createWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': websiteId,
     name: siteContent.name,
-    alternateName: siteContent.title,
+    alternateName: siteAuthor.name,
     url: websiteUrl,
     inLanguage: siteContent.locale,
     description: siteContent.description,
-    publisher: {
-      '@type': 'Person',
-      name: siteAuthor.name,
-      url: siteAuthor.github,
-    },
+    publisher: organizationJsonLd,
+  }
+}
+
+export function createOrganizationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    ...organizationJsonLd,
   }
 }
 
@@ -51,10 +73,15 @@ export function createPersonJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': personId,
     name: siteAuthor.name,
-    url: websiteUrl,
+    alternateName: siteAuthor.alternateName,
+    url: toAbsoluteUrl(siteAuthor.aboutPath),
+    description: siteAuthor.description,
+    image: logoUrl,
     sameAs: [siteAuthor.github],
     email: siteAuthor.email,
+    knowsAbout: siteContent.keywords,
   }
 }
 
@@ -82,10 +109,14 @@ export function createArticleJsonLd({
   section,
   keywords = [],
 }: ArticleJsonLdOptions) {
+  const articleUrl = toAbsoluteUrl(path)
+
   return {
     '@context': 'https://schema.org',
     '@type': type,
-    mainEntityOfPage: toAbsoluteUrl(path),
+    '@id': `${articleUrl}#article`,
+    url: articleUrl,
+    mainEntityOfPage: articleUrl,
     headline: title,
     description,
     inLanguage: siteContent.locale,
@@ -96,13 +127,16 @@ export function createArticleJsonLd({
     keywords,
     author: {
       '@type': 'Person',
+      '@id': personId,
       name: siteAuthor.name,
-      url: siteAuthor.github,
+      url: toAbsoluteUrl(siteAuthor.aboutPath),
     },
-    publisher: {
-      '@type': 'Person',
-      name: siteAuthor.name,
-      url: siteAuthor.github,
+    publisher: organizationJsonLd,
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: siteContent.name,
+      url: websiteUrl,
     },
   }
 }

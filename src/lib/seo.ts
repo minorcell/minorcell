@@ -6,8 +6,11 @@ const defaultSocialImage = '/og-image.png'
 
 export const siteAuthor = {
   name: 'mcell',
+  alternateName: 'minorcell',
   github: siteContent.contact.github ?? 'https://github.com/minorcell',
   email: siteContent.contact.email,
+  aboutPath: '/about',
+  description: siteContent.description,
 }
 
 export const defaultSeoKeywords = Array.from(
@@ -72,6 +75,7 @@ export function buildPageMetadata({
   const canonical = normalizePath(path)
   const ogImage = toAbsoluteUrl(image)
   const keywordList = dedupeKeywords(keywords)
+  const hasDefaultImage = image === defaultSocialImage
 
   return {
     title,
@@ -79,6 +83,9 @@ export function buildPageMetadata({
     keywords: keywordList,
     alternates: {
       canonical,
+      types: {
+        'application/rss+xml': '/feed.xml',
+      },
     },
     openGraph: {
       type: 'website',
@@ -90,9 +97,11 @@ export function buildPageMetadata({
       images: [
         {
           url: ogImage,
-          width: 1200,
-          height: 630,
           alt: title,
+          // Only the generated social card has known dimensions. Article
+          // covers are arbitrary uploads, so advertising 1200x630 for them
+          // makes crawlers crop or reject the preview.
+          ...(hasDefaultImage ? { width: 1200, height: 630 } : {}),
         },
       ],
     },
@@ -160,7 +169,9 @@ export function buildArticleMetadata({
   return {
     ...pageMetadata,
     category: section,
-    authors: [{ name: siteAuthor.name, url: siteAuthor.github }],
+    authors: [
+      { name: siteAuthor.name, url: toAbsoluteUrl(siteAuthor.aboutPath) },
+    ],
     openGraph: {
       ...pageMetadata.openGraph,
       type: 'article',
