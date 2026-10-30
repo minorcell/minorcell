@@ -10,7 +10,7 @@ order: 37
 
 ![202603](https://stack-mcell.tos-cn-shanghai.volces.com/202603.png)
 
-> 本文写作时，极大的借鉴了[《The Rust Programming Language》](https://course.rs/basic/ownership/ownership.html)（俗称“Rust 圣经”）中相关章节的内容和结构，在此表示感谢。
+> 本文写作时，极大的借鉴了[《The Rust Programming Language》](https://kaisery.github.io/trpl-zh-cn/ch04-01-what-is-ownership.html)（俗称“Rust 圣经”）中相关章节的内容和结构，在此表示感谢。
 
 写 Rust 的第一道坎，不是语法，也不是宏，而是“我明明只是把变量传给你用一下，怎么它就不属于我了？”
 
