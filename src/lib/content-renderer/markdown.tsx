@@ -74,6 +74,25 @@ function rehypeDropDuplicateTitle(title?: string) {
   }
 }
 
+/**
+ * The first content image is usually the article cover and the LCP candidate.
+ * Keep it eager/high-priority; later images stay lazy by default.
+ */
+function rehypePrioritizeFirstImage() {
+  let prioritized = false
+  return (tree: Root) => {
+    visitElements(tree, (el) => {
+      if (prioritized || el.tagName !== 'img') return
+      prioritized = true
+      el.properties = {
+        ...el.properties,
+        loading: 'eager',
+        fetchPriority: 'high',
+      }
+    })
+  }
+}
+
 /** Replace mermaid code fences with a placeholder the client island picks up. */
 function rehypeMermaid() {
   return (tree: Root) => {
@@ -175,6 +194,7 @@ export async function renderMarkdown(
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeDropDuplicateTitle, title)
+    .use(rehypePrioritizeFirstImage)
     .use(rehypeMermaid)
     .use(rehypeShiki, { theme: CODE_THEME })
     .use(rehypeSlug)

@@ -94,7 +94,7 @@ steps:
 
 依赖更新也全自动：[Dependabot](https://docs.github.com/en/code-security/dependabot) 每天开升级 PR，配一个 workflow 对 patch / minor 版本自动 approve 并 auto-merge，major 留人工确认——个人项目的依赖从此不再腐烂。Ant Design 甚至有个[每 5 分钟醒一次的机器人](https://github.com/ant-design/ant-design/blob/master/.github/workflows/pr-auto-merge.yml)，自动合并 master / feature / next 几个长期分支之间的同步 PR，并行开发不用维护者手工追。
 
-更硬核的是**合规门**：[Home Assistant](https://github.com/home-assistant/core/blob/dev/.github/workflows/detect-non-english-issues.yml) 的 workflow 在 issue 打开时调用 GitHub 官方内置 AI（`permissions: models: read`）检测语言，非英语 issue 自动评论引导；[VS Code](https://github.com/microsoft/vscode/blob/main/.github/workflows/require-commit-trailer.yml) 强制微软安全响应分支的 PR 必须带 `Msrc-Case-Id` 标记，否则 CI 直接失败。**当维护者精力有限，机器先替你挡掉一部分。**
+更硬核的是**合规门**：[Home Assistant](https://github.com/home-assistant/core/blob/dev/.github/workflows/detect-non-english-issues.yml) 的 workflow 在 issue 打开时调用 GitHub 官方内置 AI（`permissions: models: read`）检测语言，非英语 issue 自动评论引导；[VS Code](https://github.com/microsoft/vscode/tree/main/.github/workflows) 强制微软安全响应分支的 PR 必须带 `Msrc-Case-Id` 标记，否则 CI 直接失败。**当维护者精力有限，机器先替你挡掉一部分。**
 
 ## 五、给 AI：从 review bot 到 AI 维护者
 
@@ -132,7 +132,7 @@ workflow 攒到几十个，自动化自己就成了工程对象。
 
 上面就是 deno 的 workflow 源码，注意文件头：`import { createWorkflow } from "jsr:@david/gagen@0.3.1"`——YAML 不再是唯一写法，workflow 也可以是正经的工程代码。
 
-成本也是管理对象。[Next.js](https://github.com/vercel/next.js/blob/canary/.github/workflows/pr_stack_optimizer.yml) 对 stacked PR 智能跳过昂贵 job——堆栈中段的 PR 只跑 lint 和单测这类轻量又关键的检查；还有一个[一键 code freeze](https://github.com/vercel/next.js/blob/canary/.github/workflows/code_freeze.yml)，冻结期间谁也别想合入。
+成本也是管理对象。[Next.js](https://github.com/vercel/next.js/blob/canary/.github/workflows/pr_stack_optimizer.yml) 对 stacked PR 智能跳过昂贵 job——堆栈中段的 PR 只跑 lint 和单测这类轻量又关键的检查；还有一个[一键 code freeze 这类 workflow](https://github.com/vercel/next.js/tree/canary/.github/workflows)，冻结期间谁也别想合入。
 
 ## 收尾
 

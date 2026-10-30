@@ -109,7 +109,7 @@ export function buildPageMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: title }],
     },
     robots: noIndex
       ? {

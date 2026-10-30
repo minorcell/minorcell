@@ -10,15 +10,15 @@ order: 46
 
 > 相关链接：
 >
-> 从零构建 Mini Claude Code：https://mcell.top/blog/2026/agent-development-course-for-beginners
+> 从零构建 Mini Claude Code：https://minorcell.top/tutorials/build-mini-claude-code
 >
 > 本次 Mini OpenCode 仓库地址：https://github.com/minorcell/mini-claude-code
 >
-> Memo Code：https://memo.mcell.top/
+> Memo Code：https://github.com/minorcell/memo-code
 
 ![终端里运行 mini-opencode：左侧是对话和 Composer，右侧显示本轮用了 37k token。](https://stack-mcell.tos-cn-shanghai.volces.com/202636.png)
 
-前阵子，我写过一篇 [从零构建 Mini Claude Code](https://mcell.top/blog/2026/agent-development-course-for-beginners) 的 Agent 开发入门教程。
+前阵子，我写过一篇 [从零构建 Mini Claude Code](https://minorcell.top/tutorials/build-mini-claude-code) 的 Agent 开发入门教程。
 
 那次基本是顺着 AI SDK 往下做的。不得不说，TypeScript 这套生态在 Agent 开发这件事上，确实已经非常成熟了。
 

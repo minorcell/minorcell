@@ -8,7 +8,7 @@ keywords: [Memo Code, CLI, 终端输入, 产品设计, Agent工具]
 order: 42
 ---
 
-做 memo code（https://github.com/minorcell/memo-code）的时候，MVP、runtime、toolrouter、tools 都写好了，下一步突然被一个很“产品”但本质很“工程”的问题卡住了：**界面到底做什么？传统 Web 页面还是终端交互？**
+做 [memo code](https://github.com/minorcell/memo-code) 的时候，MVP、runtime、toolrouter、tools 都写好了，下一步突然被一个很“产品”但本质很“工程”的问题卡住了：**界面到底做什么？传统 Web 页面还是终端交互？**
 
 做 Web UI 我很拿手，但市面上大多数 code agent（claude code cli、codex cli）都是从终端做起的。最终我决定：**memo code 的第一种产品形态，先做 CLI。**
 
@@ -150,4 +150,4 @@ stateDiagram-v2
 memo 的这段实践让我对终端交互有了更清晰的认知：它不再只是”输入输出 + 打日志”，完全可以是简易版 Web App——有组件、有状态、有布局，甚至能长出一点”编辑器”的味道。
 
 > Github Repo: [Memo Code](https://github.com/minorcell/memo-code)
-> 站点：[Memo Web Site](https://memo.mcell.top/)
+> 站点：[Memo Web Site](https://github.com/minorcell/memo-code)

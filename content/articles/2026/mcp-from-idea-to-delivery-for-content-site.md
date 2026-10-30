@@ -97,7 +97,7 @@ order: 41
 
 此外我在站点右上角加了 MCP 图标和配置弹窗，直接给 Codex / Claude / Memo / 标准配置的可复制示例，尽量把接入门槛压到最低。
 
-![stack.mcell.top 上的 CellStack MCP 接入弹窗，标准配置里写出了 npx 启动的 mcpServers JSON。](https://stack-mcell.tos-cn-shanghai.volces.com/202608.png)
+![CellStack MCP 接入弹窗，标准配置里写出了 npx 启动的 mcpServers JSON。](https://stack-mcell.tos-cn-shanghai.volces.com/202608.png)
 
 相关记录：
 

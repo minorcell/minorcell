@@ -24,7 +24,7 @@ order: 40
 问题不是“看着也能跑”，问题是：**类型服务失效**。后续再 AI coding，模型经常忘记把这些“临时写法”改回规范写法，久而久之就变成隐患或者 bug。
 
 这个我单独写过：
-[https://mcell.top/blog/2026/ai-always-like-hard-code](https://mcell.top/blog/2026/ai-always-like-hard-code)
+[https://minorcell.top/articles/2026/ai-always-like-hard-code](https://minorcell.top/articles/2026/ai-always-like-hard-code)
 
 ## 2. 不更新文档：文档漂移，Agent 还会一本正经地错
 
@@ -116,4 +116,4 @@ codex：“好的，我将按照你领导的要求修改。”
 
 这些问题基本就是我这一年 vibe coding 的”经典合集”。对我最大的启发是：**别把希望全寄托在模型自觉上，工程上要有”工具层的底线”**。
 
-所以我在做 memo code（https://github.com/minorcell/memo-code）时针对性做了不少兜底：工具返回结果长度检查与截断、重复输出去重、bash 工具沙箱与审批拦截、系统提示词要求同步更新文档防止漂移。这些处理基本都来自上面踩过的坑。
+所以我在做 [memo code](https://github.com/minorcell/memo-code) 时针对性做了不少兜底：工具返回结果长度检查与截断、重复输出去重、bash 工具沙箱与审批拦截、系统提示词要求同步更新文档防止漂移。这些处理基本都来自上面踩过的坑。

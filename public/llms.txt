@@ -6,6 +6,7 @@
 
 ## 文章
 
+- [Attention Is All You Have：注意力如何重新分配](https://minorcell.top/articles/2026/attention-is-all-you-have): AI 把执行成本压得越来越低，省下来的时间却很容易被新任务填满。这篇聊聊并行幻觉、任务排序、让 AI 做预处理和把重复流程自动化，以及为什么执行能力可以被放大，注意力却不能。 · 2026-10-29
 - [打开 Clash 之后，你的电脑里发生了什么](https://minorcell.top/articles/2026/what-happens-when-you-enable-clash): Clash 一开，GitHub 秒开，npm 飞快——但你的电脑里到底发生了什么？本文从网卡、数据包、路由表、socket、DNS 五个地基概念出发，配合精密机械风格等距插图，讲透系统代理、TUN 模式、fake-ip、分流与隧道的完整链路。 · 2026-10-17
 - [程序员即将隐退，建造者持续闪耀](https://minorcell.top/articles/2026/from-coder-to-builder): AI 正在接管写代码这一环，却没有接管产品取舍、架构判断和交付责任。本文聊聊程序员如何从 coding 迁移到建造软件，以及 AI 时代真正稀缺的品味、判断与责任。 · 2026-09-23
 - [那他们呢？写给 AI 原生的一代](https://minorcell.top/articles/2026/what-about-them-ai-native-generation): 从刘胜与的提问出发，记录 AI 改变软件工程和新人培养的现场：规格、验证、自动化悖论，以及我还愿意押注的三件事。 · 2026-09-23
