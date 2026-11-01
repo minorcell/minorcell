@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { fetchProfileContributions } from './github-contributions.ts'
 
 const CELL = 11
 const GAP = 3
@@ -129,7 +130,6 @@ const THEMES = {
   },
 } satisfies Record<string, Theme>
 
-const GRAPHQL_QUERY = `query($login:String!,$from:DateTime!){user(login:$login){contributionsCollection(from:$from){contributionCalendar{weeks{contributionDays{date contributionCount contributionLevel}}}}}}`
 const key = (cell: Cell) => `${cell[0]},${cell[1]}`
 
 function getToken(): string {
@@ -142,44 +142,39 @@ function getToken(): string {
   }
 }
 
-async function fetchWeeks(user: string, token: string): Promise<Week[]> {
-  const from = new Date(Date.now() - 365 * 86_400_000).toISOString()
-  const response = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': user,
-    },
-    body: JSON.stringify({
-      query: GRAPHQL_QUERY,
-      variables: { login: user, from },
-    }),
-    signal: AbortSignal.timeout(30_000),
-  })
-  if (!response.ok)
-    throw new Error(
-      `GitHub API request failed (${response.status} ${response.statusText})`,
+function weeksFromDays(
+  days: { date: string; count: number; level: keyof typeof LEVEL }[],
+): Week[] {
+  const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date))
+  if (!sorted.length) return []
+  const first = Date.parse(`${sorted[0].date}T00:00:00Z`)
+  const start = first - new Date(first).getUTCDay() * 86_400_000
+  const weeks: Week[] = []
+  for (const day of sorted) {
+    const index = Math.floor(
+      (Date.parse(`${day.date}T00:00:00Z`) - start) / (7 * 86_400_000),
     )
-  const result = (await response.json()) as {
-    errors?: { message: string }[]
-    data?: {
-      user?: {
-        contributionsCollection?: { contributionCalendar?: { weeks?: Week[] } }
-      }
-    }
+    while (weeks.length <= index) weeks.push({ contributionDays: [] })
+    weeks[index].contributionDays.push({
+      date: day.date,
+      contributionCount: day.count,
+      contributionLevel: day.level,
+    })
   }
-  if (result.errors?.length)
-    throw new Error(
-      `GitHub API error: ${result.errors.map((e) => e.message).join('; ')}`,
-    )
-  const weeks =
-    result.data?.user?.contributionsCollection?.contributionCalendar?.weeks
-  if (!weeks)
+  return weeks
+}
+
+async function fetchWeeks(
+  user: string,
+  token: string,
+): Promise<{ weeks: Week[]; total: number }> {
+  const year = await fetchProfileContributions({ user, token })
+  const weeks = weeksFromDays(year.days)
+  if (!weeks.length)
     throw new Error(
       `GitHub user "${user}" was not found or returned no calendar.`,
     )
-  return weeks
+  return { weeks, total: year.total }
 }
 
 export function calendarGrid(weeks: Week[]): {
@@ -473,8 +468,9 @@ function render(
   )
 
   if (options.counter) {
-    const totalCommits = eats.reduce(
-      (sum, { cell }) => sum + counts[cell[0]][cell[1]],
+    // Count every square in the profile year, including any the snake does not eat.
+    const totalCommits = counts.reduce(
+      (sum, column) => sum + column.reduce((inner, count) => inner + count, 0),
       0,
     )
     let value = 0
@@ -623,7 +619,7 @@ async function main(): Promise<void> {
     throw new Error(
       'No token found. Set GH_TOKEN (or GITHUB_TOKEN) or run gh auth login.',
     )
-  const weeks = await fetchWeeks(options.user, token)
+  const { weeks, total } = await fetchWeeks(options.user, token)
   const { grid, counts } = calendarGrid(weeks)
   const months: [number, string][] = []
   let seenMonth: number | null = null
@@ -657,7 +653,7 @@ async function main(): Promise<void> {
     ),
   )
   console.log(
-    `wrote ${options.output} — ${result.eats.length} cells eaten, snake grew to ${result.maxLength}, ${result.left} left over`,
+    `wrote ${options.output} — ${total} contributions, ${result.eats.length} cells eaten, snake grew to ${result.maxLength}, ${result.left} left over`,
   )
 }
 

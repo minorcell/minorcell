@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url'
 import { parseGitHubSnapshot } from '../src/lib/github-profile.ts'
 import { renderContributionSnake } from './snake-and-commits.ts'
 import { collectGitHubActivity } from './github-activity.ts'
+import { fetchProfileContributions } from './github-contributions.ts'
 import type {
   GitHubSnapshot,
   GitHubRepository,
@@ -25,8 +26,6 @@ type ApiRepository = {
   private: boolean
   pushed_at: string
 }
-
-const query = `query($login:String!,$from:DateTime!,$to:DateTime!){viewer{login} user(login:$login){contributionsCollection(from:$from,to:$to){startedAt endedAt contributionCalendar{totalContributions weeks{contributionDays{date contributionCount}}}}}}`
 
 export async function collectGitHubSnapshot(
   options: Options,
@@ -106,7 +105,7 @@ export async function collectGitHubSnapshot(
       if (batch.length < 100) return result
     }
   }
-  const [profile, repos, orgs, calendar] = await Promise.all([
+  const [profile, repos, orgs, contributions] = await Promise.all([
     json<{
       login: string
       bio: string | null
@@ -117,39 +116,12 @@ export async function collectGitHubSnapshot(
     }>(`/users/${user}`),
     repositories(),
     organizations(),
-    json<{
-      errors?: unknown[]
-      data?: {
-        viewer: { login: string }
-        user: {
-          contributionsCollection: {
-            startedAt: string
-            endedAt: string
-            contributionCalendar: {
-              totalContributions: number
-              weeks: {
-                contributionDays: { date: string; contributionCount: number }[]
-              }[]
-            }
-          }
-        } | null
-      }
-    }>('/graphql', {
-      query,
-      variables: {
-        login: user,
-        from: new Date(now.getTime() - 365 * 86_400_000).toISOString(),
-        to: now.toISOString(),
-      },
-    }),
+    fetchProfileContributions({ user, token, fetch: request }),
   ])
-  if (calendar.errors?.length || !calendar.data?.user)
-    throw new Error('GitHub contribution query failed')
-  if (calendar.data.viewer?.login?.toLowerCase() !== user.toLowerCase())
+  if (contributions.viewer.toLowerCase() !== user.toLowerCase())
     throw new Error(
       "Use the profile owner's token to include private contributions",
     )
-  const collection = calendar.data.user.contributionsCollection
   const activity = await collectGitHubActivity({
     user,
     now,
@@ -170,12 +142,13 @@ export async function collectGitHubSnapshot(
     repositories: repos,
     activity,
     contributions: {
-      from: collection.startedAt,
-      to: collection.endedAt,
-      total: collection.contributionCalendar.totalContributions,
-      days: collection.contributionCalendar.weeks
-        .flatMap((week) => week.contributionDays)
-        .map((day) => ({ date: day.date, count: day.contributionCount })),
+      from: contributions.from,
+      to: contributions.to,
+      total: contributions.total,
+      days: contributions.days.map((day) => ({
+        date: day.date,
+        count: day.count,
+      })),
     },
   })
 }

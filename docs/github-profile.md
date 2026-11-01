@@ -71,9 +71,15 @@ depends on the token's access and GitHub's contribution rules.
 - Restricted, private and internal activity is discarded before copying any
   names, titles or URLs. Only repository visibility `PUBLIC` is eligible for
   the detailed feed. Private contribution counts remain in the annual calendar.
-- Contributions use GitHub's calendar definition, including commits, PRs,
-  issues and reviews. The owner's token includes accessible private activity
-  in total and daily counts; private names and details are never published.
+- Contributions use the profile graph's year. The query leaves `from` and
+  `to` unset, so GitHub applies that account's window: the Sunday of the week
+  containing the date one year ago, through today. The published total is
+  `contributionCalendar.totalContributions`, the number on the profile. That
+  window is longer than the 365 squares GitHub draws; the days before those
+  squares are included, and the snake total is the same number. Counts include
+  commits, pull requests, issues and reviews. The owner's token includes
+  accessible private activity in the total and daily counts; private names and
+  details are never published.
 - The contribution section uses the existing animated snake with light/dark
   variants, replacing both the static heatmap and monthly bars. The local
   renderer derives color levels from daily counts; no private activity details
