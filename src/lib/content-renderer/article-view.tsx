@@ -1,8 +1,7 @@
 import { CopyPageButton } from '@/components/common/CopyPageButton'
 import { DiscussionDrawer } from '@/components/common/DiscussionDrawer'
-import { ReadingProgress } from '@/components/common/ReadingProgress'
+import { SiteLink } from '@/components/common/SiteLink'
 import { TableOfContents } from '@/components/common/TableOfContents'
-import { TransitionLink } from '@/components/effects/PageTransition'
 import type { ArticleContent } from '@/lib/content-parser'
 import { getContentHref } from '@/lib/content-parser'
 import { renderMarkdown } from '@/lib/content-renderer/markdown'
@@ -58,7 +57,6 @@ export async function ArticleView({
 
   return (
     <>
-      <ReadingProgress />
       <div className="flex justify-center">
         <article className="w-full max-w-[780px]" data-pagefind-body>
           <header className="relative pt-8 sm:pt-14">
@@ -78,12 +76,12 @@ export async function ArticleView({
               ) : null}
 
               <div className="type-caption mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
-                <TransitionLink
+                <SiteLink
                   href={siteAuthor.aboutPath}
-                  className="font-medium text-foreground underline-offset-4 transition-colors hover:text-link-accent hover:underline"
+                  className="font-medium text-foreground underline-offset-4 hover:text-link-accent hover:underline"
                 >
                   {siteAuthor.name}
-                </TransitionLink>
+                </SiteLink>
                 {metadata.date ? (
                   <>
                     <span aria-hidden="true">·</span>
@@ -130,9 +128,9 @@ export async function ArticleView({
               <ul className="m-0 mt-4 list-none space-y-1 p-0">
                 {related.map((item) => (
                   <li key={item.slug}>
-                    <TransitionLink
+                    <SiteLink
                       href={getContentHref(item)}
-                      className="-mx-3 flex flex-col gap-1 rounded-lg px-3 py-3 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+                      className="-mx-3 flex flex-col gap-1 rounded-lg px-3 py-3 hover:bg-surface-hover"
                     >
                       <span className="type-headline text-foreground">
                         {item.metadata.title}
@@ -142,7 +140,7 @@ export async function ArticleView({
                           {item.metadata.description}
                         </span>
                       ) : null}
-                    </TransitionLink>
+                    </SiteLink>
                   </li>
                 ))}
               </ul>

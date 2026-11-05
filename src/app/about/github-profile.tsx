@@ -15,8 +15,6 @@ import PublicActivity from './public-activity'
 const number = new Intl.NumberFormat('zh-CN')
 export const snapshotUrl =
   'https://raw.githubusercontent.com/minorcell/minorcell/output/github.json'
-const outputUrl = 'https://raw.githubusercontent.com/minorcell/minorcell/output'
-export type SnakeSources = { light: string; dark: string }
 
 function RepositoryBadges({ repo }: { repo: GitHubRepository }) {
   return (
@@ -31,32 +29,69 @@ function RepositoryBadges({ repo }: { repo: GitHubRepository }) {
   )
 }
 
-function ContributionSnake({
+type ContributionDay = GitHubSnapshot['contributions']['days'][number]
+
+function contributionLevel(count: number) {
+  if (count === 0) return 0
+  if (count <= 2) return 1
+  if (count <= 5) return 2
+  if (count <= 9) return 3
+  return 4
+}
+
+function ContributionGrid({
   contributions,
-  sources,
 }: {
   contributions: GitHubSnapshot['contributions']
-  sources: SnakeSources | null
 }) {
-  const [failed, setFailed] = useState(false)
+  const weeks: (ContributionDay | null)[][] = []
+  let week: (ContributionDay | null)[] = []
+  const firstDay = new Date(`${contributions.days[0].date}T00:00:00Z`)
+
+  for (let i = 0; i < firstDay.getUTCDay(); i++) week.push(null)
+
+  for (const day of contributions.days) {
+    week.push(day)
+    if (week.length === 7) {
+      weeks.push(week)
+      week = []
+    }
+  }
+
+  if (week.length > 0) {
+    while (week.length < 7) week.push(null)
+    weeks.push(week)
+  }
+
   return (
-    <figure className={styles.snake}>
-      {failed || !sources ? (
-        <p className={styles.empty}>贡献动画暂时无法加载。</p>
-      ) : (
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcSet={sources.dark} />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={sources.light}
-            alt="近一年公开与私有贡献的动态 Snake 图"
-            width={788}
-            height={154}
-            onError={() => setFailed(true)}
-          />
-        </picture>
-      )}
-      <figcaption>
+    <figure className={styles.contributionGrid}>
+      <div
+        className={styles.contributionWeeks}
+        role="img"
+        aria-label={`${contributions.from} 至 ${contributions.to} 共 ${contributions.total} 次贡献`}
+      >
+        {weeks.map((days, weekIndex) => (
+          <div key={weekIndex} className={styles.contributionWeek}>
+            {days.map((day, dayIndex) =>
+              day ? (
+                <span
+                  key={day.date}
+                  className={styles.contributionCell}
+                  data-level={contributionLevel(day.count)}
+                  title={`${day.date}：${day.count} 次贡献`}
+                />
+              ) : (
+                <span
+                  key={`empty-${weekIndex}-${dayIndex}`}
+                  className={styles.contributionCell}
+                  data-empty="true"
+                />
+              ),
+            )}
+          </div>
+        ))}
+      </div>
+      <figcaption className={styles.contributionMeta}>
         {contributions.days[0]?.date} 至 {contributions.days.at(-1)?.date}
       </figcaption>
     </figure>
@@ -81,11 +116,9 @@ function Language({ name }: { name: string }) {
 export default function GitHubProfile({
   development = false,
   localSnapshot = null,
-  localSnake = null,
 }: {
   development?: boolean
   localSnapshot?: GitHubSnapshot | null
-  localSnake?: SnakeSources | null
 }) {
   const [remoteSnapshot, setSnapshot] = useState<GitHubSnapshot | null>(null)
   const snapshot = development ? localSnapshot : remoteSnapshot
@@ -112,7 +145,9 @@ export default function GitHubProfile({
     return () => controller.abort()
   }, [attempt, development])
 
-  if (!snapshot)
+  if (!snapshot) {
+    if (!development && !failed) return null
+
     return (
       <div
         className={`mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10 ${styles.status}`}
@@ -121,47 +156,26 @@ export default function GitHubProfile({
         <output>
           {development
             ? '本地 GitHub 数据暂不可用。'
-            : failed
-              ? 'GitHub 数据暂时无法加载。'
-              : '正在加载 GitHub 数据…'}
+            : 'GitHub 数据暂时无法加载。'}
         </output>
-        {failed || development ? (
-          <button
-            type="button"
-            onClick={() => {
-              if (development) window.location.reload()
-              else setAttempt((value) => value + 1)
-            }}
-          >
-            <Icon name="refresh-line" aria-hidden="true" className="h-4 w-4" />
-            重试
-          </button>
-        ) : null}
+        <button
+          type="button"
+          onClick={() => {
+            if (development) window.location.reload()
+            else setAttempt((value) => value + 1)
+          }}
+        >
+          <Icon name="refresh-line" aria-hidden="true" className="h-4 w-4" />
+          重试
+        </button>
       </div>
     )
+  }
 
-  return (
-    <ProfileContent
-      snapshot={snapshot}
-      snakeSources={
-        development
-          ? localSnake
-          : {
-              light: `${outputUrl}/snake-light.svg`,
-              dark: `${outputUrl}/snake-dark.svg`,
-            }
-      }
-    />
-  )
+  return <ProfileContent snapshot={snapshot} />
 }
 
-function ProfileContent({
-  snapshot,
-  snakeSources,
-}: {
-  snapshot: GitHubSnapshot
-  snakeSources: SnakeSources | null
-}) {
+function ProfileContent({ snapshot }: { snapshot: GitHubSnapshot }) {
   const { profile, contributions, organizations } = snapshot
   const [repositoryLimit, setRepositoryLimit] = useState(3)
   const summary = summarizeGitHub(snapshot)
@@ -241,10 +255,7 @@ function ProfileContent({
             {number.format(activeDays)} 个活跃日
           </p>
         </div>
-        <ContributionSnake
-          contributions={contributions}
-          sources={snakeSources}
-        />
+        <ContributionGrid contributions={contributions} />
       </section>
 
       <div className={styles.repositoryToolbar}>

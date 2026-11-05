@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
-import { TransitionLink } from '@/components/effects/PageTransition'
-import { MotionSurface } from '@/components/effects/MotionPrimitives'
+import { SiteLink } from '@/components/common/SiteLink'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getAllTutorials } from '@/lib/content-parser'
 import { buildPageMetadata } from '@/lib/seo'
@@ -59,10 +58,10 @@ export default function TutorialsPage() {
         <ol className="mt-14 grid list-none gap-3 p-0 sm:mt-20 md:grid-cols-2">
           {tutorials.map((tutorial) => (
             <li key={tutorial.slug}>
-              <MotionSurface className="h-full">
-                <TransitionLink
+              <div className="h-full">
+                <SiteLink
                   href={`/tutorials/${tutorial.slug}`}
-                  className="block h-full rounded-lg bg-card px-6 py-7 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:px-7 sm:py-8"
+                  className="block h-full rounded-lg bg-card px-6 py-7 hover:bg-surface-hover sm:px-7 sm:py-8"
                 >
                   <span className="type-caption font-medium text-link-accent">
                     专题
@@ -75,8 +74,8 @@ export default function TutorialsPage() {
                       {tutorial.metadata.description}
                     </p>
                   ) : null}
-                </TransitionLink>
-              </MotionSurface>
+                </SiteLink>
+              </div>
             </li>
           ))}
         </ol>

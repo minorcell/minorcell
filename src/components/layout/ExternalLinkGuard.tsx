@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { useLenis } from 'lenis/react'
 import { cn } from '@/lib/utils'
 import {
   EXTERNAL_LINK_REQUEST_EVENT,
@@ -210,7 +209,6 @@ export function ExternalLinkGuard() {
   const triggerRef = useRef<HTMLElement | null>(null)
   const titleId = useId()
   const descriptionId = useId()
-  const lenis = useLenis()
 
   useEffect(() => {
     const openExternalConfirm = (
@@ -417,12 +415,10 @@ export function ExternalLinkGuard() {
     if (!open) return
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    lenis?.stop()
     return () => {
       document.body.style.overflow = previousOverflow
-      if (previousOverflow !== 'hidden') lenis?.start()
     }
-  }, [open, lenis])
+  }, [open])
 
   return (
     <dialog
@@ -505,7 +501,7 @@ export function ExternalLinkGuard() {
             <button
               ref={cancelRef}
               type="button"
-              className="pressable type-meta inline-flex h-11 items-center justify-center rounded-md bg-muted px-4 font-medium text-foreground hover:bg-muted/80"
+              className="type-meta inline-flex h-11 items-center justify-center rounded-md bg-muted px-4 font-medium text-foreground hover:bg-muted/80"
               onClick={() => dialogRef.current?.close()}
             >
               取消
@@ -514,7 +510,7 @@ export function ExternalLinkGuard() {
               type="button"
               onClick={handleContinue}
               className={cn(
-                'pressable type-meta inline-flex h-11 items-center justify-center rounded-md px-4 font-medium',
+                'type-meta inline-flex h-11 items-center justify-center rounded-md px-4 font-medium',
                 hasHighRisk
                   ? 'bg-red-600 text-white hover:bg-red-700'
                   : 'bg-primary text-primary-foreground hover:bg-accent-foreground',

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
@@ -37,7 +36,6 @@ const readIsDark = () =>
 
 function CodePanel({ step }: { step: CodeStep }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const isMountRef = useRef(true)
   const lines = step.code.split('\n')
   const [tokenLines, setTokenLines] = useState<ShikiToken[][] | null>(null)
   const [isDark, setIsDark] = useState(readIsDark)
@@ -98,10 +96,6 @@ function CodePanel({ step }: { step: CodeStep }) {
     const container = containerRef.current
     if (!container) return
 
-    const isFirstMount = isMountRef.current
-    isMountRef.current = false
-
-    const behavior = isFirstMount ? ('instant' as const) : ('smooth' as const)
     const lineEls = container.querySelectorAll<HTMLElement>('[data-line]')
     const containerRect = container.getBoundingClientRect()
 
@@ -109,7 +103,7 @@ function CodePanel({ step }: { step: CodeStep }) {
       const firstEl = lineEls[0]
       if (firstEl) {
         const dy = firstEl.getBoundingClientRect().top - containerRect.top - 16
-        container.scrollBy({ top: dy, behavior })
+        container.scrollTop += dy
       }
       return
     }
@@ -125,14 +119,13 @@ function CodePanel({ step }: { step: CodeStep }) {
       elRect.top +
       el.offsetHeight / 2 -
       (containerRect.top + container.clientHeight / 2)
-    container.scrollBy({ top: dy, behavior })
+    container.scrollTop += dy
   }, [step.highlightLines, hasHighlight])
 
   return (
     <div
       ref={containerRef}
-      data-lenis-prevent
-      className="codewave-panel absolute inset-0 overflow-y-auto overscroll-contain"
+      className="codewave-panel absolute inset-0 overflow-y-auto overscroll-none"
     >
       <pre
         className="type-code px-4 sm:px-5"
@@ -147,7 +140,7 @@ function CodePanel({ step }: { step: CodeStep }) {
               <div
                 key={i}
                 data-line={i}
-                className={`flex transition-opacity duration-300 ${
+                className={`flex ${
                   isHighlighted ? 'opacity-100' : 'opacity-25'
                 }`}
               >
@@ -191,40 +184,31 @@ export function CodeWave({ steps }: CodeWaveProps) {
       {/* Desktop-only scrollytelling. Mobile is rendered flat by
        * InteractiveTutorialView, so we no longer ship a mobile fallback here. */}
       <div className="flex items-stretch">
-        {/* Left: sticky code panel — crossfades on step change */}
+        {/* Left: sticky code panel — switches instantly on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <div className="flex h-full items-stretch px-6 xl:px-8">
               <div className="relative flex-1">
-                <AnimatePresence mode="sync">
-                  <motion.div
-                    key={activeStep.code}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: 'easeInOut' }}
-                    className="absolute inset-0"
-                  >
-                    <CodePanel step={activeStep} />
-                  </motion.div>
-                </AnimatePresence>
+                <div className="absolute inset-0">
+                  <CodePanel step={activeStep} />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right: scrollable prose — spring opacity matching site's stiffness/damping */}
+        {/* Right: scrollable prose */}
         <div className="w-[50%]">
           {steps.map((s, i) => (
-            <motion.div
+            <div
               key={i}
               ref={setRef(i) as React.Ref<HTMLDivElement>}
-              animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
-              transition={{ type: 'spring', stiffness: 24, damping: 12 }}
-              className="min-h-[60vh] px-6 py-8 xl:px-8"
+              className={`min-h-[60vh] px-6 py-8 xl:px-8 ${
+                i === currentIndex ? 'opacity-100' : 'opacity-30'
+              }`}
             >
               <MarkdownRenderer content={s.prose} />
-            </motion.div>
+            </div>
           ))}
           <div className="h-[20vh]" />
         </div>

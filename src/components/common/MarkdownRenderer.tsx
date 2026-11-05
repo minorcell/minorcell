@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Streamdown, type Components, type PluginConfig } from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
-import { ZoomImage } from '@/components/common/ZoomImage'
+import { ContentImage } from '@/components/common/ContentImage'
 import { createMermaidTheme } from '@/lib/mermaid-theme'
 
 type MermaidPlugin = NonNullable<PluginConfig['mermaid']>
@@ -27,7 +27,7 @@ type StreamdownImageProps = React.ComponentProps<'img'> & {
 
 function MarkdownImage({ node, ...props }: StreamdownImageProps) {
   void node
-  return <ZoomImage {...props} />
+  return <ContentImage {...props} />
 }
 
 function Paragraph({ children, node, ...props }: StreamdownParagraphProps) {

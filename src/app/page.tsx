@@ -1,10 +1,6 @@
 import type { Metadata } from 'next'
 import { Icon } from '@/components/ui/icon'
-import { TransitionLink } from '@/components/effects/PageTransition'
-import {
-  MotionGreeting,
-  MotionSurface,
-} from '@/components/effects/MotionPrimitives'
+import { SiteLink } from '@/components/common/SiteLink'
 import {
   getAllContent,
   getContentHref,
@@ -70,7 +66,7 @@ export default function HomePage() {
         <div className="flex flex-col justify-center">
           <h1 className="type-display m-0 text-foreground">minorcell</h1>
           <p className="type-intro mb-0 mt-7 max-w-[42ch] text-muted-foreground">
-            <MotionGreeting />
+            <span aria-hidden="true">👋</span>
             ，我是
             <span> </span>
             <a
@@ -91,20 +87,20 @@ export default function HomePage() {
           <h2 id="latest-heading" className="type-section-title m-0">
             最新发布
           </h2>
-          <TransitionLink
+          <SiteLink
             href="/articles"
             className="type-meta inline-flex min-h-11 items-center gap-1.5 font-medium text-link-accent"
           >
             全部文章
             <Icon name="arrow-right-line" className="h-4 w-4" />
-          </TransitionLink>
+          </SiteLink>
         </div>
 
         {featuredPost ? (
-          <MotionSurface>
-            <TransitionLink
+          <div>
+            <SiteLink
               href={getContentHref(featuredPost)}
-              className="relative isolate block overflow-hidden rounded-lg bg-card p-6 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:p-9"
+              className="relative isolate block overflow-hidden rounded-lg bg-card p-6 hover:bg-surface-hover sm:p-9"
             >
               {featuredPost.metadata.image ? (
                 <div
@@ -149,8 +145,8 @@ export default function HomePage() {
                   </p>
                 ) : null}
               </div>
-            </TransitionLink>
-          </MotionSurface>
+            </SiteLink>
+          </div>
         ) : (
           <p className="py-12 text-muted-foreground">暂无内容</p>
         )}
@@ -159,10 +155,10 @@ export default function HomePage() {
           <ol className="mt-4 grid list-none gap-2 p-0 md:grid-cols-2">
             {recentPosts.map((post) => (
               <li key={post.slug}>
-                <MotionSurface className="h-full">
-                  <TransitionLink
+                <div className="h-full">
+                  <SiteLink
                     href={getContentHref(post)}
-                    className="block h-full rounded-lg px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:px-6 sm:py-6"
+                    className="block h-full rounded-lg px-5 py-5 hover:bg-surface-hover sm:px-6 sm:py-6"
                   >
                     <div className="type-caption text-muted-foreground">
                       {post.metadata.date
@@ -177,8 +173,8 @@ export default function HomePage() {
                         {post.metadata.description}
                       </p>
                     ) : null}
-                  </TransitionLink>
-                </MotionSurface>
+                  </SiteLink>
+                </div>
               </li>
             ))}
           </ol>
@@ -190,17 +186,17 @@ export default function HomePage() {
         className="mt-20 grid gap-3 sm:mt-24 sm:grid-cols-2 lg:grid-cols-4"
       >
         {siteContent.sections.map((section) => (
-          <MotionSurface key={section.path} className="h-full">
-            <TransitionLink
+          <div key={section.path} className="h-full">
+            <SiteLink
               href={section.path}
-              className="block h-full rounded-lg bg-card px-5 py-5 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+              className="block h-full rounded-lg bg-card px-5 py-5 hover:bg-surface-hover"
             >
               <h2 className="type-headline m-0">{section.label}</h2>
               <p className="type-meta mb-0 mt-2 line-clamp-2 text-muted-foreground">
                 {section.description}
               </p>
-            </TransitionLink>
-          </MotionSurface>
+            </SiteLink>
+          </div>
         ))}
       </nav>
     </div>

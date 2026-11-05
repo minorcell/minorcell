@@ -80,9 +80,6 @@
   gap: 7px;
   min-height: 44px;
 }
-.profile a {
-  transition: color 140ms;
-}
 .profile a:hover {
   color: var(--link-accent);
   text-decoration: underline;
@@ -121,19 +118,45 @@
   font-size: 12px;
   color: var(--muted-foreground);
 }
-.snake {
+.contributionGrid {
   margin: 18px 0 0;
+}
+.contributionWeeks {
+  --cell: 10px;
+  --gap: 3px;
+  display: flex;
+  gap: var(--gap);
   overflow-x: auto;
+  overscroll-behavior: none;
   padding-bottom: 8px;
 }
-.snake img {
-  display: block;
-  width: min(100%, 900px);
-  min-width: 640px;
-  height: auto;
-  aspect-ratio: 788 / 154;
+.contributionWeek {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
-.snake figcaption {
+.contributionCell {
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 2px;
+  background: var(--muted);
+}
+.contributionCell[data-level='1'] {
+  background: color-mix(in srgb, var(--primary) 25%, var(--muted));
+}
+.contributionCell[data-level='2'] {
+  background: color-mix(in srgb, var(--primary) 45%, var(--muted));
+}
+.contributionCell[data-level='3'] {
+  background: color-mix(in srgb, var(--primary) 65%, var(--muted));
+}
+.contributionCell[data-level='4'] {
+  background: var(--primary);
+}
+.contributionCell[data-empty='true'] {
+  background: transparent;
+}
+.contributionMeta {
   margin-top: 12px;
   font-size: 12px;
   color: var(--muted-foreground);
@@ -346,10 +369,5 @@
   .sidebar {
     grid-template-columns: minmax(0, 1fr);
     gap: 26px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .profile a {
-    transition: none;
   }
 }

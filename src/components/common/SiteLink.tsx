@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { ComponentProps } from 'react'
 
-type TransitionLinkProps = ComponentProps<typeof Link>
+type SiteLinkProps = ComponentProps<typeof Link>
 
-export function TransitionLink({
+export function SiteLink({
   href,
   replace,
   scroll,
@@ -17,7 +17,7 @@ export function TransitionLink({
   prefetch = null,
   children,
   ...props
-}: TransitionLinkProps) {
+}: SiteLinkProps) {
   const hrefString = typeof href === 'string' ? href : ''
   const useNativeAnchor =
     hrefString.startsWith('http') ||

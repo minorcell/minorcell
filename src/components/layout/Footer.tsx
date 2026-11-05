@@ -14,7 +14,7 @@ export function Footer() {
           {/* oxlint-disable-next-line next/no-html-link-for-pages */}
           <a
             href="/feed.xml"
-            className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
           >
             <Icon name="rss-line" className="h-3.5 w-3.5" />
             RSS
@@ -24,7 +24,7 @@ export function Footer() {
               href={siteContent.contact.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
             >
               <Icon name="github-line" className="h-3.5 w-3.5" />
               GitHub
@@ -33,7 +33,7 @@ export function Footer() {
           {siteContent.contact.email ? (
             <a
               href={`mailto:${siteContent.contact.email}`}
-              className="inline-flex min-h-11 items-center gap-1.5 transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
             >
               <Icon name="mail-line" className="h-3.5 w-3.5" />
               邮件

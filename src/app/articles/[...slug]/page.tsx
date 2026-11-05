@@ -1,4 +1,4 @@
-import { TransitionLink } from '@/components/effects/PageTransition'
+import { SiteLink } from '@/components/common/SiteLink'
 import {
   getArticleBySlug,
   getAllArticles,
@@ -231,18 +231,18 @@ function TutorialStubView({ post, topicSlug }: TutorialStubViewProps) {
             页面会自动跳转；如果没有跳转，可以手动继续。
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4">
-            <TransitionLink
+            <SiteLink
               href={tutorialHref}
-              className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
+              className="type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往教程
-            </TransitionLink>
-            <TransitionLink
+            </SiteLink>
+            <SiteLink
               href="/articles"
-              className="type-meta font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="type-meta font-medium text-muted-foreground hover:text-foreground"
             >
               返回归档
-            </TransitionLink>
+            </SiteLink>
           </div>
         </div>
       </article>
@@ -272,12 +272,12 @@ function ArticleRedirectView({ target }: ArticleRedirectViewProps) {
             如果没有跳转，可以手动继续。
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4">
-            <TransitionLink
+            <SiteLink
               href={target}
-              className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
+              className="type-meta inline-flex h-11 items-center rounded-md bg-primary px-4 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
             >
               前往新地址
-            </TransitionLink>
+            </SiteLink>
           </div>
         </div>
       </article>

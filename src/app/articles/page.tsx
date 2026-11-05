@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { SectionHero } from '@/components/common/SectionHero'
-import { TransitionLink } from '@/components/effects/PageTransition'
-import { MotionSurface } from '@/components/effects/MotionPrimitives'
+import { SiteLink } from '@/components/common/SiteLink'
 import { JsonLd } from '@/components/seo/JsonLd'
 import {
   getAllArticles,
@@ -101,10 +100,10 @@ export default function ArticlesPage() {
               <ol className="m-0 list-none space-y-1 p-0">
                 {postsByYear[Number(year)].map((post) => (
                   <li key={post.slug}>
-                    <MotionSurface>
-                      <TransitionLink
+                    <div>
+                      <SiteLink
                         href={getContentHref(post)}
-                        className="grid gap-2 rounded-lg px-3 py-4 transition-colors duration-200 ease-out hover:bg-surface-hover motion-reduce:transition-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
+                        className="grid gap-2 rounded-lg px-3 py-4 hover:bg-surface-hover sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:px-4"
                       >
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
@@ -128,8 +127,8 @@ export default function ArticlesPage() {
                             {formatShortDate(post.metadata.date)}
                           </time>
                         ) : null}
-                      </TransitionLink>
-                    </MotionSurface>
+                      </SiteLink>
+                    </div>
                   </li>
                 ))}
               </ol>

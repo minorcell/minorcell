@@ -24,7 +24,7 @@ export default function Error({
         <button
           type="button"
           onClick={() => reset()}
-          className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground"
+          className="type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground"
         >
           重试
         </button>
@@ -32,7 +32,7 @@ export default function Error({
         {/* oxlint-disable-next-line next/no-html-link-for-pages */}
         <a
           href="/"
-          className="type-meta font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="type-meta font-medium text-muted-foreground hover:text-foreground"
         >
           返回首页
         </a>

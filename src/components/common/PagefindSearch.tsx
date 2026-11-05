@@ -1,9 +1,7 @@
 'use client'
 
-import { TransitionLink } from '@/components/effects/PageTransition'
-import { MotionOverlay } from '@/components/effects/MotionPrimitives'
+import { SiteLink } from '@/components/common/SiteLink'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import { useLenis } from 'lenis/react'
 import { createPortal } from 'react-dom'
 import { Icon } from '@/components/ui/icon'
 
@@ -58,7 +56,6 @@ export function PagefindSearch({
   const [bundleState, setBundleState] = useState<BundleState>('idle')
   const [isSearching, setIsSearching] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const lenis = useLenis()
   const pagefindRef = useRef<PagefindInstance | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -84,12 +81,10 @@ export function PagefindSearch({
     if (!isOverlay || !open) return
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    lenis?.stop()
     return () => {
       document.body.style.overflow = previousOverflow
-      if (previousOverflow !== 'hidden') lenis?.start()
     }
-  }, [isOverlay, open, lenis])
+  }, [isOverlay, open])
 
   useEffect(() => {
     if (!isOverlay || !open) return
@@ -256,16 +251,13 @@ export function PagefindSearch({
   }
 
   const resultsSection = (
-    <div
-      data-lenis-prevent
-      className="max-h-[60vh] flex-1 overflow-y-auto px-4 pb-4 sm:px-5 sm:pb-5"
-    >
+    <div className="max-h-[60vh] flex-1 overflow-y-auto overscroll-none px-4 pb-4 sm:px-5 sm:pb-5">
       {errorMessage && (
         <div className="type-caption mb-3 rounded-md bg-destructive/10 px-4 py-3 text-destructive">
           <span>{errorMessage}</span>
           <button
             type="button"
-            className="pressable ml-3 inline-flex min-h-11 items-center font-medium underline underline-offset-2"
+            className="ml-3 inline-flex min-h-11 items-center font-medium underline underline-offset-2"
             onClick={resetBundleState}
           >
             重试
@@ -273,14 +265,7 @@ export function PagefindSearch({
         </div>
       )}
 
-      {bundleState === 'loading' && (
-        <div className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground">
-          <Icon name="loader-4-line" className="h-4 w-4 animate-spin" />
-          <span>正在准备搜索</span>
-        </div>
-      )}
-
-      {!query.trim() && bundleState !== 'loading' && (
+      {!query.trim() && (
         <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
           输入关键词开始搜索
         </p>
@@ -290,16 +275,6 @@ export function PagefindSearch({
         <p className="type-meta mb-0 px-3 py-4 text-muted-foreground">
           没有找到相关内容
         </p>
-      )}
-
-      {isSearching && (
-        <div
-          className="type-meta flex items-center gap-2 px-3 py-4 text-muted-foreground"
-          aria-live="polite"
-        >
-          <Icon name="loader-4-line" className="h-4 w-4 animate-spin" />
-          <span>正在搜索</span>
-        </div>
       )}
 
       {hits.length > 0 && (
@@ -314,9 +289,9 @@ export function PagefindSearch({
           <ol className="m-0 list-none space-y-1 p-0">
             {hits.map((hit, index) => (
               <li key={`${hit.url}-${index}`}>
-                <TransitionLink
+                <SiteLink
                   href={hit.url}
-                  className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 transition-colors duration-150 ease-out hover:bg-surface-hover motion-reduce:transition-none"
+                  className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-md px-3 py-3.5 hover:bg-surface-hover"
                   onClick={onClose}
                 >
                   <div className="min-w-0">
@@ -337,8 +312,11 @@ export function PagefindSearch({
                       />
                     )}
                   </div>
-                  <Icon name="arrow-up-right-line" className="h-4 w-4 shrink-0 text-muted-foreground" />
-                </TransitionLink>
+                  <Icon
+                    name="arrow-up-right-line"
+                    className="h-4 w-4 shrink-0 text-muted-foreground"
+                  />
+                </SiteLink>
               </li>
             ))}
           </ol>
@@ -364,7 +342,7 @@ export function PagefindSearch({
             type="button"
             aria-label="关闭搜索"
             onClick={onClose}
-            className="pressable inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <Icon name="close-line" className="h-4 w-4" />
           </button>
@@ -372,7 +350,10 @@ export function PagefindSearch({
       </div>
 
       <div className="mx-4 my-4 flex items-center gap-3 rounded-lg bg-muted px-4 sm:mx-5">
-        <Icon name="search-line" className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <Icon
+          name="search-line"
+          className="h-4 w-4 shrink-0 text-muted-foreground"
+        />
         <input
           ref={inputRef}
           type="search"
@@ -394,7 +375,7 @@ export function PagefindSearch({
         {query && (
           <button
             type="button"
-            className="pressable inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-background hover:text-foreground"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-background hover:text-foreground"
             onClick={clearQuery}
             aria-label="清空搜索"
             title="清空搜索"
@@ -408,16 +389,17 @@ export function PagefindSearch({
   )
 
   if (isOverlay) {
+    if (!open) return null
+
     return createPortal(
-      <MotionOverlay
-        open={open}
-        onBackdropPointerDown={onClose}
-        preventScroll
-        className="fixed inset-0 z-search flex items-start justify-center overflow-y-auto bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
-        panelClassName="w-full max-w-3xl"
+      <div
+        className="fixed inset-0 z-search flex items-start justify-center overflow-y-auto overscroll-none bg-black/20 px-4 py-8 backdrop-blur-sm sm:px-6 sm:py-14"
+        onPointerDown={(event) => {
+          if (event.target === event.currentTarget) onClose?.()
+        }}
       >
-        {content}
-      </MotionOverlay>,
+        <div className="w-full max-w-3xl">{content}</div>
+      </div>,
       document.body,
     )
   }

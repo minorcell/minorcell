@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
 
@@ -30,43 +29,38 @@ export function ImageWave({ steps }: ImageWaveProps) {
       {/* Desktop-only scrollytelling. Mobile is rendered flat by
        * InteractiveTutorialView. */}
       <div className="flex gap-0 items-start">
-        {/* Left: sticky image panel — crossfades on step change */}
+        {/* Left: sticky image panel — switches instantly on step change */}
         <div className="w-[50%] shrink-0">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] flex items-center justify-center">
             <div
               className="relative w-full overflow-hidden rounded-lg bg-card"
               style={{ height: 'calc(100vh - 8rem)' }}
             >
-              <AnimatePresence initial={false} mode="sync">
-                <motion.img
-                  key={currentIndex}
-                  src={activeStep.src}
-                  alt={activeStep.alt || ''}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: 'easeInOut' }}
-                  className="absolute inset-0 m-auto max-w-full object-contain"
-                  style={{ maxHeight: 'calc(100vh - 10rem)' }}
-                />
-              </AnimatePresence>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={currentIndex}
+                src={activeStep.src}
+                alt={activeStep.alt || ''}
+                className="absolute inset-0 m-auto max-w-full object-contain"
+                style={{ maxHeight: 'calc(100vh - 10rem)' }}
+              />
             </div>
           </div>
         </div>
 
-        {/* Right: scrollable prose — spring opacity matching CodeWave */}
+        {/* Right: scrollable prose */}
         <div className="w-[50%] pl-8">
           <div className="h-[20vh]" />
           {steps.map((s, i) => (
-            <motion.div
+            <div
               key={i}
               ref={setRef(i) as React.Ref<HTMLDivElement>}
-              animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
-              transition={{ type: 'spring', stiffness: 24, damping: 12 }}
-              className="min-h-[50vh] py-8"
+              className={`min-h-[50vh] py-8 ${
+                i === currentIndex ? 'opacity-100' : 'opacity-30'
+              }`}
             >
               <MarkdownRenderer content={s.prose} />
-            </motion.div>
+            </div>
           ))}
           <div className="h-[20vh]" />
         </div>
