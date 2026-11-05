@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react'
 import { Icon } from '@/components/ui/icon'
-import { MotionIconSwap } from '@/components/effects/MotionPrimitives'
 
 /**
  * Code block wrapper for server-rendered markdown: keeps the pre as plain
@@ -37,15 +36,15 @@ export function CodeBlock({ children, ...props }: React.ComponentProps<'pre'>) {
         onClick={() => void onCopy()}
         aria-label={copied ? '已复制' : '复制代码'}
         title={copied ? '已复制' : '复制代码'}
-        className="pressable absolute top-1.5 right-1.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-100 hover:bg-muted hover:text-foreground focus-visible:pointer-events-auto focus-visible:opacity-100 [@media(hover:hover)]:pointer-events-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:opacity-100 after:absolute after:top-1/2 after:left-1/2 after:size-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']"
+        className="absolute top-1.5 right-1.5 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground opacity-100 hover:bg-muted hover:text-foreground focus-visible:pointer-events-auto focus-visible:opacity-100 [@media(hover:hover)]:pointer-events-none [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:opacity-100 after:absolute after:top-1/2 after:left-1/2 after:size-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']"
       >
-        <MotionIconSwap active={copied}>
+        <span className="inline-flex">
           {copied ? (
             <Icon name="check-line" className="h-3.5 w-3.5 text-link-accent" />
           ) : (
             <Icon name="file-copy-line" className="h-3.5 w-3.5" />
           )}
-        </MotionIconSwap>
+        </span>
       </button>
     </div>
   )

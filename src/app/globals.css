@@ -1,7 +1,5 @@
 @import 'tailwindcss';
-@import 'lenis/dist/lenis.css';
 @import 'streamdown/styles.css';
-@import 'tw-animate-css';
 @custom-variant dark (&:where(.dark, .dark *));
 @source "../../node_modules/streamdown/dist/*.js";
 
@@ -79,27 +77,6 @@
   --link-accent: #3f6f24;
   --surface-hover: #ececef;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 16%);
-
-  /* Shared motion language. Keep feedback quick and content transitions
-   * noticeably slower so movement communicates hierarchy instead of noise. */
-  --motion-duration-fast: 140ms;
-  --motion-duration-base: 220ms;
-  --motion-duration-content: 420ms;
-  --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* CellularWordmark canvas palette — consumed at runtime via
-   * getComputedStyle in CellularWordmark.tsx, so rebrands only touch
-   * this file. */
-  --wordmark-palette-1: #31571d;
-  --wordmark-palette-2: #3f6f24;
-  --wordmark-palette-3: #4b7d2e;
-  --wordmark-palette-4: #365f20;
-  --wordmark-palette-5: #5f8f43;
-  --wordmark-palette-6: #4b7d2e;
-  --wordmark-deep-1: #31571d;
-  --wordmark-deep-2: #365f20;
-  --wordmark-deep-3: #294a18;
-  --wordmark-deep-4: #3f6f24;
 }
 
 /* Dark mode */
@@ -132,17 +109,6 @@
   --link-accent: #9bc77f;
   --surface-hover: #323234;
   --shadow-overlay: 0 18px 60px rgb(0 0 0 / 45%);
-
-  --wordmark-palette-1: #9bc77f;
-  --wordmark-palette-2: #b1d798;
-  --wordmark-palette-3: #78a85b;
-  --wordmark-palette-4: #c7e4b5;
-  --wordmark-palette-5: #86b56a;
-  --wordmark-palette-6: #9bc77f;
-  --wordmark-deep-1: #78a85b;
-  --wordmark-deep-2: #86b56a;
-  --wordmark-deep-3: #9bc77f;
-  --wordmark-deep-4: #6f9d54;
 }
 
 @theme inline {
@@ -192,17 +158,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  /*
-   * Lenis owns smooth scrolling on normal routes. Tutorial detail pages are
-   * intentionally excluded because their scrollytelling relies on native
-   * root scrolling, so keep anchor jumps smooth only when Lenis is absent.
-   */
-  @media (prefers-reduced-motion: no-preference) {
-    html:not(.lenis):focus-within {
-      scroll-behavior: smooth;
-    }
+    overscroll-behavior: none;
   }
 
   body {
@@ -211,6 +167,7 @@
     font-size: var(--type-body-size);
     line-height: var(--type-body-leading);
     text-wrap: pretty;
+    overscroll-behavior: none;
   }
 
   h1,
@@ -274,9 +231,6 @@
     );
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
-    transition:
-      text-decoration-color 120ms ease-out,
-      color 120ms ease-out;
   }
 
   :where(p) > a:hover {
@@ -419,20 +373,6 @@
   min-height: 2.5rem;
   border-radius: 6px;
   padding: 0.4rem 0.75rem;
-  transition:
-    background-color var(--motion-duration-fast) var(--motion-ease-standard),
-    color var(--motion-duration-fast) var(--motion-ease-standard);
-}
-
-/* Button-sized controls. 0.96 is the press scale; anything smaller feels exaggerated. */
-.pressable {
-  transition-property: background-color, color, opacity, scale;
-  transition-duration: 150ms;
-  transition-timing-function: ease-out;
-}
-
-.pressable:active {
-  scale: 0.96;
 }
 
 .nav-link:hover {
@@ -448,21 +388,6 @@
   background: var(--card);
   color: var(--foreground);
   font-weight: 600;
-}
-
-.reading-progress {
-  transform-origin: left;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-link,
-  .pressable {
-    transition: none;
-  }
-
-  .pressable:active {
-    scale: 1;
-  }
 }
 
 .article-markdown {
@@ -555,6 +480,7 @@
   padding: 1rem 1.125rem;
   background: var(--code-surface);
   overflow-x: auto;
+  overscroll-behavior: none;
   font-size: 0.92em;
   line-height: 1.65;
 }
@@ -636,9 +562,6 @@
   );
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  transition:
-    text-decoration-color 0.18s ease,
-    color 0.18s ease;
 }
 
 .article-markdown :where(a:hover) {
@@ -765,11 +688,6 @@
   z-index: 1400;
 }
 
-@utility z-progress {
-  /* Above the sticky navbar, below menus, drawers, and search overlays. */
-  z-index: 1210;
-}
-
 .skip-link {
   position: absolute;
   top: 1rem;
@@ -797,7 +715,7 @@
   border: 0;
   background: transparent;
   color: var(--foreground);
-  overscroll-behavior: contain;
+  overscroll-behavior: none;
 }
 
 .discussion-dialog[open] {
@@ -832,23 +750,6 @@
   background: rgb(0 0 0 / 30%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .discussion-dialog[open] {
-    animation: discussion-drawer-in var(--motion-duration-base)
-      var(--motion-ease-standard);
-  }
-
-  .external-link-dialog::backdrop {
-    backdrop-filter: blur(4px);
-  }
-}
-
-@keyframes discussion-drawer-in {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
+.external-link-dialog::backdrop {
+  backdrop-filter: blur(4px);
 }

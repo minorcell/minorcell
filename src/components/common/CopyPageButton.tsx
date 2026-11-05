@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@/components/ui/icon'
-import { MotionIconSwap } from '@/components/effects/MotionPrimitives'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -93,13 +92,13 @@ export function CopyPageButton({ content, className }: CopyPageButtonProps) {
         title="复制正文"
         onClick={() => void onCopy()}
       >
-        <MotionIconSwap active={status === 'copied'}>
+        <span className="inline-flex">
           {status === 'copied' ? (
             <Icon name="check-line" className="h-4 w-4 text-link-accent" />
           ) : (
             <Icon name="file-copy-line" className="h-4 w-4" />
           )}
-        </MotionIconSwap>
+        </span>
       </Button>
     </div>
   )

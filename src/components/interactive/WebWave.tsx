@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 import { createCodePlugin } from '@streamdown/code'
 import { MarkdownRenderer } from '@/components/common/MarkdownRenderer'
 import { useVisibleStepIndex } from '../../hooks/useVisibleStepIndex'
@@ -100,10 +99,7 @@ function SourcePanel({ code }: { code: string }) {
   const lines = code.split('\n')
 
   return (
-    <div
-      data-lenis-prevent
-      className="webwave-source-panel h-full overflow-auto overscroll-contain"
-    >
+    <div className="webwave-source-panel h-full overflow-auto overscroll-none">
       <pre className="type-code px-4 py-4 sm:px-5">
         <code>
           {lines.map((line, i) => (
@@ -180,7 +176,7 @@ function WebPanel({
             role="tab"
             aria-selected={mode === 'preview'}
             onClick={() => onToggle('preview')}
-            className={`inline-flex min-h-10 items-center rounded px-3 transition-colors ${
+            className={`inline-flex min-h-10 items-center rounded px-3 ${
               mode === 'preview'
                 ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -193,7 +189,7 @@ function WebPanel({
             role="tab"
             aria-selected={mode === 'source'}
             onClick={() => onToggle('source')}
-            className={`inline-flex min-h-10 items-center rounded px-3 transition-colors ${
+            className={`inline-flex min-h-10 items-center rounded px-3 ${
               mode === 'source'
                 ? 'bg-card text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -234,9 +230,6 @@ export function WebWave({ steps }: WebWaveProps) {
   // View mode is per-step so users can toggle independently per demo.
   const [viewModes, setViewModes] = useState<Record<number, ViewMode>>({})
 
-  // Stable identity for the active step container so framer-motion crossfade triggers per step.
-  const activeKey = useMemo(() => `web-${currentIndex}`, [currentIndex])
-
   if (steps.length === 0) return null
 
   const activeIndex = Math.min(currentIndex, steps.length - 1)
@@ -250,24 +243,15 @@ export function WebWave({ steps }: WebWaveProps) {
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <div className="flex h-full items-stretch px-6 py-6 xl:px-8">
               <div className="relative flex-1">
-                <AnimatePresence mode="sync">
-                  <motion.div
-                    key={activeKey}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: 'easeInOut' }}
-                    className="absolute inset-0"
-                  >
-                    <WebPanel
-                      step={activeStep}
-                      mode={activeMode}
-                      onToggle={(m) =>
-                        setViewModes((prev) => ({ ...prev, [activeIndex]: m }))
-                      }
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                <div className="absolute inset-0">
+                  <WebPanel
+                    step={activeStep}
+                    mode={activeMode}
+                    onToggle={(m) =>
+                      setViewModes((prev) => ({ ...prev, [activeIndex]: m }))
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -275,15 +259,15 @@ export function WebWave({ steps }: WebWaveProps) {
 
         <div className="w-[50%]">
           {steps.map((s, i) => (
-            <motion.div
+            <div
               key={i}
               ref={setRef(i) as React.Ref<HTMLDivElement>}
-              animate={{ opacity: i === currentIndex ? 1 : 0.3 }}
-              transition={{ type: 'spring', stiffness: 24, damping: 12 }}
-              className="min-h-[60vh] px-6 py-8 xl:px-8"
+              className={`min-h-[60vh] px-6 py-8 xl:px-8 ${
+                i === currentIndex ? 'opacity-100' : 'opacity-30'
+              }`}
             >
               <MarkdownRenderer content={s.prose} />
-            </motion.div>
+            </div>
           ))}
           <div className="h-[20vh]" />
         </div>

@@ -1,4 +1,4 @@
-import { TransitionLink } from '@/components/effects/PageTransition'
+import { SiteLink } from '@/components/common/SiteLink'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -19,18 +19,18 @@ export default function NotFound() {
         页面可能已被移动、重命名或删除。
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-        <TransitionLink
+        <SiteLink
           href="/"
-          className="pressable type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
+          className="type-meta inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground hover:bg-accent-foreground hover:text-primary-foreground"
         >
           返回首页
-        </TransitionLink>
-        <TransitionLink
+        </SiteLink>
+        <SiteLink
           href="/articles"
-          className="type-meta font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="type-meta font-medium text-muted-foreground hover:text-foreground"
         >
           浏览文章
-        </TransitionLink>
+        </SiteLink>
       </div>
     </div>
   )

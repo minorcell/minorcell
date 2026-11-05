@@ -9,7 +9,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeShiki from '@shikijs/rehype'
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
 import type { Element, ElementContent, Root, RootContent } from 'hast'
-import { ZoomImage } from '@/components/common/ZoomImage'
+import { ContentImage } from '@/components/common/ContentImage'
 import { CodeBlock } from '@/components/common/CodeBlock'
 import { MermaidChart } from '@/components/common/MermaidChart'
 import { CODE_THEME } from '@/lib/content-renderer/highlight'
@@ -150,7 +150,7 @@ function Paragraph({ children, ...props }: React.ComponentProps<'p'>) {
   if (
     onlyChild &&
     React.isValidElement(onlyChild) &&
-    (onlyChild.type === ZoomImage || onlyChild.type === 'img')
+    (onlyChild.type === ContentImage || onlyChild.type === 'img')
   ) {
     return <figure className="my-8">{onlyChild}</figure>
   }
@@ -170,7 +170,7 @@ function SmartDiv({ children, ...props }: React.ComponentProps<'div'>) {
 const components = {
   h1: HeadingOne,
   p: Paragraph,
-  img: ZoomImage,
+  img: ContentImage,
   pre: CodeBlock,
   div: SmartDiv,
 }

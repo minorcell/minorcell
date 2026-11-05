@@ -50,7 +50,6 @@
   stroke: var(--muted-foreground);
   stroke-width: 1;
   opacity: 0.2;
-  transition: opacity 180ms;
   stroke-linejoin: round;
 }
 .routes path[data-active] {
@@ -113,9 +112,6 @@
   border-radius: 6px;
   background: var(--background);
   color: var(--activity-color);
-  transition:
-    color 160ms,
-    background 160ms;
 }
 .project[aria-pressed='true'] .pin,
 .project:hover .pin {
@@ -210,6 +206,7 @@
   z-index: 3;
   max-height: calc(100% - 24px);
   overflow: auto;
+  overscroll-behavior: none;
   padding: 18px;
   border-radius: 6px;
   background: var(--background);
@@ -273,6 +270,7 @@
   margin: 20px 0 16px;
   padding: 3px 2px 9px;
   overflow-x: auto;
+  overscroll-behavior: none;
   scrollbar-width: thin;
   touch-action: pan-x;
 }
@@ -369,11 +367,5 @@
   }
   .legend {
     gap: 8px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pin,
-  .routes path {
-    transition: none;
   }
 }

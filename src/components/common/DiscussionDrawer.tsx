@@ -10,20 +10,15 @@ import {
   useState,
 } from 'react'
 import dynamic from 'next/dynamic'
-import { useLenis } from 'lenis/react'
 import { Icon } from '@/components/ui/icon'
 import { FloatingActionButton } from '@/components/common/FloatingActionButton'
-import { MotionLoading } from '@/components/effects/MotionPrimitives'
 
 const GiscusComments = dynamic(
   () =>
     import('@/components/common/GiscusComments').then(
       (module) => module.GiscusComments,
     ),
-  {
-    ssr: false,
-    loading: () => <MotionLoading label="正在加载讨论" />,
-  },
+  { ssr: false },
 )
 
 export interface DiscussionDrawerHandle {
@@ -42,7 +37,6 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
     const triggerRef = useRef<HTMLButtonElement>(null)
     const wasOpenRef = useRef(false)
     const titleId = useId()
-    const lenis = useLenis()
 
     const openDrawer = useCallback(() => {
       setOpen(true)
@@ -81,12 +75,10 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
       if (!open) return
       const previousOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
-      lenis?.stop()
       return () => {
         document.body.style.overflow = previousOverflow
-        if (previousOverflow !== 'hidden') lenis?.start()
       }
-    }, [open, lenis])
+    }, [open])
 
     useEffect(() => {
       if (wasOpenRef.current && !open) {
@@ -100,7 +92,12 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
         {!hideTrigger && (
           <FloatingActionButton
             ref={triggerRef}
-            icon={<Icon name="message-3-line" className="h-[15px] w-[15px] opacity-70" />}
+            icon={
+              <Icon
+                name="message-3-line"
+                className="h-[15px] w-[15px] opacity-70"
+              />
+            }
             label="讨论"
             onClick={openDrawer}
             hidden={open}
@@ -122,16 +119,13 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
                   type="button"
                   aria-label="关闭讨论"
                   onClick={close}
-                  className="pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <Icon name="close-line" className="h-4 w-4" />
                 </button>
               </div>
 
-              <div
-                data-lenis-prevent
-                className="flex-1 overflow-y-auto px-6 pb-7 sm:px-8"
-              >
+              <div className="flex-1 overflow-y-auto overscroll-none px-6 pb-7 sm:px-8">
                 <GiscusComments term={discussionTerm} />
               </div>
             </>

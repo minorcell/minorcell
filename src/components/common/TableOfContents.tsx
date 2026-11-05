@@ -1,13 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import type Lenis from 'lenis'
-import { useLenis } from 'lenis/react'
 import { cn } from '@/lib/utils'
-import {
-  MotionHighlight,
-  MotionLayoutGroup,
-} from '@/components/effects/MotionPrimitives'
 
 interface HeadingItem {
   id: string
@@ -15,17 +9,12 @@ interface HeadingItem {
   level: 2 | 3
 }
 
-function scrollToHeading(id: string, lenis?: Lenis, immediate = false) {
+function scrollToHeading(id: string) {
   const target = document.getElementById(id)
   if (!target) return
 
-  if (lenis) {
-    lenis.scrollTo(target, { offset: -80, immediate })
-    return
-  }
-
   const top = target.getBoundingClientRect().top + window.scrollY - 80
-  window.scrollTo({ top, behavior: immediate ? 'auto' : 'smooth' })
+  window.scrollTo({ top, behavior: 'auto' })
 }
 
 interface Props {
@@ -33,7 +22,6 @@ interface Props {
 }
 
 export function TableOfContents({ headings }: Props) {
-  const lenis = useLenis()
   const [activeId, setActiveId] = useState<string | null>(null)
   const listRef = useRef<HTMLOListElement>(null)
   const activeLinkRef = useRef<HTMLAnchorElement>(null)
@@ -44,13 +32,10 @@ export function TableOfContents({ headings }: Props) {
     // Scroll to hash on initial load
     const hash = window.location.hash.slice(1)
     if (hash) {
-      const timer = window.setTimeout(
-        () => scrollToHeading(hash, lenis, true),
-        150,
-      )
+      const timer = window.setTimeout(() => scrollToHeading(hash), 150)
       return () => window.clearTimeout(timer)
     }
-  }, [headings, lenis])
+  }, [headings])
 
   // Scroll-spy: find the heading whose top is just above the viewport threshold
   useEffect(() => {
@@ -109,11 +94,10 @@ export function TableOfContents({ headings }: Props) {
         <div className="type-caption mb-2 shrink-0 px-3 font-medium text-muted-foreground">
           目录
         </div>
-        <MotionLayoutGroup id="article-toc">
+        <div id="article-toc">
           <ol
             ref={listRef}
-            data-lenis-prevent
-            className="m-0 min-h-0 list-none space-y-0.5 overflow-y-auto overscroll-contain p-0 pr-1 [scrollbar-gutter:stable]"
+            className="m-0 min-h-0 list-none space-y-0.5 overflow-y-auto overscroll-none p-0 pr-1 [scrollbar-gutter:stable]"
           >
             {headings.map((h) => {
               const isActive = activeId === h.id
@@ -126,10 +110,10 @@ export function TableOfContents({ headings }: Props) {
                     onClick={(e) => {
                       e.preventDefault()
                       window.history.pushState(null, '', `#${h.id}`)
-                      scrollToHeading(h.id, lenis)
+                      scrollToHeading(h.id)
                     }}
                     className={cn(
-                      'type-caption relative isolate flex min-h-10 items-center rounded-md px-3 py-2 transition-colors duration-150',
+                      'type-caption relative isolate flex min-h-10 items-center rounded-md px-3 py-2',
                       h.level === 3 && 'pl-6',
                       isActive
                         ? 'font-medium text-accent-foreground'
@@ -137,7 +121,10 @@ export function TableOfContents({ headings }: Props) {
                     )}
                   >
                     {isActive ? (
-                      <MotionHighlight layoutId="toc-active-highlight" />
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 z-0 rounded-md bg-accent"
+                      />
                     ) : null}
                     <span className="relative z-10">{h.text}</span>
                   </a>
@@ -145,7 +132,7 @@ export function TableOfContents({ headings }: Props) {
               )
             })}
           </ol>
-        </MotionLayoutGroup>
+        </div>
       </div>
     </nav>
   )

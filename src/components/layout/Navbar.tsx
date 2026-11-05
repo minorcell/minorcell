@@ -5,10 +5,6 @@ import { Icon } from '@/components/ui/icon'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
-  MotionActiveIndicator,
-  MotionButton,
-} from '@/components/effects/MotionPrimitives'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -82,7 +78,7 @@ export function Navbar() {
         <a
           href="/"
           aria-label={siteContent.name}
-          className="navbar-brand inline-flex min-h-11 items-center rounded-md font-semibold text-foreground transition-colors hover:text-link-accent"
+          className="navbar-brand inline-flex min-h-11 items-center rounded-md font-semibold text-foreground hover:text-link-accent"
         >
           天天学习，好好向上。
         </a>
@@ -98,32 +94,35 @@ export function Navbar() {
             >
               {item.label}
               {isActive(item.href) ? (
-                <MotionActiveIndicator layoutId="site-nav-active" />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute right-2.5 bottom-0.5 left-2.5 h-0.5 rounded-full bg-link-accent"
+                />
               ) : null}
             </a>
           ))}
 
-          <MotionButton
+          <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="ml-1 inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
+            className="ml-1 inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
             aria-label="搜索"
             title="搜索（⌘K）"
           >
             <Icon name="search-line" className="h-4 w-4" />
-          </MotionButton>
+          </button>
         </nav>
 
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <MotionButton
+              <button
                 type="button"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground"
                 aria-label="打开导航菜单"
               >
                 <Icon name="menu-line" className="h-5 w-5" />
-              </MotionButton>
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"

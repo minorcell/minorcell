@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { LenisProvider } from '@/components/effects/LenisProvider'
-import { MotionProvider } from '@/components/effects/MotionProvider'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
@@ -98,18 +96,14 @@ export default function RootLayout({
         <a className="skip-link" href="#main">
           跳到正文
         </a>
-        <MotionProvider>
-          <LenisProvider>
-            <ExternalLinkGuard />
-            <div className="relative z-10 flex min-h-screen flex-col">
-              <Navbar />
-              <main id="main" tabIndex={-1} className="relative flex-1">
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </LenisProvider>
-        </MotionProvider>
+        <ExternalLinkGuard />
+        <div className="relative z-10 flex min-h-screen flex-col">
+          <Navbar />
+          <main id="main" tabIndex={-1} className="relative flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   )
