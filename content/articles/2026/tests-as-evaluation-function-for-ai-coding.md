@@ -38,7 +38,7 @@ order: 71
 
 但大模型在训练时，依靠评估函数（Evaluation Function / Reward Model）来判断每一步迭代的好坏，从而逐步收敛到最优解。那么在 AI Agent 替我们写代码的环节，它的“评估函数”是什么？
 
-**测试**这一定是评估函数中比较重要的一部分。
+**测试**一定是评估函数中比较重要的一部分。
 
 没有测试，AI 的生成就是无锚漂泊；而 100% 的测试覆盖率，就是给 AI 建立一套极其严密、确定的反馈机制。
 
@@ -54,7 +54,78 @@ order: 71
 
 因为严格的测试框架（如 Vitest Code Coverage、Go Code Coverage ）要求**每一个分支（Branch）、每一个条件判断必须被测试用例真实击中**。如果 AI 写了 5 层防御性判断，它就必须为这 5 层极其罕见的分支各自编写测试用例。
 
-{{need_example}}
+### 来看一个具体的 TypeScript 对比示例：
+
+**场景**：编写一个简单的用户 ID 格式化函数。
+
+AI 的直觉是“安全第一”，因此会习惯性地编写大量虽然符合类型检查，但逻辑上可能永远不会跑进去的代码。
+
+```typescript
+// formatUserId.ts
+interface UserInfo {
+  id?: string | number;
+  prefix?: string;
+}
+
+export function formatUserId(user: UserInfo | null | undefined): string {
+  // 防御性判断 1: 输入为空
+  if (!user) {
+    return 'GUEST_000';
+  }
+
+  // 防御性判断 2: id 不存在或为空
+  if (user.id === null || user.id === undefined || user.id === '') {
+    return 'UNKNOWN_000';
+  }
+
+  // 防御性判断 3: 处理 number 类型的 id
+  let finalId: string;
+  if (typeof user.id === 'number') {
+    finalId = user.id.toFixed(0); // 确保没有小数
+  } else {
+    // 防御性判断 4: 兜底 string 类型
+    finalId = String(user.id);
+  }
+
+  // 处理前缀逻辑
+  const prefix = user.prefix ? user.prefix.trim() : 'USER';
+  return `${prefix}_${finalId}`;
+}
+
+```
+
+为了让这段代码达到 **100% Branch Coverage**，AI（或人类）必须编写 6~7 个测试用例来覆盖：
+
+* Input 为 null
+* Input 为 {}
+* id 为 ''
+* id 为 number
+* id 为 string
+* prefix 存在、为空、全空格。
+
+#### 100% 覆盖率倒逼下，AI 生成的“精简版”代码：
+
+当 AI 意识到编写那些防御分支的测试用例成本，高于精简逻辑本身时，它会更倾向于使用现代语法和合理的上游类型约束来简化逻辑。
+
+```typescript
+// formatUserId.ts (精简版)
+interface UserInfo {
+  // 合理的上游类型约束，避免下游做各种空判断
+  id: string | number;
+  prefix?: string;
+}
+
+export function formatUserId(user: UserInfo): string {
+  // 利用 Nullish Coalescing and Optional Chaining 简化分支
+  const prefix = user.prefix?.trim() || 'USER';
+  
+  // 利用 String 构造函数简化类型转换判断
+  const finalId = String(user.id);
+
+  return `${prefix}_${finalId}`;
+}
+
+```
 
 为了满足 100% 覆盖率的要求，AI 在自我纠偏的过程中，被迫学会了**写出精简、直接、无冗余防御的代码**。这种“倒逼”机制，让生成的代码质量得到了肉眼可见的优雅提升。
 
@@ -66,7 +137,7 @@ order: 71
 
 最终，这个 3D Web 项目在我们的测试环境中实现了 **120 帧稳定流畅运行**，一些四五年前的笔记本都可以流畅运行。
 
-> 在此体验： [https://spider.minorcell.top](蛛小八)
+> 在此体验： [蛛小八](https://spider.minorcell.top)
 
 正是这种“测试/性能基准 -> 数据反馈 -> AI 针对性重构”的闭环，让原本复杂的性能调优变得可量化、可自动迭代。
 
@@ -78,6 +149,6 @@ order: 71
 
 如果你也在让 AI 承接大面积的代码交付，不妨试试给它装上 100% 测试覆盖率的“评估函数”，看看它能带给你怎样的惊喜。
 
-- 项目源码参考：
-- [Spider - 3D Web 浏览器渲染](https://github.com/minorcell/spider)
-- [Open Anywhere - 黑客松作品](https://github.com/open-anywhere/open-anywhere)
+* 项目源码参考：
+* [Spider - 3D Web 浏览器渲染](https://www.google.com/search?q=https%3A%2F%2Fgithub.com%2Fminorcell%2Fspider)
+* [Open Anywhere - 黑客松作品](https://www.google.com/search?q=https%3A%2F%2Fgithub.com%2Fopen-anywhere%2Fopen-anywhere)
