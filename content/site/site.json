@@ -37,8 +37,14 @@
       "description": "GitHub 公开档案、开源仓库与贡献记录"
     }
   ],
+  "profile": {
+    "location": "上海",
+    "roles": ["产品架构师", "FDE"]
+  },
   "contact": {
     "github": "https://github.com/minorcell",
-    "email": "minorcell6789@gmail.com"
+    "email": "minorcell6789@gmail.com",
+    "bilibili": "https://space.bilibili.com/1410369961",
+    "juejin": "https://juejin.cn/user/2280829967146779"
   }
 }

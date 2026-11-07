@@ -15,9 +15,15 @@ export interface SiteContent {
   description: string
   keywords: string[]
   sections: SiteSection[]
+  profile: {
+    location: string
+    roles: string[]
+  }
   contact: {
     github?: string
     email?: string
+    bilibili?: string
+    juejin?: string
   }
 }
 

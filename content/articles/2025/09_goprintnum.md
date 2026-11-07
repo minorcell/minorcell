@@ -15,7 +15,7 @@ tags:
   - 通道Channel
   - 后端开发
   - Go实战
-author: mCell
+author: minorcell
 ---
 
 ![008.jpg](https://stack-mcell.tos-cn-shanghai.volces.com/008.jpg)

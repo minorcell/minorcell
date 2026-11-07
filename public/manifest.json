@@ -1,6 +1,6 @@
 {
   "name": "minorcell",
-  "short_name": "mcell",
+  "short_name": "minorcell",
   "description": "👋，我是 minorcell，这是我的个人站点，这里写代码，也写判断。记录真实问题、技术选择，以及把想法做成产品的过程。",
   "start_url": "/",
   "scope": "/",

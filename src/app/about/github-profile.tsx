@@ -149,10 +149,8 @@ export default function GitHubProfile({
     if (!development && !failed) return null
 
     return (
-      <div
-        className={`mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10 ${styles.status}`}
-      >
-        <h1>关于</h1>
+      <div className={styles.status}>
+        <p className={styles.statusTitle}>公开档案</p>
         <output>
           {development
             ? '本地 GitHub 数据暂不可用。'
@@ -188,61 +186,33 @@ function ProfileContent({ snapshot }: { snapshot: GitHubSnapshot }) {
   }).format(new Date(snapshot.fetchedAt))
 
   return (
-    <div
-      className={`mx-auto w-full max-w-[1280px] px-5 pb-16 sm:px-8 sm:pb-24 lg:px-10 ${styles.profile}`}
-    >
-      <header className={styles.identity}>
-        <div className={styles.identityRow}>
-          <div className={styles.identityText}>
-            <div className={styles.nameRow}>
-              <h1>{profile.login}</h1>
-              {profile.company ? (
-                <span className={styles.company}>{profile.company}</span>
-              ) : null}
-            </div>
-            {profile.bio ? <p className={styles.bio}>{profile.bio}</p> : null}
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={profile.avatarUrl}
-            alt={`${profile.login} 的 GitHub 头像`}
-            width={64}
-            height={64}
-            className={styles.avatar}
-            decoding="async"
-          />
-        </div>
+    <div className={styles.profile}>
+      {organizations.length ? (
         <div className={styles.profileLinks}>
-          <a href={profile.url} target="_blank" rel="noopener noreferrer">
-            <Icon name="github-line" aria-hidden="true" className="h-4 w-4" />
-            GitHub
-          </a>
-          {organizations.length ? (
-            <ul className={styles.organizations} aria-label="公开组织">
-              {organizations.map((org) => (
-                <li key={org.login}>
-                  <a
-                    href={org.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`组织：${org.login}`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={org.avatarUrl}
-                      alt=""
-                      width={24}
-                      height={24}
-                      loading="lazy"
-                    />
-                    {org.login}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <ul className={styles.organizations} aria-label="公开组织">
+            {organizations.map((org) => (
+              <li key={org.login}>
+                <a
+                  href={org.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`组织：${org.login}`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={org.avatarUrl}
+                    alt=""
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                  />
+                  {org.login}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </header>
+      ) : null}
 
       <section
         className={styles.activity}

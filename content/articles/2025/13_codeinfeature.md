@@ -16,7 +16,7 @@ tags:
   - 意图编程
   - 技本趋势
   - 编程未来
-author: mCell
+author: minorcell
 ---
 
 ![022.webp](https://stack-mcell.tos-cn-shanghai.volces.com/022.webp)

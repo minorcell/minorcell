@@ -70,9 +70,9 @@ export default function HomePage() {
             ，我是
             <span> </span>
             <a
-              href="https://github.com/minorcell"
+              href={siteContent.contact.github ?? 'https://github.com/minorcell'}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="me noopener noreferrer"
               className="text-link-accent hover:underline"
             >
               minorcell

@@ -17,7 +17,7 @@ tags:
   - 闭包
   - ES6+
   - 函数式编程
-author: mCell
+author: minorcell
 ---
 
 ![010.png](https://stack-mcell.tos-cn-shanghai.volces.com/010.png)

@@ -4,7 +4,7 @@ date: 2025-10-07
 updated: 2025-10-07
 title: Agents.md 是什么
 description: 深入解析 AGENTS.md 文件在 AI 编程工具生态中的作用，了解它与 MCP 协议的区别，以及如何为 AI 代理提供结构化项目上下文。
-author: mcell
+author: minorcell
 tags:
   - AI 编程
   - AGENTS.md

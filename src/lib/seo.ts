@@ -5,10 +5,15 @@ const baseUrl = siteContent.url.replace(/\/$/, '')
 const defaultSocialImage = '/og-image.png'
 
 export const siteAuthor = {
-  name: 'mcell',
-  alternateName: 'minorcell',
+  name: 'minorcell',
+  legalName: '邓军辉',
   github: siteContent.contact.github ?? 'https://github.com/minorcell',
+  bilibili: siteContent.contact.bilibili,
+  juejin: siteContent.contact.juejin,
   email: siteContent.contact.email,
+  location: siteContent.profile.location,
+  addressLocality: 'Shanghai',
+  jobTitle: siteContent.profile.roles,
   aboutPath: '/about',
   description: siteContent.description,
 }
@@ -17,7 +22,7 @@ export const defaultSeoKeywords = Array.from(
   new Set([
     ...siteContent.keywords,
     'minorcell',
-    'mcell',
+    siteAuthor.legalName,
     '个人技术博客',
     'AI 工程',
     '软件开发',
@@ -170,7 +175,10 @@ export function buildArticleMetadata({
     ...pageMetadata,
     category: section,
     authors: [
-      { name: siteAuthor.name, url: toAbsoluteUrl(siteAuthor.aboutPath) },
+      {
+        name: siteAuthor.legalName,
+        url: toAbsoluteUrl(siteAuthor.aboutPath),
+      },
     ],
     openGraph: {
       ...pageMetadata.openGraph,

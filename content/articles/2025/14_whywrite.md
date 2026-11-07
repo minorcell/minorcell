@@ -15,7 +15,7 @@ tags:
   - 流量分析
   - 价值创造
   - 写作思考
-author: mCell
+author: minorcell
 ---
 
 ![027.avif](https://stack-mcell.tos-cn-shanghai.volces.com/027.avif)
@@ -66,7 +66,7 @@ author: mCell
 
 这个选择的必然结果，就是我必须拥有一个自己完全控制的写作空间。在那里，我可以决定一切。文章的形式、长短、标题、发布时间，都只服务于一个目的：**把我想表达的知识，以最清晰、最准确的方式表达出来。**
 
-所以我建立了我的个人站点 [Minor Cell - 工程师的技术笔记](https://minorcell.top)。
+所以我建立了我的个人站点 [minorcell](https://minorcell.top)。
 
 我清楚，这意味着走上了一条更安静、更孤独的路。在初期，它不会有平台带来的巨大曝光。但是，我相信文字的力量。真正有价值的内容，会像一颗种子，慢慢生根发芽，最终会找到那些需要它的读者。
 

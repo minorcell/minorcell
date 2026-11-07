@@ -38,7 +38,6 @@ const organizationJsonLd = {
   '@type': 'Organization',
   '@id': organizationId,
   name: siteContent.name,
-  alternateName: siteAuthor.name,
   url: websiteUrl,
   logo: {
     '@type': 'ImageObject',
@@ -48,13 +47,18 @@ const organizationJsonLd = {
   },
 }
 
+const profileSameAs = [
+  siteAuthor.github,
+  siteAuthor.bilibili,
+  siteAuthor.juejin,
+].filter((url): url is string => Boolean(url))
+
 export function createWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': websiteId,
     name: siteContent.name,
-    alternateName: siteAuthor.name,
     url: websiteUrl,
     inLanguage: siteContent.locale,
     description: siteContent.description,
@@ -74,12 +78,27 @@ export function createPersonJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     '@id': personId,
-    name: siteAuthor.name,
-    alternateName: siteAuthor.alternateName,
+    name: siteAuthor.legalName,
+    alternateName: siteAuthor.name,
     url: toAbsoluteUrl(siteAuthor.aboutPath),
     description: siteAuthor.description,
     image: logoUrl,
-    sameAs: [siteAuthor.github],
+    jobTitle: siteAuthor.jobTitle,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: siteAuthor.addressLocality,
+      addressCountry: 'CN',
+    },
+    homeLocation: {
+      '@type': 'Place',
+      name: siteAuthor.location,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: siteAuthor.addressLocality,
+        addressCountry: 'CN',
+      },
+    },
+    sameAs: profileSameAs,
     email: siteAuthor.email,
     knowsAbout: siteContent.keywords,
   }
@@ -128,7 +147,8 @@ export function createArticleJsonLd({
     author: {
       '@type': 'Person',
       '@id': personId,
-      name: siteAuthor.name,
+      name: siteAuthor.legalName,
+      alternateName: siteAuthor.name,
       url: toAbsoluteUrl(siteAuthor.aboutPath),
     },
     publisher: organizationJsonLd,

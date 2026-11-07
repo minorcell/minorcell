@@ -83,7 +83,7 @@ memo mcp add stack-mcepp npx -y @mcell/stack-mcell
 
 ## 提示词
 
-如果你对这套方案比较感兴趣，想要多了解了解，你可以clone我的博客仓库：[Minor Cell](https://github.com/minorcell/minorcell)，或者是直接把这段提示词发给AI，他会给你方案：
+如果你对这套方案比较感兴趣，想要多了解了解，你可以clone我的博客仓库：[minorcell](https://github.com/minorcell/minorcell)，或者是直接把这段提示词发给AI，他会给你方案：
 
 ```markdown
 我想搭建一个个人博客，大致如下：

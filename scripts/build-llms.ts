@@ -173,12 +173,30 @@ const summary =
     ? siteConfig.description.trim()
     : 'minorcell 的个人技术博客。'
 
+const profile = siteConfig.profile ?? {}
+const contact = siteConfig.contact ?? {}
+const roles = Array.isArray(profile.roles) ? profile.roles.join('、') : ''
+const authorLines = [
+  '- 姓名：邓军辉',
+  `- 公开昵称：${siteConfig.name ?? 'minorcell'}`,
+  profile.location ? `- 所在地：${profile.location}` : '',
+  roles ? `- 身份：${roles}` : '',
+  `- 关于页：${siteUrl}/about`,
+  contact.github ? `- GitHub：${contact.github}` : '',
+  contact.bilibili ? `- Bilibili：${contact.bilibili}` : '',
+  contact.juejin ? `- 掘金：${contact.juejin}` : '',
+].filter((line) => line.length > 0)
+
 const lines = [
   `# ${siteConfig.name ?? 'minorcell'}`,
   '',
   `> ${oneLine(summary, 240)}`,
   '',
   '个人技术博客，记录 AI 工程、软件开发、技术选择与产品实践。内容以中文为主。',
+  '',
+  '## 作者',
+  '',
+  ...authorLines,
   '',
   '## 文章',
   '',

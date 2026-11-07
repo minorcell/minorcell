@@ -2,14 +2,15 @@ import type { Metadata } from 'next'
 import { buildPageMetadata } from '@/lib/seo'
 import { parseGitHubSnapshot } from '@/lib/github-profile'
 import type { GitHubSnapshot } from '@/lib/github-profile'
+import { AboutIdentity } from './identity'
 import GitHubProfile from './github-profile'
 
 export const metadata: Metadata = buildPageMetadata({
   title: '关于',
   description:
-    'minorcell 的 GitHub 公开档案：开源仓库、收到的 Star、贡献记录和仓库语言统计。',
+    'minorcell，在上海做产品架构师和 FDE。这里是公开档案、开源仓库、贡献记录，以及 Bilibili 和掘金。',
   path: '/about',
-  keywords: ['GitHub', '开源项目', 'minorcell'],
+  keywords: ['GitHub', '开源项目', 'minorcell', '上海', '产品架构师', 'FDE'],
 })
 
 export default async function AboutPage() {
@@ -35,10 +36,13 @@ export default async function AboutPage() {
     }
   }
   return (
-    <GitHubProfile
-      key={localSnapshot?.fetchedAt ?? 'remote'}
-      development={development}
-      localSnapshot={localSnapshot}
-    />
+    <div className="mx-auto w-full max-w-[1280px] px-5 pb-16 sm:px-8 sm:pb-24 lg:px-10">
+      <AboutIdentity />
+      <GitHubProfile
+        key={localSnapshot?.fetchedAt ?? 'remote'}
+        development={development}
+        localSnapshot={localSnapshot}
+      />
+    </div>
   )
 }

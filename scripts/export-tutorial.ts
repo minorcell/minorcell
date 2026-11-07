@@ -36,7 +36,7 @@ content = content.replace(/^---\n([\s\S]*?)\n---\n/, (_, fm) => {
   const desc = fm.match(/^description:\s*['"]?(.+?)['"]?\s*$/m)?.[1]
   let header = title ? `# ${title}\n` : ''
   if (title)
-    header += `\n同步更新至个人站点：[${title}](https://mcell.top/tutorials/${slug})\n`
+    header += `\n同步更新至个人站点：[${title}](https://minorcell.top/tutorials/${slug})\n`
   if (desc) header += `\n> ${desc}\n`
   return header + '\n'
 })

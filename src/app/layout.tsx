@@ -34,10 +34,13 @@ export const metadata: Metadata = {
   description: rootMetadata.description,
   keywords: rootMetadata.keywords,
   authors: [
-    { name: siteAuthor.name, url: toAbsoluteUrl(siteAuthor.aboutPath) },
+    {
+      name: siteAuthor.legalName,
+      url: toAbsoluteUrl(siteAuthor.aboutPath),
+    },
   ],
-  creator: siteAuthor.name,
-  publisher: siteAuthor.name,
+  creator: siteAuthor.legalName,
+  publisher: siteContent.name,
   category: 'technology',
   referrer: 'origin-when-cross-origin',
   alternates: {

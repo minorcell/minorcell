@@ -205,7 +205,7 @@ async function emitOg() {
         AI Agent · 全栈工程 · 日常实践
       </text>
       <text x="${textX}" y="555" class="kicker" font-size="18">
-        MCELL.TOP
+        MINORCELL.TOP
       </text>
     </svg>
   `)

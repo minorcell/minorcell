@@ -17,7 +17,7 @@ tags:
   - AI工具
   - 效率提升
   - 实用技巧
-author: mCell
+author: minorcell
 ---
 
 ![020.jpg](https://stack-mcell.tos-cn-shanghai.volces.com/020.jpg)

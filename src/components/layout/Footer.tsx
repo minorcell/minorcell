@@ -23,11 +23,33 @@ export function Footer() {
             <a
               href={siteContent.contact.github}
               target="_blank"
-              rel="noreferrer"
+              rel="me noreferrer"
               className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
             >
               <Icon name="github-line" className="h-3.5 w-3.5" />
               GitHub
+            </a>
+          ) : null}
+          {siteContent.contact.bilibili ? (
+            <a
+              href={siteContent.contact.bilibili}
+              target="_blank"
+              rel="me noreferrer"
+              className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
+            >
+              <Icon name="bilibili-line" className="h-3.5 w-3.5" />
+              哔哩哔哩
+            </a>
+          ) : null}
+          {siteContent.contact.juejin ? (
+            <a
+              href={siteContent.contact.juejin}
+              target="_blank"
+              rel="me noreferrer"
+              className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground"
+            >
+              <Icon name="quill-pen-line" className="h-3.5 w-3.5" />
+              掘金
             </a>
           ) : null}
           {siteContent.contact.email ? (

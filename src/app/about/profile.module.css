@@ -2,12 +2,13 @@
   letter-spacing: 0;
 }
 .status {
-  min-height: 420px;
-  padding-top: 44px;
+  padding-top: 8px;
   padding-bottom: 44px;
 }
-.status h1 {
-  font-size: 32px;
+.statusTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
 }
 .status output {
   display: block;
@@ -35,22 +36,25 @@
 .identityText {
   min-width: 0;
 }
-.nameRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 20px;
-}
-.nameRow h1 {
+.identity h1 {
   margin: 0;
   font-size: 52px;
   font-weight: 600;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
-.company {
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 14px 0 0;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.facts span:not(:last-child)::after {
+  content: '·';
+  margin: 0 10px;
 }
 .bio {
   margin: 18px 0 0;

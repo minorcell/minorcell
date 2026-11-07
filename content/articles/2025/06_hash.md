@@ -16,7 +16,7 @@ tags:
   - 编程基础
   - 计算机科学
   - 数据完整性
-author: mCell
+author: minorcell
 ---
 
 ![077](https://stack-mcell.tos-cn-shanghai.volces.com/077.webp)

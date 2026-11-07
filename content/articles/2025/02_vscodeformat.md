@@ -16,7 +16,7 @@ tags:
   - 团队协作
   - 工程化实践
   - 代码质量
-author: mCell
+author: minorcell
 ---
 
 ![016.webp](https://stack-mcell.tos-cn-shanghai.volces.com/016.webp)

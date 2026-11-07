@@ -16,7 +16,7 @@ tags:
   - 前端工程化
   - Vue组件
   - SFC单文件组件
-author: mCell
+author: minorcell
 ---
 
 ![011.png](https://stack-mcell.tos-cn-shanghai.volces.com/011.png)
