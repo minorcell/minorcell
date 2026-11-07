@@ -49,10 +49,36 @@ function canConsume(element: Element, deltaY: number, deltaX: number) {
 /**
  * Chrome and Safari drop the wheel's default action when the pointer is over
  * a replaced element and the document has `overscroll-behavior: none`.
- * If nothing scrolled, move the nearest scrollport by the same delta.
+ * If that wheel never moves a scrollport, apply the same delta ourselves.
+ * A passive listener can run after the browser has already scrolled, so the
+ * baseline stays one frame behind and is not treated as "nothing happened".
  */
 export function DocumentWheelScroll() {
   useEffect(() => {
+    const baselines = new WeakMap<Element, { top: number; left: number }>()
+
+    const baselineOf = (element: Element) => {
+      let value = baselines.get(element)
+      if (!value) {
+        value = { top: element.scrollTop, left: element.scrollLeft }
+        baselines.set(element, value)
+      }
+      return value
+    }
+
+    if (document.scrollingElement) baselineOf(document.scrollingElement)
+
+    const onScroll = (event: Event) => {
+      const element =
+        event.target === document ? document.scrollingElement : event.target
+      if (!(element instanceof Element)) return
+      const baseline = baselineOf(element)
+      requestAnimationFrame(() => {
+        baseline.top = element.scrollTop
+        baseline.left = element.scrollLeft
+      })
+    }
+
     const onWheel = (event: WheelEvent) => {
       if (event.defaultPrevented || event.ctrlKey) return
       const target = event.target
@@ -67,24 +93,31 @@ export function DocumentWheelScroll() {
       const scroller = port ?? document.scrollingElement
       if (!scroller) return
 
-      const beforeTop = scroller.scrollTop
-      const beforeLeft = scroller.scrollLeft
+      const baseline = baselineOf(scroller)
+      const topNow = scroller.scrollTop
+      const leftNow = scroller.scrollLeft
+      if (topNow !== baseline.top || leftNow !== baseline.left) return
+
       const top = toPixels(event.deltaY, event.deltaMode, scroller.clientHeight)
       const left = toPixels(event.deltaX, event.deltaMode, scroller.clientWidth)
 
-      requestAnimationFrame(() => {
-        if (
-          scroller.scrollTop !== beforeTop ||
-          scroller.scrollLeft !== beforeLeft
-        ) {
+      window.setTimeout(() => {
+        if (scroller.scrollTop !== topNow || scroller.scrollLeft !== leftNow) {
           return
         }
         scroller.scrollBy({ top, left })
-      })
+      }, 40)
     }
 
+    document.addEventListener('scroll', onScroll, {
+      capture: true,
+      passive: true,
+    })
     window.addEventListener('wheel', onWheel, { passive: true })
-    return () => window.removeEventListener('wheel', onWheel)
+    return () => {
+      document.removeEventListener('scroll', onScroll, { capture: true })
+      window.removeEventListener('wheel', onWheel)
+    }
   }, [])
 
   return null
