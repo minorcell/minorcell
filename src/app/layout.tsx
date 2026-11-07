@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { DocumentWheelScroll } from '@/components/layout/DocumentWheelScroll'
 import { ExternalLinkGuard } from '@/components/layout/ExternalLinkGuard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { siteContent } from '@/lib/site-content'
@@ -99,6 +100,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main">
           跳到正文
         </a>
+        <DocumentWheelScroll />
         <ExternalLinkGuard />
         <div className="relative z-10 flex min-h-screen flex-col">
           <Navbar />

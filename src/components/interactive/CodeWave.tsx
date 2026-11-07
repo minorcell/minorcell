@@ -125,7 +125,7 @@ function CodePanel({ step }: { step: CodeStep }) {
   return (
     <div
       ref={containerRef}
-      className="codewave-panel absolute inset-0 overflow-y-auto overscroll-none"
+      className="codewave-panel absolute inset-0 overflow-y-auto overscroll-x-none overscroll-y-auto"
     >
       <pre
         className="type-code px-4 sm:px-5"

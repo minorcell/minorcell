@@ -479,8 +479,13 @@
   border-radius: var(--radius);
   padding: 1rem 1.125rem;
   background: var(--code-surface);
+  /* Horizontal overflow makes this a scroll container. `clip` on Y keeps a
+   * long line from also trapping the vertical wheel, and only the X axis
+   * opts out of scroll chaining so the page still moves. */
   overflow-x: auto;
-  overscroll-behavior: none;
+  overflow-y: clip;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
   font-size: 0.92em;
   line-height: 1.65;
 }

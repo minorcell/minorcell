@@ -99,7 +99,7 @@ function SourcePanel({ code }: { code: string }) {
   const lines = code.split('\n')
 
   return (
-    <div className="webwave-source-panel h-full overflow-auto overscroll-none">
+    <div className="webwave-source-panel h-full overflow-auto overscroll-x-none overscroll-y-auto">
       <pre className="type-code px-4 py-4 sm:px-5">
         <code>
           {lines.map((line, i) => (
