@@ -1,7 +1,12 @@
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import { Streamdown, type Components, type PluginConfig } from 'streamdown'
+import {
+  Streamdown,
+  type AnimateOptions,
+  type Components,
+  type PluginConfig,
+} from 'streamdown'
 import { createCodePlugin } from '@streamdown/code'
 import { ContentImage } from '@/components/common/ContentImage'
 import { createMermaidTheme } from '@/lib/mermaid-theme'
@@ -12,6 +17,7 @@ interface MarkdownRendererProps {
   content: string
   className?: string
   isStreaming?: boolean
+  animateStreaming?: boolean
 }
 
 type StreamdownParagraphProps = React.ComponentProps<'p'> & {
@@ -63,6 +69,13 @@ const codePlugin = createCodePlugin({
   themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
 const linkSafety = { enabled: false }
+const streamingAnimation: AnimateOptions = {
+  animation: 'fadeIn',
+  duration: 180,
+  easing: 'ease-out',
+  sep: 'char',
+  stagger: 0,
+}
 
 const readIsDark = () =>
   typeof document !== 'undefined' &&
@@ -76,6 +89,7 @@ export function MarkdownRenderer({
   content,
   className,
   isStreaming = false,
+  animateStreaming = false,
 }: MarkdownRendererProps) {
   const [isDark, setIsDark] = useState(readIsDark)
   const [mermaidPlugin, setMermaidPlugin] = useState<MermaidPlugin | null>(null)
@@ -129,6 +143,7 @@ export function MarkdownRenderer({
     <Streamdown
       mode={isStreaming ? 'streaming' : 'static'}
       isAnimating={isStreaming}
+      animated={animateStreaming && isStreaming ? streamingAnimation : false}
       plugins={plugins}
       mermaid={mermaidPlugin ? mermaidOptions : undefined}
       linkSafety={linkSafety}

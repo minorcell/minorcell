@@ -35,6 +35,7 @@ import {
   type ResizeEdge,
 } from '@/lib/page-bot/panel'
 import { createStreamBuffer } from '@/lib/page-bot/stream-buffer'
+import { observeChatScroll } from '@/lib/page-bot/scroll'
 import styles from './PageBot.module.css'
 
 const MarkdownRenderer = dynamic(() =>
@@ -122,6 +123,7 @@ const AssistantTurn = memo(function AssistantTurn({
       <MarkdownRenderer
         content={content}
         isStreaming={isStreaming}
+        animateStreaming
         className={styles.answer}
       />
     </li>
@@ -136,6 +138,8 @@ export function PageBot() {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const logRef = useRef<HTMLDivElement>(null)
+  const logContentRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<ReturnType<typeof observeChatScroll> | null>(null)
   const turnRef = useRef(0)
   const streamRef = useRef<ReturnType<typeof createStreamBuffer> | null>(null)
   const queueRef = useRef<Promise<void>>(Promise.resolve())
@@ -290,9 +294,15 @@ export function PageBot() {
   useEffect(() => {
     if (!open) return
     const log = logRef.current
-    if (!log) return
-    log.scrollTop = log.scrollHeight
-  }, [messages, activity, open, error])
+    const content = logContentRef.current
+    if (!log || !content) return
+    const scroll = observeChatScroll(log, content)
+    scrollRef.current = scroll
+    return () => {
+      scroll.dispose()
+      scrollRef.current = null
+    }
+  }, [open])
 
   const busy = activity !== 'idle'
   const stop = () => {
@@ -310,12 +320,14 @@ export function PageBot() {
     askedPathRef.current = ''
     historyRef.current = []
     setError(null)
+    scrollRef.current?.follow()
     remember([])
   }
 
   const send = (text: string) => {
     const question = text.trim()
     if (!question || !gpuOk || busy) return
+    scrollRef.current?.follow()
     const page = includePageContext
       ? readPage()
       : { title: '', path: '', chunks: [] }
@@ -570,75 +582,79 @@ export function PageBot() {
 
           <div
             ref={logRef}
-            className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain px-4 pb-3"
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 pb-3"
           >
-            {messages.length === 0 ? (
-              <div className="type-meta text-muted-foreground">
-                {gpuOk && includePageContext ? (
-                  <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS.map((suggestion) => (
-                      <button
-                        key={suggestion}
-                        type="button"
-                        onClick={() => send(suggestion)}
-                        disabled={busy}
-                        className="type-caption rounded-full border border-input bg-muted px-3 py-1.5 text-foreground hover:bg-surface-hover disabled:opacity-50"
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
-                  </div>
-                ) : !gpuOk ? (
-                  <p className="m-0 mt-3 text-foreground">
-                    当前浏览器无法使用阅读助手。
-                  </p>
-                ) : null}
-              </div>
-            ) : (
-              <ol className="m-0 flex list-none flex-col gap-3 p-0">
-                {messages.map((message, index) =>
-                  message.role === 'user' ? (
-                    <li
-                      key={`user-${index}`}
-                      className="type-meta min-w-0 max-w-[85%] self-end rounded-lg bg-muted px-3 py-2 whitespace-pre-wrap wrap-anywhere"
-                    >
-                      {message.content}
-                    </li>
-                  ) : (
-                    <AssistantTurn
-                      key={`assistant-${index}`}
-                      content={message.content}
-                      isStreaming={
-                        activity === 'generating' &&
-                        index === messages.length - 1
-                      }
-                    />
-                  ),
-                )}
-              </ol>
-            )}
-
-            {activity === 'loading' ? (
-              <div>
-                <div className="h-1 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full bg-primary"
-                    style={{
-                      width: `${Math.max(4, Math.round(progress * 100))}%`,
-                    }}
-                  />
+            <div ref={logContentRef} className="flex shrink-0 flex-col gap-3">
+              {messages.length === 0 ? (
+                <div className="type-meta text-muted-foreground">
+                  {gpuOk && includePageContext ? (
+                    <div className="flex flex-wrap gap-2">
+                      {SUGGESTIONS.map((suggestion) => (
+                        <button
+                          key={suggestion}
+                          type="button"
+                          onClick={() => send(suggestion)}
+                          disabled={busy}
+                          className="type-caption rounded-full border border-input bg-muted px-3 py-1.5 text-foreground hover:bg-surface-hover disabled:opacity-50"
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  ) : !gpuOk ? (
+                    <p className="m-0 mt-3 text-foreground">
+                      当前浏览器无法使用阅读助手。
+                    </p>
+                  ) : null}
                 </div>
-                <p className="type-caption m-0 mt-2 text-muted-foreground">
-                  正在准备…
+              ) : (
+                <ol className="m-0 flex list-none flex-col gap-3 p-0">
+                  {messages.map((message, index) =>
+                    message.role === 'user' ? (
+                      <li
+                        key={`user-${index}`}
+                        className="type-meta min-w-0 max-w-[85%] self-end rounded-lg bg-muted px-3 py-2 whitespace-pre-wrap wrap-anywhere"
+                      >
+                        {message.content}
+                      </li>
+                    ) : (
+                      <AssistantTurn
+                        key={`assistant-${index}`}
+                        content={message.content}
+                        isStreaming={
+                          activity === 'generating' &&
+                          index === messages.length - 1
+                        }
+                      />
+                    ),
+                  )}
+                </ol>
+              )}
+
+              {activity === 'loading' ? (
+                <div>
+                  <div className="h-1 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full bg-primary"
+                      style={{
+                        width: `${Math.max(4, Math.round(progress * 100))}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="type-caption m-0 mt-2 text-muted-foreground">
+                    正在准备…
+                  </p>
+                </div>
+              ) : null}
+              {activity === 'generating' ? (
+                <p className="type-caption m-0 text-muted-foreground">
+                  正在写…
                 </p>
-              </div>
-            ) : null}
-            {activity === 'generating' ? (
-              <p className="type-caption m-0 text-muted-foreground">正在写…</p>
-            ) : null}
-            {error ? (
-              <p className="type-caption m-0 text-destructive">{error}</p>
-            ) : null}
+              ) : null}
+              {error ? (
+                <p className="type-caption m-0 text-destructive">{error}</p>
+              ) : null}
+            </div>
           </div>
 
           <form

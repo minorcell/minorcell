@@ -51,6 +51,12 @@
   margin-bottom: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .answer :where([data-sd-animate]) {
+    animation: none;
+  }
+}
+
 .resizeHandle {
   position: absolute;
   z-index: 20;
