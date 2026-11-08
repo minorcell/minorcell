@@ -507,7 +507,7 @@ export function PageBot() {
               ? { ...panelRect, right: 'auto', bottom: 'auto' }
               : undefined
           }
-          className="fixed inset-auto start-auto end-auto top-auto left-auto right-5 bottom-5 z-drawer m-0 flex h-[min(34rem,calc(100dvh-6.5rem))] min-h-[min(18rem,calc(100dvh-6.5rem))] w-[min(22.5rem,calc(100vw-2.5rem))] min-w-[min(20rem,calc(100vw-2.5rem))] max-h-[calc(100dvh-6.5rem)] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-xl border-0 bg-card p-0 text-card-foreground shadow-overlay sm:right-8 sm:bottom-8 sm:max-w-[calc(100vw-4rem)]"
+          className="fixed inset-auto start-auto end-auto top-auto left-auto right-5 bottom-5 z-drawer m-0 flex h-[min(34rem,calc(100dvh-6.5rem))] min-h-[min(18rem,calc(100dvh-6.5rem))] w-[min(22.5rem,calc(100vw-2.5rem))] min-w-[min(20rem,calc(100vw-2.5rem))] max-h-[calc(100dvh-6.5rem)] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-xl border-0 bg-card p-0 text-card-foreground shadow-none sm:right-8 sm:bottom-8 sm:max-w-[calc(100vw-4rem)]"
         >
           {RESIZE_EDGES.map((edge) => (
             <div
@@ -559,7 +559,7 @@ export function PageBot() {
                         type="button"
                         onClick={() => send(suggestion)}
                         disabled={busy}
-                        className="type-caption rounded-full bg-muted px-3 py-1.5 text-foreground hover:bg-surface-hover disabled:opacity-50"
+                        className="type-caption rounded-full border border-input bg-muted px-3 py-1.5 text-foreground hover:bg-surface-hover disabled:opacity-50"
                       >
                         {suggestion}
                       </button>
@@ -577,7 +577,7 @@ export function PageBot() {
                   message.role === 'user' ? (
                     <li
                       key={`user-${index}`}
-                      className="type-meta ml-8 whitespace-pre-wrap rounded-lg bg-muted px-3 py-2"
+                      className="type-meta min-w-0 max-w-[85%] self-end rounded-lg bg-muted px-3 py-2 whitespace-pre-wrap wrap-anywhere"
                     >
                       {message.content}
                     </li>
@@ -625,7 +625,7 @@ export function PageBot() {
               send(draft)
             }}
           >
-            <div className="rounded-xl bg-muted p-2 focus-within:ring-2 focus-within:ring-ring">
+            <div className="rounded-xl border border-input bg-muted p-2 focus-within:ring-2 focus-within:ring-ring">
               <label className="sr-only" htmlFor={`${panelId}-input`}>
                 向阅读助手提问
               </label>
@@ -656,7 +656,7 @@ export function PageBot() {
                     aria-pressed={includePageContext}
                     disabled={busy}
                     onClick={() => setIncludePageContext((value) => !value)}
-                    className={`type-caption flex h-8 items-center gap-1 rounded-full px-2 disabled:opacity-50 ${
+                    className={`type-caption flex h-8 items-center gap-1 rounded-full border border-input px-2 disabled:opacity-50 ${
                       includePageContext
                         ? 'bg-primary/10 text-primary'
                         : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground'
@@ -670,7 +670,7 @@ export function PageBot() {
                   <button
                     type="button"
                     onClick={stop}
-                    className="type-caption h-8 shrink-0 rounded-md bg-secondary px-3 text-secondary-foreground"
+                    className="type-caption h-8 shrink-0 rounded-md border border-input bg-secondary px-3 text-secondary-foreground"
                   >
                     停止
                   </button>
@@ -678,7 +678,7 @@ export function PageBot() {
                   <button
                     type="submit"
                     disabled={!gpuOk || draft.trim().length === 0}
-                    className="type-caption h-8 shrink-0 rounded-md bg-primary px-3 text-primary-foreground disabled:opacity-50"
+                    className="type-caption h-8 shrink-0 rounded-md border border-input bg-primary px-3 text-primary-foreground disabled:opacity-50"
                   >
                     发送
                   </button>
