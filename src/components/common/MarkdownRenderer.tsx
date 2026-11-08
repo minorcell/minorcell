@@ -59,12 +59,10 @@ const components: Components = {
   p: Paragraph,
 }
 
-const lightCodePlugin = createCodePlugin({
+const codePlugin = createCodePlugin({
   themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
 })
-const darkCodePlugin = createCodePlugin({
-  themes: ['github-dark-high-contrast', 'github-dark-high-contrast'],
-})
+const linkSafety = { enabled: false }
 
 const readIsDark = () =>
   typeof document !== 'undefined' &&
@@ -81,6 +79,7 @@ export function MarkdownRenderer({
 }: MarkdownRendererProps) {
   const [isDark, setIsDark] = useState(readIsDark)
   const [mermaidPlugin, setMermaidPlugin] = useState<MermaidPlugin | null>(null)
+  const needsMermaid = hasMermaidFence(content)
 
   useEffect(() => {
     const root = document.documentElement
@@ -101,7 +100,7 @@ export function MarkdownRenderer({
 
   // Lazy-load the mermaid plugin (~700 KB inc. shiki) only when we see one.
   useEffect(() => {
-    if (!hasMermaidFence(content)) return
+    if (!needsMermaid) return
     let cancelled = false
     import('@streamdown/mermaid').then((mod) => {
       if (cancelled) return
@@ -110,18 +109,21 @@ export function MarkdownRenderer({
     return () => {
       cancelled = true
     }
-  }, [content])
+  }, [needsMermaid])
 
-  const codePlugin = isDark ? darkCodePlugin : lightCodePlugin
   const mermaidOptions = useMemo(
     () => ({
       config: createMermaidTheme(isDark),
     }),
     [isDark],
   )
-  const plugins = mermaidPlugin
-    ? { code: codePlugin, mermaid: mermaidPlugin }
-    : { code: codePlugin }
+  const plugins = useMemo(
+    () =>
+      mermaidPlugin
+        ? { code: codePlugin, mermaid: mermaidPlugin }
+        : { code: codePlugin },
+    [mermaidPlugin],
+  )
 
   return (
     <Streamdown
@@ -129,7 +131,7 @@ export function MarkdownRenderer({
       isAnimating={isStreaming}
       plugins={plugins}
       mermaid={mermaidPlugin ? mermaidOptions : undefined}
-      linkSafety={{ enabled: false }}
+      linkSafety={linkSafety}
       className={['article-markdown', className].filter(Boolean).join(' ')}
       components={components}
     >

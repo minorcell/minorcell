@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  memo,
   useEffect,
   useId,
   useRef,
@@ -33,6 +34,7 @@ import {
   type PanelRect,
   type ResizeEdge,
 } from '@/lib/page-bot/panel'
+import { createStreamBuffer } from '@/lib/page-bot/stream-buffer'
 import styles from './PageBot.module.css'
 
 const MarkdownRenderer = dynamic(() =>
@@ -107,7 +109,7 @@ function saveStored(payload: StoredChat) {
   }
 }
 
-function AssistantTurn({
+const AssistantTurn = memo(function AssistantTurn({
   content,
   isStreaming,
 }: {
@@ -124,7 +126,7 @@ function AssistantTurn({
       />
     </li>
   )
-}
+})
 
 export function PageBot() {
   const titleId = useId()
@@ -135,6 +137,7 @@ export function PageBot() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const logRef = useRef<HTMLDivElement>(null)
   const turnRef = useRef(0)
+  const streamRef = useRef<ReturnType<typeof createStreamBuffer> | null>(null)
   const queueRef = useRef<Promise<void>>(Promise.resolve())
   const messagesRef = useRef<ChatTurn[]>([])
   const historyRef = useRef<ChatTurn[]>([])
@@ -232,6 +235,7 @@ export function PageBot() {
 
   useEffect(() => {
     const persist = () => {
+      streamRef.current?.flush()
       saveStored({
         messages: messagesRef.current.slice(-24),
         history: historyRef.current,
@@ -240,6 +244,16 @@ export function PageBot() {
     }
     window.addEventListener('pagehide', persist)
     return () => window.removeEventListener('pagehide', persist)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      const stream = streamRef.current
+      stream?.cancel()
+      streamRef.current = null
+      turnRef.current += 1
+      if (stream) void getLoadedEngine()?.stop()
+    }
   }, [])
 
   useEffect(() => {
@@ -282,6 +296,9 @@ export function PageBot() {
 
   const busy = activity !== 'idle'
   const stop = () => {
+    streamRef.current?.flush()
+    streamRef.current?.cancel()
+    streamRef.current = null
     turnRef.current += 1
     void getLoadedEngine()?.stop()
     setActivity('idle')
@@ -362,22 +379,28 @@ export function PageBot() {
         historyRef.current = turnHistory
         let answer = ''
         let started = false
-        for await (const delta of engine.generate(
-          built.messages,
-          built.replyTokens,
-        )) {
-          if (turn !== turnRef.current) return started
-          answer += delta
-          const base = started
-            ? messagesRef.current.slice(0, -1)
-            : messagesRef.current
-          started = true
-          produced = true
-          historyRef.current = [
-            ...turnHistory,
-            { role: 'assistant', content: answer },
-          ]
-          remember([...base, { role: 'assistant', content: answer }])
+        const base = messagesRef.current
+        const stream = createStreamBuffer((content) => {
+          if (turn !== turnRef.current) return
+          historyRef.current = [...turnHistory, { role: 'assistant', content }]
+          remember([...base, { role: 'assistant', content }])
+        })
+        streamRef.current = stream
+        try {
+          for await (const delta of engine.generate(
+            built.messages,
+            built.replyTokens,
+          )) {
+            if (turn !== turnRef.current) return started
+            answer += delta
+            started = true
+            produced = true
+            stream.push(answer)
+          }
+        } finally {
+          if (turn === turnRef.current) stream.flush()
+          stream.cancel()
+          if (streamRef.current === stream) streamRef.current = null
         }
         if (turn !== turnRef.current) return started
         if (!answer.trim()) {
