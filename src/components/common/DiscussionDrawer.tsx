@@ -101,6 +101,7 @@ export const DiscussionDrawer = forwardRef<DiscussionDrawerHandle, Props>(
             label="讨论"
             onClick={openDrawer}
             hidden={open}
+            className="bottom-[4.75rem] z-50 sm:bottom-[5.5rem]"
           />
         )}
 

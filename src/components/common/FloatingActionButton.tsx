@@ -3,28 +3,27 @@
 import React, { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
-interface FloatingActionButtonProps {
-  /** Lucide icon component */
+interface FloatingActionButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'children'
+> {
   icon: React.ReactNode
-  /** Label shown next to icon (hidden on mobile) */
+  /** Accessible name. The visible control is icon-only. */
   label: string
-  /** Click handler */
-  onClick: () => void
   /** Force hidden (e.g. when drawer is open) */
   hidden?: boolean
-  /** Additional class names */
-  className?: string
 }
 
 export const FloatingActionButton = forwardRef<
   HTMLButtonElement,
   FloatingActionButtonProps
 >(function FloatingActionButton(
-  { icon, label, onClick, hidden, className },
+  { icon, label, onClick, hidden, className, ...rest },
   ref,
 ) {
   return (
     <button
+      {...rest}
       ref={ref}
       type="button"
       aria-label={label}
@@ -33,7 +32,7 @@ export const FloatingActionButton = forwardRef<
       tabIndex={hidden ? -1 : undefined}
       onClick={onClick}
       className={cn(
-        'floating-action-button fixed right-5 bottom-5 z-50 flex h-11 w-11 items-center justify-center rounded-full sm:right-8 sm:bottom-8',
+        'floating-action-button fixed right-5 bottom-5 flex h-11 w-11 items-center justify-center rounded-full sm:right-8 sm:bottom-8',
         hidden ? 'pointer-events-none opacity-0' : 'opacity-100',
         className,
       )}

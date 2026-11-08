@@ -11,6 +11,7 @@ type MermaidPlugin = NonNullable<PluginConfig['mermaid']>
 interface MarkdownRendererProps {
   content: string
   className?: string
+  isStreaming?: boolean
 }
 
 type StreamdownParagraphProps = React.ComponentProps<'p'> & {
@@ -76,6 +77,7 @@ const hasMermaidFence = (src: string) => /^[ \t]*```mermaid/m.test(src)
 export function MarkdownRenderer({
   content,
   className,
+  isStreaming = false,
 }: MarkdownRendererProps) {
   const [isDark, setIsDark] = useState(readIsDark)
   const [mermaidPlugin, setMermaidPlugin] = useState<MermaidPlugin | null>(null)
@@ -123,7 +125,8 @@ export function MarkdownRenderer({
 
   return (
     <Streamdown
-      mode="static"
+      mode={isStreaming ? 'streaming' : 'static'}
+      isAnimating={isStreaming}
       plugins={plugins}
       mermaid={mermaidPlugin ? mermaidOptions : undefined}
       linkSafety={{ enabled: false }}

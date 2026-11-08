@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { PageBot } from '@/components/bot/PageBot'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { DocumentWheelScroll } from '@/components/layout/DocumentWheelScroll'
@@ -109,6 +110,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </div>
+        <PageBot />
       </body>
     </html>
   )
