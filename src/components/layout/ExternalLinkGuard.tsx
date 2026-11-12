@@ -398,25 +398,41 @@ export function ExternalLinkGuard() {
       if (!active) return
       clearPending()
     }
-    const onClick = (event: MouseEvent) => {
-      if (event.target === dialog) dialog.close()
-    }
     dialog.addEventListener('close', onClose)
-    dialog.addEventListener('click', onClick)
+
+    // closedby is unsupported in Safari. Pointer position, not event.target:
+    // the dialog is also the target for its own padding and gaps.
+    let removeLightDismiss = () => {}
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      const outside = (event: PointerEvent) => {
+        const rect = dialog.getBoundingClientRect()
+        return (
+          event.clientX < rect.left ||
+          event.clientX > rect.right ||
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom
+        )
+      }
+      let pressedOutside = false
+      const onPointerDown = (event: PointerEvent) => {
+        pressedOutside = outside(event)
+      }
+      const onPointerUp = (event: PointerEvent) => {
+        if (pressedOutside && outside(event)) dialog.close()
+      }
+      dialog.addEventListener('pointerdown', onPointerDown)
+      dialog.addEventListener('pointerup', onPointerUp)
+      removeLightDismiss = () => {
+        dialog.removeEventListener('pointerdown', onPointerDown)
+        dialog.removeEventListener('pointerup', onPointerUp)
+      }
+    }
+
     return () => {
       active = false
       dialog.removeEventListener('close', onClose)
-      dialog.removeEventListener('click', onClick)
+      removeLightDismiss()
       if (dialog.open) dialog.close()
-    }
-  }, [open])
-
-  useEffect(() => {
-    if (!open) return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previousOverflow
     }
   }, [open])
 
@@ -424,11 +440,12 @@ export function ExternalLinkGuard() {
     <dialog
       ref={dialogRef}
       className="external-link-dialog"
+      closedby="any"
       aria-labelledby={open ? titleId : undefined}
       aria-describedby={open ? descriptionId : undefined}
     >
       {pendingLink ? (
-        <div className="rounded-xl bg-card p-6 shadow-overlay sm:p-7">
+        <div className="p-6 sm:p-7">
           <h2 id={titleId} className="type-card-title m-0 text-left">
             打开外部链接？
           </h2>

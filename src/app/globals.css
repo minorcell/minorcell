@@ -720,7 +720,11 @@
   border: 0;
   background: transparent;
   color: var(--foreground);
-  overscroll-behavior: none;
+}
+
+.discussion-dialog:modal,
+.external-link-dialog:modal {
+  overscroll-behavior: contain;
 }
 
 .discussion-dialog[open] {
@@ -740,10 +744,15 @@
   width: min(32rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);
   margin: auto;
-  overflow: visible;
+  overflow: auto;
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  box-shadow: var(--shadow-overlay);
 }
 
 .discussion-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
   background: rgb(0 0 0 / 25%);
 }
 
@@ -752,9 +761,8 @@
 }
 
 .external-link-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
   background: rgb(0 0 0 / 30%);
-}
-
-.external-link-dialog::backdrop {
   backdrop-filter: blur(4px);
 }
